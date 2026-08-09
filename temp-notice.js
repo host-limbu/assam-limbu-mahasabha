@@ -1,7 +1,7 @@
 /* ============================================================
    temp-notice.js — Temporary Conditionals Overlay Notice
-   Displays a smooth fade-in overlay when visitors enter the site.
-   Can be easily enabled/disabled via a single flag.
+   FULL SITE BLOCK — No button, no entry
+   Users CANNOT enter the site until the notice is removed.
    ============================================================ */
 
 (function() {
@@ -15,58 +15,33 @@
         ENABLED: true,
 
         // How long to wait before showing the notice (ms)
-        DELAY: 800,
+        DELAY: 300,
 
-        // How long the notice stays visible before auto-dismiss (ms)
-        // Set to 0 to disable auto-dismiss (user must click close)
-        AUTO_DISMISS: 10000,
-
-        // Fade animation duration (ms)
+        // Fade duration (ms)
         FADE_DURATION: 600,
 
-        // Dismissible by clicking the overlay background?
-        CLOSE_ON_BACKGROUND_CLICK: true,
+        // Show a close button? — FALSE = NO BUTTON, NO ENTRY
+        SHOW_CLOSE_BUTTON: false,
 
-        // Show a "close" button?
-        SHOW_CLOSE_BUTTON: true,
+        // Dismissible by clicking the overlay? — FALSE = NO BYPASS
+        CLOSE_ON_BACKGROUND_CLICK: false,
 
-        // Optional: only show once per session (uses sessionStorage)
-        SHOW_ONCE_PER_SESSION: true,
-
-        // Session storage key
-        STORAGE_KEY: 'alm_temp_notice_dismissed'
+        // ESC key to dismiss? — FALSE = NO BYPASS
+        ALLOW_ESC_TO_DISMISS: false
     };
 
     // ============================================================
     // NOTICE CONTENT — Edit this to change the message
     // ============================================================
     const NOTICE_CONTENT = {
-        title: 'Notice',
-        message: 'This website is currently under maintenance. Some features may be temporarily unavailable. We apologize for any inconvenience.',
-        buttonText: 'Dismiss'
+        title: 'Website Under Maintenance',
+        message: 'The Assam Limbu Mahasabha website is currently undergoing scheduled maintenance. We apologize for the inconvenience and appreciate your patience. Please check back later.',
+        subMessage: '— District Committee'
     };
 
     // ============================================================
-    // MAIN LOGIC — Do not edit below unless you know what you're doing
+    // MAIN LOGIC — Do not edit below
     // ============================================================
-
-    // Check if notice should be shown
-    function shouldShowNotice() {
-        // If globally disabled
-        if (!NOTICE_CONFIG.ENABLED) return false;
-
-        // Check session storage
-        if (NOTICE_CONFIG.SHOW_ONCE_PER_SESSION) {
-            try {
-                const dismissed = sessionStorage.getItem(NOTICE_CONFIG.STORAGE_KEY);
-                if (dismissed === 'true') return false;
-            } catch (e) {
-                // sessionStorage not available, continue
-            }
-        }
-
-        return true;
-    }
 
     // Build the overlay HTML
     function buildOverlay() {
@@ -82,13 +57,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.70);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             opacity: 0;
             transition: opacity ${NOTICE_CONFIG.FADE_DURATION}ms ease;
             pointer-events: none;
             font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            user-select: none;
         `;
 
         // Create the modal card
@@ -99,130 +75,93 @@
             width: 90%;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30);
-            padding: 40px 36px 32px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            padding: 48px 40px 40px;
             position: relative;
-            transform: translateY(20px);
-            transition: transform ${NOTICE_CONFIG.FADE_DURATION}ms ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255, 255, 255, 0.10);
             text-align: center;
         `;
 
-        // Header / Icon (SVG)
+        // Logo / Icon (SVG)
         const headerIcon = document.createElement('div');
         headerIcon.style.cssText = `
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
         `;
         headerIcon.innerHTML = `
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-                <circle cx="24" cy="24" r="22" stroke="#c9a84c" stroke-width="2" />
-                <path d="M24 14V26" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" />
-                <circle cx="24" cy="32" r="2" fill="#c9a84c" />
-                <circle cx="24" cy="24" r="20" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4 4" />
+            <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                <circle cx="40" cy="40" r="38" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2.5" />
+                <circle cx="40" cy="40" r="30" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4 4" />
+                <path d="M40 14 L44 28 L58 28 L48 36 L52 50 L40 42 L28 50 L32 36 L22 28 L36 28 L40 14Z" fill="#c9a84c" opacity="0.9" />
+                <text x="40" y="70" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#c9a84c" text-anchor="middle" letter-spacing="1">ALM</text>
             </svg>
         `;
         modal.appendChild(headerIcon);
 
         // Title
-        const title = document.createElement('h2');
+        const title = document.createElement('h1');
         title.textContent = NOTICE_CONTENT.title;
         title.style.cssText = `
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: #1a3a5c;
             margin: 0 0 12px 0;
             line-height: 1.2;
+            letter-spacing: -0.5px;
         `;
         modal.appendChild(title);
 
-        // Message
+        // Divider
+        const divider = document.createElement('div');
+        divider.style.cssText = `
+            width: 60px;
+            height: 3px;
+            background: #c9a84c;
+            margin: 0 auto 18px;
+            border-radius: 2px;
+        `;
+        modal.appendChild(divider);
+
+        // Main Message
         const message = document.createElement('p');
         message.textContent = NOTICE_CONTENT.message;
         message.style.cssText = `
-            font-size: 16px;
-            line-height: 1.7;
+            font-size: 17px;
+            line-height: 1.8;
             color: #5a6a7a;
-            margin: 0 0 28px 0;
+            margin: 0 0 12px 0;
             text-align: justify;
         `;
         modal.appendChild(message);
 
-        // Buttons container
-        const btnContainer = document.createElement('div');
-        btnContainer.style.cssText = `
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+        // Sub Message (footer text)
+        const subMsg = document.createElement('p');
+        subMsg.textContent = NOTICE_CONTENT.subMessage;
+        subMsg.style.cssText = `
+            font-size: 14px;
+            color: #8a9aa8;
+            margin: 8px 0 0 0;
+            font-style: italic;
+            letter-spacing: 0.5px;
         `;
+        modal.appendChild(subMsg);
 
-        // Close button
-        if (NOTICE_CONFIG.SHOW_CLOSE_BUTTON) {
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = NOTICE_CONTENT.buttonText;
-            closeBtn.style.cssText = `
-                background: #1a3a5c;
-                color: #ffffff;
-                border: none;
-                padding: 12px 36px;
-                border-radius: 5px;
-                font-size: 16px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                font-family: inherit;
-                min-width: 120px;
-            `;
-            closeBtn.addEventListener('mouseenter', function() {
-                this.style.background = '#2a5a7c';
-                this.style.transform = 'scale(1.02)';
-            });
-            closeBtn.addEventListener('mouseleave', function() {
-                this.style.background = '#1a3a5c';
-                this.style.transform = 'scale(1)';
-            });
-            closeBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                dismissNotice();
-            });
-            btnContainer.appendChild(closeBtn);
-        }
-
-        // Optional secondary button (always show "Continue" if auto-dismiss is on)
-        if (NOTICE_CONFIG.AUTO_DISMISS > 0) {
-            const continueBtn = document.createElement('button');
-            continueBtn.textContent = 'Continue to Site';
-            continueBtn.style.cssText = `
-                background: transparent;
-                color: #1a3a5c;
-                border: 1px solid #dce3ec;
-                padding: 12px 36px;
-                border-radius: 5px;
-                font-size: 16px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                font-family: inherit;
-                min-width: 120px;
-            `;
-            continueBtn.addEventListener('mouseenter', function() {
-                this.style.borderColor = '#1a3a5c';
-                this.style.background = 'rgba(26, 58, 92, 0.05)';
-            });
-            continueBtn.addEventListener('mouseleave', function() {
-                this.style.borderColor = '#dce3ec';
-                this.style.background = 'transparent';
-            });
-            continueBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                dismissNotice();
-            });
-            btnContainer.appendChild(continueBtn);
-        }
-
-        modal.appendChild(btnContainer);
+        // Small notice that site is blocked
+        const blockNotice = document.createElement('p');
+        blockNotice.textContent = '🚧 Site access is temporarily restricted';
+        blockNotice.style.cssText = `
+            font-size: 12px;
+            color: #b0bcc8;
+            margin: 24px 0 0 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-top: 1px solid #eaeef4;
+            padding-top: 16px;
+        `;
+        modal.appendChild(blockNotice);
 
         // Add modal to overlay
         overlay.appendChild(modal);
@@ -230,47 +169,52 @@
         return overlay;
     }
 
-    // Dismiss the notice
-    function dismissNotice() {
-        const overlay = document.getElementById('temp-notice-overlay');
-        if (!overlay) return;
+    // Block the site entirely — NO WAY OUT
+    function blockSite() {
+        // Prevent any interaction with the page
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.height = '100%';
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
+        document.body.style.top = '0';
+        document.body.style.left = '0';
 
-        // Store in session storage if configured
-        if (NOTICE_CONFIG.SHOW_ONCE_PER_SESSION) {
-            try {
-                sessionStorage.setItem(NOTICE_CONFIG.STORAGE_KEY, 'true');
-            } catch (e) {
-                // sessionStorage not available, ignore
-            }
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollBarWidth > 0) {
+            document.body.style.paddingRight = scrollBarWidth + 'px';
         }
 
-        // Fade out
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
+        // Prevent any click interaction
+        document.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, true);
 
-        // Remove from DOM after fade
-        setTimeout(function() {
-            if (overlay.parentNode) {
-                overlay.parentNode.removeChild(overlay);
-            }
-        }, NOTICE_CONFIG.FADE_DURATION + 100);
+        // Prevent keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Block all keys except maybe basic ones
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, true);
 
-        // Resume body scroll
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+        // Prevent context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
     }
 
     // Show the notice
     function showNotice() {
-        // Check if we should show it
-        if (!shouldShowNotice()) return;
+        // If disabled, do nothing
+        if (!NOTICE_CONFIG.ENABLED) return;
 
-        // Prevent body scroll
-        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-        document.body.style.overflow = 'hidden';
-        if (scrollBarWidth > 0) {
-            document.body.style.paddingRight = scrollBarWidth + 'px';
-        }
+        // Block the site immediately
+        blockSite();
 
         // Build and append overlay
         const overlay = buildOverlay();
@@ -282,40 +226,23 @@
             overlay.style.pointerEvents = 'auto';
             const modal = document.getElementById('temp-notice-modal');
             if (modal) {
-                modal.style.transform = 'translateY(0)';
+                modal.style.transform = 'translateY(0) scale(1)';
             }
         }, NOTICE_CONFIG.DELAY);
 
-        // Auto-dismiss if configured
-        if (NOTICE_CONFIG.AUTO_DISMISS > 0) {
-            setTimeout(function() {
-                // Only auto-dismiss if still visible
-                const overlayCheck = document.getElementById('temp-notice-overlay');
-                if (overlayCheck && overlayCheck.style.opacity === '1') {
-                    dismissNotice();
+        // Disable ESC key
+        if (!NOTICE_CONFIG.ALLOW_ESC_TO_DISMISS) {
+            document.addEventListener('keydown', function blockEsc(e) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                 }
-            }, NOTICE_CONFIG.AUTO_DISMISS + NOTICE_CONFIG.DELAY);
+            }, true);
         }
 
-        // Close on background click
-        if (NOTICE_CONFIG.CLOSE_ON_BACKGROUND_CLICK) {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    dismissNotice();
-                }
-            });
-        }
-
-        // Close on Escape key
-        document.addEventListener('keydown', function onEsc(e) {
-            if (e.key === 'Escape') {
-                const overlayCheck = document.getElementById('temp-notice-overlay');
-                if (overlayCheck) {
-                    dismissNotice();
-                    document.removeEventListener('keydown', onEsc);
-                }
-            }
-        });
+        console.log('🔒 Site is fully blocked — maintenance mode active.');
+        console.log('ℹ️ To remove the block, set ENABLED: false in temp-notice.js');
     }
 
     // ============================================================
@@ -328,7 +255,5 @@
     } else {
         showNotice();
     }
-
-    console.log('Temporary notice system initialized.');
 
 })();
