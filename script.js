@@ -1,68 +1,62 @@
 /* ============================================================
    script.js — Global JavaScript for Assam Limbu Mahasabha
-   Shared across all pages.
+   Single responsive navbar with dropdown support
    ============================================================ */
 
 (function() {
     'use strict';
 
-    // ---------- DOM READY ----------
     document.addEventListener('DOMContentLoaded', function() {
 
         // ============================================================
-        // 1. MOBILE NAVIGATION TOGGLE
+        // 1. SINGLE NAVBAR TOGGLE (mobile)
         // ============================================================
-        var toggleBtn = document.querySelector('.mobile-toggle');
-        var mobileNav = document.querySelector('.mobile-nav');
+        var navToggle = document.querySelector('.nav-toggle');
+        var navList = document.querySelector('.nav-list');
 
-        if (toggleBtn && mobileNav) {
-            toggleBtn.addEventListener('click', function() {
+        if (navToggle && navList) {
+            navToggle.addEventListener('click', function() {
                 var expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
                 this.setAttribute('aria-expanded', expanded);
-                mobileNav.classList.toggle('open');
-                mobileNav.setAttribute('aria-hidden', !expanded);
+                navList.classList.toggle('open');
             });
 
-            // Close mobile nav on link click
-            var mobileLinks = mobileNav.querySelectorAll('.mobile-nav-link');
-            mobileLinks.forEach(function(link) {
+            // Close nav on link click (mobile)
+            var navLinks = navList.querySelectorAll('.nav-link');
+            navLinks.forEach(function(link) {
                 link.addEventListener('click', function() {
-                    toggleBtn.setAttribute('aria-expanded', 'false');
-                    mobileNav.classList.remove('open');
-                    mobileNav.setAttribute('aria-hidden', 'true');
+                    if (window.innerWidth <= 768) {
+                        navToggle.setAttribute('aria-expanded', 'false');
+                        navList.classList.remove('open');
+                    }
                 });
             });
 
             // Close on outside click
             document.addEventListener('click', function(e) {
                 var header = document.querySelector('.site-header');
-                if (header && !header.contains(e.target) && mobileNav.classList.contains('open')) {
-                    toggleBtn.setAttribute('aria-expanded', 'false');
-                    mobileNav.classList.remove('open');
-                    mobileNav.setAttribute('aria-hidden', 'true');
+                if (header && !header.contains(e.target) && navList.classList.contains('open')) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navList.classList.remove('open');
                 }
             });
         }
 
         // ============================================================
-        // 2. DROPDOWN NAVIGATION
-        //    Desktop: hover to open
-        //    Mobile: click/tap to toggle
+        // 2. DROPDOWN NAVIGATION (desktop hover + mobile click)
         // ============================================================
         var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
-        // Detect touch device
         var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         dropdownToggles.forEach(function(toggle) {
             var parentLi = toggle.closest('.dropdown');
             if (!parentLi) return;
 
-            // For desktop: hover handling (only if not touch device)
+            // Desktop hover
             if (!isTouchDevice) {
                 parentLi.addEventListener('mouseenter', function() {
                     var menu = this.querySelector('.dropdown-menu');
-                    if (menu) {
+                    if (menu && window.innerWidth > 768) {
                         menu.style.display = 'block';
                         menu.setAttribute('aria-hidden', 'false');
                     }
@@ -70,33 +64,35 @@
 
                 parentLi.addEventListener('mouseleave', function() {
                     var menu = this.querySelector('.dropdown-menu');
-                    if (menu) {
+                    if (menu && window.innerWidth > 768) {
                         menu.style.display = 'none';
                         menu.setAttribute('aria-hidden', 'true');
                     }
                 });
             }
 
-            // For all devices: click/tap handling (mobile + desktop touch)
+            // Click/tap for mobile
             toggle.addEventListener('click', function(e) {
-                // Prevent default link behavior only on mobile or touch device
                 if (isTouchDevice || window.innerWidth <= 768) {
                     e.preventDefault();
                     var menu = parentLi.querySelector('.dropdown-menu');
                     if (menu) {
-                        var isOpen = menu.style.display === 'block';
-                        // Close all other dropdowns in the same nav
-                        var allMenus = parentLi.closest('.nav-list, .mobile-nav-list').querySelectorAll('.dropdown-menu');
+                        var isOpen = menu.classList.contains('open');
+                        // Close other dropdowns
+                        var allMenus = parentLi.closest('.nav-list').querySelectorAll('.dropdown-menu');
                         allMenus.forEach(function(m) {
                             if (m !== menu) {
+                                m.classList.remove('open');
                                 m.style.display = 'none';
                                 m.setAttribute('aria-hidden', 'true');
                             }
                         });
                         if (isOpen) {
+                            menu.classList.remove('open');
                             menu.style.display = 'none';
                             menu.setAttribute('aria-hidden', 'true');
                         } else {
+                            menu.classList.add('open');
                             menu.style.display = 'block';
                             menu.setAttribute('aria-hidden', 'false');
                         }
@@ -104,11 +100,12 @@
                 }
             });
 
-            // Accessibility: close dropdowns on Escape key
+            // Escape key
             toggle.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     var menu = parentLi.querySelector('.dropdown-menu');
-                    if (menu && menu.style.display === 'block') {
+                    if (menu && menu.classList.contains('open')) {
+                        menu.classList.remove('open');
                         menu.style.display = 'none';
                         menu.setAttribute('aria-hidden', 'true');
                         toggle.focus();
@@ -117,30 +114,15 @@
             });
         });
 
-        // Close dropdowns when clicking outside
+        // Close dropdowns on outside click
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dropdown')) {
                 document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
+                    menu.classList.remove('open');
                     menu.style.display = 'none';
                     menu.setAttribute('aria-hidden', 'true');
                 });
             }
-        });
-
-        // On window resize, reset dropdown display for desktop if needed
-        var resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                if (window.innerWidth > 768) {
-                    document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
-                        if (!isTouchDevice) {
-                            menu.style.display = 'none';
-                            menu.setAttribute('aria-hidden', 'true');
-                        }
-                    });
-                }
-            }, 200);
         });
 
         // ============================================================
@@ -156,10 +138,10 @@
 
             var selectors = [
                 '.update-card', '.event-card', '.committee-highlight-card',
-                '.document-card', '.contact-info-card', '.stat-card',
-                '.intro-text p', '.hero-description', '.section-subtitle',
+                '.document-card', '.contact-info-card',
+                '.intro-text p', '.section-subtitle',
                 '.update-title', '.event-title', '.highlight-name', '.highlight-desc',
-                '.document-title', '.document-desc', '.contact-value', '.cta-description'
+                '.document-title', '.document-desc', '.contact-value'
             ];
             var items = [];
             selectors.forEach(function(sel) {
@@ -167,7 +149,7 @@
                     items.push(el);
                 });
             });
-            document.querySelectorAll('.section, .hero-section, .membership-cta-section').forEach(function(el) {
+            document.querySelectorAll('.section, .membership-cta-section').forEach(function(el) {
                 items.push(el);
             });
             return items;
@@ -180,8 +162,8 @@
             if (trimmed === '') {
                 items.forEach(function(item) {
                     item.style.display = '';
-                    if (item.classList.contains('section') || item.classList.contains('hero-section') || item.classList.contains('membership-cta-section')) {
-                        var children = item.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card, .stat-card');
+                    if (item.classList.contains('section') || item.classList.contains('membership-cta-section')) {
+                        var children = item.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card');
                         children.forEach(function(child) {
                             child.style.display = '';
                         });
@@ -191,10 +173,10 @@
             }
 
             var containers = [];
-            document.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card, .stat-card').forEach(function(el) {
+            document.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card').forEach(function(el) {
                 containers.push(el);
             });
-            document.querySelectorAll('.section, .hero-section, .membership-cta-section').forEach(function(el) {
+            document.querySelectorAll('.section, .membership-cta-section').forEach(function(el) {
                 containers.push(el);
             });
 
@@ -215,8 +197,8 @@
                 }
             });
 
-            document.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card, .stat-card').forEach(function(card) {
-                var parent = card.closest('.section') || card.closest('.hero-section') || card.closest('.membership-cta-section');
+            document.querySelectorAll('.update-card, .event-card, .committee-highlight-card, .document-card, .contact-info-card').forEach(function(card) {
+                var parent = card.closest('.section') || card.closest('.membership-cta-section');
                 if (parent) {
                     card.style.display = '';
                 } else {
@@ -248,10 +230,10 @@
 
         if (!prefersReducedMotion) {
             var revealElements = document.querySelectorAll(
-                '.section, .hero-section, .membership-cta-section, ' +
+                '.section, .membership-cta-section, ' +
                 '.update-card, .event-card, .committee-highlight-card, ' +
-                '.document-card, .contact-info-card, .stat-card, ' +
-                '.intro-grid, .gallery-preview-item, .gallery-item'
+                '.document-card, .contact-info-card, ' +
+                '.gallery-preview-item, .gallery-item'
             );
 
             revealElements.forEach(function(el) {
@@ -283,29 +265,25 @@
 
         // ============================================================
         // 5. ACTIVE NAV LINK HIGHLIGHTING
-        //    (relative path support, without leading slash)
         // ============================================================
         var currentPath = window.location.pathname;
-        var navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+        var navLinks = document.querySelectorAll('.nav-link');
 
         navLinks.forEach(function(link) {
             var href = link.getAttribute('href');
             if (!href) return;
 
-            // Normalize current path: remove leading slash if present
             var current = currentPath;
             if (current.startsWith('/')) {
                 current = current.substring(1);
             }
             if (current === '') current = 'index.html';
 
-            // For root index.html
             if (href === 'index.html' || href === '') {
                 if (current === 'index.html' || current === '') {
                     link.classList.add('active');
                 }
             } else {
-                // Check if current path ends with the href
                 if (current.endsWith(href) || current === href) {
                     link.classList.add('active');
                 }
@@ -342,6 +320,6 @@
 
         console.log('Assam Limbu Mahasabha — global script initialized.');
 
-    }); // end DOMContentLoaded
+    });
 
 })();
