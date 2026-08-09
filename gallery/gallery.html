@@ -28,7 +28,12 @@
                 </a>
             </div>
 
-            <nav class="header-nav" aria-label="Main navigation">
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
                 <ul class="nav-list">
                     <li><a href="../index.html" class="nav-link">Home</a></li>
                     <li class="dropdown">
@@ -99,81 +104,6 @@
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
                 </div>
-                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="mobile-nav" aria-hidden="true">
-            <ul class="mobile-nav-list">
-                <li><a href="../index.html" class="mobile-nav-link">Home</a></li>
-                <li class="dropdown">
-                    <a href="../about/about.html" class="mobile-nav-link dropdown-toggle">About</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../about/about.html#history">History</a></li>
-                        <li><a href="../about/about.html#vision-mission">Vision &amp; Mission</a></li>
-                        <li><a href="../about/about.html#objectives">Objectives</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../committee/committee.html" class="mobile-nav-link dropdown-toggle">Committee</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../committee/committee.html#office-bearers">Office Bearers</a></li>
-                        <li><a href="../committee/committee.html#executive">Executive Members</a></li>
-                        <li><a href="../committee/committee.html#branches">Branch Units</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../updates/update.html" class="mobile-nav-link dropdown-toggle">Updates</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../updates/update.html#latest">Latest News</a></li>
-                        <li><a href="../updates/update.html#announcements">Announcements</a></li>
-                        <li><a href="../updates/update.html#press">Press Releases</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../events/event.html" class="mobile-nav-link dropdown-toggle">Events</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../events/event.html#upcoming">Upcoming</a></li>
-                        <li><a href="../events/event.html#past">Past Events</a></li>
-                        <li><a href="../events/event.html#gallery">Photo Gallery</a></li>
-                    </ul>
-                </li>
-                <li><a href="../gallery/gallery.html" class="mobile-nav-link active">Gallery</a></li>
-                <li class="dropdown">
-                    <a href="../membership/membership.html" class="mobile-nav-link dropdown-toggle">Membership</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../membership/membership.html#how-to-join">How to Join</a></li>
-                        <li><a href="../membership/membership.html#benefits">Benefits</a></li>
-                        <li><a href="../membership/membership.html#eligibility">Eligibility</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../documents/documents.html" class="mobile-nav-link dropdown-toggle">Documents</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../documents/documents.html#constitution">Constitution</a></li>
-                        <li><a href="../documents/documents.html#forms">Membership Form</a></li>
-                        <li><a href="../documents/documents.html#reports">Annual Report</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../contact/contact.html" class="mobile-nav-link dropdown-toggle">Contact</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../contact/contact.html#office">Office Address</a></li>
-                        <li><a href="../contact/contact.html#email">Email Us</a></li>
-                        <li><a href="../contact/contact.html#form">Contact Form</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="mobile-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
         </div>
     </header>
@@ -181,14 +111,14 @@
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
-        <!-- ===== PAGE HERO (mini) ===== -->
-        <section class="hero-section full-width" style="min-height:240px; padding:var(--space-3xl) 0;">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text" style="max-width:100%; text-align:center;">
-                    <span class="hero-badge">Moments</span>
-                    <h1 class="hero-title" style="font-size:var(--fs-4xl);">Photo Gallery</h1>
-                    <p class="hero-subtitle" style="font-size:var(--fs-xl);">Glimpses of our community events and celebrations</p>
+        <!-- ===== PAGE HEADER ===== -->
+        <section class="section page-header-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Moments</span>
+                    <h1 class="section-title">Photo Gallery</h1>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Glimpses of our community events and celebrations</p>
                 </div>
             </div>
         </section>
@@ -207,7 +137,7 @@
                     <!-- Gallery Item 1 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event1.jpg" alt="Cultural Celebration" loading="lazy">
+                            <img src="../images/gallery/event1.jpg" alt="Cultural Celebration" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Cultural Celebration</h3>
@@ -218,7 +148,7 @@
                     <!-- Gallery Item 2 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event2.jpg" alt="Community Meeting" loading="lazy">
+                            <img src="../images/gallery/event2.jpg" alt="Community Meeting" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Community Meeting</h3>
@@ -229,7 +159,7 @@
                     <!-- Gallery Item 3 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event3.jpg" alt="Cultural Performance" loading="lazy">
+                            <img src="../images/gallery/event3.jpg" alt="Cultural Performance" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Cultural Performance</h3>
@@ -240,7 +170,7 @@
                     <!-- Gallery Item 4 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event4.jpg" alt="Workshop Session" loading="lazy">
+                            <img src="../images/gallery/event4.jpg" alt="Workshop Session" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Workshop Session</h3>
@@ -251,7 +181,7 @@
                     <!-- Gallery Item 5 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event5.jpg" alt="Sports Event" loading="lazy">
+                            <img src="../images/gallery/event5.jpg" alt="Sports Event" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Sports Event</h3>
@@ -262,7 +192,7 @@
                     <!-- Gallery Item 6 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event6.jpg" alt="Health Camp" loading="lazy">
+                            <img src="../images/gallery/event6.jpg" alt="Health Camp" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Health Camp</h3>
@@ -273,7 +203,7 @@
                     <!-- Gallery Item 7 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event7.jpg" alt="Youth Summit" loading="lazy">
+                            <img src="../images/gallery/event7.jpg" alt="Youth Summit" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Youth Summit</h3>
@@ -284,7 +214,7 @@
                     <!-- Gallery Item 8 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event8.jpg" alt="Foundation Day" loading="lazy">
+                            <img src="../images/gallery/event8.jpg" alt="Foundation Day" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Foundation Day</h3>
@@ -295,7 +225,7 @@
                     <!-- Gallery Item 9 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event9.jpg" alt="Cultural Exchange" loading="lazy">
+                            <img src="../images/gallery/event9.jpg" alt="Cultural Exchange" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Cultural Exchange</h3>
@@ -306,7 +236,7 @@
                     <!-- Gallery Item 10 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event10.jpg" alt="Scholarship Program" loading="lazy">
+                            <img src="../images/gallery/event10.jpg" alt="Scholarship Program" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Scholarship Program</h3>
@@ -317,7 +247,7 @@
                     <!-- Gallery Item 11 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event11.jpg" alt="Annual General Meeting" loading="lazy">
+                            <img src="../images/gallery/event11.jpg" alt="Annual General Meeting" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Annual General Meeting</h3>
@@ -328,7 +258,7 @@
                     <!-- Gallery Item 12 -->
                     <div class="gallery-item reveal">
                         <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event12.jpg" alt="Community Feast" loading="lazy">
+                            <img src="../images/gallery/event12.jpg" alt="Community Feast" loading="lazy" />
                         </div>
                         <div class="gallery-caption">
                             <h3>Community Feast</h3>
@@ -337,11 +267,11 @@
                     </div>
                 </div>
 
-                <!-- ===== PAGINATION (optional, for future expansion) ===== -->
-                <div class="pagination-wrapper" style="margin-top:var(--space-2xl); text-align:center;">
+                <!-- ===== PAGINATION ===== -->
+                <div class="pagination-wrapper">
                     <nav class="pagination" aria-label="Gallery pagination">
                         <button class="pagination-btn prev" disabled aria-label="Previous page">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="15 18 9 12 15 6" />
                             </svg>
                             Previous
@@ -353,7 +283,7 @@
                         </ul>
                         <button class="pagination-btn next">
                             Next
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="9 6 15 12 9 18" />
                             </svg>
                         </button>
