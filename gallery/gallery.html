@@ -133,157 +133,26 @@
                     <p class="section-subtitle">A visual journey through the activities and events organized by the Assam Limbu Mahasabha.</p>
                 </div>
 
-                <div class="gallery-grid">
-                    <!-- Gallery Item 1 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event1.jpg" alt="Cultural Celebration" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Cultural Celebration</h3>
-                            <p>Traditional Limbu dance performance at the annual cultural event.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 2 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event2.jpg" alt="Community Meeting" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Community Meeting</h3>
-                            <p>General community meeting discussing development initiatives.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 3 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event3.jpg" alt="Cultural Performance" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Cultural Performance</h3>
-                            <p>Limbu cultural performance showcasing traditional music and dance.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 4 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event4.jpg" alt="Workshop Session" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Workshop Session</h3>
-                            <p>Educational workshop on Limbu language and script.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 5 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event5.jpg" alt="Sports Event" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Sports Event</h3>
-                            <p>Annual sports meet featuring football and traditional games.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 6 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event6.jpg" alt="Health Camp" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Health Camp</h3>
-                            <p>Community health camp providing free checkups and consultations.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 7 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event7.jpg" alt="Youth Summit" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Youth Summit</h3>
-                            <p>Youth leadership summit empowering young community leaders.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 8 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event8.jpg" alt="Foundation Day" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Foundation Day</h3>
-                            <p>Celebrating the foundation day of the Assam Limbu Mahasabha.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 9 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event9.jpg" alt="Cultural Exchange" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Cultural Exchange</h3>
-                            <p>Inter-community cultural exchange program with neighboring communities.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 10 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event10.jpg" alt="Scholarship Program" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Scholarship Program</h3>
-                            <p>Scholarship distribution ceremony for meritorious Limbu students.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 11 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event11.jpg" alt="Annual General Meeting" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Annual General Meeting</h3>
-                            <p>Annual general meeting of the district committee.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Item 12 -->
-                    <div class="gallery-item reveal">
-                        <div class="gallery-image-wrapper">
-                            <img src="../images/gallery/event12.jpg" alt="Community Feast" loading="lazy" />
-                        </div>
-                        <div class="gallery-caption">
-                            <h3>Community Feast</h3>
-                            <p>Traditional community feast celebrating unity and togetherness.</p>
-                        </div>
-                    </div>
+                <!-- Gallery Grid Container -->
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Items will be injected by JavaScript -->
                 </div>
 
                 <!-- ===== PAGINATION ===== -->
-                <div class="pagination-wrapper">
+                <div class="pagination-wrapper" id="paginationWrapper">
                     <nav class="pagination" aria-label="Gallery pagination">
-                        <button class="pagination-btn prev" disabled aria-label="Previous page">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="pagination-btn prev" id="prevPage" disabled aria-label="Previous page">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
                                 <polyline points="15 18 9 12 15 6" />
                             </svg>
                             Previous
                         </button>
-                        <ul class="pagination-list">
-                            <li><button class="pagination-btn active" aria-current="page">1</button></li>
-                            <li><button class="pagination-btn">2</button></li>
-                            <li><button class="pagination-btn">3</button></li>
+                        <ul class="pagination-list" id="pageNumbers">
+                            <!-- Page numbers will be inserted by JavaScript -->
                         </ul>
-                        <button class="pagination-btn next">
+                        <button class="pagination-btn next" id="nextPage">
                             Next
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
                                 <polyline points="9 6 15 12 9 18" />
                             </svg>
                         </button>
@@ -346,5 +215,138 @@
 
     <!-- ===== SCRIPTS ===== -->
     <script src="../script.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            // ---------- GALLERY DATA ----------
+            const galleryItems = [
+                { img: '../images/gallery/event1.jpg', title: 'Cultural Celebration', desc: 'Traditional Limbu dance performance at the annual cultural event.' },
+                { img: '../images/gallery/event2.jpg', title: 'Community Meeting', desc: 'General community meeting discussing development initiatives.' },
+                { img: '../images/gallery/event3.jpg', title: 'Cultural Performance', desc: 'Limbu cultural performance showcasing traditional music and dance.' },
+                { img: '../images/gallery/event4.jpg', title: 'Workshop Session', desc: 'Educational workshop on Limbu language and script.' },
+                { img: '../images/gallery/event5.jpg', title: 'Sports Event', desc: 'Annual sports meet featuring football and traditional games.' },
+                { img: '../images/gallery/event6.jpg', title: 'Health Camp', desc: 'Community health camp providing free checkups and consultations.' },
+                { img: '../images/gallery/event7.jpg', title: 'Youth Summit', desc: 'Youth leadership summit empowering young community leaders.' },
+                { img: '../images/gallery/event8.jpg', title: 'Foundation Day', desc: 'Celebrating the foundation day of the Assam Limbu Mahasabha.' },
+                { img: '../images/gallery/event9.jpg', title: 'Cultural Exchange', desc: 'Inter-community cultural exchange program with neighboring communities.' },
+                { img: '../images/gallery/event10.jpg', title: 'Scholarship Program', desc: 'Scholarship distribution ceremony for meritorious Limbu students.' },
+                { img: '../images/gallery/event11.jpg', title: 'Annual General Meeting', desc: 'Annual general meeting of the district committee.' },
+                { img: '../images/gallery/event12.jpg', title: 'Community Feast', desc: 'Traditional community feast celebrating unity and togetherness.' }
+            ];
+
+            // ---------- PAGINATION SETTINGS ----------
+            const itemsPerPage = 4;
+            let currentPage = 1;
+            const totalItems = galleryItems.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            // DOM elements
+            const grid = document.getElementById('galleryGrid');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumbersContainer = document.getElementById('pageNumbers');
+
+            // ---------- RENDER GALLERY ----------
+            function renderPage(page) {
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const pageItems = galleryItems.slice(start, end);
+
+                let html = '';
+                pageItems.forEach(function(item) {
+                    html += `
+                        <div class="gallery-item reveal">
+                            <div class="gallery-image-wrapper">
+                                <img src="${item.img}" alt="${item.title}" loading="lazy" />
+                            </div>
+                            <div class="gallery-caption">
+                                <h3>${item.title}</h3>
+                                <p>${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+
+                // Re-trigger scroll reveal for new items
+                const revealElements = grid.querySelectorAll('.reveal');
+                revealElements.forEach(function(el) {
+                    el.classList.remove('visible');
+                    void el.offsetWidth; // force reflow
+                });
+
+                // Update pagination buttons state
+                prevBtn.disabled = (page === 1);
+                nextBtn.disabled = (page === totalPages);
+
+                // Update page numbers
+                renderPageNumbers(page);
+            }
+
+            // ---------- RENDER PAGE NUMBERS ----------
+            function renderPageNumbers(current) {
+                let html = '';
+                let startPage = Math.max(1, current - 2);
+                let endPage = Math.min(totalPages, current + 2);
+
+                if (endPage - startPage < 4) {
+                    if (startPage > 1) startPage = Math.max(1, endPage - 4);
+                    if (endPage < totalPages) endPage = Math.min(totalPages, startPage + 4);
+                }
+
+                if (startPage > 1) {
+                    html += `<li><button class="pagination-btn" data-page="1">1</button></li>`;
+                    if (startPage > 2) html += `<li><span class="pagination-ellipsis">…</span></li>`;
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const activeClass = (i === current) ? ' active' : '';
+                    html += `<li><button class="pagination-btn${activeClass}" data-page="${i}">${i}</button></li>`;
+                }
+
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) html += `<li><span class="pagination-ellipsis">…</span></li>`;
+                    html += `<li><button class="pagination-btn" data-page="${totalPages}">${totalPages}</button></li>`;
+                }
+
+                pageNumbersContainer.innerHTML = html;
+
+                // Attach click events to page number buttons
+                const pageButtons = pageNumbersContainer.querySelectorAll('.pagination-btn');
+                pageButtons.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        const page = parseInt(this.dataset.page, 10);
+                        if (!isNaN(page) && page !== currentPage) {
+                            currentPage = page;
+                            renderPage(currentPage);
+                            grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            }
+
+            // ---------- EVENT LISTENERS ----------
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage(currentPage);
+                    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPage(currentPage);
+                    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            // ---------- INIT ----------
+            renderPage(1);
+
+        })();
+    </script>
 </body>
 </html>
