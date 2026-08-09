@@ -29,18 +29,71 @@
                 </a>
             </div>
 
-            <!-- ===== SIMPLIFIED NAVIGATION - NO DROPDOWNS ===== -->
-            <nav class="header-nav" aria-label="Main navigation">
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link active">Home</a></li>
-                    <li><a href="about/about.html" class="nav-link">About</a></li>
-                    <li><a href="committee/committee.html" class="nav-link">Committee</a></li>
-                    <li><a href="updates/update.html" class="nav-link">Updates</a></li>
-                    <li><a href="events/event.html" class="nav-link">Events</a></li>
+                    <li class="dropdown">
+                        <a href="about/about.html" class="nav-link dropdown-toggle">About</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about/about.html#history">History</a></li>
+                            <li><a href="about/about.html#vision-mission">Vision &amp; Mission</a></li>
+                            <li><a href="about/about.html#objectives">Objectives</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="committee/committee.html" class="nav-link dropdown-toggle">Committee</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="committee/committee.html#office-bearers">Office Bearers</a></li>
+                            <li><a href="committee/committee.html#executive">Executive Members</a></li>
+                            <li><a href="committee/committee.html#branches">Branch Units</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="updates/update.html" class="nav-link dropdown-toggle">Updates</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="updates/update.html#latest">Latest News</a></li>
+                            <li><a href="updates/update.html#announcements">Announcements</a></li>
+                            <li><a href="updates/update.html#press">Press Releases</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="events/event.html" class="nav-link dropdown-toggle">Events</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="events/event.html#upcoming">Upcoming</a></li>
+                            <li><a href="events/event.html#past">Past Events</a></li>
+                            <li><a href="events/event.html#gallery">Photo Gallery</a></li>
+                        </ul>
+                    </li>
                     <li><a href="gallery/gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="membership/membership.html" class="nav-link">Membership</a></li>
-                    <li><a href="documents/documents.html" class="nav-link">Documents</a></li>
-                    <li><a href="contact/contact.html" class="nav-link">Contact</a></li>
+                    <li class="dropdown">
+                        <a href="membership/membership.html" class="nav-link dropdown-toggle">Membership</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="membership/membership.html#how-to-join">How to Join</a></li>
+                            <li><a href="membership/membership.html#benefits">Benefits</a></li>
+                            <li><a href="membership/membership.html#eligibility">Eligibility</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="documents/documents.html" class="nav-link dropdown-toggle">Documents</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="documents/documents.html#constitution">Constitution</a></li>
+                            <li><a href="documents/documents.html#forms">Membership Form</a></li>
+                            <li><a href="documents/documents.html#reports">Annual Report</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="contact/contact.html" class="nav-link dropdown-toggle">Contact</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contact/contact.html#office">Office Address</a></li>
+                            <li><a href="contact/contact.html#email">Email Us</a></li>
+                            <li><a href="contact/contact.html#form">Contact Form</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 
@@ -52,38 +105,11 @@
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
                 </div>
-                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ===== SIMPLIFIED MOBILE NAVIGATION - NO DROPDOWNS ===== -->
-        <div class="mobile-nav" aria-hidden="true">
-            <ul class="mobile-nav-list">
-                <li><a href="index.html" class="mobile-nav-link active">Home</a></li>
-                <li><a href="about/about.html" class="mobile-nav-link">About</a></li>
-                <li><a href="committee/committee.html" class="mobile-nav-link">Committee</a></li>
-                <li><a href="updates/update.html" class="mobile-nav-link">Updates</a></li>
-                <li><a href="events/event.html" class="mobile-nav-link">Events</a></li>
-                <li><a href="gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
-                <li><a href="membership/membership.html" class="mobile-nav-link">Membership</a></li>
-                <li><a href="documents/documents.html" class="mobile-nav-link">Documents</a></li>
-                <li><a href="contact/contact.html" class="mobile-nav-link">Contact</a></li>
-            </ul>
-            <div class="mobile-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
         </div>
     </header>
 
-    <!-- ===== FULL-WIDTH IMAGE CAROUSEL ===== -->
+    <!-- ===== FULL-WIDTH IMAGE CAROUSEL (taller height) ===== -->
     <section class="hero-carousel full-width" aria-label="Hero images">
         <div class="carousel-track">
             <div class="carousel-slide" style="background-image: url('images/hero/limbu1.jpg');"></div>
@@ -103,23 +129,6 @@
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
-        <!-- ===== HERO / BANNER ===== -->
-        <section class="hero-section full-width">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text">
-                    <span class="hero-badge">Official Website</span>
-                    <h1 class="hero-title">Assam Limbu Mahasabha</h1>
-                    <p class="hero-subtitle">Karbi Anglong &amp; Dima Hasao District Committee</p>
-                    <p class="hero-description">Serving the Limbu community with dedication, integrity, and unity. Preserving our culture, heritage, and values for future generations.</p>
-                    <div class="hero-actions">
-                        <a href="membership/membership.html" class="btn btn-primary">Join Us</a>
-                        <a href="about/about.html" class="btn btn-outline">About Us</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- ===== INTRODUCTION ===== -->
         <section class="section intro-section">
             <div class="container">
@@ -128,7 +137,7 @@
                     <h2 class="section-title">About Our Sabha</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div class="intro-text" style="max-width:800px; margin:0 auto;">
+                <div class="intro-text">
                     <p>The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is a community organization dedicated to the welfare, progress, and cultural preservation of the Limbu community in the region. Established with the vision of unity and development, we work tirelessly to address the needs and aspirations of our people.</p>
                     <p>Our committee serves as a bridge between the community and the administration, ensuring that the voices of the Limbu people are heard and their rights are protected. We organize cultural events, educational programs, and social initiatives to strengthen our community bonds.</p>
                 </div>
@@ -147,7 +156,7 @@
                 <div class="updates-grid">
                     <article class="update-card reveal">
                         <div class="update-card-image">
-                            <img src="images/updates/update1.jpg" alt="Cultural Event" loading="lazy">
+                            <img src="images/updates/update1.jpg" alt="Cultural Event" loading="lazy" />
                         </div>
                         <div class="update-card-body">
                             <span class="update-date">15 July 2026</span>
@@ -158,7 +167,7 @@
                     </article>
                     <article class="update-card reveal">
                         <div class="update-card-image">
-                            <img src="images/updates/update2.jpg" alt="Meeting" loading="lazy">
+                            <img src="images/updates/update2.jpg" alt="Meeting" loading="lazy" />
                         </div>
                         <div class="update-card-body">
                             <span class="update-date">10 July 2026</span>
@@ -169,7 +178,7 @@
                     </article>
                     <article class="update-card reveal">
                         <div class="update-card-image">
-                            <img src="images/updates/update3.jpg" alt="Announcement" loading="lazy">
+                            <img src="images/updates/update3.jpg" alt="Announcement" loading="lazy" />
                         </div>
                         <div class="update-card-body">
                             <span class="update-date">5 July 2026</span>
@@ -259,7 +268,7 @@
                 <div class="committee-highlights-grid">
                     <div class="committee-highlight-card reveal">
                         <div class="highlight-avatar">
-                            <img src="images/committee/president.jpg" alt="President" loading="lazy">
+                            <img src="images/committee/president.jpg" alt="President" loading="lazy" />
                         </div>
                         <h3 class="highlight-name">President</h3>
                         <p class="highlight-title">Bal Bahadur Subba (Loksom)</p>
@@ -267,7 +276,7 @@
                     </div>
                     <div class="committee-highlight-card reveal">
                         <div class="highlight-avatar">
-                            <img src="images/committee/working_president.jpg" alt="Working President" loading="lazy">
+                            <img src="images/committee/working_president.jpg" alt="Working President" loading="lazy" />
                         </div>
                         <h3 class="highlight-name">Working President</h3>
                         <p class="highlight-title">Tilak Subba (Kondangwa)</p>
@@ -275,7 +284,7 @@
                     </div>
                     <div class="committee-highlight-card reveal">
                         <div class="highlight-avatar">
-                            <img src="images/committee/vice_president.jpg" alt="Vice President" loading="lazy">
+                            <img src="images/committee/vice_president.jpg" alt="Vice President" loading="lazy" />
                         </div>
                         <h3 class="highlight-name">Vice President</h3>
                         <p class="highlight-title">Dil Bahadur Subba (Khapung)</p>
@@ -299,16 +308,16 @@
                 </div>
                 <div class="gallery-preview-grid">
                     <div class="gallery-preview-item reveal">
-                        <img src="images/gallery/event1.jpg" alt="Cultural Event" loading="lazy">
+                        <img src="images/gallery/event1.jpg" alt="Cultural Event" loading="lazy" />
                     </div>
                     <div class="gallery-preview-item reveal">
-                        <img src="images/gallery/event2.jpg" alt="Community Meeting" loading="lazy">
+                        <img src="images/gallery/event2.jpg" alt="Community Meeting" loading="lazy" />
                     </div>
                     <div class="gallery-preview-item reveal">
-                        <img src="images/gallery/event3.jpg" alt="Cultural Performance" loading="lazy">
+                        <img src="images/gallery/event3.jpg" alt="Cultural Performance" loading="lazy" />
                     </div>
                     <div class="gallery-preview-item reveal">
-                        <img src="images/gallery/event4.jpg" alt="Workshop" loading="lazy">
+                        <img src="images/gallery/event4.jpg" alt="Workshop" loading="lazy" />
                     </div>
                 </div>
                 <div class="section-footer">
