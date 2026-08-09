@@ -13,9 +13,8 @@
     <!-- ===== HEADER ===== -->
     <header class="site-header" role="banner">
         <div class="container header-inner">
-            <!-- Logo + Name -->
             <div class="header-brand">
-                <a href="/index.html" class="header-logo-link" aria-label="Home">
+                <a href="index.html" class="header-logo-link" aria-label="Home">
                     <svg class="header-logo-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                         <circle cx="40" cy="40" r="38" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2.5" />
                         <circle cx="40" cy="40" r="30" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4 4" />
@@ -31,15 +30,64 @@
 
             <nav class="header-nav" aria-label="Main navigation">
                 <ul class="nav-list">
-                    <li><a href="/index.html" class="nav-link">Home</a></li>
-                    <li><a href="/about/about.html" class="nav-link">About</a></li>
-                    <li><a href="/committee/committee.html" class="nav-link">Committee</a></li>
-                    <li><a href="/updates/update.html" class="nav-link">Updates</a></li>
-                    <li><a href="/events/event.html" class="nav-link">Events</a></li>
-                    <li><a href="/gallery/gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="/membership/membership.html" class="nav-link">Membership</a></li>
-                    <li><a href="/documents/documents.html" class="nav-link">Documents</a></li>
-                    <li><a href="/contact/contact.html" class="nav-link">Contact</a></li>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="dropdown">
+                        <a href="about/about.html" class="nav-link dropdown-toggle">About</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about/about.html#history">History</a></li>
+                            <li><a href="about/about.html#vision-mission">Vision &amp; Mission</a></li>
+                            <li><a href="about/about.html#objectives">Objectives</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="committee/committee.html" class="nav-link dropdown-toggle">Committee</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="committee/committee.html#office-bearers">Office Bearers</a></li>
+                            <li><a href="committee/committee.html#executive">Executive Members</a></li>
+                            <li><a href="committee/committee.html#branches">Branch Units</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="updates/update.html" class="nav-link dropdown-toggle">Updates</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="updates/update.html#latest">Latest News</a></li>
+                            <li><a href="updates/update.html#announcements">Announcements</a></li>
+                            <li><a href="updates/update.html#press">Press Releases</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="events/event.html" class="nav-link dropdown-toggle">Events</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="events/event.html#upcoming">Upcoming</a></li>
+                            <li><a href="events/event.html#past">Past Events</a></li>
+                            <li><a href="events/event.html#gallery">Photo Gallery</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="gallery/gallery.html" class="nav-link">Gallery</a></li>
+                    <li class="dropdown">
+                        <a href="membership/membership.html" class="nav-link dropdown-toggle">Membership</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="membership/membership.html#how-to-join">How to Join</a></li>
+                            <li><a href="membership/membership.html#benefits">Benefits</a></li>
+                            <li><a href="membership/membership.html#eligibility">Eligibility</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="documents/documents.html" class="nav-link dropdown-toggle">Documents</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="documents/documents.html#constitution">Constitution</a></li>
+                            <li><a href="documents/documents.html#forms">Membership Form</a></li>
+                            <li><a href="documents/documents.html#reports">Annual Report</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="contact/contact.html" class="nav-link dropdown-toggle">Contact</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contact/contact.html#office">Office Address</a></li>
+                            <li><a href="contact/contact.html#email">Email Us</a></li>
+                            <li><a href="contact/contact.html#form">Contact Form</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 
@@ -61,15 +109,64 @@
 
         <div class="mobile-nav" aria-hidden="true">
             <ul class="mobile-nav-list">
-                <li><a href="/index.html" class="mobile-nav-link">Home</a></li>
-                <li><a href="/about/about.html" class="mobile-nav-link">About</a></li>
-                <li><a href="/committee/committee.html" class="mobile-nav-link">Committee</a></li>
-                <li><a href="/updates/update.html" class="mobile-nav-link">Updates</a></li>
-                <li><a href="/events/event.html" class="mobile-nav-link">Events</a></li>
-                <li><a href="/gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
-                <li><a href="/membership/membership.html" class="mobile-nav-link">Membership</a></li>
-                <li><a href="/documents/documents.html" class="mobile-nav-link">Documents</a></li>
-                <li><a href="/contact/contact.html" class="mobile-nav-link">Contact</a></li>
+                <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                <li class="dropdown">
+                    <a href="about/about.html" class="mobile-nav-link dropdown-toggle">About</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="about/about.html#history">History</a></li>
+                        <li><a href="about/about.html#vision-mission">Vision &amp; Mission</a></li>
+                        <li><a href="about/about.html#objectives">Objectives</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="committee/committee.html" class="mobile-nav-link dropdown-toggle">Committee</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="committee/committee.html#office-bearers">Office Bearers</a></li>
+                        <li><a href="committee/committee.html#executive">Executive Members</a></li>
+                        <li><a href="committee/committee.html#branches">Branch Units</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="updates/update.html" class="mobile-nav-link dropdown-toggle">Updates</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="updates/update.html#latest">Latest News</a></li>
+                        <li><a href="updates/update.html#announcements">Announcements</a></li>
+                        <li><a href="updates/update.html#press">Press Releases</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="events/event.html" class="mobile-nav-link dropdown-toggle">Events</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="events/event.html#upcoming">Upcoming</a></li>
+                        <li><a href="events/event.html#past">Past Events</a></li>
+                        <li><a href="events/event.html#gallery">Photo Gallery</a></li>
+                    </ul>
+                </li>
+                <li><a href="gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
+                <li class="dropdown">
+                    <a href="membership/membership.html" class="mobile-nav-link dropdown-toggle">Membership</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="membership/membership.html#how-to-join">How to Join</a></li>
+                        <li><a href="membership/membership.html#benefits">Benefits</a></li>
+                        <li><a href="membership/membership.html#eligibility">Eligibility</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="documents/documents.html" class="mobile-nav-link dropdown-toggle">Documents</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="documents/documents.html#constitution">Constitution</a></li>
+                        <li><a href="documents/documents.html#forms">Membership Form</a></li>
+                        <li><a href="documents/documents.html#reports">Annual Report</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="contact/contact.html" class="mobile-nav-link dropdown-toggle">Contact</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="contact/contact.html#office">Office Address</a></li>
+                        <li><a href="contact/contact.html#email">Email Us</a></li>
+                        <li><a href="contact/contact.html#form">Contact Form</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="mobile-search">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -96,9 +193,12 @@
                     <p style="font-size:var(--fs-large); color:var(--color-text-muted); text-align:justify; text-align-last:center; margin-bottom:var(--space-lg);">
                         The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
                     </p>
+                    <p style="font-size:var(--fs-body); color:var(--color-text-light); margin-bottom:var(--space-xl);">
+                        Please check the URL for typos or use the navigation menu to find what you're looking for.
+                    </p>
                     <div style="display:flex; flex-wrap:wrap; gap:var(--space-md); justify-content:center;">
-                        <a href="/index.html" class="btn btn-primary">Return to Home</a>
-                        <a href="/contact/contact.html" class="btn btn-outline">Contact Us</a>
+                        <a href="index.html" class="btn btn-primary">Return to Home</a>
+                        <a href="contact/contact.html" class="btn btn-outline">Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -124,25 +224,25 @@
                     <div class="footer-links-col">
                         <h4>Quick Links</h4>
                         <ul>
-                            <li><a href="/index.html">Home</a></li>
-                            <li><a href="/about/about.html">About</a></li>
-                            <li><a href="/committee/committee.html">Committee</a></li>
-                            <li><a href="/updates/update.html">Updates</a></li>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about/about.html">About</a></li>
+                            <li><a href="committee/committee.html">Committee</a></li>
+                            <li><a href="updates/update.html">Updates</a></li>
                         </ul>
                     </div>
                     <div class="footer-links-col">
                         <h4>Resources</h4>
                         <ul>
-                            <li><a href="/events/event.html">Events</a></li>
-                            <li><a href="/gallery/gallery.html">Gallery</a></li>
-                            <li><a href="/membership/membership.html">Membership</a></li>
-                            <li><a href="/documents/documents.html">Documents</a></li>
+                            <li><a href="events/event.html">Events</a></li>
+                            <li><a href="gallery/gallery.html">Gallery</a></li>
+                            <li><a href="membership/membership.html">Membership</a></li>
+                            <li><a href="documents/documents.html">Documents</a></li>
                         </ul>
                     </div>
                     <div class="footer-links-col">
                         <h4>Connect</h4>
                         <ul>
-                            <li><a href="/contact/contact.html">Contact</a></li>
+                            <li><a href="contact/contact.html">Contact</a></li>
                             <li><a href="mailto:info@assamlimbumahasabha.org">Email Us</a></li>
                         </ul>
                     </div>
@@ -155,6 +255,7 @@
         </div>
     </footer>
 
+    <!-- ===== SCRIPTS ===== -->
     <script src="script.js"></script>
 </body>
 </html>
