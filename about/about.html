@@ -28,7 +28,12 @@
                 </a>
             </div>
 
-            <nav class="header-nav" aria-label="Main navigation">
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
                 <ul class="nav-list">
                     <li><a href="../index.html" class="nav-link">Home</a></li>
                     <li class="dropdown">
@@ -99,81 +104,6 @@
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
                 </div>
-                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="mobile-nav" aria-hidden="true">
-            <ul class="mobile-nav-list">
-                <li><a href="../index.html" class="mobile-nav-link">Home</a></li>
-                <li class="dropdown">
-                    <a href="../about/about.html" class="mobile-nav-link active dropdown-toggle">About</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../about/about.html#history">History</a></li>
-                        <li><a href="../about/about.html#vision-mission">Vision &amp; Mission</a></li>
-                        <li><a href="../about/about.html#objectives">Objectives</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../committee/committee.html" class="mobile-nav-link dropdown-toggle">Committee</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../committee/committee.html#office-bearers">Office Bearers</a></li>
-                        <li><a href="../committee/committee.html#executive">Executive Members</a></li>
-                        <li><a href="../committee/committee.html#branches">Branch Units</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../updates/update.html" class="mobile-nav-link dropdown-toggle">Updates</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../updates/update.html#latest">Latest News</a></li>
-                        <li><a href="../updates/update.html#announcements">Announcements</a></li>
-                        <li><a href="../updates/update.html#press">Press Releases</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../events/event.html" class="mobile-nav-link dropdown-toggle">Events</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../events/event.html#upcoming">Upcoming</a></li>
-                        <li><a href="../events/event.html#past">Past Events</a></li>
-                        <li><a href="../events/event.html#gallery">Photo Gallery</a></li>
-                    </ul>
-                </li>
-                <li><a href="../gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
-                <li class="dropdown">
-                    <a href="../membership/membership.html" class="mobile-nav-link dropdown-toggle">Membership</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../membership/membership.html#how-to-join">How to Join</a></li>
-                        <li><a href="../membership/membership.html#benefits">Benefits</a></li>
-                        <li><a href="../membership/membership.html#eligibility">Eligibility</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../documents/documents.html" class="mobile-nav-link dropdown-toggle">Documents</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../documents/documents.html#constitution">Constitution</a></li>
-                        <li><a href="../documents/documents.html#forms">Membership Form</a></li>
-                        <li><a href="../documents/documents.html#reports">Annual Report</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../contact/contact.html" class="mobile-nav-link dropdown-toggle">Contact</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../contact/contact.html#office">Office Address</a></li>
-                        <li><a href="../contact/contact.html#email">Email Us</a></li>
-                        <li><a href="../contact/contact.html#form">Contact Form</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="mobile-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
         </div>
     </header>
@@ -181,14 +111,14 @@
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
-        <!-- ===== PAGE HERO (mini) ===== -->
-        <section class="hero-section full-width" style="min-height:240px; padding:var(--space-3xl) 0;">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text" style="max-width:100%; text-align:center;">
-                    <span class="hero-badge">About Us</span>
-                    <h1 class="hero-title" style="font-size:var(--fs-4xl);">Know Our Sabha</h1>
-                    <p class="hero-subtitle" style="font-size:var(--fs-xl);">Preserving culture, empowering community</p>
+        <!-- ===== PAGE HEADER (mini) ===== -->
+        <section class="section page-header-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">About Us</span>
+                    <h1 class="section-title">Know Our Sabha</h1>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Preserving culture, empowering community</p>
                 </div>
             </div>
         </section>
@@ -201,7 +131,7 @@
                     <h2 class="section-title">Introduction</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div class="intro-text" style="max-width:800px; margin:0 auto;">
+                <div class="intro-text">
                     <p>The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is a community-based organization established to represent and serve the Limbu community residing in the Karbi Anglong and Dima Hasao districts of Assam, India. We are a non-political, non-profit organization dedicated to the social, cultural, and economic upliftment of our community.</p>
                     <p>Our committee works as a unifying force, bringing together Limbu families and individuals to foster a sense of belonging, preserve our rich cultural heritage, and address the challenges faced by our community in the modern era. We believe in the power of collective action and community participation.</p>
                 </div>
@@ -216,7 +146,7 @@
                     <h2 class="section-title">History</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div class="intro-text" style="max-width:800px; margin:0 auto;">
+                <div class="intro-text">
                     <p>The Assam Limbu Mahasabha was founded in the early 2000s with the vision of uniting the Limbu community in the region. Over the years, the organization has grown from a small group of dedicated individuals to a structured committee with representation across multiple villages and towns. Our history is marked by resilience, cultural pride, and a commitment to community service.</p>
                     <p>In 2016, the Karbi Anglong &amp; Dima Hasao District Committee was formally constituted to better address the specific needs of our community in these two districts. Since then, we have organized numerous cultural events, educational workshops, and social welfare programs, earning the trust and respect of the community and the administration.</p>
                 </div>
@@ -231,28 +161,28 @@
                     <h2 class="section-title">Vision &amp; Mission</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2xl); max-width:900px; margin:0 auto;">
-                    <div class="card" style="padding:var(--space-lg); text-align:center;">
-                        <div style="margin-bottom:var(--space-md);">
-                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px; height:48px; margin:0 auto;">
+                <div class="vision-mission-grid">
+                    <div class="card vision-card">
+                        <div class="vision-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M24 4v6M24 38v6M4 24h6M38 24h6M7.76 7.76l4.24 4.24M36.24 36.24l-4.24-4.24M36.24 7.76l-4.24 4.24M7.76 36.24l4.24-4.24" />
                                 <circle cx="24" cy="24" r="10" />
                             </svg>
                         </div>
-                        <h3 style="font-family:var(--ff-heading); font-size:var(--fs-2xl); color:var(--color-primary-dark); margin-bottom:var(--space-sm);">Vision</h3>
-                        <p style="text-align:justify; color:var(--color-text-muted);">To be a model community organization that empowers the Limbu people through cultural preservation, education, and social development, ensuring a prosperous and united community in Karbi Anglong and Dima Hasao.</p>
+                        <h3>Vision</h3>
+                        <p>To be a model community organization that empowers the Limbu people through cultural preservation, education, and social development, ensuring a prosperous and united community in Karbi Anglong and Dima Hasao.</p>
                     </div>
-                    <div class="card" style="padding:var(--space-lg); text-align:center;">
-                        <div style="margin-bottom:var(--space-md);">
-                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px; height:48px; margin:0 auto;">
+                    <div class="card mission-card">
+                        <div class="vision-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 30L6 24L12 18" />
                                 <path d="M36 18L42 24L36 30" />
                                 <path d="M24 6L24 42" />
                                 <circle cx="24" cy="24" r="20" />
                             </svg>
                         </div>
-                        <h3 style="font-family:var(--ff-heading); font-size:var(--fs-2xl); color:var(--color-primary-dark); margin-bottom:var(--space-sm);">Mission</h3>
-                        <ul style="text-align:left; list-style:disc; padding-left:var(--space-lg); color:var(--color-text-muted);">
+                        <h3>Mission</h3>
+                        <ul>
                             <li>Preserve and promote Limbu language, culture, and traditions.</li>
                             <li>Provide educational and skill development opportunities.</li>
                             <li>Advocate for the rights and welfare of the Limbu community.</li>
@@ -272,14 +202,14 @@
                     <h2 class="section-title">Purpose &amp; Objectives</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div style="max-width:800px; margin:0 auto;">
-                    <div style="margin-bottom:var(--space-xl);">
-                        <h3 style="font-family:var(--ff-heading); font-size:var(--fs-xl); color:var(--color-primary-dark); margin-bottom:var(--space-sm);">Purpose</h3>
-                        <p style="text-align:justify;">The primary purpose of the Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is to serve as a representative body for the Limbu community, addressing social, cultural, and economic issues while strengthening community bonds and identity.</p>
+                <div class="objectives-content">
+                    <div class="purpose-section">
+                        <h3>Purpose</h3>
+                        <p>The primary purpose of the Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is to serve as a representative body for the Limbu community, addressing social, cultural, and economic issues while strengthening community bonds and identity.</p>
                     </div>
-                    <div>
-                        <h3 style="font-family:var(--ff-heading); font-size:var(--fs-xl); color:var(--color-primary-dark); margin-bottom:var(--space-sm);">Key Objectives</h3>
-                        <ul style="list-style:disc; padding-left:var(--space-lg); color:var(--color-text-muted);">
+                    <div class="objectives-list">
+                        <h3>Key Objectives</h3>
+                        <ul>
                             <li>To organize cultural and social events that celebrate Limbu heritage.</li>
                             <li>To promote education and literacy among community members.</li>
                             <li>To provide a platform for community voices and concerns.</li>
@@ -300,35 +230,35 @@
                     <h2 class="section-title">Organizational Identity</h2>
                     <div class="section-divider"></div>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-lg); max-width:900px; margin:0 auto;">
-                    <div class="card" style="padding:var(--space-lg); text-align:center;">
-                        <div style="margin-bottom:var(--space-sm);">
-                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px; height:40px; margin:0 auto;">
+                <div class="identity-grid">
+                    <div class="card identity-card">
+                        <div class="identity-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M24 4v8M24 36v8M4 24h8M36 24h8M7.76 7.76l5.66 5.66M34.58 34.58l5.66 5.66M34.58 7.76l-5.66 5.66M7.76 34.58l5.66-5.66" />
                                 <circle cx="24" cy="24" r="12" />
                             </svg>
                         </div>
-                        <h4 style="font-family:var(--ff-heading); font-size:var(--fs-large); color:var(--color-primary-dark);">Secular &amp; Inclusive</h4>
-                        <p style="font-size:var(--fs-small); color:var(--color-text-muted); text-align:justify; text-align-last:center;">We welcome all community members regardless of religious or political affiliations.</p>
+                        <h4>Secular &amp; Inclusive</h4>
+                        <p>We welcome all community members regardless of religious or political affiliations.</p>
                     </div>
-                    <div class="card" style="padding:var(--space-lg); text-align:center;">
-                        <div style="margin-bottom:var(--space-sm);">
-                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px; height:40px; margin:0 auto;">
+                    <div class="card identity-card">
+                        <div class="identity-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M24 4L28 18H42L30 26L34 40L24 32L14 40L18 26L6 18H20Z" />
                             </svg>
                         </div>
-                        <h4 style="font-family:var(--ff-heading); font-size:var(--fs-large); color:var(--color-primary-dark);">Cultural Stewardship</h4>
-                        <p style="font-size:var(--fs-small); color:var(--color-text-muted); text-align:justify; text-align-last:center;">We are committed to preserving the rich Limbu language, traditions, and art forms.</p>
+                        <h4>Cultural Stewardship</h4>
+                        <p>We are committed to preserving the rich Limbu language, traditions, and art forms.</p>
                     </div>
-                    <div class="card" style="padding:var(--space-lg); text-align:center;">
-                        <div style="margin-bottom:var(--space-sm);">
-                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px; height:40px; margin:0 auto;">
+                    <div class="card identity-card">
+                        <div class="identity-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M24 4L24 16M24 32L24 44M4 24L16 24M32 24L44 24M9.17 9.17L17.66 17.66M30.34 30.34L38.83 38.83M30.34 9.17L38.83 17.66M9.17 30.34L17.66 38.83" />
                                 <circle cx="24" cy="24" r="8" />
                             </svg>
                         </div>
-                        <h4 style="font-family:var(--ff-heading); font-size:var(--fs-large); color:var(--color-primary-dark);">Community Service</h4>
-                        <p style="font-size:var(--fs-small); color:var(--color-text-muted); text-align:justify; text-align-last:center;">Our activities are centered on the welfare and progress of every community member.</p>
+                        <h4>Community Service</h4>
+                        <p>Our activities are centered on the welfare and progress of every community member.</p>
                     </div>
                 </div>
             </div>
