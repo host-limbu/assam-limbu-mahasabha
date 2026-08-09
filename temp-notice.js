@@ -1,259 +1,482 @@
 /* ============================================================
-   temp-notice.js — Temporary Conditionals Overlay Notice
-   FULL SITE BLOCK — No button, no entry
-   Users CANNOT enter the site until the notice is removed.
+   maintenance.js — Temporary Maintenance Overlay
+   Prevents access to the website during maintenance.
+   No bypass via refresh, back button, or any other method.
    ============================================================ */
 
 (function() {
     'use strict';
 
-    // ============================================================
-    // CONFIGURATION — Toggle this to enable/disable the notice
-    // ============================================================
-    const NOTICE_CONFIG = {
-        // Set to false to completely disable the notice
-        ENABLED: true,
+    // ---------- CONFIGURATION ----------
+    // Set this to false when maintenance is over
+    const MAINTENANCE_MODE = true; // <-- CHANGE TO false TO REMOVE OVERLAY
 
-        // How long to wait before showing the notice (ms)
-        DELAY: 300,
+    // Expected maintenance end time (for display)
+    const MAINTENANCE_END_TIME = '15 August 2026 18:00:00 GMT+0530';
 
-        // Fade duration (ms)
-        FADE_DURATION: 600,
-
-        // Show a close button? — FALSE = NO BUTTON, NO ENTRY
-        SHOW_CLOSE_BUTTON: false,
-
-        // Dismissible by clicking the overlay? — FALSE = NO BYPASS
-        CLOSE_ON_BACKGROUND_CLICK: false,
-
-        // ESC key to dismiss? — FALSE = NO BYPASS
-        ALLOW_ESC_TO_DISMISS: false
-    };
-
-    // ============================================================
-    // NOTICE CONTENT — Edit this to change the message
-    // ============================================================
-    const NOTICE_CONTENT = {
-        title: 'Website Under Maintenance',
-        message: 'The Assam Limbu Mahasabha website is currently undergoing scheduled maintenance. We apologize for the inconvenience and appreciate your patience. Please check back later.',
-        subMessage: '— District Committee'
-    };
-
-    // ============================================================
-    // MAIN LOGIC — Do not edit below
-    // ============================================================
-
-    // Build the overlay HTML
-    function buildOverlay() {
+    // ---------- MAINTENANCE OVERLAY HTML ----------
+    function createOverlay() {
         const overlay = document.createElement('div');
-        overlay.id = 'temp-notice-overlay';
+        overlay.id = 'maintenance-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-labelledby', 'maintenance-title');
+
+        overlay.innerHTML = `
+            <div class="maintenance-container">
+                <div class="maintenance-content">
+                    <div class="maintenance-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="38" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2.5" />
+                            <path d="M40 14 L44 28 L58 28 L48 36 L52 50 L40 42 L28 50 L32 36 L22 28 L36 28 L40 14Z" fill="#c9a84c" opacity="0.9" />
+                            <text x="40" y="70" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#c9a84c" text-anchor="middle" letter-spacing="1">ALM</text>
+                            <circle cx="40" cy="40" r="32" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="3 3" />
+                        </svg>
+                    </div>
+                    <h1 id="maintenance-title" class="maintenance-title">Website Under Maintenance</h1>
+                    <div class="maintenance-divider"></div>
+                    <p class="maintenance-description">
+                        The Assam Limbu Mahasabha website is currently undergoing scheduled maintenance to improve your experience.
+                    </p>
+                    <p class="maintenance-description">
+                        We apologize for the inconvenience and appreciate your patience. Please check back later.
+                    </p>
+                    <div class="maintenance-status">
+                        <div class="maintenance-status-item">
+                            <span class="status-label">Status:</span>
+                            <span class="status-value">In Progress</span>
+                        </div>
+                        <div class="maintenance-status-item">
+                            <span class="status-label">Expected Completion:</span>
+                            <span class="status-value" id="maintenance-end-time">${MAINTENANCE_END_TIME}</span>
+                        </div>
+                    </div>
+                    <div class="maintenance-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Maintenance in progress...</span>
+                    </div>
+                    <div class="maintenance-contact">
+                        <p>For urgent inquiries, please contact us at:</p>
+                        <a href="mailto:info@assamlimbumahasabha.org" class="maintenance-email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                            info@assamlimbumahasabha.org
+                        </a>
+                    </div>
+                    <div class="maintenance-refresh-note">
+                        <span>This page will automatically refresh when maintenance is complete.</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Prevent any interaction with the page behind
         overlay.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 999999;
+            z-index: 99999;
+            background: rgba(26, 58, 92, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.70);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             opacity: 0;
-            transition: opacity ${NOTICE_CONFIG.FADE_DURATION}ms ease;
-            pointer-events: none;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-            user-select: none;
+            transition: opacity 0.8s ease;
+            padding: 20px;
+            box-sizing: border-box;
         `;
 
-        // Create the modal card
-        const modal = document.createElement('div');
-        modal.id = 'temp-notice-modal';
-        modal.style.cssText = `
-            max-width: 560px;
-            width: 90%;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-            padding: 48px 40px 40px;
-            position: relative;
-            transform: translateY(30px) scale(0.96);
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            text-align: center;
+        document.body.appendChild(overlay);
+
+        // Trigger fade-in after a small delay
+        requestAnimationFrame(function() {
+            overlay.style.opacity = '1';
+        });
+
+        // Add styles for the overlay content
+        const style = document.createElement('style');
+        style.textContent = `
+            #maintenance-overlay * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .maintenance-container {
+                max-width: 560px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 10px;
+            }
+
+            .maintenance-content {
+                background: #ffffff;
+                border-radius: 8px;
+                padding: 48px 40px 40px;
+                text-align: center;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30);
+                border: 1px solid rgba(201, 168, 76, 0.20);
+            }
+
+            .maintenance-icon {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 20px;
+            }
+
+            .maintenance-icon svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+            .maintenance-title {
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 28px;
+                font-weight: 700;
+                color: #1a3a5c;
+                margin-bottom: 12px;
+                line-height: 1.2;
+            }
+
+            .maintenance-divider {
+                width: 60px;
+                height: 3px;
+                background: #c9a84c;
+                margin: 0 auto 20px;
+                border-radius: 2px;
+            }
+
+            .maintenance-description {
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 16px;
+                line-height: 1.7;
+                color: #5a6a7a;
+                text-align: justify;
+                margin-bottom: 12px;
+            }
+
+            .maintenance-description:last-of-type {
+                margin-bottom: 24px;
+            }
+
+            .maintenance-status {
+                background: #f5f8fa;
+                border-radius: 6px;
+                padding: 16px 20px;
+                margin-bottom: 24px;
+                text-align: left;
+                border: 1px solid #dce3ec;
+            }
+
+            .maintenance-status-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 4px 0;
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 14px;
+            }
+
+            .status-label {
+                color: #8a9aa8;
+                font-weight: 500;
+            }
+
+            .status-value {
+                color: #1a3a5c;
+                font-weight: 600;
+            }
+
+            .maintenance-progress {
+                margin-bottom: 24px;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 6px;
+                background: #dce3ec;
+                border-radius: 3px;
+                overflow: hidden;
+                margin-bottom: 8px;
+            }
+
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(90deg, #c9a84c, #1a3a5c);
+                border-radius: 3px;
+                animation: progressPulse 2s ease-in-out infinite;
+            }
+
+            @keyframes progressPulse {
+                0% { width: 10%; }
+                50% { width: 70%; }
+                100% { width: 10%; }
+            }
+
+            .progress-text {
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 13px;
+                color: #8a9aa8;
+                letter-spacing: 0.5px;
+            }
+
+            .maintenance-contact {
+                border-top: 1px solid #dce3ec;
+                padding-top: 20px;
+                margin-top: 4px;
+            }
+
+            .maintenance-contact p {
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 14px;
+                color: #5a6a7a;
+                margin-bottom: 8px;
+            }
+
+            .maintenance-email {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 15px;
+                font-weight: 600;
+                color: #1a3a5c;
+                text-decoration: none;
+                padding: 8px 16px;
+                border: 1px solid #c9a84c;
+                border-radius: 5px;
+                transition: all 0.2s ease;
+            }
+
+            .maintenance-email:hover {
+                background: #c9a84c;
+                color: #ffffff;
+            }
+
+            .maintenance-email svg {
+                width: 18px;
+                height: 18px;
+                flex-shrink: 0;
+            }
+
+            .maintenance-refresh-note {
+                margin-top: 16px;
+                font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+                font-size: 12px;
+                color: #8a9aa8;
+                opacity: 0.7;
+            }
+
+            /* Responsive */
+            @media (max-width: 480px) {
+                .maintenance-content {
+                    padding: 32px 20px 28px;
+                }
+
+                .maintenance-title {
+                    font-size: 22px;
+                }
+
+                .maintenance-description {
+                    font-size: 14px;
+                }
+
+                .maintenance-status-item {
+                    font-size: 13px;
+                    flex-direction: column;
+                    gap: 2px;
+                }
+
+                .maintenance-email {
+                    font-size: 13px;
+                    padding: 6px 12px;
+                }
+            }
+
+            @media (max-width: 360px) {
+                .maintenance-content {
+                    padding: 24px 16px 20px;
+                }
+
+                .maintenance-title {
+                    font-size: 19px;
+                }
+
+                .maintenance-icon {
+                    width: 60px;
+                    height: 60px;
+                }
+            }
         `;
 
-        // Logo / Icon (SVG)
-        const headerIcon = document.createElement('div');
-        headerIcon.style.cssText = `
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-        `;
-        headerIcon.innerHTML = `
-            <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-                <circle cx="40" cy="40" r="38" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2.5" />
-                <circle cx="40" cy="40" r="30" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4 4" />
-                <path d="M40 14 L44 28 L58 28 L48 36 L52 50 L40 42 L28 50 L32 36 L22 28 L36 28 L40 14Z" fill="#c9a84c" opacity="0.9" />
-                <text x="40" y="70" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#c9a84c" text-anchor="middle" letter-spacing="1">ALM</text>
-            </svg>
-        `;
-        modal.appendChild(headerIcon);
-
-        // Title
-        const title = document.createElement('h1');
-        title.textContent = NOTICE_CONTENT.title;
-        title.style.cssText = `
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a3a5c;
-            margin: 0 0 12px 0;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
-        `;
-        modal.appendChild(title);
-
-        // Divider
-        const divider = document.createElement('div');
-        divider.style.cssText = `
-            width: 60px;
-            height: 3px;
-            background: #c9a84c;
-            margin: 0 auto 18px;
-            border-radius: 2px;
-        `;
-        modal.appendChild(divider);
-
-        // Main Message
-        const message = document.createElement('p');
-        message.textContent = NOTICE_CONTENT.message;
-        message.style.cssText = `
-            font-size: 17px;
-            line-height: 1.8;
-            color: #5a6a7a;
-            margin: 0 0 12px 0;
-            text-align: justify;
-        `;
-        modal.appendChild(message);
-
-        // Sub Message (footer text)
-        const subMsg = document.createElement('p');
-        subMsg.textContent = NOTICE_CONTENT.subMessage;
-        subMsg.style.cssText = `
-            font-size: 14px;
-            color: #8a9aa8;
-            margin: 8px 0 0 0;
-            font-style: italic;
-            letter-spacing: 0.5px;
-        `;
-        modal.appendChild(subMsg);
-
-        // Small notice that site is blocked
-        const blockNotice = document.createElement('p');
-        blockNotice.textContent = '🚧 Site access is temporarily restricted';
-        blockNotice.style.cssText = `
-            font-size: 12px;
-            color: #b0bcc8;
-            margin: 24px 0 0 0;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            border-top: 1px solid #eaeef4;
-            padding-top: 16px;
-        `;
-        modal.appendChild(blockNotice);
-
-        // Add modal to overlay
-        overlay.appendChild(modal);
+        document.head.appendChild(style);
 
         return overlay;
     }
 
-    // Block the site entirely — NO WAY OUT
-    function blockSite() {
-        // Prevent any interaction with the page
-        document.documentElement.style.overflow = 'hidden';
-        document.documentElement.style.height = '100%';
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.height = '100%';
-        document.body.style.top = '0';
-        document.body.style.left = '0';
+    // ---------- PREVENT ALL ACCESS ----------
+    function blockAllAccess() {
+        // Block back button
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function() {
+            history.pushState(null, null, location.href);
+        });
 
-        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-        if (scrollBarWidth > 0) {
-            document.body.style.paddingRight = scrollBarWidth + 'px';
-        }
-
-        // Prevent any click interaction
-        document.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }, true);
-
-        // Prevent keyboard shortcuts
+        // Block keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            // Block all keys except maybe basic ones
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
+            // Block F5, Ctrl+R, Ctrl+Shift+R, Cmd+R, Alt+Left, Alt+Right, etc.
+            const isRefresh = e.key === 'F5' ||
+                (e.ctrlKey && e.key === 'r') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'r') ||
+                (e.metaKey && e.key === 'r');
+            const isBack = e.altKey && e.key === 'ArrowLeft';
+            const isForward = e.altKey && e.key === 'ArrowRight';
+            const isEscape = e.key === 'Escape';
+
+            if (isRefresh || isBack || isForward) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // Allow accessibility shortcuts (like Tab) but block others
+            if (isEscape) {
+                e.preventDefault();
+                return false;
+            }
         }, true);
 
-        // Prevent context menu
+        // Block context menu (right-click)
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
-    }
 
-    // Show the notice
-    function showNotice() {
-        // If disabled, do nothing
-        if (!NOTICE_CONFIG.ENABLED) return;
+        // Block drag-drop
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
 
-        // Block the site immediately
-        blockSite();
+        // Block select/copy
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
 
-        // Build and append overlay
-        const overlay = buildOverlay();
-        document.body.appendChild(overlay);
-
-        // Trigger fade-in after a small delay
-        setTimeout(function() {
-            overlay.style.opacity = '1';
-            overlay.style.pointerEvents = 'auto';
-            const modal = document.getElementById('temp-notice-modal');
-            if (modal) {
-                modal.style.transform = 'translateY(0) scale(1)';
+        // Block DevTools shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Cmd+Option+I, Cmd+Option+J)
+        document.addEventListener('keydown', function(e) {
+            const isDevTools = e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) ||
+                (e.metaKey && e.altKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J'));
+            if (isDevTools) {
+                e.preventDefault();
+                return false;
             }
-        }, NOTICE_CONFIG.DELAY);
+        }, true);
 
-        // Disable ESC key
-        if (!NOTICE_CONFIG.ALLOW_ESC_TO_DISMISS) {
-            document.addEventListener('keydown', function blockEsc(e) {
-                if (e.key === 'Escape') {
+        // Block touch gestures that might navigate back
+        let touchStartX = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            const touchEndX = e.touches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            // If swipe is more than 100px, it might be a back/forward gesture
+            if (Math.abs(diff) > 100) {
+                e.preventDefault();
+                return false;
+            }
+        }, { passive: false });
+
+        // Block link clicks on the overlay itself (prevent any navigation)
+        document.addEventListener('click', function(e) {
+            const overlay = document.getElementById('maintenance-overlay');
+            if (overlay && overlay.contains(e.target)) {
+                const target = e.target.closest('a');
+                if (target) {
+                    // Allow only the email link
+                    if (target.classList.contains('maintenance-email')) {
+                        return true;
+                    }
                     e.preventDefault();
-                    e.stopPropagation();
                     return false;
                 }
-            }, true);
-        }
+            }
+        }, true);
 
-        console.log('🔒 Site is fully blocked — maintenance mode active.');
-        console.log('ℹ️ To remove the block, set ENABLED: false in temp-notice.js');
+        // Block any navigation via window.location
+        const originalLocation = window.location;
+        Object.defineProperty(window, 'location', {
+            get: function() {
+                return originalLocation;
+            },
+            set: function(value) {
+                // Block location changes
+                console.warn('Location change blocked during maintenance.');
+                return originalLocation;
+            }
+        });
+
+        // Override history methods to block navigation
+        const originalPushState = history.pushState;
+        history.pushState = function() {
+            // Allow only if it's to maintain the current state
+            if (arguments[2] === window.location.href || !arguments[2]) {
+                return originalPushState.apply(history, arguments);
+            }
+            console.warn('PushState blocked during maintenance.');
+            return;
+        };
+
+        const originalReplaceState = history.replaceState;
+        history.replaceState = function() {
+            if (arguments[2] === window.location.href || !arguments[2]) {
+                return originalReplaceState.apply(history, arguments);
+            }
+            console.warn('ReplaceState blocked during maintenance.');
+            return;
+        };
     }
 
-    // ============================================================
-    // INITIALIZE
-    // ============================================================
+    // ---------- INITIALIZE ----------
+    if (MAINTENANCE_MODE) {
+        // Create the overlay
+        const overlay = createOverlay();
 
-    // Wait for DOM to be ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', showNotice);
+        // Block all access
+        blockAllAccess();
+
+        // Prevent scrolling
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+
+        // Periodically check if the overlay is still there (prevent removal)
+        setInterval(function() {
+            const overlayExists = document.getElementById('maintenance-overlay');
+            if (!overlayExists) {
+                // Recreate the overlay if it was removed
+                createOverlay();
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+        }, 500);
+
+        console.log('Maintenance mode active. Website is temporarily unavailable.');
     } else {
-        showNotice();
+        console.log('Maintenance mode is disabled. Website is accessible.');
     }
 
 })();
