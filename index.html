@@ -4,110 +4,137 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assam Limbu Mahasabha – Karbi Anglong &amp; Dima Hasao District Committee</title>
+    <meta name="description" content="Official website of Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee. Community organization serving the Limbu community." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231a3a5c'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23c9a84c' stroke-width='3'/%3E%3Ctext x='50' y='58' font-family='Arial,sans-serif' font-size='36' font-weight='bold' fill='%23c9a84c' text-anchor='middle'%3EALM%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 
     <!-- ===== HEADER ===== -->
-    <header class="site-header">
+    <header class="site-header" role="banner">
         <div class="container header-inner">
             <!-- Logo + Name -->
             <div class="header-brand">
-                <a href="index.html" class="brand-link" aria-label="Assam Limbu Mahasabha Home">
+                <a href="/index.html" class="header-logo-link" aria-label="Home">
                     <!-- SVG Logo -->
-                    <svg class="brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="40" cy="40" r="36" stroke="#8B1A1A" stroke-width="3" />
-                        <circle cx="40" cy="40" r="28" stroke="#8B1A1A" stroke-width="2" />
-                        <path d="M40 8 L44 28 L64 28 L48 42 L56 62 L40 50 L24 62 L32 42 L16 28 L36 28 L40 8Z" fill="#8B1A1A" />
-                        <rect x="36" y="46" width="8" height="10" rx="2" fill="#8B1A1A" />
+                    <svg class="header-logo-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <circle cx="40" cy="40" r="38" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2.5" />
+                        <circle cx="40" cy="40" r="30" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4 4" />
+                        <path d="M40 14 L44 28 L58 28 L48 36 L52 50 L40 42 L28 50 L32 36 L22 28 L36 28 L40 14Z" fill="#c9a84c" opacity="0.9" />
+                        <text x="40" y="70" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#c9a84c" text-anchor="middle" letter-spacing="1">ALM</text>
                     </svg>
-                    <div class="brand-text">
-                        <span class="brand-name">Assam Limbu Mahasabha</span>
-                        <span class="brand-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                    <div class="header-title-group">
+                        <span class="header-org">Assam Limbu Mahasabha</span>
+                        <span class="header-district">Karbi Anglong &amp; Dima Hasao District Committee</span>
                     </div>
                 </a>
             </div>
 
-            <!-- Search -->
-            <div class="header-search">
-                <form class="search-form" role="search" aria-label="Site search">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Navigation + Search (desktop) -->
+            <nav class="header-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="/index.html" class="nav-link active">Home</a></li>
+                    <li><a href="/about/about.html" class="nav-link">About</a></li>
+                    <li><a href="/committee/committee.html" class="nav-link">Committee</a></li>
+                    <li><a href="/updates/update.html" class="nav-link">Updates</a></li>
+                    <li><a href="/events/event.html" class="nav-link">Events</a></li>
+                    <li><a href="/gallery/gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="/membership/membership.html" class="nav-link">Membership</a></li>
+                    <li><a href="/documents/documents.html" class="nav-link">Documents</a></li>
+                    <li><a href="/contact/contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Search + Mobile Toggle -->
+            <div class="header-actions">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
-                </form>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
             </div>
-
-            <!-- Mobile menu toggle -->
-            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <line x1="3" y1="12" x2="21" y2="12" />
-                    <line x1="3" y1="18" x2="21" y2="18" />
-                </svg>
-            </button>
         </div>
 
-        <!-- Navigation -->
-        <nav class="main-nav" aria-label="Main navigation">
-            <div class="container nav-inner">
-                <ul class="nav-list">
-                    <li><a href="index.html" class="nav-link active">Home</a></li>
-                    <li><a href="about/about.html" class="nav-link">About</a></li>
-                    <li><a href="committee/committee.html" class="nav-link">Committee</a></li>
-                    <li><a href="updates/update.html" class="nav-link">Updates</a></li>
-                    <li><a href="events/event.html" class="nav-link">Events</a></li>
-                    <li><a href="gallery/gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="membership/membership.html" class="nav-link">Membership</a></li>
-                    <li><a href="documents/documents.html" class="nav-link">Documents</a></li>
-                    <li><a href="contact/contact.html" class="nav-link">Contact</a></li>
-                </ul>
+        <!-- Mobile navigation (hidden by default) -->
+        <div class="mobile-nav" aria-hidden="true">
+            <ul class="mobile-nav-list">
+                <li><a href="/index.html" class="mobile-nav-link active">Home</a></li>
+                <li><a href="/about/about.html" class="mobile-nav-link">About</a></li>
+                <li><a href="/committee/committee.html" class="mobile-nav-link">Committee</a></li>
+                <li><a href="/updates/update.html" class="mobile-nav-link">Updates</a></li>
+                <li><a href="/events/event.html" class="mobile-nav-link">Events</a></li>
+                <li><a href="/gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
+                <li><a href="/membership/membership.html" class="mobile-nav-link">Membership</a></li>
+                <li><a href="/documents/documents.html" class="mobile-nav-link">Documents</a></li>
+                <li><a href="/contact/contact.html" class="mobile-nav-link">Contact</a></li>
+            </ul>
+            <div class="mobile-search">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
-        </nav>
+        </div>
     </header>
 
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
         <!-- ===== HERO / BANNER ===== -->
-        <section class="hero full-width" aria-label="Welcome banner">
-            <div class="container hero-inner">
-                <div class="hero-content">
-                    <h1 class="hero-title">Welcome to the Official Website</h1>
-                    <p class="hero-subtitle">Assam Limbu Mahasabha – Karbi Anglong &amp; Dima Hasao District Committee</p>
-                    <p class="hero-text">Serving the Limbu community with integrity, unity, and purpose.</p>
+        <section class="hero-section full-width">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">Official Website</span>
+                    <h1 class="hero-title">Assam Limbu Mahasabha</h1>
+                    <p class="hero-subtitle">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                    <p class="hero-description">Serving the Limbu community with dedication, integrity, and unity. Preserving our culture, heritage, and values for future generations.</p>
                     <div class="hero-actions">
-                        <a href="about/about.html" class="btn btn-primary">About Us</a>
-                        <a href="membership/membership.html" class="btn btn-outline">Join Membership</a>
+                        <a href="/about/about.html" class="btn btn-primary">Learn More</a>
+                        <a href="/membership/membership.html" class="btn btn-outline">Join Us</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ===== INTRODUCTION ===== -->
-        <section class="section intro" aria-label="Organization introduction">
+        <section class="section intro-section">
             <div class="container">
-                <h2 class="section-title">About the Sabha</h2>
+                <div class="section-header">
+                    <span class="section-tag">Welcome</span>
+                    <h2 class="section-title">About Our Sabha</h2>
+                    <div class="section-divider"></div>
+                </div>
                 <div class="intro-grid">
                     <div class="intro-text">
-                        <p>The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is the official representative body of the Limbu community in the districts of Karbi Anglong and Dima Hasao, Assam. We are committed to preserving and promoting the rich cultural heritage, language, traditions, and social welfare of the Limbu people.</p>
-                        <p>Our committee works tirelessly to foster unity, provide community support, and ensure the overall development of our community members across the region.</p>
-                        <a href="about/about.html" class="btn btn-primary">Read More</a>
+                        <p>The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, is a community organization dedicated to the welfare, progress, and cultural preservation of the Limbu community in the region. Established with the vision of unity and development, we work tirelessly to address the needs and aspirations of our people.</p>
+                        <p>Our committee serves as a bridge between the community and the administration, ensuring that the voices of the Limbu people are heard and their rights are protected. We organize cultural events, educational programs, and social initiatives to strengthen our community bonds.</p>
+                        <a href="/about/about.html" class="btn btn-primary">Read More About Us</a>
                     </div>
                     <div class="intro-stats">
                         <div class="stat-card">
-                            <span class="stat-number">25+</span>
+                            <span class="stat-number">5+</span>
                             <span class="stat-label">Years of Service</span>
                         </div>
                         <div class="stat-card">
                             <span class="stat-number">12</span>
-                            <span class="stat-label">Member Units</span>
+                            <span class="stat-label">Committee Members</span>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-number">1000+</span>
-                            <span class="stat-label">Community Members</span>
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Community Events</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">100+</span>
+                            <span class="stat-label">Active Members</span>
                         </div>
                     </div>
                 </div>
@@ -115,274 +142,347 @@
         </section>
 
         <!-- ===== LATEST UPDATES PREVIEW ===== -->
-        <section class="section updates-preview" aria-label="Latest updates">
+        <section class="section updates-preview-section">
             <div class="container">
                 <div class="section-header">
+                    <span class="section-tag">News</span>
                     <h2 class="section-title">Latest Updates</h2>
-                    <a href="updates/update.html" class="btn btn-outline btn-sm">View All</a>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Stay informed with the latest announcements and news from the committee.</p>
                 </div>
-                <div class="card-grid card-grid-3">
-                    <article class="card update-card">
-                        <div class="card-body">
-                            <span class="card-badge">Notice</span>
-                            <h3 class="card-title">General Body Meeting 2026</h3>
-                            <p class="card-meta">15 August 2026</p>
-                            <p class="card-text">The annual general body meeting will be held on 15 August 2026 at the committee office. All members are requested to attend.</p>
-                            <a href="updates/update.html" class="card-link">Read More</a>
+                <div class="updates-grid">
+                    <article class="update-card">
+                        <div class="update-card-image">
+                            <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Update image placeholder">
+                                <rect width="400" height="200" fill="#e8edf3" />
+                                <text x="200" y="110" font-family="Arial,sans-serif" font-size="18" fill="#8a9aa8" text-anchor="middle">Cultural Event</text>
+                            </svg>
+                        </div>
+                        <div class="update-card-body">
+                            <span class="update-date">15 July 2026</span>
+                            <h3 class="update-title">Annual Cultural Celebration 2026</h3>
+                            <p class="update-summary">Join us for the annual cultural celebration featuring traditional music, dance, and community feast.</p>
+                            <a href="/updates/update.html" class="btn btn-sm btn-outline">Read More</a>
                         </div>
                     </article>
-                    <article class="card update-card">
-                        <div class="card-body">
-                            <span class="card-badge">Event</span>
-                            <h3 class="card-title">Limbu Language Workshop</h3>
-                            <p class="card-meta">5 September 2026</p>
-                            <p class="card-text">A two-day language workshop will be organized to promote the Limbu language and script among the younger generation.</p>
-                            <a href="updates/update.html" class="card-link">Read More</a>
+                    <article class="update-card">
+                        <div class="update-card-image">
+                            <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Update image placeholder">
+                                <rect width="400" height="200" fill="#e8edf3" />
+                                <text x="200" y="110" font-family="Arial,sans-serif" font-size="18" fill="#8a9aa8" text-anchor="middle">Meeting</text>
+                            </svg>
+                        </div>
+                        <div class="update-card-body">
+                            <span class="update-date">10 July 2026</span>
+                            <h3 class="update-title">Executive Committee Meeting</h3>
+                            <p class="update-summary">The executive committee convened to discuss community development initiatives and upcoming events.</p>
+                            <a href="/updates/update.html" class="btn btn-sm btn-outline">Read More</a>
                         </div>
                     </article>
-                    <article class="card update-card">
-                        <div class="card-body">
-                            <span class="card-badge">Announcement</span>
-                            <h3 class="card-title">New Office Bearers Elected</h3>
-                            <p class="card-meta">10 July 2026</p>
-                            <p class="card-text">The new executive committee for the term 2026-2028 has been elected. We congratulate all the newly elected office bearers.</p>
-                            <a href="updates/update.html" class="card-link">Read More</a>
+                    <article class="update-card">
+                        <div class="update-card-image">
+                            <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Update image placeholder">
+                                <rect width="400" height="200" fill="#e8edf3" />
+                                <text x="200" y="110" font-family="Arial,sans-serif" font-size="18" fill="#8a9aa8" text-anchor="middle">Announcement</text>
+                            </svg>
+                        </div>
+                        <div class="update-card-body">
+                            <span class="update-date">5 July 2026</span>
+                            <h3 class="update-title">New Membership Drive Launched</h3>
+                            <p class="update-summary">We are excited to announce the launch of our new membership drive. Join the Sabha today!</p>
+                            <a href="/updates/update.html" class="btn btn-sm btn-outline">Read More</a>
                         </div>
                     </article>
+                </div>
+                <div class="section-footer">
+                    <a href="/updates/update.html" class="btn btn-primary">View All Updates</a>
                 </div>
             </div>
         </section>
 
         <!-- ===== UPCOMING EVENTS PREVIEW ===== -->
-        <section class="section events-preview" aria-label="Upcoming events">
+        <section class="section events-preview-section">
             <div class="container">
                 <div class="section-header">
+                    <span class="section-tag">Calendar</span>
                     <h2 class="section-title">Upcoming Events</h2>
-                    <a href="events/event.html" class="btn btn-outline btn-sm">View All</a>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Mark your calendar for our upcoming community events and programs.</p>
                 </div>
-                <div class="card-grid card-grid-3">
-                    <article class="card event-card">
-                        <div class="card-body">
-                            <span class="event-date">15 Aug 2026</span>
-                            <h3 class="card-title">General Body Meeting</h3>
-                            <p class="card-text">Annual general body meeting of the district committee.</p>
-                            <p class="card-location">Committee Office, Diphu</p>
-                            <a href="events/event.html" class="card-link">Details</a>
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div class="event-date-block">
+                            <span class="event-day">25</span>
+                            <span class="event-month">Jul</span>
                         </div>
-                    </article>
-                    <article class="card event-card">
-                        <div class="card-body">
-                            <span class="event-date">5 Sep 2026</span>
-                            <h3 class="card-title">Language Workshop</h3>
-                            <p class="card-text">Limbu language and script workshop for youth.</p>
-                            <p class="card-location">Community Hall, Haflong</p>
-                            <a href="events/event.html" class="card-link">Details</a>
+                        <div class="event-info">
+                            <h3 class="event-title">Community Health Camp</h3>
+                            <p class="event-meta">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                                Diphu, Karbi Anglong
+                            </p>
+                            <p class="event-description">Free health checkup and consultation for community members. All are welcome.</p>
+                            <a href="/events/event.html" class="btn btn-sm btn-outline">View Details</a>
                         </div>
-                    </article>
-                    <article class="card event-card">
-                        <div class="card-body">
-                            <span class="event-date">20 Oct 2026</span>
-                            <h3 class="card-title">Cultural Festival</h3>
-                            <p class="card-text">Annual cultural festival showcasing Limbu traditions.</p>
-                            <p class="card-location">Town Field, Diphu</p>
-                            <a href="events/event.html" class="card-link">Details</a>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date-block">
+                            <span class="event-day">10</span>
+                            <span class="event-month">Aug</span>
                         </div>
-                    </article>
+                        <div class="event-info">
+                            <h3 class="event-title">Limbu Language Workshop</h3>
+                            <p class="event-meta">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                                Haflong, Dima Hasao
+                            </p>
+                            <p class="event-description">Learn the Limbu language and script. A workshop for all age groups.</p>
+                            <a href="/events/event.html" class="btn btn-sm btn-outline">View Details</a>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date-block">
+                            <span class="event-day">5</span>
+                            <span class="event-month">Sep</span>
+                        </div>
+                        <div class="event-info">
+                            <h3 class="event-title">Annual General Meeting</h3>
+                            <p class="event-meta">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                                Diphu, Karbi Anglong
+                            </p>
+                            <p class="event-description">Annual general meeting of the committee. All members are requested to attend.</p>
+                            <a href="/events/event.html" class="btn btn-sm btn-outline">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-footer">
+                    <a href="/events/event.html" class="btn btn-primary">View All Events</a>
                 </div>
             </div>
         </section>
 
         <!-- ===== COMMITTEE HIGHLIGHTS ===== -->
-        <section class="section committee-highlights" aria-label="Committee highlights">
+        <section class="section committee-highlights-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Committee</h2>
-                    <a href="committee/committee.html" class="btn btn-outline btn-sm">View All</a>
+                    <span class="section-tag">Leadership</span>
+                    <h2 class="section-title">Committee Highlights</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Meet the dedicated members of our district committee.</p>
                 </div>
-                <div class="card-grid card-grid-3">
-                    <div class="card person-card">
-                        <div class="card-body">
-                            <div class="person-avatar">
-                                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="40" cy="40" r="36" stroke="#8B1A1A" stroke-width="2" />
-                                    <circle cx="40" cy="30" r="14" stroke="#8B1A1A" stroke-width="2" />
-                                    <path d="M12 68 C12 52 24 44 40 44 C56 44 68 52 68 68" stroke="#8B1A1A" stroke-width="2" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Shri Chandra Limbu</h3>
-                            <p class="card-designation">President</p>
-                            <p class="card-text">Leading the district committee with dedication and vision.</p>
+                <div class="committee-highlights-grid">
+                    <div class="committee-highlight-card">
+                        <div class="highlight-avatar">
+                            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Committee member avatar">
+                                <circle cx="60" cy="60" r="58" fill="#1a3a5c" />
+                                <circle cx="60" cy="45" r="20" fill="#c9a84c" />
+                                <circle cx="60" cy="95" r="28" fill="#c9a84c" />
+                            </svg>
                         </div>
+                        <h3 class="highlight-name">President</h3>
+                        <p class="highlight-title">Mr. Prakash Limbu</p>
+                        <p class="highlight-desc">Leading the committee with vision and dedication.</p>
                     </div>
-                    <div class="card person-card">
-                        <div class="card-body">
-                            <div class="person-avatar">
-                                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="40" cy="40" r="36" stroke="#8B1A1A" stroke-width="2" />
-                                    <circle cx="40" cy="30" r="14" stroke="#8B1A1A" stroke-width="2" />
-                                    <path d="M12 68 C12 52 24 44 40 44 C56 44 68 52 68 68" stroke="#8B1A1A" stroke-width="2" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Smt. Gita Limbu</h3>
-                            <p class="card-designation">Vice President</p>
-                            <p class="card-text">Committed to community welfare and cultural preservation.</p>
+                    <div class="committee-highlight-card">
+                        <div class="highlight-avatar">
+                            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Committee member avatar">
+                                <circle cx="60" cy="60" r="58" fill="#1a3a5c" />
+                                <circle cx="60" cy="45" r="20" fill="#c9a84c" />
+                                <circle cx="60" cy="95" r="28" fill="#c9a84c" />
+                            </svg>
                         </div>
+                        <h3 class="highlight-name">Vice President</h3>
+                        <p class="highlight-title">Mrs. Sita Limbu</p>
+                        <p class="highlight-desc">Committed to community welfare and cultural preservation.</p>
                     </div>
-                    <div class="card person-card">
-                        <div class="card-body">
-                            <div class="person-avatar">
-                                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="40" cy="40" r="36" stroke="#8B1A1A" stroke-width="2" />
-                                    <circle cx="40" cy="30" r="14" stroke="#8B1A1A" stroke-width="2" />
-                                    <path d="M12 68 C12 52 24 44 40 44 C56 44 68 52 68 68" stroke="#8B1A1A" stroke-width="2" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Shri Kumar Limbu</h3>
-                            <p class="card-designation">Secretary</p>
-                            <p class="card-text">Managing the administrative affairs of the committee.</p>
+                    <div class="committee-highlight-card">
+                        <div class="highlight-avatar">
+                            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Committee member avatar">
+                                <circle cx="60" cy="60" r="58" fill="#1a3a5c" />
+                                <circle cx="60" cy="45" r="20" fill="#c9a84c" />
+                                <circle cx="60" cy="95" r="28" fill="#c9a84c" />
+                            </svg>
                         </div>
+                        <h3 class="highlight-name">Secretary</h3>
+                        <p class="highlight-title">Mr. Raj Kumar Limbu</p>
+                        <p class="highlight-desc">Managing the committee's day-to-day operations efficiently.</p>
                     </div>
+                </div>
+                <div class="section-footer">
+                    <a href="/committee/committee.html" class="btn btn-primary">View Full Committee</a>
                 </div>
             </div>
         </section>
 
         <!-- ===== GALLERY PREVIEW ===== -->
-        <section class="section gallery-preview" aria-label="Gallery preview">
+        <section class="section gallery-preview-section">
             <div class="container">
                 <div class="section-header">
+                    <span class="section-tag">Moments</span>
                     <h2 class="section-title">Gallery</h2>
-                    <a href="gallery/gallery.html" class="btn btn-outline btn-sm">View All</a>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">A glimpse into our community events and activities.</p>
                 </div>
-                <div class="gallery-grid">
-                    <div class="gallery-item" style="background-color: #e8e0d8;"></div>
-                    <div class="gallery-item" style="background-color: #d5cdc4;"></div>
-                    <div class="gallery-item" style="background-color: #c8bfb5;"></div>
-                    <div class="gallery-item" style="background-color: #bfb5aa;"></div>
-                    <div class="gallery-item" style="background-color: #b3a89c;"></div>
-                    <div class="gallery-item" style="background-color: #a69b8e;"></div>
+                <div class="gallery-preview-grid">
+                    <div class="gallery-preview-item">
+                        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallery image placeholder">
+                            <rect width="400" height="300" fill="#dce3ec" />
+                            <text x="200" y="155" font-family="Arial,sans-serif" font-size="20" fill="#8a9aa8" text-anchor="middle">Cultural Event</text>
+                        </svg>
+                    </div>
+                    <div class="gallery-preview-item">
+                        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallery image placeholder">
+                            <rect width="400" height="300" fill="#dce3ec" />
+                            <text x="200" y="155" font-family="Arial,sans-serif" font-size="20" fill="#8a9aa8" text-anchor="middle">Community Meeting</text>
+                        </svg>
+                    </div>
+                    <div class="gallery-preview-item">
+                        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallery image placeholder">
+                            <rect width="400" height="300" fill="#dce3ec" />
+                            <text x="200" y="155" font-family="Arial,sans-serif" font-size="20" fill="#8a9aa8" text-anchor="middle">Cultural Performance</text>
+                        </svg>
+                    </div>
+                    <div class="gallery-preview-item">
+                        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallery image placeholder">
+                            <rect width="400" height="300" fill="#dce3ec" />
+                            <text x="200" y="155" font-family="Arial,sans-serif" font-size="20" fill="#8a9aa8" text-anchor="middle">Workshop</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="section-footer">
+                    <a href="/gallery/gallery.html" class="btn btn-primary">View Full Gallery</a>
                 </div>
             </div>
         </section>
 
         <!-- ===== DOCUMENTS PREVIEW ===== -->
-        <section class="section documents-preview" aria-label="Important documents">
+        <section class="section documents-preview-section">
             <div class="container">
                 <div class="section-header">
+                    <span class="section-tag">Resources</span>
                     <h2 class="section-title">Important Documents</h2>
-                    <a href="documents/documents.html" class="btn btn-outline btn-sm">View All</a>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Access key documents and resources of the committee.</p>
                 </div>
-                <div class="card-grid card-grid-3">
-                    <div class="card doc-card">
-                        <div class="card-body">
-                            <div class="doc-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
-                                    <line x1="16" y1="13" x2="8" y2="13" />
-                                    <line x1="16" y1="17" x2="8" y2="17" />
-                                    <line x1="10" y1="9" x2="8" y2="9" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Constitution of the Sabha</h3>
-                            <p class="card-text">The official constitution and by-laws of the Assam Limbu Mahasabha.</p>
-                            <a href="documents/documents.html" class="card-link">Download PDF</a>
+                <div class="documents-preview-grid">
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M14 4h16l10 10v26a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z" />
+                                <path d="M30 4v10h10" />
+                                <line x1="18" y1="24" x2="30" y2="24" />
+                                <line x1="18" y1="30" x2="30" y2="30" />
+                                <line x1="18" y1="36" x2="26" y2="36" />
+                            </svg>
                         </div>
+                        <h3 class="document-title">Constitution</h3>
+                        <p class="document-desc">The official constitution of Assam Limbu Mahasabha.</p>
+                        <a href="/documents/documents.html" class="btn btn-sm btn-outline">Download</a>
                     </div>
-                    <div class="card doc-card">
-                        <div class="card-body">
-                            <div class="doc-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
-                                    <line x1="16" y1="13" x2="8" y2="13" />
-                                    <line x1="16" y1="17" x2="8" y2="17" />
-                                    <line x1="10" y1="9" x2="8" y2="9" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Membership Form</h3>
-                            <p class="card-text">Official membership application form for new members.</p>
-                            <a href="documents/documents.html" class="card-link">Download PDF</a>
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M14 4h16l10 10v26a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z" />
+                                <path d="M30 4v10h10" />
+                                <line x1="18" y1="24" x2="30" y2="24" />
+                                <line x1="18" y1="30" x2="30" y2="30" />
+                                <line x1="18" y1="36" x2="26" y2="36" />
+                            </svg>
                         </div>
+                        <h3 class="document-title">Membership Form</h3>
+                        <p class="document-desc">Download the official membership application form.</p>
+                        <a href="/documents/documents.html" class="btn btn-sm btn-outline">Download</a>
                     </div>
-                    <div class="card doc-card">
-                        <div class="card-body">
-                            <div class="doc-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
-                                    <line x1="16" y1="13" x2="8" y2="13" />
-                                    <line x1="16" y1="17" x2="8" y2="17" />
-                                    <line x1="10" y1="9" x2="8" y2="9" />
-                                </svg>
-                            </div>
-                            <h3 class="card-title">Annual Report 2025-26</h3>
-                            <p class="card-text">Annual report of the district committee for the session 2025-26.</p>
-                            <a href="documents/documents.html" class="card-link">Download PDF</a>
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M14 4h16l10 10v26a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z" />
+                                <path d="M30 4v10h10" />
+                                <line x1="18" y1="24" x2="30" y2="24" />
+                                <line x1="18" y1="30" x2="30" y2="30" />
+                                <line x1="18" y1="36" x2="26" y2="36" />
+                            </svg>
                         </div>
+                        <h3 class="document-title">Annual Report</h3>
+                        <p class="document-desc">Annual report of the committee's activities and achievements.</p>
+                        <a href="/documents/documents.html" class="btn btn-sm btn-outline">Download</a>
                     </div>
+                </div>
+                <div class="section-footer">
+                    <a href="/documents/documents.html" class="btn btn-primary">View All Documents</a>
                 </div>
             </div>
         </section>
 
         <!-- ===== MEMBERSHIP CTA ===== -->
-        <section class="section membership-cta full-width" aria-label="Membership call to action">
-            <div class="container">
-                <div class="cta-content">
-                    <h2>Join the Assam Limbu Mahasabha</h2>
-                    <p>Become a member of the district committee and contribute to the growth and welfare of the Limbu community in Karbi Anglong and Dima Hasao.</p>
-                    <a href="membership/membership.html" class="btn btn-primary btn-lg">Apply for Membership</a>
+        <section class="section membership-cta-section full-width">
+            <div class="membership-cta-overlay"></div>
+            <div class="container membership-cta-content">
+                <div class="membership-cta-text">
+                    <span class="cta-tag">Join Us</span>
+                    <h2 class="cta-title">Become a Member</h2>
+                    <p class="cta-description">Join the Assam Limbu Mahasabha and be part of a community that works together for progress, culture, and unity. Your membership strengthens our collective voice.</p>
+                    <div class="cta-actions">
+                        <a href="/membership/membership.html" class="btn btn-primary btn-large">Learn About Membership</a>
+                        <a href="/contact/contact.html" class="btn btn-outline btn-large">Contact Us</a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ===== CONTACT PREVIEW ===== -->
-        <section class="section contact-preview" aria-label="Contact information">
+        <section class="section contact-preview-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Contact Us</h2>
-                    <a href="contact/contact.html" class="btn btn-outline btn-sm">View All</a>
+                    <span class="section-tag">Connect</span>
+                    <h2 class="section-title">Get in Touch</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Reach out to us for any inquiries, suggestions, or support.</p>
                 </div>
-                <div class="contact-grid">
-                    <div class="contact-item">
-                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                            <circle cx="12" cy="10" r="3" />
-                        </svg>
-                        <div>
-                            <h4>Office Address</h4>
-                            <p>Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, Diphu, Karbi Anglong, Assam - 782460</p>
+                <div class="contact-preview-grid">
+                    <div class="contact-info-card">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
                         </div>
+                        <h3 class="contact-label">Office Address</h3>
+                        <p class="contact-value">Diphu, Karbi Anglong, Assam, India</p>
                     </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="2" ry="2" />
-                            <path d="M22 6L12 13 2 6" />
-                        </svg>
-                        <div>
-                            <h4>Email</h4>
-                            <p><a href="mailto:info@assamlimbumahasabha.org">info@assamlimbumahasabha.org</a></p>
+                    <div class="contact-info-card">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
                         </div>
+                        <h3 class="contact-label">Email</h3>
+                        <p class="contact-value">info@assamlimbumahasabha.org</p>
                     </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z" />
-                        </svg>
-                        <div>
-                            <h4>Phone</h4>
-                            <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+                    <div class="contact-info-card">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92Z" />
+                            </svg>
                         </div>
+                        <h3 class="contact-label">Phone</h3>
+                        <p class="contact-value">+91 12345 67890</p>
                     </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        <div>
-                            <h4>Office Timing</h4>
-                            <p>Monday – Friday: 10:00 AM – 5:00 PM</p>
-                            <p>Saturday: 10:00 AM – 2:00 PM</p>
+                    <div class="contact-info-card">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
                         </div>
+                        <h3 class="contact-label">Office Timing</h3>
+                        <p class="contact-value">Mon–Sat: 10:00 AM – 5:00 PM</p>
                     </div>
+                </div>
+                <div class="section-footer">
+                    <a href="/contact/contact.html" class="btn btn-primary">Visit Contact Page</a>
                 </div>
             </div>
         </section>
@@ -390,45 +490,51 @@
     </main>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="site-footer">
+    <footer class="site-footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="footer-brand-inner">
-                        <svg class="footer-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="40" cy="40" r="36" stroke="#c9a87c" stroke-width="3" />
-                            <circle cx="40" cy="40" r="28" stroke="#c9a87c" stroke-width="2" />
-                            <path d="M40 8 L44 28 L64 28 L48 42 L56 62 L40 50 L24 62 L32 42 L16 28 L36 28 L40 8Z" fill="#c9a87c" />
-                            <rect x="36" y="46" width="8" height="10" rx="2" fill="#c9a87c" />
-                        </svg>
-                        <div>
-                            <h3>Assam Limbu Mahasabha</h3>
-                            <p>Karbi Anglong &amp; Dima Hasao District Committee</p>
-                        </div>
+                    <svg class="footer-logo-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <circle cx="30" cy="30" r="28" fill="#1a3a5c" stroke="#c9a84c" stroke-width="2" />
+                        <circle cx="30" cy="30" r="22" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="3 3" />
+                        <path d="M30 10L33 22L45 22L36 28L39 40L30 34L21 40L24 28L15 22L27 22L30 10Z" fill="#c9a84c" opacity="0.9" />
+                    </svg>
+                    <div>
+                        <span class="footer-org">Assam Limbu Mahasabha</span>
+                        <span class="footer-district">Karbi Anglong &amp; Dima Hasao District Committee</span>
                     </div>
                 </div>
                 <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="about/about.html">About</a></li>
-                        <li><a href="committee/committee.html">Committee</a></li>
-                        <li><a href="updates/update.html">Updates</a></li>
-                        <li><a href="events/event.html">Events</a></li>
-                        <li><a href="gallery/gallery.html">Gallery</a></li>
-                        <li><a href="membership/membership.html">Membership</a></li>
-                        <li><a href="documents/documents.html">Documents</a></li>
-                        <li><a href="contact/contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>Contact</h4>
-                    <p>Diphu, Karbi Anglong, Assam - 782460</p>
-                    <p><a href="mailto:info@assamlimbumahasabha.org">info@assamlimbumahasabha.org</a></p>
-                    <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+                    <div class="footer-links-col">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="/index.html">Home</a></li>
+                            <li><a href="/about/about.html">About</a></li>
+                            <li><a href="/committee/committee.html">Committee</a></li>
+                            <li><a href="/updates/update.html">Updates</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-col">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="/events/event.html">Events</a></li>
+                            <li><a href="/gallery/gallery.html">Gallery</a></li>
+                            <li><a href="/membership/membership.html">Membership</a></li>
+                            <li><a href="/documents/documents.html">Documents</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-col">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="/contact/contact.html">Contact</a></li>
+                            <li><a href="mailto:info@assamlimbumahasabha.org">Email Us</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Assam Limbu Mahasabha – Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                <p class="footer-credit">Built with dedication for the community.</p>
             </div>
         </div>
     </footer>
