@@ -28,7 +28,12 @@
                 </a>
             </div>
 
-            <nav class="header-nav" aria-label="Main navigation">
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
                 <ul class="nav-list">
                     <li><a href="../index.html" class="nav-link">Home</a></li>
                     <li class="dropdown">
@@ -99,81 +104,6 @@
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
                 </div>
-                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="mobile-nav" aria-hidden="true">
-            <ul class="mobile-nav-list">
-                <li><a href="../index.html" class="mobile-nav-link">Home</a></li>
-                <li class="dropdown">
-                    <a href="../about/about.html" class="mobile-nav-link dropdown-toggle">About</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../about/about.html#history">History</a></li>
-                        <li><a href="../about/about.html#vision-mission">Vision &amp; Mission</a></li>
-                        <li><a href="../about/about.html#objectives">Objectives</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../committee/committee.html" class="mobile-nav-link dropdown-toggle">Committee</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../committee/committee.html#office-bearers">Office Bearers</a></li>
-                        <li><a href="../committee/committee.html#executive">Executive Members</a></li>
-                        <li><a href="../committee/committee.html#branches">Branch Units</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../updates/update.html" class="mobile-nav-link dropdown-toggle">Updates</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../updates/update.html#latest">Latest News</a></li>
-                        <li><a href="../updates/update.html#announcements">Announcements</a></li>
-                        <li><a href="../updates/update.html#press">Press Releases</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../events/event.html" class="mobile-nav-link dropdown-toggle">Events</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../events/event.html#upcoming">Upcoming</a></li>
-                        <li><a href="../events/event.html#past">Past Events</a></li>
-                        <li><a href="../events/event.html#gallery">Photo Gallery</a></li>
-                    </ul>
-                </li>
-                <li><a href="../gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
-                <li class="dropdown">
-                    <a href="../membership/membership.html" class="mobile-nav-link dropdown-toggle">Membership</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../membership/membership.html#how-to-join">How to Join</a></li>
-                        <li><a href="../membership/membership.html#benefits">Benefits</a></li>
-                        <li><a href="../membership/membership.html#eligibility">Eligibility</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../documents/documents.html" class="mobile-nav-link active dropdown-toggle">Documents</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../documents/documents.html#constitution">Constitution</a></li>
-                        <li><a href="../documents/documents.html#forms">Membership Form</a></li>
-                        <li><a href="../documents/documents.html#reports">Annual Report</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../contact/contact.html" class="mobile-nav-link dropdown-toggle">Contact</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../contact/contact.html#office">Office Address</a></li>
-                        <li><a href="../contact/contact.html#email">Email Us</a></li>
-                        <li><a href="../contact/contact.html#form">Contact Form</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="mobile-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
         </div>
     </header>
@@ -181,14 +111,14 @@
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
-        <!-- ===== PAGE HERO (mini) ===== -->
-        <section class="hero-section full-width" style="min-height:240px; padding:var(--space-3xl) 0;">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text" style="max-width:100%; text-align:center;">
-                    <span class="hero-badge">Resources</span>
-                    <h1 class="hero-title" style="font-size:var(--fs-4xl);">Documents &amp; Downloads</h1>
-                    <p class="hero-subtitle" style="font-size:var(--fs-xl);">Access official documents, forms, and resources</p>
+        <!-- ===== PAGE HEADER ===== -->
+        <section class="section page-header-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Resources</span>
+                    <h1 class="section-title">Documents &amp; Downloads</h1>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Access official documents, forms, and resources</p>
                 </div>
             </div>
         </section>
@@ -202,9 +132,9 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">The official constitution of the Assam Limbu Mahasabha.</p>
                 </div>
-                <div style="max-width:720px; margin:0 auto;">
-                    <div class="document-card reveal" style="text-align:center; border-color:var(--color-accent);">
-                        <div class="document-icon" style="color:var(--color-accent);">
+                <div class="constitution-wrapper">
+                    <div class="document-card featured-card reveal">
+                        <div class="document-icon featured-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 4h16l10 10v26a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z" />
                                 <path d="M30 4v10h10" />
@@ -216,7 +146,7 @@
                         </div>
                         <h3 class="document-title">Constitution of Assam Limbu Mahasabha</h3>
                         <p class="document-desc">The constitution outlines the governing principles, organizational structure, and operational guidelines of the Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee.</p>
-                        <div style="display:flex; gap:var(--space-sm); justify-content:center; flex-wrap:wrap;">
+                        <div class="document-actions">
                             <a href="#" class="btn btn-primary">Download PDF</a>
                             <a href="#" class="btn btn-outline">View Online</a>
                         </div>
@@ -234,7 +164,7 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">Download the official membership application forms.</p>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-lg); max-width:800px; margin:0 auto;">
+                <div class="documents-grid-2">
                     <div class="document-card reveal">
                         <div class="document-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -275,7 +205,7 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">Annual reports detailing the committee's activities, achievements, and financial overview.</p>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-lg); max-width:900px; margin:0 auto;">
+                <div class="documents-grid-3">
                     <div class="document-card reveal">
                         <div class="document-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -328,7 +258,7 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">Official notices and circulars issued by the committee.</p>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-lg); max-width:800px; margin:0 auto;">
+                <div class="documents-grid-2">
                     <div class="document-card reveal">
                         <div class="document-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -368,7 +298,7 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">Minutes and documents from committee meetings.</p>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-lg); max-width:900px; margin:0 auto;">
+                <div class="documents-grid-3">
                     <div class="document-card reveal">
                         <div class="document-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -421,7 +351,7 @@
                     <div class="section-divider"></div>
                     <p class="section-subtitle">Additional resources and reference materials.</p>
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-lg); max-width:900px; margin:0 auto;">
+                <div class="documents-grid-3">
                     <div class="document-card reveal">
                         <div class="document-icon">
                             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
