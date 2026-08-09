@@ -1,12 +1,12 @@
 /* ============================================================
    carousel.css — Full-width image carousel
-   Fully responsive with adaptive height and controls
+   Taller height with full responsiveness
    ============================================================ */
 
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 480px;
     overflow: hidden;
     background: var(--color-primary-dark);
 }
@@ -32,7 +32,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(26, 58, 92, 0.30);
+    background: rgba(26, 58, 92, 0.25);
     pointer-events: none;
 }
 
@@ -87,7 +87,7 @@
 /* Carousel indicators (dots) */
 .carousel-indicators {
     position: absolute;
-    bottom: 20px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -129,16 +129,27 @@
 /* 1024px - tablets, small laptops */
 @media (max-width: 1024px) {
     .hero-carousel {
-        height: 340px;
+        height: 400px;
+    }
+    .carousel-btn {
+        width: 44px;
+        height: 44px;
+    }
+    .carousel-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+    .carousel-indicators {
+        bottom: 20px;
+        gap: 8px;
     }
 }
 
 /* 768px - tablets, large phones */
 @media (max-width: 768px) {
     .hero-carousel {
-        height: 280px;
+        height: 340px;
     }
-
     .carousel-btn {
         width: 40px;
         height: 40px;
@@ -153,7 +164,10 @@
     .carousel-btn.next {
         right: 12px;
     }
-
+    .carousel-indicators {
+        bottom: 16px;
+        gap: 8px;
+    }
     .carousel-dot {
         width: 8px;
         height: 8px;
@@ -162,26 +176,20 @@
         width: 12px;
         height: 12px;
     }
-
-    .carousel-indicators {
-        gap: 8px;
-        bottom: 16px;
-    }
 }
 
-/* 480px - small phones */
+/* 480px - mobile phones */
 @media (max-width: 480px) {
     .hero-carousel {
-        height: 200px;
+        height: 250px;
     }
-
     .carousel-btn {
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
     }
     .carousel-btn svg {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
     }
     .carousel-btn.prev {
         left: 8px;
@@ -189,9 +197,8 @@
     .carousel-btn.next {
         right: 8px;
     }
-
     .carousel-indicators {
-        bottom: 10px;
+        bottom: 12px;
         gap: 6px;
     }
     .carousel-dot {
@@ -207,11 +214,11 @@
 /* 360px - very small devices */
 @media (max-width: 360px) {
     .hero-carousel {
-        height: 160px;
+        height: 200px;
     }
     .carousel-btn {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
     }
     .carousel-btn svg {
         width: 14px;
@@ -223,12 +230,38 @@
     .carousel-btn.next {
         right: 4px;
     }
+    .carousel-indicators {
+        bottom: 8px;
+        gap: 4px;
+    }
+    .carousel-dot {
+        width: 5px;
+        height: 5px;
+    }
+    .carousel-dot.active {
+        width: 8px;
+        height: 8px;
+    }
 }
 
 /* 1400px+ - large desktops */
 @media (min-width: 1400px) {
     .hero-carousel {
-        height: 500px;
+        height: 560px;
+    }
+    .carousel-btn {
+        width: 56px;
+        height: 56px;
+    }
+    .carousel-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+    .carousel-btn.prev {
+        left: 28px;
+    }
+    .carousel-btn.next {
+        right: 28px;
     }
 }
 
