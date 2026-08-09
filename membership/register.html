@@ -7,183 +7,6 @@
     <meta name="description" content="Apply for membership in the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee. Fill out the registration form to join our community." />
     <link rel="stylesheet" href="../style.css" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231a3a5c'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23c9a84c' stroke-width='3'/%3E%3Ctext x='50' y='58' font-family='Arial,sans-serif' font-size='36' font-weight='bold' fill='%23c9a84c' text-anchor='middle'%3EALM%3C/text%3E%3C/svg%3E" />
-    <style>
-        /* Page-specific form styles */
-        .form-section {
-            max-width: 720px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: var(--space-lg);
-        }
-
-        .form-label {
-            display: block;
-            font-size: var(--fs-small);
-            font-weight: 600;
-            color: var(--color-primary-dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .form-label .required {
-            color: #cc3333;
-            margin-left: 2px;
-        }
-
-        .form-control {
-            display: block;
-            width: 100%;
-            height: var(--input-height);
-            padding: 0 var(--space-md);
-            font-family: var(--ff-body);
-            font-size: var(--fs-body);
-            color: var(--color-text);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-            appearance: none;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.10);
-        }
-
-        .form-control.error {
-            border-color: #cc3333;
-        }
-
-        .form-control.error:focus {
-            box-shadow: 0 0 0 3px rgba(204, 51, 51, 0.15);
-        }
-
-        .form-control:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        select.form-control {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6a7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 18px;
-            padding-right: 40px;
-        }
-
-        textarea.form-control {
-            height: auto;
-            min-height: 100px;
-            padding: var(--space-sm) var(--space-md);
-            resize: vertical;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-md);
-        }
-
-        .form-hint {
-            display: block;
-            font-size: var(--fs-xs);
-            color: var(--color-text-muted);
-            margin-top: var(--space-xs);
-        }
-
-        .form-checkbox {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--space-sm);
-        }
-
-        .form-checkbox input[type="checkbox"] {
-            flex-shrink: 0;
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-            accent-color: var(--color-primary);
-            cursor: pointer;
-        }
-
-        .form-checkbox label {
-            font-size: var(--fs-small);
-            color: var(--color-text-muted);
-            cursor: pointer;
-        }
-
-        .form-checkbox label a {
-            color: var(--color-primary);
-            text-decoration: underline;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: var(--space-md);
-            margin-top: var(--space-xl);
-            padding-top: var(--space-lg);
-            border-top: 1px solid var(--color-border);
-        }
-
-        .form-actions .btn {
-            min-width: 140px;
-        }
-
-        .form-success {
-            display: none;
-            text-align: center;
-            padding: var(--space-2xl) var(--space-lg);
-            background: var(--color-surface-alt);
-            border: 2px solid var(--color-accent);
-            border-radius: var(--radius);
-        }
-
-        .form-success.visible {
-            display: block;
-        }
-
-        .form-success svg {
-            width: 64px;
-            height: 64px;
-            color: var(--color-accent);
-            margin: 0 auto var(--space-md);
-        }
-
-        .form-success h3 {
-            font-family: var(--ff-heading);
-            font-size: var(--fs-2xl);
-            color: var(--color-primary-dark);
-            margin-bottom: var(--space-sm);
-        }
-
-        .form-success p {
-            color: var(--color-text-muted);
-            max-width: 480px;
-            margin: 0 auto var(--space-md);
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .form-actions {
-                flex-direction: column;
-            }
-            .form-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .form-section {
-                padding: 0;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -205,7 +28,12 @@
                 </a>
             </div>
 
-            <nav class="header-nav" aria-label="Main navigation">
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
                 <ul class="nav-list">
                     <li><a href="../index.html" class="nav-link">Home</a></li>
                     <li class="dropdown">
@@ -276,81 +104,6 @@
                     </svg>
                     <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
                 </div>
-                <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                    <span class="toggle-bar"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="mobile-nav" aria-hidden="true">
-            <ul class="mobile-nav-list">
-                <li><a href="../index.html" class="mobile-nav-link">Home</a></li>
-                <li class="dropdown">
-                    <a href="../about/about.html" class="mobile-nav-link dropdown-toggle">About</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../about/about.html#history">History</a></li>
-                        <li><a href="../about/about.html#vision-mission">Vision &amp; Mission</a></li>
-                        <li><a href="../about/about.html#objectives">Objectives</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../committee/committee.html" class="mobile-nav-link dropdown-toggle">Committee</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../committee/committee.html#office-bearers">Office Bearers</a></li>
-                        <li><a href="../committee/committee.html#executive">Executive Members</a></li>
-                        <li><a href="../committee/committee.html#branches">Branch Units</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../updates/update.html" class="mobile-nav-link dropdown-toggle">Updates</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../updates/update.html#latest">Latest News</a></li>
-                        <li><a href="../updates/update.html#announcements">Announcements</a></li>
-                        <li><a href="../updates/update.html#press">Press Releases</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../events/event.html" class="mobile-nav-link dropdown-toggle">Events</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../events/event.html#upcoming">Upcoming</a></li>
-                        <li><a href="../events/event.html#past">Past Events</a></li>
-                        <li><a href="../events/event.html#gallery">Photo Gallery</a></li>
-                    </ul>
-                </li>
-                <li><a href="../gallery/gallery.html" class="mobile-nav-link">Gallery</a></li>
-                <li class="dropdown">
-                    <a href="../membership/membership.html" class="mobile-nav-link dropdown-toggle">Membership</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../membership/membership.html#how-to-join">How to Join</a></li>
-                        <li><a href="../membership/membership.html#benefits">Benefits</a></li>
-                        <li><a href="../membership/membership.html#eligibility">Eligibility</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../documents/documents.html" class="mobile-nav-link dropdown-toggle">Documents</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../documents/documents.html#constitution">Constitution</a></li>
-                        <li><a href="../documents/documents.html#forms">Membership Form</a></li>
-                        <li><a href="../documents/documents.html#reports">Annual Report</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="../contact/contact.html" class="mobile-nav-link dropdown-toggle">Contact</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../contact/contact.html#office">Office Address</a></li>
-                        <li><a href="../contact/contact.html#email">Email Us</a></li>
-                        <li><a href="../contact/contact.html#form">Contact Form</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="mobile-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="search" class="search-input" placeholder="Search..." aria-label="Search the website" />
             </div>
         </div>
     </header>
@@ -358,24 +111,24 @@
     <!-- ===== MAIN CONTENT ===== -->
     <main>
 
-        <!-- ===== PAGE HERO (mini) ===== -->
-        <section class="hero-section full-width" style="min-height:220px; padding:var(--space-3xl) 0;">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text" style="max-width:100%; text-align:center;">
-                    <span class="hero-badge">Apply Now</span>
-                    <h1 class="hero-title" style="font-size:var(--fs-4xl);">Membership Registration</h1>
-                    <p class="hero-subtitle" style="font-size:var(--fs-xl);">Join the Assam Limbu Mahasabha community</p>
+        <!-- ===== PAGE HEADER ===== -->
+        <section class="section page-header-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Apply Now</span>
+                    <h1 class="section-title">Membership Registration</h1>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Join the Assam Limbu Mahasabha community</p>
                 </div>
             </div>
         </section>
 
         <!-- ===== REGISTRATION FORM ===== -->
-        <section class="section">
+        <section class="section form-section">
             <div class="container">
-                <div class="form-section">
+                <div class="form-wrapper">
 
-                    <!-- Form Success Message (hidden by default) -->
+                    <!-- Form Success Message -->
                     <div class="form-success" id="formSuccess">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -392,24 +145,24 @@
                             <span class="section-tag">Application Form</span>
                             <h2 class="section-title" style="font-size:var(--fs-2xl);">Personal Details</h2>
                             <div class="section-divider"></div>
-                            <p class="section-subtitle" style="font-size:var(--fs-body);">Please fill in all required fields marked with <span style="color:#cc3333;">*</span></p>
+                            <p class="section-subtitle" style="font-size:var(--fs-body);">Please fill in all required fields marked with <span class="required-star">*</span></p>
                         </div>
 
                         <!-- Personal Information -->
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="fullName">Full Name <span class="required">*</span></label>
+                                <label class="form-label" for="fullName">Full Name <span class="required-star">*</span></label>
                                 <input type="text" id="fullName" class="form-control" placeholder="Your full name" required />
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="dob">Date of Birth <span class="required">*</span></label>
+                                <label class="form-label" for="dob">Date of Birth <span class="required-star">*</span></label>
                                 <input type="date" id="dob" class="form-control" required />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="fatherName">Father's Name <span class="required">*</span></label>
+                                <label class="form-label" for="fatherName">Father's Name <span class="required-star">*</span></label>
                                 <input type="text" id="fatherName" class="form-control" placeholder="Father's full name" required />
                             </div>
                             <div class="form-group">
@@ -420,7 +173,7 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="gender">Gender <span class="required">*</span></label>
+                                <label class="form-label" for="gender">Gender <span class="required-star">*</span></label>
                                 <select id="gender" class="form-control" required>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
@@ -448,17 +201,17 @@
 
                         <!-- Contact Information -->
                         <div class="form-group">
-                            <label class="form-label" for="address">Residential Address <span class="required">*</span></label>
+                            <label class="form-label" for="address">Residential Address <span class="required-star">*</span></label>
                             <textarea id="address" class="form-control" placeholder="House number, street, colony, landmark" rows="3" required></textarea>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="village">Village / Town <span class="required">*</span></label>
+                                <label class="form-label" for="village">Village / Town <span class="required-star">*</span></label>
                                 <input type="text" id="village" class="form-control" placeholder="Village or town name" required />
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="district">District <span class="required">*</span></label>
+                                <label class="form-label" for="district">District <span class="required-star">*</span></label>
                                 <select id="district" class="form-control" required>
                                     <option value="">Select District</option>
                                     <option value="karbi_anglong">Karbi Anglong</option>
@@ -470,22 +223,22 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="state">State <span class="required">*</span></label>
+                                <label class="form-label" for="state">State <span class="required-star">*</span></label>
                                 <input type="text" id="state" class="form-control" placeholder="Assam" value="Assam" required />
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="pincode">PIN Code <span class="required">*</span></label>
+                                <label class="form-label" for="pincode">PIN Code <span class="required-star">*</span></label>
                                 <input type="text" id="pincode" class="form-control" placeholder="6-digit PIN code" pattern="[0-9]{6}" required />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
+                                <label class="form-label" for="phone">Phone Number <span class="required-star">*</span></label>
                                 <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" pattern="[0-9]{10}" required />
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                                <label class="form-label" for="email">Email Address <span class="required-star">*</span></label>
                                 <input type="email" id="email" class="form-control" placeholder="your@email.com" required />
                             </div>
                         </div>
@@ -499,7 +252,7 @@
                         <!-- Membership Details -->
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="membershipType">Membership Type <span class="required">*</span></label>
+                                <label class="form-label" for="membershipType">Membership Type <span class="required-star">*</span></label>
                                 <select id="membershipType" class="form-control" required>
                                     <option value="">Select Type</option>
                                     <option value="regular">Regular Member</option>
@@ -531,12 +284,12 @@
                         </div>
 
                         <!-- Declaration -->
-                        <div style="margin-top:var(--space-xl); padding-top:var(--space-lg); border-top:1px solid var(--color-border);">
+                        <div class="declaration-section">
                             <div class="form-group">
                                 <div class="form-checkbox">
                                     <input type="checkbox" id="declaration" required />
                                     <label for="declaration">
-                                        I hereby declare that all the information provided in this application is true and correct to the best of my knowledge. I agree to abide by the constitution, rules, and regulations of the Assam Limbu Mahasabha. <span class="required">*</span>
+                                        I hereby declare that all the information provided in this application is true and correct to the best of my knowledge. I agree to abide by the constitution, rules, and regulations of the Assam Limbu Mahasabha. <span class="required-star">*</span>
                                     </label>
                                 </div>
                             </div>
@@ -555,8 +308,8 @@
                             <button type="reset" class="btn btn-outline btn-large">Reset Form</button>
                         </div>
 
-                        <p style="font-size:var(--fs-xs); color:var(--color-text-muted); text-align:center; margin-top:var(--space-md);">
-                            Fields marked with <span style="color:#cc3333;">*</span> are required.
+                        <p class="form-footnote">
+                            Fields marked with <span class="required-star">*</span> are required.
                         </p>
                     </form>
                 </div>
@@ -628,7 +381,6 @@
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
 
-                    // Basic validation check
                     var requiredFields = form.querySelectorAll('[required]');
                     var isValid = true;
 
@@ -638,14 +390,12 @@
                             field.classList.add('error');
                             isValid = false;
                         }
-                        // Special validation for checkbox
                         if (field.type === 'checkbox' && !field.checked) {
                             field.classList.add('error');
                             isValid = false;
                         }
                     });
 
-                    // Additional validation for email pattern
                     var emailField = document.getElementById('email');
                     if (emailField && emailField.value.trim()) {
                         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -655,7 +405,6 @@
                         }
                     }
 
-                    // Additional validation for phone pattern
                     var phoneField = document.getElementById('phone');
                     if (phoneField && phoneField.value.trim()) {
                         var phonePattern = /^[0-9]{10}$/;
@@ -665,7 +414,6 @@
                         }
                     }
 
-                    // Additional validation for pincode pattern
                     var pincodeField = document.getElementById('pincode');
                     if (pincodeField && pincodeField.value.trim()) {
                         var pincodePattern = /^[0-9]{6}$/;
@@ -676,7 +424,6 @@
                     }
 
                     if (!isValid) {
-                        // Scroll to the first error
                         var firstError = form.querySelector('.error');
                         if (firstError) {
                             firstError.focus();
@@ -685,15 +432,11 @@
                         return;
                     }
 
-                    // If valid, show success message and hide form
                     form.style.display = 'none';
                     successDiv.classList.add('visible');
-
-                    // Scroll to success message
                     successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 });
 
-                // Remove error styling on input
                 form.querySelectorAll('input, select, textarea').forEach(function(field) {
                     field.addEventListener('input', function() {
                         this.classList.remove('error');
@@ -703,7 +446,6 @@
                     });
                 });
 
-                // Remove error from checkbox on change
                 var declarationCheck = document.getElementById('declaration');
                 if (declarationCheck) {
                     declarationCheck.addEventListener('change', function() {
