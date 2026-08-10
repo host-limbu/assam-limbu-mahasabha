@@ -95,94 +95,144 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO (same style as about.html) -->
-            <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
+            <!-- HERO (same style as about page) -->
+            <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
                         <p class="hero-tag" data-i18n="update-category">Announcement</p>
-                        <h1 style="font-size: 2.6rem;" data-i18n="update-1-title">New District Committee Members Elected</h1>
-                        <p style="color: rgba(255,255,255,0.7);" data-i18n="update-1-subtitle">2026–2028 term committee announced</p>
+                        <h1 style="font-size: 2.6rem;">New District Committee Members Elected</h1>
+                        <p style="color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto;">
+                            2026–2028 term committee announced
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- UPDATE DETAIL CONTENT — identical structure to about.html -->
+            <!-- UPDATE DETAIL SECTION (same layout as about page "Our Story") -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <article style="max-width: 800px; margin: 0 auto;">
+                    <div class="section-label" data-i18n="nav-updates">Update</div>
+                    <h2>New District Committee Members Elected</h2>
 
-                        <time datetime="2026-08-10" style="display: block; font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: var(--spacing-sm);">10 August 2026</time>
-                        <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: var(--spacing-md);">
-                            <strong data-i18n="update-category">Category:</strong> Announcement
-                        </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: start; margin-top: var(--spacing-lg);">
 
-                        <p style="font-size: 1.1rem; font-weight: var(--font-medium);" data-i18n="update-1-lead">
-                            The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, has announced the newly elected committee members for the 2026–2028 term.
-                        </p>
+                        <!-- Left Column: Main Content -->
+                        <div>
 
-                        <p data-i18n="update-1-text1">
-                            The election was held on 5 August 2026 at the district committee office in Diphu,
-                            with representatives from all major villages participating. The new committee
-                            brings together experienced leaders and fresh perspectives to serve the community.
-                        </p>
+                            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                    <strong>Date:</strong> <time datetime="2026-08-10">10 August 2026</time>
+                                </p>
+                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                    <strong data-i18n="update-category">Category:</strong> Announcement
+                                </p>
+                            </div>
 
-                        <h2 style="font-size: 1.5rem; margin-top: var(--spacing-lg);" data-i18n="update-1-heading1">Elected Members</h2>
+                            <p style="font-size: 1.1rem; font-weight: var(--font-medium);">
+                                The Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee, has announced the newly elected committee members for the 2026–2028 term.
+                            </p>
 
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>President:</strong> Purna Limbu
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Vice President:</strong> Karna Subba
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>General Secretary:</strong> Mina Rai
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Treasurer:</strong> Dawa Limbu
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Joint Secretary:</strong> Samir Chemjong
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Women's Wing Coordinator:</strong> Pabitra Muringla
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Youth Wing Coordinator:</strong> Bikram Thebe
-                            </li>
-                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
-                                <strong>Cultural Secretary:</strong> Sita Limbu
-                            </li>
-                            <li style="padding: 0.5rem 0;">
-                                <strong>Executive Member:</strong> Ramesh Rumba
-                            </li>
-                        </ul>
+                            <p>
+                                The election was held on 5 August 2026 at the district committee office in Diphu,
+                                with representatives from all major villages participating. The new committee
+                                brings together experienced leaders and fresh perspectives to serve the community.
+                            </p>
 
-                        <h2 style="font-size: 1.5rem; margin-top: var(--spacing-lg);" data-i18n="update-1-heading2">New Term, Renewed Commitment</h2>
-                        <p data-i18n="update-1-text2">
-                            The newly elected committee has pledged to work with renewed energy and commitment
-                            towards the welfare of the Limbu community. Key priorities include expanding
-                            educational scholarships, organizing cultural events, and strengthening community
-                            outreach programs.
-                        </p>
-                        <p data-i18n="update-1-text3">
-                            The committee extends its gratitude to all members who participated in the election
-                            process and looks forward to serving the community with dedication and transparency.
-                        </p>
+                            <h3 style="font-size: 1.3rem; margin-top: var(--spacing-lg);">Elected Members</h3>
 
-                        <h2 style="font-size: 1.5rem; margin-top: var(--spacing-lg);" data-i18n="update-1-heading3">Felicitation Ceremony</h2>
-                        <p data-i18n="update-1-text4">
-                            A formal felicitation ceremony for the new committee will be held on 25 August 2026
-                            at the community hall in Diphu. All community members are invited to attend and
-                            extend their support to the new leadership.
-                        </p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>President:</strong> Bal Bahadur Subba (Loksom)
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Working President:</strong> Tilak Subba (Kondangwa)
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Vice President:</strong> Dil Bahadur Subba (Khapung), Indra Bahadur Subba, Jibon Subba, Tek Bahadur Subba, Joya Limbu
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>General Secretary:</strong> Subash Subba (Kerung)
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Assistant General Secretary:</strong> Suk Bahadur Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Assistant Secretary:</strong> Mon Bahadur Subba, Puja Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Treasurer:</strong> Jagat Bahadur Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Cultural Secretary:</strong> Narayan Subba (Khapung)
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Organizing Secretary:</strong> Dhan Bahadur Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Assistant Organizing Secretary:</strong> Subash Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Education Secretary:</strong> Sher Bahadur Subba
+                                </li>
+                                <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                    <strong>Publicity Secretary:</strong> Yadav Subba, Raj Limbu, Santa Bahadur Subba
+                                </li>
+                            </ul>
 
-                        <!-- Back link -->
-                        <p style="margin-top: var(--spacing-xl);">
-                            <a href="updates.html" style="font-weight: var(--font-medium);" data-i18n="update-back">&larr; Back to Updates</a>
-                        </p>
+                            <h3 style="font-size: 1.3rem; margin-top: var(--spacing-lg);">New Term, Renewed Commitment</h3>
+                            <p>
+                                The newly elected committee has pledged to work with renewed energy and commitment
+                                towards the welfare of the Limbu community. Key priorities include expanding
+                                educational scholarships, organizing cultural events, and strengthening community
+                                outreach programs.
+                            </p>
+                            <p>
+                                The committee extends its gratitude to all members who participated in the election
+                                process and looks forward to serving the community with dedication and transparency.
+                            </p>
 
-                    </article>
+                            <h3 style="font-size: 1.3rem; margin-top: var(--spacing-lg);">Felicitation Ceremony</h3>
+                            <p>
+                                A formal felicitation ceremony for the new committee will be held on 25 August 2026
+                                at the community hall in Diphu. All community members are invited to attend and
+                                extend their support to the new leadership.
+                            </p>
+
+                        </div>
+
+                        <!-- Right Column: Sidebar / Quick Info (styled like the quote block on about page) -->
+                        <div>
+                            <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); padding: var(--spacing-lg); border: 1px solid var(--color-border); margin-bottom: var(--spacing-lg);">
+                                <h3 style="font-size: 1.1rem; margin-top: 0;">Update at a Glance</h3>
+                                <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: var(--color-text-muted);">
+                                    <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                        <strong>Date:</strong> 10 August 2026
+                                    </li>
+                                    <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--color-border);">
+                                        <strong>Category:</strong> Announcement
+                                    </li>
+                                    <li style="padding: 0.4rem 0;">
+                                        <strong>Term:</strong> 2026–2028
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <blockquote style="font-style: italic; font-size: 1rem; color: var(--color-text); border-left: 4px solid var(--color-primary); padding-left: var(--spacing-md); margin: 0;">
+                                "This is a new chapter for our community. With fresh leadership and renewed
+                                commitment, we will continue to serve the Limbu people with integrity and
+                                dedication."
+                            </blockquote>
+                            <p style="margin-top: var(--spacing-sm); font-weight: var(--font-medium); color: var(--color-primary);">
+                                — Bal Bahadur Subba, President
+                            </p>
+
+                            <!-- Back link -->
+                            <p style="margin-top: var(--spacing-lg);">
+                                <a href="updates.html" style="font-weight: var(--font-medium);" data-i18n="update-back">&larr; Back to Updates</a>
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
             </section>
 
