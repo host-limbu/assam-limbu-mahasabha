@@ -1,5 +1,4 @@
 /* pagination.css – Styling for pagination controls */
-/* (Not used in static pages, but kept for completeness) */
 
 .pagination-controls {
   display: flex;
@@ -23,6 +22,7 @@
   transition: background var(--transition-fast), border-color var(--transition-fast);
   min-width: 40px;
   text-align: center;
+  font-family: inherit;
 }
 
 .pagination-controls button:hover:not(:disabled) {
@@ -45,6 +45,7 @@
   background: var(--color-primary);
 }
 
+/* Mobile responsive */
 @media (max-width: 480px) {
   .pagination-controls {
     gap: var(--spacing-xs);
