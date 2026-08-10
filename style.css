@@ -561,7 +561,7 @@ p {
 
 .event-card img {
   width: 100%;
-  height: 180px;
+  aspect-ratio: 3 / 2;          /* 3:2 ratio – standard landscape */
   object-fit: cover;
   background: var(--color-grey-light);
 }
