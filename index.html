@@ -9,9 +9,12 @@
 </head>
 <body>
 
-  <!-- ===== HEADER (Consistent Navigation) ===== -->
+  <!-- ============================================================
+       FULL-WIDTH HEADER
+  ============================================================ -->
   <header class="site-header" role="banner">
     <div class="header-inner">
+      <!-- Brand -->
       <div class="site-brand">
         <a href="index.html">
           <span class="brand-main">Assam Limbu Mahasabha</span>
@@ -19,39 +22,43 @@
         </a>
       </div>
 
+      <!-- Mobile Toggle -->
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
 
+      <!-- Navigation -->
       <nav class="main-nav" id="mainNav" role="navigation" aria-label="Main navigation">
         <ul class="nav-list">
           <li><a href="index.html" class="active">Home</a></li>
           <li class="has-dropdown">
             <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">About</button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="about.html" role="menuitem">About Us</a></li>
-              <li><a href="organization.html" role="menuitem">Our Organization</a></li>
-              <li><a href="committee.html" role="menuitem">Committee</a></li>
-              <li><a href="objectives.html" role="menuitem">Objectives</a></li>
+              <li><a href="about/about.html" role="menuitem">About Us</a></li>
+              <li><a href="about/organization.html" role="menuitem">Our Organization</a></li>
+              <li><a href="committee/committee.html" role="menuitem">Committee</a></li>
+              <li><a href="about/objectives.html" role="menuitem">Objectives</a></li>
             </ul>
           </li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="members.html">Members</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="census-audit.html">Census Audit</a></li>
+          <li><a href="events/events.html">Events</a></li>
+          <li><a href="membership/membership.html">Members</a></li>
+          <li><a href="gallery/gallery.html">Gallery</a></li>
+          <li><a href="contact/contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- ===== MAIN ===== -->
+  <!-- ============================================================
+       FULL-WIDTH MAIN CONTENT
+  ============================================================ -->
   <main>
 
-    <!-- ===== HERO ===== -->
-    <section class="hero-section fade-in">
-      <div class="container">
+    <!-- ===== HERO – Full Width ===== -->
+    <section class="hero-section">
+      <div class="hero-overlay">
         <div class="hero-content">
           <h1>Assam Limbu Mahasabha</h1>
           <p class="hero-sub">Karbi Anglong &amp; Dimag Hasao District Committee</p>
@@ -60,30 +67,16 @@
             educational advancement, and inclusive development. We work together to strengthen
             the Limbu community across the Karbi Anglong and Dimag Hasao districts.
           </p>
+          <div class="hero-actions">
+            <a href="about/about.html" class="btn btn-primary">Learn More</a>
+            <a href="events/events.html" class="btn btn-outline">View Events</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== HORIZONTAL SCROLLING IMAGE SECTION ===== -->
-    <section class="image-scroll-section fade-in">
-      <div class="container">
-        <h2 class="section-title">Our Community in Focus</h2>
-      </div>
-      <div class="scroll-wrapper">
-        <div class="scroll-track">
-          <div class="scroll-card"><img src="assets/images/scroll/community-gathering.jpg" alt="Community gathering" /><span>Community Gathering</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/cultural-event.jpg" alt="Cultural event" /><span>Cultural Event</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/youth-program.jpg" alt="Youth program" /><span>Youth Program</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/womens-meet.jpg" alt="Women's meet" /><span>Women's Meet</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/education-drive.jpg" alt="Education drive" /><span>Education Drive</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/social-cooperation.jpg" alt="Social cooperation" /><span>Social Cooperation</span></div>
-          <div class="scroll-card"><img src="assets/images/scroll/leadership.jpg" alt="Leadership" /><span>Leadership</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== ABOUT US ===== -->
-    <section class="about-section fade-in">
+    <!-- ===== ABOUT US – Inner Content ===== -->
+    <section class="section-about">
       <div class="container">
         <h2 class="section-title">About Us</h2>
         <div class="about-grid">
@@ -100,6 +93,7 @@
               collaborative efforts and inclusive programs, we aim to create a stronger, more
               united community.
             </p>
+            <a href="about/about.html" class="btn btn-secondary">Read More</a>
           </div>
           <div class="about-highlights">
             <div class="highlight-item">
@@ -123,81 +117,47 @@
       </div>
     </section>
 
-    <!-- ===== FULL WIDTH IMAGE CONTAINER ===== -->
-    <section class="full-image-section fade-in">
-      <div class="container-full">
-        <div class="full-image-wrapper">
-          <img src="assets/images/group-photo.jpg" alt="Community group photo" />
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== RECENT EVENTS ===== -->
-    <section class="recent-events-section fade-in">
+    <!-- ===== RECENT EVENTS – Inner Content ===== -->
+    <section class="section-events">
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Recent Events</h2>
-          <a href="events.html" class="view-all-link">View All Events</a>
+          <a href="events/events.html" class="view-all-link">View All Events</a>
         </div>
         <div class="event-grid">
           <article class="event-card">
-            <img src="assets/images/events/acf-thumb.jpg" alt="Annual Cultural Festival 2026" />
+            <img src="images/events/festival-2023.jpg" alt="Annual Cultural Festival 2023" />
             <div class="event-card-body">
-              <h3>Annual Cultural Festival 2026</h3>
-              <p class="event-date">May 15, 2026</p>
+              <h3>Annual Cultural Festival 2023</h3>
+              <p class="event-date">May 15, 2023</p>
               <p class="event-desc">A vibrant celebration of Limbu culture with music, dance, and traditional cuisine.</p>
-              <a href="article-acf-2023.html" class="event-link">Read More</a>
+              <a href="events/event-acf-2023.html" class="event-link">Read More</a>
             </div>
           </article>
           <article class="event-card">
-            <img src="assets/images/events/health-camp-thumb.jpg" alt="Community Health Camp" />
+            <img src="images/events/health-camp.jpg" alt="Community Health Camp" />
             <div class="event-card-body">
               <h3>Community Health Camp</h3>
-              <p class="event-date">June 5, 2026</p>
+              <p class="event-date">June 5, 2023</p>
               <p class="event-desc">Free health check-up and awareness camp for all community members.</p>
-              <a href="article-acf-2023.html" class="event-link">Read More</a>
+              <a href="events/event-health-camp.html" class="event-link">Read More</a>
             </div>
           </article>
           <article class="event-card">
-            <img src="assets/images/events/scholarship-thumb.jpg" alt="Education Scholarship Distribution" />
+            <img src="images/events/scholarship.jpg" alt="Education Scholarship Distribution" />
             <div class="event-card-body">
               <h3>Education Scholarship Distribution</h3>
-              <p class="event-date">July 20, 2026</p>
+              <p class="event-date">July 20, 2023</p>
               <p class="event-desc">Awarding scholarships to meritorious students from the community.</p>
-              <a href="article-acf-2023.html" class="event-link">Read More</a>
+              <a href="events/event-scholarship.html" class="event-link">Read More</a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ===== DIRECTORY ===== -->
-    <section class="directory-section fade-in">
-      <div class="container">
-        <h2 class="section-title">Directory</h2>
-        <div class="directory-grid">
-          <a href="members.html" class="directory-card">
-            <h3>Members</h3>
-            <p>View all community members</p>
-          </a>
-          <a href="committee.html" class="directory-card">
-            <h3>Executive Leadership</h3>
-            <p>Meet our office bearers</p>
-          </a>
-          <a href="events.html" class="directory-card">
-            <h3>Events</h3>
-            <p>Upcoming and past events</p>
-          </a>
-          <a href="organization.html" class="directory-card">
-            <h3>Organization</h3>
-            <p>Learn about our structure</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== EXECUTIVE LEADERSHIP ===== -->
-    <section class="leadership-section fade-in">
+    <!-- ===== EXECUTIVE LEADERSHIP – Inner Content ===== -->
+    <section class="section-leadership">
       <div class="container">
         <h2 class="section-title">Executive Leadership</h2>
         <p class="leadership-desc">
@@ -209,7 +169,9 @@
           <h3 class="group-title">President</h3>
           <div class="leadership-grid">
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/bal-bahadur.jpg" alt="Bal Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/president.jpg" alt="Bal Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">President</h4>
               <p class="leadership-name">Bal Bahadur Subba (Loksom)</p>
               <p class="leadership-desc-small">Leading the committee with vision, dedication, and a commitment to community welfare.</p>
@@ -222,37 +184,49 @@
           <h3 class="group-title">Vice Presidents</h3>
           <div class="leadership-grid">
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/tilak.jpg" alt="Tilak Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-tilak.jpg" alt="Tilak Subba" />
+              </div>
               <h4 class="leadership-designation">Working President</h4>
               <p class="leadership-name">Tilak Subba (Kondangwa)</p>
               <p class="leadership-desc-small">Driving the committee's day-to-day operations and strategic initiatives.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/dil.jpg" alt="Dil Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-dil.jpg" alt="Dil Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Vice President</h4>
               <p class="leadership-name">Dil Bahadur Subba (Khapung)</p>
               <p class="leadership-desc-small">Supporting the President and ensuring smooth functioning of the committee.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/indra.jpg" alt="Indra Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-indra.jpg" alt="Indra Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Vice President</h4>
               <p class="leadership-name">Indra Bahadur Subba</p>
               <p class="leadership-desc-small">Contributing to community development and cultural preservation efforts.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/jibon.jpg" alt="Jibon Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-jibon.jpg" alt="Jibon Subba" />
+              </div>
               <h4 class="leadership-designation">Vice President</h4>
               <p class="leadership-name">Jibon Subba</p>
               <p class="leadership-desc-small">Working towards strengthening community bonds and social cohesion.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/tek.jpg" alt="Tek Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-tek.jpg" alt="Tek Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Vice President</h4>
               <p class="leadership-name">Tek Bahadur Subba</p>
               <p class="leadership-desc-small">Focused on youth engagement and community outreach programs.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/joya.jpg" alt="Joya Limbu" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/vp-joya.jpg" alt="Joya Limbu" />
+              </div>
               <h4 class="leadership-designation">Vice President</h4>
               <p class="leadership-name">Joya Limbu</p>
               <p class="leadership-desc-small">Advocating for women's empowerment and inclusive community development.</p>
@@ -265,25 +239,33 @@
           <h3 class="group-title">Secretariat</h3>
           <div class="leadership-grid">
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/subash.jpg" alt="Subash Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/gs-subash.jpg" alt="Subash Subba" />
+              </div>
               <h4 class="leadership-designation">General Secretary</h4>
               <p class="leadership-name">Subash Subba (Kerung)</p>
               <p class="leadership-desc-small">Managing the committee's day-to-day operations, coordination, and administration.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/suk.jpg" alt="Suk Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/ags-suk.jpg" alt="Suk Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Asst. General Secretary</h4>
               <p class="leadership-name">Suk Bahadur Subba</p>
               <p class="leadership-desc-small">Supporting the General Secretary in administrative and operational tasks.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/mon.jpg" alt="Mon Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/asst-mon.jpg" alt="Mon Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Asst. Secretary</h4>
               <p class="leadership-name">Mon Bahadur Subba</p>
               <p class="leadership-desc-small">Assisting in secretarial duties and documentation.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/puja.jpg" alt="Puja Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/asst-puja.jpg" alt="Puja Subba" />
+              </div>
               <h4 class="leadership-designation">Asst. Secretary</h4>
               <p class="leadership-name">Puja Subba</p>
               <p class="leadership-desc-small">Supporting committee operations and member coordination.</p>
@@ -296,49 +278,65 @@
           <h3 class="group-title">Treasurer &amp; Secretaries</h3>
           <div class="leadership-grid">
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/jagat.jpg" alt="Jagat Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/treasurer-jagat.jpg" alt="Jagat Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Treasurer</h4>
               <p class="leadership-name">Jagat Bahadur Subba</p>
               <p class="leadership-desc-small">Maintaining financial transparency and managing the committee's funds responsibly.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/narayan.jpg" alt="Narayan Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/cs-narayan.jpg" alt="Narayan Subba" />
+              </div>
               <h4 class="leadership-designation">Cultural Secretary</h4>
               <p class="leadership-name">Narayan Subba (Khapung)</p>
               <p class="leadership-desc-small">Promoting Limbu culture, language, and traditions through events and workshops.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/dhan.jpg" alt="Dhan Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/os-dhan.jpg" alt="Dhan Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Organizing Secretary</h4>
               <p class="leadership-name">Dhan Bahadur Subba</p>
               <p class="leadership-desc-small">Coordinating community events, programs, and organizational activities.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/subash2.jpg" alt="Subash Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/aos-subash.jpg" alt="Subash Subba" />
+              </div>
               <h4 class="leadership-designation">Asst. Organizing Secretary</h4>
               <p class="leadership-name">Subash Subba</p>
               <p class="leadership-desc-small">Assisting in organizing community programs and events.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/sher.jpg" alt="Sher Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/es-sher.jpg" alt="Sher Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Education Secretary</h4>
               <p class="leadership-name">Sher Bahadur Subba</p>
               <p class="leadership-desc-small">Leading educational initiatives, scholarship programs, and skill development.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/yadav.jpg" alt="Yadav Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/ps-yadav.jpg" alt="Yadav Subba" />
+              </div>
               <h4 class="leadership-designation">Publicity Secretary</h4>
               <p class="leadership-name">Yadav Subba</p>
               <p class="leadership-desc-small">Managing public relations, media, and communication strategies.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/raj.jpg" alt="Raj Limbu" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/ps-raj.jpg" alt="Raj Limbu" />
+              </div>
               <h4 class="leadership-designation">Publicity Secretary</h4>
               <p class="leadership-name">Raj Limbu</p>
               <p class="leadership-desc-small">Promoting the committee's activities through various media channels.</p>
             </div>
             <div class="leadership-card">
-              <div class="leadership-img"><img src="assets/images/leadership/santa.jpg" alt="Santa Bahadur Subba" /></div>
+              <div class="leadership-img">
+                <img src="images/committee/ps-santa.jpg" alt="Santa Bahadur Subba" />
+              </div>
               <h4 class="leadership-designation">Publicity Secretary</h4>
               <p class="leadership-name">Santa Bahadur Subba</p>
               <p class="leadership-desc-small">Engaging with the community and ensuring effective communication of initiatives.</p>
@@ -350,34 +348,37 @@
 
   </main>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ============================================================
+       FULL-WIDTH FOOTER
+  ============================================================ -->
   <footer class="site-footer">
-    <div class="container">
+    <div class="footer-inner">
       <div class="footer-grid">
         <div class="footer-brand">
           <span class="footer-brand-main">Assam Limbu Mahasabha</span>
           <span class="footer-brand-sub">Karbi Anglong &amp; Dimag Hasao District Committee</span>
-          <p>&copy; 2026 All rights reserved.</p>
+          <p class="footer-copy">&copy; 2026 All rights reserved.</p>
         </div>
         <div class="footer-links">
           <h4>Quick Links</h4>
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="organization.html">Our Organization</a></li>
-            <li><a href="committee.html">Committee</a></li>
-            <li><a href="objectives.html">Objectives</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="census-audit.html">Census Audit</a></li>
+            <li><a href="about/about.html">About Us</a></li>
+            <li><a href="about/organization.html">Our Organization</a></li>
+            <li><a href="committee/committee.html">Committee</a></li>
+            <li><a href="about/objectives.html">Objectives</a></li>
+            <li><a href="events/events.html">Events</a></li>
+            <li><a href="membership/membership.html">Members</a></li>
+            <li><a href="gallery/gallery.html">Gallery</a></li>
+            <li><a href="contact/contact.html">Contact</a></li>
           </ul>
         </div>
         <div class="footer-contact">
           <h4>Contact</h4>
           <p>Karbi Anglong &amp; Dimag Hasao, Assam</p>
-          <p>Email: <a href="mailto:info@almmah.org" style="color: var(--color-accent);">info@almmah.org</a></p>
-          <p>Phone: <a href="tel:+919876543210" style="color: var(--color-accent);">+91 98765 43210</a></p>
+          <p>Email: <a href="mailto:info@almmah.org">info@almmah.org</a></p>
+          <p>Phone: <a href="tel:+919876543210">+91 98765 43210</a></p>
+          <p class="footer-address">Diphu, Karbi Anglong – 782460</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -386,6 +387,9 @@
     </div>
   </footer>
 
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
   <script src="script.js"></script>
 </body>
 </html>
