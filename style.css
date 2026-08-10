@@ -54,7 +54,9 @@ body {
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
 }
-
+p {
+  text-align: justify;
+}
 img {
   max-width: 100%;
   height: auto;
