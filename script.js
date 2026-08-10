@@ -1,339 +1,470 @@
-/**
- * script.js — Global JavaScript for Assam Limbu Mahasabha
- * Handles: navigation, dropdowns, language switcher, fade-in, pagination
- */
+/* ============================================================
+   GLOBAL SCRIPT — Assam Limbu Mahasabha
+   ============================================================ */
 
-document.addEventListener('DOMContentLoaded', function () {
+(function() {
     'use strict';
 
-    // ============================================================
-    // 1. MOBILE HAMBURGER MENU
-    // ============================================================
-    const navToggle = document.getElementById('navToggle');
-    const mainNav = document.getElementById('mainNav');
+    // ==========================================================
+    // 1. DOM READY
+    // ==========================================================
+    document.addEventListener('DOMContentLoaded', function() {
 
-    if (navToggle && mainNav) {
-        navToggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const isOpen = mainNav.classList.toggle('open');
-            navToggle.setAttribute('aria-expanded', isOpen);
-        });
-
-        // Close menu when clicking a link (mobile)
-        mainNav.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function () {
-                mainNav.classList.remove('open');
-                navToggle.setAttribute('aria-expanded', 'false');
+        // ==========================================================
+        // 2. MOBILE NAV TOGGLE
+        // ==========================================================
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const nav = document.querySelector('.header-nav');
+        if (navToggle && nav) {
+            navToggle.addEventListener('click', function() {
+                const isOpen = nav.classList.toggle('open');
+                navToggle.classList.toggle('open');
+                navToggle.setAttribute('aria-expanded', isOpen);
             });
-        });
-    }
-
-    // ============================================================
-    // 2. DROPDOWN MENUS (Mobile click + Desktop hover support)
-    // ============================================================
-    document.querySelectorAll('.dropdown-toggle').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-            // Only handle clicks on mobile or when dropdown is explicitly toggled
-            // Desktop hover is handled by CSS, but we need click for mobile
-            const parent = this.closest('.has-dropdown');
-            if (!parent) return;
-
-            // Check if we're on mobile (nav toggle is visible)
-            const isMobile = window.getComputedStyle(navToggle).display !== 'none';
-
-            if (isMobile) {
-                e.preventDefault();
-                const menu = parent.querySelector('.dropdown-menu');
-                if (!menu) return;
-                const isOpen = menu.classList.toggle('open');
-                this.setAttribute('aria-expanded', isOpen);
-            }
-        });
-    });
-
-    // ============================================================
-    // 3. CLOSE MENUS / DROPDOWNS ON OUTSIDE CLICK
-    // ============================================================
-    document.addEventListener('click', function (e) {
-        // Close mobile nav
-        if (mainNav && mainNav.classList.contains('open')) {
-            if (!mainNav.contains(e.target) && !navToggle.contains(e.target)) {
-                mainNav.classList.remove('open');
-                navToggle.setAttribute('aria-expanded', 'false');
-            }
         }
 
-        // Close mobile dropdowns
-        document.querySelectorAll('.has-dropdown .dropdown-menu.open').forEach(function (menu) {
-            const parent = menu.closest('.has-dropdown');
-            if (parent && !parent.contains(e.target)) {
-                menu.classList.remove('open');
-                const toggle = parent.querySelector('.dropdown-toggle');
-                if (toggle) toggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        // Close language dropdown
-        const langSwitcher = document.querySelector('.language-switcher');
-        if (langSwitcher) {
-            const dropdown = langSwitcher.querySelector('.lang-dropdown');
-            if (dropdown && dropdown.style.visibility === 'visible') {
-                if (!langSwitcher.contains(e.target)) {
-                    dropdown.style.visibility = 'hidden';
-                    dropdown.style.opacity = '0';
-                }
-            }
-        }
-    });
-
-    // ============================================================
-    // 4. LANGUAGE SWITCHER (with accessibility)
-    // ============================================================
-    const langBtn = document.querySelector('.lang-btn');
-    const langDropdown = document.querySelector('.lang-dropdown');
-
-    if (langBtn && langDropdown) {
-        // Toggle on click
-        langBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const isVisible = langDropdown.style.visibility === 'visible';
-            langDropdown.style.visibility = isVisible ? 'hidden' : 'visible';
-            langDropdown.style.opacity = isVisible ? '0' : '1';
-            langBtn.setAttribute('aria-expanded', !isVisible);
-        });
-
-        // Close when a language is selected
-        langDropdown.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const lang = this.getAttribute('lang');
-                // Update button text
-                const langSpan = langBtn.querySelector('span');
-                if (langSpan) {
-                    const langMap = {
-                        'en': 'EN',
-                        'hi': 'HI',
-                        'as': 'AS',
-                        'ne': 'NE'
-                    };
-                    langSpan.textContent = langMap[lang] || lang.toUpperCase();
-                }
-                // Close dropdown
-                langDropdown.style.visibility = 'hidden';
-                langDropdown.style.opacity = '0';
-                langBtn.setAttribute('aria-expanded', 'false');
-                // Future: implement actual language switching
-                console.log('Language selected:', lang);
-            });
-        });
-
-        // Close on Escape key
-        langBtn.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                langDropdown.style.visibility = 'hidden';
-                langDropdown.style.opacity = '0';
-                langBtn.setAttribute('aria-expanded', 'false');
-                langBtn.focus();
-            }
-        });
-    }
-
-    // ============================================================
-    // 5. FADE-IN ANIMATION (IntersectionObserver)
-    // ============================================================
-    const fadeElements = document.querySelectorAll('.fade-in');
-
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // ==========================================================
+        // 3. DROPDOWN TOGGLE ON MOBILE (tap)
+        // ==========================================================
+        document.querySelectorAll('.nav-dropdown > a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                // Only on mobile (when nav is in open state)
+                const nav = this.closest('.header-nav');
+                if (nav && nav.classList.contains('open')) {
+                    e.preventDefault();
+                    const parent = this.closest('.nav-dropdown');
+                    if (parent) {
+                        parent.classList.toggle('open');
+                    }
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
         });
 
-        fadeElements.forEach(function (el) {
-            observer.observe(el);
-        });
-    } else {
-        // Fallback: show all immediately
-        fadeElements.forEach(function (el) {
-            el.classList.add('visible');
-        });
-    }
+        // ==========================================================
+        // 4. LANGUAGE SELECTOR
+        // ==========================================================
+        const langSelector = document.querySelector('.language-selector');
+        const langCurrent = langSelector ? langSelector.querySelector('.lang-current') : null;
+        const langDropdown = langSelector ? langSelector.querySelector('.lang-dropdown') : null;
 
-    // ============================================================
-    // 6. PAGINATION — Dynamic, 4 items per page
-    // ============================================================
-    /**
-     * initPagination — Paginates .event-card, .update-card, or any grid items
-     * @param {string} containerId - ID of the container holding the items
-     * @param {number} itemsPerPage - Number of items per page (default: 4)
-     * @param {string} itemSelector - CSS selector for items (default: '.event-card')
-     */
-    function initPagination(containerId, itemsPerPage, itemSelector) {
-        itemsPerPage = itemsPerPage || 4;
-        itemSelector = itemSelector || '.event-card';
-
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        const controlsContainer = document.getElementById('paginationControls');
-        if (!controlsContainer) return;
-
-        // Get all items (static HTML)
-        const items = container.querySelectorAll(itemSelector);
-        const totalItems = items.length;
-
-        if (totalItems === 0) {
-            controlsContainer.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);">No items to display.</p>';
-            return;
-        }
-
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        let currentPage = 1;
-
-        // Show specific page
-        function showPage(page) {
-            // Hide all items
-            items.forEach(function (item) {
-                item.style.display = 'none';
+        if (langCurrent && langDropdown) {
+            // Toggle dropdown
+            langCurrent.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = langSelector.classList.toggle('open');
+                langCurrent.setAttribute('aria-expanded', isOpen);
             });
 
-            // Show items for current page
-            const start = (page - 1) * itemsPerPage;
-            const end = Math.min(start + itemsPerPage, totalItems);
-            for (let i = start; i < end; i++) {
-                items[i].style.display = 'block';
-                // Re-trigger fade-in
-                if (!items[i].classList.contains('visible')) {
-                    items[i].classList.add('visible');
-                }
-            }
-
-            renderControls(page);
-        }
-
-        // Render pagination controls
-        function renderControls(page) {
-            controlsContainer.innerHTML = '';
-            if (totalPages <= 1) return;
-
-            // Previous button
-            const prevBtn = document.createElement('button');
-            prevBtn.textContent = 'Previous';
-            prevBtn.disabled = page === 1;
-            prevBtn.addEventListener('click', function () {
-                if (page > 1) {
-                    currentPage = page - 1;
-                    showPage(currentPage);
-                    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-            controlsContainer.appendChild(prevBtn);
-
-            // Numbered page buttons
-            for (let i = 1; i <= totalPages; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.textContent = i;
-                if (i === page) {
-                    pageBtn.classList.add('active');
-                }
-                pageBtn.addEventListener('click', function () {
-                    currentPage = i;
-                    showPage(currentPage);
-                    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Select language
+            langDropdown.querySelectorAll('li[role="option"]').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    // Update UI
+                    langDropdown.querySelectorAll('li[role="option"]').forEach(function(opt) {
+                        opt.removeAttribute('aria-selected');
+                    });
+                    this.setAttribute('aria-selected', 'true');
+                    // Update current button text
+                    const currentText = langCurrent.childNodes[0]; // text node
+                    if (currentText) {
+                        currentText.textContent = this.textContent.trim().split(' ')[0]; // e.g. "EN"
+                    }
+                    // Close dropdown
+                    langSelector.classList.remove('open');
+                    langCurrent.setAttribute('aria-expanded', 'false');
+                    // Here you would trigger language change (e.g. via URL param or i18n)
+                    // For demonstration, we just log it.
+                    console.log('Language selected:', lang);
+                    // You can implement a full translation system here.
                 });
-                controlsContainer.appendChild(pageBtn);
-            }
+            });
 
-            // Next button
-            const nextBtn = document.createElement('button');
-            nextBtn.textContent = 'Next';
-            nextBtn.disabled = page === totalPages;
-            nextBtn.addEventListener('click', function () {
-                if (page < totalPages) {
-                    currentPage = page + 1;
-                    showPage(currentPage);
-                    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!langSelector.contains(e.target)) {
+                    langSelector.classList.remove('open');
+                    if (langCurrent) {
+                        langCurrent.setAttribute('aria-expanded', 'false');
+                    }
                 }
             });
-            controlsContainer.appendChild(nextBtn);
         }
 
-        // Initial render: show page 1
-        showPage(1);
+        // ==========================================================
+        // 5. SEARCH OVERLAY
+        // ==========================================================
+        const searchToggle = document.querySelector('.search-toggle');
+        const searchOverlay = document.querySelector('.search-overlay');
+        const searchClose = document.querySelector('.search-close');
+        const searchInput = searchOverlay ? searchOverlay.querySelector('input[type="search"]') : null;
 
-        // Return control object
-        return {
-            goToPage: function (page) {
-                if (page >= 1 && page <= totalPages) {
-                    currentPage = page;
-                    showPage(currentPage);
+        if (searchToggle && searchOverlay) {
+            searchToggle.addEventListener('click', function() {
+                searchOverlay.hidden = false;
+                searchToggle.setAttribute('aria-expanded', 'true');
+                if (searchInput) {
+                    setTimeout(function() {
+                        searchInput.focus();
+                    }, 100);
                 }
-            },
-            getCurrentPage: function () { return currentPage; },
-            getTotalPages: function () { return totalPages; },
-            getTotalItems: function () { return totalItems; }
-        };
-    }
-
-    // Expose pagination to global scope for use in other pages
-    window.initPagination = initPagination;
-
-    // ============================================================
-    // 7. AUTO-INIT PAGINATION (if container exists)
-    // ============================================================
-    // Check if events container exists and has items
-    const eventsContainer = document.getElementById('eventsContainer');
-    if (eventsContainer) {
-        // Check if there are any items
-        const items = eventsContainer.querySelectorAll('.event-card');
-        if (items.length > 4) {
-            // Only initialize if more than 4 items
-            initPagination('eventsContainer', 4, '.event-card');
-        } else {
-            // Show all items if 4 or fewer
-            items.forEach(function (item) {
-                item.style.display = 'block';
             });
-            // Hide pagination controls if not needed
-            const controls = document.getElementById('paginationControls');
-            if (controls) controls.innerHTML = '';
-        }
-    }
 
-    // ============================================================
-    // 8. KEYBOARD ACCESSIBILITY — Close on Escape
-    // ============================================================
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            // Close mobile nav
-            if (mainNav && mainNav.classList.contains('open')) {
-                mainNav.classList.remove('open');
-                navToggle.setAttribute('aria-expanded', 'false');
+            if (searchClose) {
+                searchClose.addEventListener('click', function() {
+                    searchOverlay.hidden = true;
+                    searchToggle.setAttribute('aria-expanded', 'false');
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+                });
             }
-            // Close mobile dropdowns
-            document.querySelectorAll('.has-dropdown .dropdown-menu.open').forEach(function (menu) {
-                menu.classList.remove('open');
-                const toggle = menu.closest('.has-dropdown').querySelector('.dropdown-toggle');
-                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !searchOverlay.hidden) {
+                    searchOverlay.hidden = true;
+                    searchToggle.setAttribute('aria-expanded', 'false');
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+                }
             });
-            // Close language dropdown
-            if (langDropdown && langDropdown.style.visibility === 'visible') {
-                langDropdown.style.visibility = 'hidden';
-                langDropdown.style.opacity = '0';
-                if (langBtn) langBtn.setAttribute('aria-expanded', 'false');
-            }
+
+            // Close on backdrop click
+            searchOverlay.addEventListener('click', function(e) {
+                if (e.target === searchOverlay) {
+                    searchOverlay.hidden = true;
+                    searchToggle.setAttribute('aria-expanded', 'false');
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+                }
+            });
         }
-    });
 
-    // ============================================================
-    // 9. CONSOLE LOG — Confirm script loaded
-    // ============================================================
-    console.log('Assam Limbu Mahasabha — script.js loaded successfully.');
+        // ==========================================================
+        // 6. HEADER SCROLL EFFECT
+        // ==========================================================
+        const header = document.querySelector('.site-header');
+        let lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScroll > 30) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            lastScroll = currentScroll;
+        });
 
-}); // End DOMContentLoaded
+        // ==========================================================
+        // 7. FADE-IN SCROLL ANIMATION (IntersectionObserver)
+        // ==========================================================
+        const fadeElements = document.querySelectorAll('.fade-in');
+        if (fadeElements.length > 0) {
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optionally unobserve after reveal to save resources
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            fadeElements.forEach(function(el) {
+                observer.observe(el);
+            });
+        }
+
+        // Also observe any section-content children that might be added dynamically
+        // We'll apply a mutation observer to watch for new .fade-in elements
+        // But for simplicity, we add a small helper to re-apply if needed.
+        // We'll run a function to observe any .fade-in elements that appear later.
+        function observeFadeElements() {
+            document.querySelectorAll('.fade-in:not(.observed)').forEach(function(el) {
+                el.classList.add('observed');
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.15,
+                    rootMargin: '0px 0px -40px 0px'
+                });
+                observer.observe(el);
+            });
+        }
+
+        // Observe once
+        observeFadeElements();
+
+        // ==========================================================
+        // 8. PAGINATION SYSTEM
+        // ==========================================================
+
+        /**
+         * Pagination: takes a container selector, items selector, items per page (default 4),
+         * and a pagination list container ID.
+         * It hides/shows items based on page and builds pagination links.
+         */
+        function initPagination(containerSelector, itemsSelector, paginationId, itemsPerPage) {
+            itemsPerPage = itemsPerPage || 4;
+            const container = document.querySelector(containerSelector);
+            if (!container) return;
+
+            const items = container.querySelectorAll(itemsSelector);
+            if (items.length === 0) return;
+
+            const totalItems = items.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            const paginationList = document.getElementById(paginationId);
+            if (!paginationList) return;
+
+            let currentPage = 1;
+
+            // Function to show page
+            function showPage(page) {
+                currentPage = page;
+                // Hide all items
+                items.forEach(function(item, index) {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        item.style.display = ''; // show
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                // Update pagination links
+                renderPagination();
+            }
+
+            // Render pagination links
+            function renderPagination() {
+                let html = '';
+                if (totalPages <= 1) {
+                    paginationList.innerHTML = '';
+                    return;
+                }
+
+                // Previous button
+                html += '<li class="page-prev">';
+                if (currentPage > 1) {
+                    html += '<a href="#" data-page="' + (currentPage - 1) + '">&laquo;</a>';
+                } else {
+                    html += '<span class="page-dots">&laquo;</span>';
+                }
+                html += '</li>';
+
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) {
+                        html += '<li class="active"><span>' + i + '</span></li>';
+                    } else {
+                        html += '<li><a href="#" data-page="' + i + '">' + i + '</a></li>';
+                    }
+                }
+
+                // Next button
+                html += '<li class="page-next">';
+                if (currentPage < totalPages) {
+                    html += '<a href="#" data-page="' + (currentPage + 1) + '">&raquo;</a>';
+                } else {
+                    html += '<span class="page-dots">&raquo;</span>';
+                }
+                html += '</li>';
+
+                paginationList.innerHTML = html;
+
+                // Attach click events to pagination links
+                paginationList.querySelectorAll('a[data-page]').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = parseInt(this.getAttribute('data-page'), 10);
+                        if (page >= 1 && page <= totalPages) {
+                            showPage(page);
+                        }
+                    });
+                });
+            }
+
+            // Initial display: show first page
+            showPage(1);
+
+            // Expose a function to re-init pagination if items change (e.g., dynamic content)
+            // We'll use a MutationObserver to watch for changes in the container.
+            // However, that's complex; we'll provide a manual refresh function.
+            // We'll store the function on the container for external use.
+            container._paginationRefresh = function() {
+                // Recalculate items (in case DOM changed)
+                const newItems = container.querySelectorAll(itemsSelector);
+                // We need to update the items list and total pages
+                // For simplicity, we'll just re-run the whole init again.
+                // But be careful not to duplicate event listeners.
+                // We'll remove old pagination and re-init.
+                // We'll just call initPagination again with same params, but avoid recursion.
+                // So we'll just do a simple reset: unhide all items, re-apply pagination.
+                // Better: we can just re-run the showPage function with current page after updating items array.
+                // Let's just re-fetch items and update totalPages.
+                const freshItems = container.querySelectorAll(itemsSelector);
+                const newTotal = freshItems.length;
+                const newTotalPages = Math.ceil(newTotal / itemsPerPage);
+                // If total pages changed, we need to adjust current page if it's out of bounds.
+                if (currentPage > newTotalPages) {
+                    currentPage = newTotalPages;
+                }
+                // Re-run showPage with current page, but we need to use the freshItems.
+                // We'll update the items reference? Actually we can just loop through freshItems.
+                // We'll reuse the showPage logic but with freshItems.
+                // We'll just call showPage(currentPage) but we need to override the items.
+                // We'll modify the closure to use a dynamic items getter.
+                // For simplicity, we'll just re-initialize the entire pagination.
+                // But to avoid infinite loop, we'll remove old event listeners? Not necessary.
+                // We'll just replace the container's inner content? No.
+                // Let's implement a refresh function that re-applies pagination.
+                // We'll redefine the function.
+                // Actually, the simplest: just call initPagination again, but we need to prevent duplicate events.
+                // We'll remove the old pagination and re-init.
+                // But we have to be careful not to create multiple observers.
+                // We'll just call the function again, but it will re-create the pagination list.
+                // However, the showPage function will be redefined, and event listeners will be fresh.
+                // So let's just re-run initPagination with the same parameters.
+                // But we need to break the recursion: we'll check if the container has a flag.
+                if (container._paginationInitialized) {
+                    // We'll just update items and re-render.
+                    // Let's just update the items array and totalPages, and re-render.
+                    // We'll reuse the closure variables.
+                    // Since we're in a closure, we can't easily update them from outside.
+                    // So we'll use a different approach: we'll store the items and totalPages in an object.
+                    // For now, we'll just re-run the whole initialization.
+                    // But we need to avoid infinite recursion when called from MutationObserver.
+                    // We'll add a flag to prevent re-entrancy.
+                    if (container._refreshing) return;
+                    container._refreshing = true;
+                    // Re-initialize
+                    initPagination(containerSelector, itemsSelector, paginationId, itemsPerPage);
+                    container._refreshing = false;
+                } else {
+                    // First time, set flag
+                    container._paginationInitialized = true;
+                }
+            };
+
+            // Observe changes to the container (e.g., items added/removed)
+            const mutationObserver = new MutationObserver(function(mutations) {
+                // Check if items were added or removed
+                let shouldRefresh = false;
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        // Check if any added/removed nodes are of the itemsSelector
+                        const added = Array.from(mutation.addedNodes);
+                        const removed = Array.from(mutation.removedNodes);
+                        // Only refresh if an item was added or removed
+                        if (added.some(function(node) { return node.matches && node.matches(itemsSelector); }) ||
+                            removed.some(function(node) { return node.matches && node.matches(itemsSelector); })) {
+                            shouldRefresh = true;
+                        }
+                    }
+                });
+                if (shouldRefresh && container._paginationRefresh) {
+                    container._paginationRefresh();
+                }
+            });
+
+            mutationObserver.observe(container, { childList: true, subtree: true });
+
+            // Store observer for cleanup if needed
+            container._paginationObserver = mutationObserver;
+
+            // Also, expose a way to manually refresh
+            container._paginationRefresh = function() {
+                // Re-fetch items and re-render
+                const freshItems = container.querySelectorAll(itemsSelector);
+                const newTotal = freshItems.length;
+                const newTotalPages = Math.ceil(newTotal / itemsPerPage);
+                if (currentPage > newTotalPages) {
+                    currentPage = newTotalPages || 1;
+                }
+                // Hide/show based on current page
+                freshItems.forEach(function(item, index) {
+                    const start = (currentPage - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                // Update pagination links
+                renderPagination();
+            };
+        }
+
+        // Initialize pagination for Events, Updates, Gallery
+        // We use the existing grids and pagination containers.
+        // Events
+        initPagination('#events-grid', '.event-card', 'events-pagination', 4);
+        // Updates
+        initPagination('#updates-grid', '.update-card', 'updates-pagination', 4);
+        // Gallery
+        initPagination('#gallery-grid', '.gallery-item', 'gallery-pagination', 4);
+
+        // ==========================================================
+        // 9. STAT COUNTER ANIMATION (optional)
+        // ==========================================================
+        // If we have .stat-number with data-count, we can animate counting up.
+        const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+        if (statNumbers.length > 0) {
+            const counterObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.getAttribute('data-count'), 10);
+                        if (!isNaN(target) && target > 0) {
+                            let current = 0;
+                            const step = Math.max(1, Math.floor(target / 40));
+                            const interval = setInterval(function() {
+                                current += step;
+                                if (current >= target) {
+                                    current = target;
+                                    clearInterval(interval);
+                                }
+                                el.textContent = current;
+                            }, 30);
+                        }
+                        // Unobserve after starting
+                        counterObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            statNumbers.forEach(function(el) {
+                counterObserver.observe(el);
+            });
+        }
+
+        // ==========================================================
+        // 10. SMOOTH SCROLL FOR ANCHOR LINKS (optional)
+        // ==========================================================
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+    }); // end DOMContentLoaded
+
+})();
