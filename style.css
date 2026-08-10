@@ -839,3 +839,7 @@ p {
     height: 180px;
   }
 }
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px; /* adjust to your typical image height */
+}
