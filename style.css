@@ -54,9 +54,7 @@ body {
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
 }
-p {
-  text-align: justify;
-}
+
 img {
   max-width: 100%;
   height: auto;
@@ -103,6 +101,7 @@ h4 {
 
 p {
   margin-bottom: var(--spacing-md);
+  text-align: justify; /* Added as requested */
 }
 
 .section-title {
@@ -561,7 +560,7 @@ p {
 
 .event-card img {
   width: 100%;
-  aspect-ratio: 3 / 2;          /* 3:2 ratio – standard landscape */
+  height: 180px;
   object-fit: cover;
   background: var(--color-grey-light);
 }
@@ -622,11 +621,6 @@ p {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
   text-decoration: none;
-}
-
-.dir-icon {
-  font-size: 2.4rem;
-  margin-bottom: var(--spacing-sm);
 }
 
 .directory-card h3 {
@@ -839,7 +833,31 @@ p {
     height: 180px;
   }
 }
-img {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 300px; /* adjust to your typical image height */
+
+/* ========== ADDITIONAL STYLES FOR STATIC PAGES ========== */
+/* These ensure consistency across all new pages */
+
+.article-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.article-content h2 {
+  margin-top: var(--spacing-xl);
+}
+
+.article-content img {
+  margin-bottom: var(--spacing-lg);
+}
+
+.census-report-content ul,
+.objectives-content ul {
+  list-style: disc;
+  padding-left: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.census-report-content li,
+.objectives-content li {
+  margin-bottom: var(--spacing-sm);
 }
