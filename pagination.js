@@ -1,110 +1,111 @@
 /**
- * pagination.js – Reusable event pagination system
- * (Not used in static pages, but kept for file-list completeness.)
+ * pagination.js – Static HTML pagination for event cards
+ * Paginates existing .event-card elements inside a container.
+ * No content rendering – works with hardcoded HTML cards.
+ * 
+ * Usage: initPaginationStatic('containerId', itemsPerPage);
  */
 
-function initPagination(containerId, eventsArray, itemsPerPage = 6) {
-  const container = document.getElementById(containerId);
-  const controlsContainer = document.getElementById('paginationControls');
+function initPaginationStatic(containerId, itemsPerPage = 6) {
+    const container = document.getElementById(containerId);
+    const controlsContainer = document.getElementById('paginationControls');
 
-  if (!container || !controlsContainer) {
-    console.warn('Pagination container or controls container not found.');
-    return;
-  }
-
-  let currentPage = 1;
-  const totalItems = eventsArray.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  function renderPage(page) {
-    container.innerHTML = '';
-    const start = (page - 1) * itemsPerPage;
-    const end = Math.min(start + itemsPerPage, totalItems);
-    const pageEvents = eventsArray.slice(start, end);
-
-    if (pageEvents.length === 0) {
-      container.innerHTML = '<p>No events to display.</p>';
-    } else {
-      pageEvents.forEach(ev => {
-        const card = document.createElement('article');
-        card.className = 'event-card fade-in';
-        card.innerHTML = `
-          <img src="#" alt="${ev.title}" />
-          <div class="event-card-body">
-            <h3>${ev.title}</h3>
-            <p class="event-date">${ev.date}</p>
-            <p class="event-desc">${ev.desc}</p>
-            <a href="#" class="event-link">Read More</a>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+    if (!container || !controlsContainer) {
+        console.warn('Pagination container or controls container not found.');
+        return;
     }
 
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+    // Get all event cards (static HTML)
+    const cards = container.querySelectorAll('.event-card');
+    const totalItems = cards.length;
+
+    if (totalItems === 0) {
+        controlsContainer.innerHTML = '<p style="text-align:center;color:var(--color-grey-dark);">No events to display.</p>';
+        return;
+    }
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    let currentPage = 1;
+
+    // Show specific page
+    function showPage(page) {
+        // Hide all cards
+        cards.forEach(c => c.style.display = 'none');
+
+        // Show cards for current page
+        const start = (page - 1) * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, totalItems);
+        for (let i = start; i < end; i++) {
+            cards[i].style.display = 'block';
+            // Re-trigger fade-in if already visible
+            if (!cards[i].classList.contains('visible')) {
+                cards[i].classList.add('visible');
+            }
+        }
+
+        renderControls(page);
+    }
+
+    // Render pagination controls
+    function renderControls(page) {
+        controlsContainer.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = 'Previous';
+        prevBtn.disabled = page === 1;
+        prevBtn.addEventListener('click', function() {
+            if (page > 1) {
+                currentPage = page - 1;
+                showPage(currentPage);
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
-      }, { threshold: 0.1 });
-      container.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        controlsContainer.appendChild(prevBtn);
+
+        // Numbered page buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.textContent = i;
+            if (i === page) {
+                pageBtn.classList.add('active');
+            }
+            pageBtn.addEventListener('click', function() {
+                currentPage = i;
+                showPage(currentPage);
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            controlsContainer.appendChild(pageBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = page === totalPages;
+        nextBtn.addEventListener('click', function() {
+            if (page < totalPages) {
+                currentPage = page + 1;
+                showPage(currentPage);
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+        controlsContainer.appendChild(nextBtn);
     }
 
-    renderControls(page);
-  }
+    // Initial render: show page 1
+    showPage(1);
 
-  function renderControls(activePage) {
-    controlsContainer.innerHTML = '';
-    if (totalPages <= 1) return;
-
-    const prevBtn = document.createElement('button');
-    prevBtn.textContent = 'Previous';
-    prevBtn.disabled = activePage === 1;
-    prevBtn.addEventListener('click', () => {
-      if (activePage > 1) {
-        currentPage = activePage - 1;
-        renderPage(currentPage);
-      }
-    });
-    controlsContainer.appendChild(prevBtn);
-
-    for (let i = 1; i <= totalPages; i++) {
-      const pageBtn = document.createElement('button');
-      pageBtn.textContent = i;
-      if (i === activePage) {
-        pageBtn.classList.add('active');
-      }
-      pageBtn.addEventListener('click', () => {
-        currentPage = i;
-        renderPage(currentPage);
-      });
-      controlsContainer.appendChild(pageBtn);
-    }
-
-    const nextBtn = document.createElement('button');
-    nextBtn.textContent = 'Next';
-    nextBtn.disabled = activePage === totalPages;
-    nextBtn.addEventListener('click', () => {
-      if (activePage < totalPages) {
-        currentPage = activePage + 1;
-        renderPage(currentPage);
-      }
-    });
-    controlsContainer.appendChild(nextBtn);
-  }
-
-  renderPage(1);
-
-  return {
-    goToPage: (page) => {
-      if (page >= 1 && page <= totalPages) {
-        currentPage = page;
-        renderPage(currentPage);
-      }
-    },
-    getCurrentPage: () => currentPage,
-    getTotalPages: () => totalPages
-  };
+    // Return control object for external use
+    return {
+        goToPage: function(page) {
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                showPage(currentPage);
+            }
+        },
+        getCurrentPage: function() { return currentPage; },
+        getTotalPages: function() { return totalPages; },
+        getTotalItems: function() { return totalItems; }
+    };
 }
