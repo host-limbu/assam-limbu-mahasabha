@@ -5,13 +5,10 @@
 (function() {
     'use strict';
 
-    // ==========================================================
-    // 1. DOM READY
-    // ==========================================================
     document.addEventListener('DOMContentLoaded', function() {
 
         // ==========================================================
-        // 2. MOBILE NAV TOGGLE
+        // 1. MOBILE NAV TOGGLE
         // ==========================================================
         const navToggle = document.querySelector('.mobile-nav-toggle');
         const nav = document.querySelector('.header-nav');
@@ -24,11 +21,10 @@
         }
 
         // ==========================================================
-        // 3. DROPDOWN TOGGLE ON MOBILE (tap)
+        // 2. DROPDOWN TOGGLE ON MOBILE
         // ==========================================================
         document.querySelectorAll('.nav-dropdown > a').forEach(function(link) {
             link.addEventListener('click', function(e) {
-                // Only on mobile (when nav is in open state)
                 const nav = this.closest('.header-nav');
                 if (nav && nav.classList.contains('open')) {
                     e.preventDefault();
@@ -41,45 +37,36 @@
         });
 
         // ==========================================================
-        // 4. LANGUAGE SELECTOR
+        // 3. LANGUAGE SELECTOR
         // ==========================================================
         const langSelector = document.querySelector('.language-selector');
         const langCurrent = langSelector ? langSelector.querySelector('.lang-current') : null;
         const langDropdown = langSelector ? langSelector.querySelector('.lang-dropdown') : null;
 
         if (langCurrent && langDropdown) {
-            // Toggle dropdown
             langCurrent.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isOpen = langSelector.classList.toggle('open');
                 langCurrent.setAttribute('aria-expanded', isOpen);
             });
 
-            // Select language
             langDropdown.querySelectorAll('li[role="option"]').forEach(function(item) {
                 item.addEventListener('click', function() {
                     const lang = this.getAttribute('data-lang');
-                    // Update UI
                     langDropdown.querySelectorAll('li[role="option"]').forEach(function(opt) {
                         opt.removeAttribute('aria-selected');
                     });
                     this.setAttribute('aria-selected', 'true');
-                    // Update current button text
-                    const currentText = langCurrent.childNodes[0]; // text node
+                    const currentText = langCurrent.childNodes[0];
                     if (currentText) {
-                        currentText.textContent = this.textContent.trim().split(' ')[0]; // e.g. "EN"
+                        currentText.textContent = this.textContent.trim().split(' ')[0];
                     }
-                    // Close dropdown
                     langSelector.classList.remove('open');
                     langCurrent.setAttribute('aria-expanded', 'false');
-                    // Here you would trigger language change (e.g. via URL param or i18n)
-                    // For demonstration, we just log it.
                     console.log('Language selected:', lang);
-                    // You can implement a full translation system here.
                 });
             });
 
-            // Close dropdown on outside click
             document.addEventListener('click', function(e) {
                 if (!langSelector.contains(e.target)) {
                     langSelector.classList.remove('open');
@@ -91,7 +78,7 @@
         }
 
         // ==========================================================
-        // 5. SEARCH OVERLAY
+        // 4. SEARCH OVERLAY
         // ==========================================================
         const searchToggle = document.querySelector('.search-toggle');
         const searchOverlay = document.querySelector('.search-overlay');
@@ -119,7 +106,6 @@
                 });
             }
 
-            // Close on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && !searchOverlay.hidden) {
                     searchOverlay.hidden = true;
@@ -130,7 +116,6 @@
                 }
             });
 
-            // Close on backdrop click
             searchOverlay.addEventListener('click', function(e) {
                 if (e.target === searchOverlay) {
                     searchOverlay.hidden = true;
@@ -143,10 +128,9 @@
         }
 
         // ==========================================================
-        // 6. HEADER SCROLL EFFECT
+        // 5. HEADER SCROLL EFFECT
         // ==========================================================
         const header = document.querySelector('.site-header');
-        let lastScroll = 0;
         window.addEventListener('scroll', function() {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             if (currentScroll > 30) {
@@ -154,11 +138,10 @@
             } else {
                 header.classList.remove('scrolled');
             }
-            lastScroll = currentScroll;
         });
 
         // ==========================================================
-        // 7. FADE-IN SCROLL ANIMATION (IntersectionObserver)
+        // 6. FADE-IN SCROLL ANIMATION
         // ==========================================================
         const fadeElements = document.querySelectorAll('.fade-in');
         if (fadeElements.length > 0) {
@@ -166,8 +149,6 @@
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optionally unobserve after reveal to save resources
-                        // observer.unobserve(entry.target);
                     }
                 });
             }, {
@@ -180,10 +161,6 @@
             });
         }
 
-        // Also observe any section-content children that might be added dynamically
-        // We'll apply a mutation observer to watch for new .fade-in elements
-        // But for simplicity, we add a small helper to re-apply if needed.
-        // We'll run a function to observe any .fade-in elements that appear later.
         function observeFadeElements() {
             document.querySelectorAll('.fade-in:not(.observed)').forEach(function(el) {
                 el.classList.add('observed');
@@ -201,18 +178,12 @@
             });
         }
 
-        // Observe once
         observeFadeElements();
 
         // ==========================================================
-        // 8. PAGINATION SYSTEM
+        // 7. PAGINATION SYSTEM
         // ==========================================================
 
-        /**
-         * Pagination: takes a container selector, items selector, items per page (default 4),
-         * and a pagination list container ID.
-         * It hides/shows items based on page and builds pagination links.
-         */
         function initPagination(containerSelector, itemsSelector, paginationId, itemsPerPage) {
             itemsPerPage = itemsPerPage || 4;
             const container = document.querySelector(containerSelector);
@@ -229,24 +200,20 @@
 
             let currentPage = 1;
 
-            // Function to show page
             function showPage(page) {
                 currentPage = page;
-                // Hide all items
                 items.forEach(function(item, index) {
                     const start = (page - 1) * itemsPerPage;
                     const end = start + itemsPerPage;
                     if (index >= start && index < end) {
-                        item.style.display = ''; // show
+                        item.style.display = '';
                     } else {
                         item.style.display = 'none';
                     }
                 });
-                // Update pagination links
                 renderPagination();
             }
 
-            // Render pagination links
             function renderPagination() {
                 let html = '';
                 if (totalPages <= 1) {
@@ -254,7 +221,6 @@
                     return;
                 }
 
-                // Previous button
                 html += '<li class="page-prev">';
                 if (currentPage > 1) {
                     html += '<a href="#" data-page="' + (currentPage - 1) + '">&laquo;</a>';
@@ -263,7 +229,6 @@
                 }
                 html += '</li>';
 
-                // Page numbers
                 for (let i = 1; i <= totalPages; i++) {
                     if (i === currentPage) {
                         html += '<li class="active"><span>' + i + '</span></li>';
@@ -272,7 +237,6 @@
                     }
                 }
 
-                // Next button
                 html += '<li class="page-next">';
                 if (currentPage < totalPages) {
                     html += '<a href="#" data-page="' + (currentPage + 1) + '">&raquo;</a>';
@@ -283,7 +247,6 @@
 
                 paginationList.innerHTML = html;
 
-                // Attach click events to pagination links
                 paginationList.querySelectorAll('a[data-page]').forEach(function(link) {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -295,78 +258,33 @@
                 });
             }
 
-            // Initial display: show first page
             showPage(1);
 
-            // Expose a function to re-init pagination if items change (e.g., dynamic content)
-            // We'll use a MutationObserver to watch for changes in the container.
-            // However, that's complex; we'll provide a manual refresh function.
-            // We'll store the function on the container for external use.
             container._paginationRefresh = function() {
-                // Recalculate items (in case DOM changed)
-                const newItems = container.querySelectorAll(itemsSelector);
-                // We need to update the items list and total pages
-                // For simplicity, we'll just re-run the whole init again.
-                // But be careful not to duplicate event listeners.
-                // We'll remove old pagination and re-init.
-                // We'll just call initPagination again with same params, but avoid recursion.
-                // So we'll just do a simple reset: unhide all items, re-apply pagination.
-                // Better: we can just re-run the showPage function with current page after updating items array.
-                // Let's just re-fetch items and update totalPages.
                 const freshItems = container.querySelectorAll(itemsSelector);
                 const newTotal = freshItems.length;
                 const newTotalPages = Math.ceil(newTotal / itemsPerPage);
-                // If total pages changed, we need to adjust current page if it's out of bounds.
                 if (currentPage > newTotalPages) {
-                    currentPage = newTotalPages;
+                    currentPage = newTotalPages || 1;
                 }
-                // Re-run showPage with current page, but we need to use the freshItems.
-                // We'll update the items reference? Actually we can just loop through freshItems.
-                // We'll reuse the showPage logic but with freshItems.
-                // We'll just call showPage(currentPage) but we need to override the items.
-                // We'll modify the closure to use a dynamic items getter.
-                // For simplicity, we'll just re-initialize the entire pagination.
-                // But to avoid infinite loop, we'll remove old event listeners? Not necessary.
-                // We'll just replace the container's inner content? No.
-                // Let's implement a refresh function that re-applies pagination.
-                // We'll redefine the function.
-                // Actually, the simplest: just call initPagination again, but we need to prevent duplicate events.
-                // We'll remove the old pagination and re-init.
-                // But we have to be careful not to create multiple observers.
-                // We'll just call the function again, but it will re-create the pagination list.
-                // However, the showPage function will be redefined, and event listeners will be fresh.
-                // So let's just re-run initPagination with the same parameters.
-                // But we need to break the recursion: we'll check if the container has a flag.
-                if (container._paginationInitialized) {
-                    // We'll just update items and re-render.
-                    // Let's just update the items array and totalPages, and re-render.
-                    // We'll reuse the closure variables.
-                    // Since we're in a closure, we can't easily update them from outside.
-                    // So we'll use a different approach: we'll store the items and totalPages in an object.
-                    // For now, we'll just re-run the whole initialization.
-                    // But we need to avoid infinite recursion when called from MutationObserver.
-                    // We'll add a flag to prevent re-entrancy.
-                    if (container._refreshing) return;
-                    container._refreshing = true;
-                    // Re-initialize
-                    initPagination(containerSelector, itemsSelector, paginationId, itemsPerPage);
-                    container._refreshing = false;
-                } else {
-                    // First time, set flag
-                    container._paginationInitialized = true;
-                }
+                freshItems.forEach(function(item, index) {
+                    const start = (currentPage - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                renderPagination();
             };
 
-            // Observe changes to the container (e.g., items added/removed)
             const mutationObserver = new MutationObserver(function(mutations) {
-                // Check if items were added or removed
                 let shouldRefresh = false;
                 mutations.forEach(function(mutation) {
                     if (mutation.type === 'childList') {
-                        // Check if any added/removed nodes are of the itemsSelector
                         const added = Array.from(mutation.addedNodes);
                         const removed = Array.from(mutation.removedNodes);
-                        // Only refresh if an item was added or removed
                         if (added.some(function(node) { return node.matches && node.matches(itemsSelector); }) ||
                             removed.some(function(node) { return node.matches && node.matches(itemsSelector); })) {
                             shouldRefresh = true;
@@ -379,47 +297,17 @@
             });
 
             mutationObserver.observe(container, { childList: true, subtree: true });
-
-            // Store observer for cleanup if needed
             container._paginationObserver = mutationObserver;
-
-            // Also, expose a way to manually refresh
-            container._paginationRefresh = function() {
-                // Re-fetch items and re-render
-                const freshItems = container.querySelectorAll(itemsSelector);
-                const newTotal = freshItems.length;
-                const newTotalPages = Math.ceil(newTotal / itemsPerPage);
-                if (currentPage > newTotalPages) {
-                    currentPage = newTotalPages || 1;
-                }
-                // Hide/show based on current page
-                freshItems.forEach(function(item, index) {
-                    const start = (currentPage - 1) * itemsPerPage;
-                    const end = start + itemsPerPage;
-                    if (index >= start && index < end) {
-                        item.style.display = '';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                // Update pagination links
-                renderPagination();
-            };
         }
 
-        // Initialize pagination for Events, Updates, Gallery
-        // We use the existing grids and pagination containers.
-        // Events
+        // Initialize pagination
         initPagination('#events-grid', '.event-card', 'events-pagination', 4);
-        // Updates
         initPagination('#updates-grid', '.update-card', 'updates-pagination', 4);
-        // Gallery
         initPagination('#gallery-grid', '.gallery-item', 'gallery-pagination', 4);
 
         // ==========================================================
-        // 9. STAT COUNTER ANIMATION (optional)
+        // 8. STAT COUNTER ANIMATION
         // ==========================================================
-        // If we have .stat-number with data-count, we can animate counting up.
         const statNumbers = document.querySelectorAll('.stat-number[data-count]');
         if (statNumbers.length > 0) {
             const counterObserver = new IntersectionObserver(function(entries) {
@@ -439,7 +327,6 @@
                                 el.textContent = current;
                             }, 30);
                         }
-                        // Unobserve after starting
                         counterObserver.unobserve(el);
                     }
                 });
@@ -450,7 +337,7 @@
         }
 
         // ==========================================================
-        // 10. SMOOTH SCROLL FOR ANCHOR LINKS (optional)
+        // 9. SMOOTH SCROLL FOR ANCHOR LINKS
         // ==========================================================
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function(e) {
@@ -465,6 +352,6 @@
             });
         });
 
-    }); // end DOMContentLoaded
+    });
 
 })();
