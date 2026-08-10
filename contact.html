@@ -1,188 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact – Assam Limbu Mahasabha</title>
-  <meta name="description" content="Get in touch with the Assam Limbu Mahasabha Karbi Anglong & Dimag Hasao District Committee." />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="assets/css/language.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Contact the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee. Get in touch with us for queries, suggestions, or support." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header class="site-header" role="banner">
-    <div class="header-inner">
-      <div class="site-brand">
-        <a href="index.html">
-          <span class="brand-main">Assam Limbu Mahasabha</span>
-          <span class="brand-sub">Karbi Anglong &amp; Dimag Hasao District Committee</span>
-        </a>
-      </div>
+    <div class="site-shell">
 
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+        <!-- HEADER -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
+                </div>
 
-      <nav class="main-nav" id="mainNav" role="navigation" aria-label="Main navigation">
-        <ul class="nav-list">
-          <li><a href="index.html">Home</a></li>
-          <li class="has-dropdown">
-            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">About</button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="about.html" role="menuitem">About Us</a></li>
-              <li><a href="organization.html" role="menuitem">Our Organization</a></li>
-              <li><a href="committee.html" role="menuitem">Committee</a></li>
-              <li><a href="objectives.html" role="menuitem">Objectives</a></li>
-            </ul>
-          </li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="members.html">Members</a></li>
-          <li><a href="contact.html" class="active">Contact</a></li>
-        </ul>
-      </nav>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="updates.html">Latest Updates</a></li>
+                                <li><a href="archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html" class="active">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <div class="language-selector">
+                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
+                            EN
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                        <ul class="lang-dropdown" role="listbox">
+                            <li role="option" data-lang="en" aria-selected="true">English</li>
+                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
+                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
+                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
+                        </ul>
+                    </div>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="site-main" role="main">
+
+            <!-- HERO -->
+            <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Get in Touch</p>
+                        <h1 style="font-size: 2.8rem;">Contact Us</h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            Have questions, suggestions, or want to get involved? Reach out to the
+                            district committee. We'd love to hear from you.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT INFO & FORM -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl);">
+
+                        <!-- Contact Information -->
+                        <div>
+                            <div class="section-label">Contact Information</div>
+                            <h2>Reach Out to Us</h2>
+                            <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-lg);">
+                                You can reach the district committee through any of the following channels.
+                                We strive to respond to all queries within 48 hours.
+                            </p>
+
+                            <div style="margin-bottom: var(--spacing-lg);">
+                                <div style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                                    <span style="font-size: 1.2rem; color: var(--color-primary); min-width: 24px;">&#9670;</span>
+                                    <div>
+                                        <h4 style="font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.1rem;">Address</h4>
+                                        <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                            Assam Limbu Mahasabha<br />
+                                            Karbi Anglong &amp; Dima Hasao District Committee<br />
+                                            Diphu, Karbi Anglong, Assam — 782460
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                                    <span style="font-size: 1.2rem; color: var(--color-primary); min-width: 24px;">&#9670;</span>
+                                    <div>
+                                        <h4 style="font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.1rem;">Phone</h4>
+                                        <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                            <a href="tel:+919876543210" style="color: var(--color-text-muted);">+91 98765 43210</a><br />
+                                            <a href="tel:+919876543211" style="color: var(--color-text-muted);">+91 98765 43211</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                                    <span style="font-size: 1.2rem; color: var(--color-primary); min-width: 24px;">&#9670;</span>
+                                    <div>
+                                        <h4 style="font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.1rem;">Email</h4>
+                                        <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                            <a href="mailto:info@assamlimbumahasabha.org" style="color: var(--color-primary);">info@assamlimbumahasabha.org</a><br />
+                                            <a href="mailto:committee@assamlimbumahasabha.org" style="color: var(--color-primary);">committee@assamlimbumahasabha.org</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; align-items: flex-start; gap: var(--spacing-md);">
+                                    <span style="font-size: 1.2rem; color: var(--color-primary); min-width: 24px;">&#9670;</span>
+                                    <div>
+                                        <h4 style="font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.1rem;">Office Hours</h4>
+                                        <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                            Monday – Friday: 10:00 AM – 5:00 PM<br />
+                                            Saturday: 10:00 AM – 1:00 PM<br />
+                                            Sunday: Closed
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social Links -->
+                            <div>
+                                <h4 style="font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: var(--spacing-sm);">Follow Us</h4>
+                                <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+                                    <a href="#" style="padding: 0.4rem 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; color: var(--color-text-muted); transition: all var(--transition);">Facebook</a>
+                                    <a href="#" style="padding: 0.4rem 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; color: var(--color-text-muted); transition: all var(--transition);">YouTube</a>
+                                    <a href="#" style="padding: 0.4rem 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; color: var(--color-text-muted); transition: all var(--transition);">Instagram</a>
+                                    <a href="#" style="padding: 0.4rem 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; color: var(--color-text-muted); transition: all var(--transition);">Twitter</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); padding: var(--spacing-lg); border: 1px solid var(--color-border);">
+                            <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-sm);">Send a Message</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: var(--spacing-lg);">
+                                Fill in the form below and we'll get back to you as soon as possible.
+                            </p>
+
+                            <form style="display: grid; gap: var(--spacing-md);" action="#" method="post">
+                                <div>
+                                    <label for="name" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">Your Name</label>
+                                    <input type="text" id="name" name="name" required style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit; background: var(--color-surface); transition: border-color var(--transition); box-sizing: border-box;" />
+                                </div>
+
+                                <div>
+                                    <label for="email" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">Email Address</label>
+                                    <input type="email" id="email" name="email" required style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit; background: var(--color-surface); transition: border-color var(--transition); box-sizing: border-box;" />
+                                </div>
+
+                                <div>
+                                    <label for="subject" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">Subject</label>
+                                    <input type="text" id="subject" name="subject" required style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit; background: var(--color-surface); transition: border-color var(--transition); box-sizing: border-box;" />
+                                </div>
+
+                                <div>
+                                    <label for="message" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">Message</label>
+                                    <textarea id="message" name="message" rows="5" required style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit; background: var(--color-surface); resize: vertical; transition: border-color var(--transition); box-sizing: border-box;"></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOCATION MAP -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Location</div>
+                    <h2>Find Us</h2>
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        Our office is located in Diphu, the district headquarters of Karbi Anglong.
+                        Visitors are welcome during office hours.
+                    </p>
+
+                    <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                        <div>
+                            <div style="font-size: 4rem; color: var(--color-primary); margin-bottom: var(--spacing-md);">&#9670;</div>
+                            <p style="font-size: 1.1rem; color: var(--color-text-muted);">
+                                <strong style="color: var(--color-text);">Assam Limbu Mahasabha</strong><br />
+                                District Committee Office<br />
+                                Diphu, Karbi Anglong, Assam — 782460
+                            </p>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: var(--spacing-sm);">
+                                <a href="#" style="color: var(--color-primary);">View on Google Maps</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
+
     </div>
-  </header>
 
-  <!-- ===== MAIN ===== -->
-  <main>
+    <script src="script.js"></script>
 
-    <!-- ===== HERO ===== -->
-    <section class="hero-section" style="padding-bottom: var(--spacing-lg);">
-      <div class="container">
-        <div class="hero-content">
-          <h1>Contact Us</h1>
-          <p class="hero-sub">We would love to hear from you</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== CONTACT INFO & FORM ===== -->
-    <section class="fade-in" style="padding: var(--spacing-xl) 0; background: var(--color-white); border-bottom: var(--border-default);">
-      <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl);">
-          <!-- Contact Details -->
-          <div>
-            <h2 class="section-title" style="border-bottom: none; padding-bottom: 0; margin-bottom: var(--spacing-md);">Get in Touch</h2>
-            <p style="margin-bottom: var(--spacing-lg);">
-              Reach out to us for any queries, suggestions, or partnership opportunities.
-              We are here to support the community and welcome your input.
-            </p>
-
-            <div style="margin-bottom: var(--spacing-md);">
-              <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs); color: var(--color-secondary);">Address</h3>
-              <p style="margin-bottom: 0;">
-                Assam Limbu Mahasabha<br />
-                Karbi Anglong &amp; Dimag Hasao District Committee<br />
-                Diphu, Karbi Anglong, Assam – 782460
-              </p>
-            </div>
-
-            <div style="margin-bottom: var(--spacing-md);">
-              <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs); color: var(--color-secondary);">Email</h3>
-              <p style="margin-bottom: 0;">
-                <a href="mailto:info@almmah.org">info@almmah.org</a>
-              </p>
-            </div>
-
-            <div style="margin-bottom: var(--spacing-md);">
-              <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs); color: var(--color-secondary);">Phone</h3>
-              <p style="margin-bottom: 0;">
-                <a href="tel:+919876543210">+91 98765 43210</a>
-              </p>
-            </div>
-
-            <div>
-              <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs); color: var(--color-secondary);">Office Hours</h3>
-              <p style="margin-bottom: 0;">
-                Monday – Friday: 10:00 AM – 6:00 PM<br />
-                Saturday: 10:00 AM – 2:00 PM<br />
-                Sunday: Closed
-              </p>
-            </div>
-          </div>
-
-          <!-- Contact Form -->
-          <div>
-            <h2 class="section-title" style="border-bottom: none; padding-bottom: 0; margin-bottom: var(--spacing-md);">Send a Message</h2>
-            <form action="#" method="post" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-              <div>
-                <label for="name" style="display: block; font-weight: 500; margin-bottom: var(--spacing-xs);">Full Name</label>
-                <input type="text" id="name" name="name" required style="width: 100%; padding: var(--spacing-sm) var(--spacing-md); border: var(--border-default); border-radius: var(--border-radius); font-family: inherit; font-size: 1rem;" />
-              </div>
-              <div>
-                <label for="email" style="display: block; font-weight: 500; margin-bottom: var(--spacing-xs);">Email Address</label>
-                <input type="email" id="email" name="email" required style="width: 100%; padding: var(--spacing-sm) var(--spacing-md); border: var(--border-default); border-radius: var(--border-radius); font-family: inherit; font-size: 1rem;" />
-              </div>
-              <div>
-                <label for="subject" style="display: block; font-weight: 500; margin-bottom: var(--spacing-xs);">Subject</label>
-                <input type="text" id="subject" name="subject" style="width: 100%; padding: var(--spacing-sm) var(--spacing-md); border: var(--border-default); border-radius: var(--border-radius); font-family: inherit; font-size: 1rem;" />
-              </div>
-              <div>
-                <label for="message" style="display: block; font-weight: 500; margin-bottom: var(--spacing-xs);">Message</label>
-                <textarea id="message" name="message" rows="5" required style="width: 100%; padding: var(--spacing-sm) var(--spacing-md); border: var(--border-default); border-radius: var(--border-radius); font-family: inherit; font-size: 1rem; resize: vertical;"></textarea>
-              </div>
-              <button type="submit" style="background: var(--color-primary); color: var(--color-white); padding: var(--spacing-sm) var(--spacing-lg); border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 500; cursor: pointer; transition: background var(--transition-fast); align-self: flex-start;">
-                Send Message
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== MAP PLACEHOLDER ===== -->
-    <section class="fade-in" style="padding: var(--spacing-xl) 0; background: var(--color-bg);">
-      <div class="container">
-        <h2 class="section-title">Find Us</h2>
-        <div style="width: 100%; height: 350px; border: var(--border-default); border-radius: var(--border-radius); background: var(--color-grey-light); display: flex; align-items: center; justify-content: center; color: var(--color-grey-dark); font-size: 1.1rem;">
-          <span>Map will be embedded here</span>
-        </div>
-        <p style="margin-top: var(--spacing-md); text-align: center; color: var(--color-grey-dark);">
-          We are located in Diphu, Karbi Anglong. Feel free to visit our office during working hours.
-        </p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <span class="footer-brand-main">Assam Limbu Mahasabha</span>
-          <span class="footer-brand-sub">Karbi Anglong &amp; Dimag Hasao District Committee</span>
-          <p>&copy; 2026 All rights reserved.</p>
-        </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="organization.html">Our Organization</a></li>
-            <li><a href="committee.html">Committee</a></li>
-            <li><a href="objectives.html">Objectives</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-contact">
-          <h4>Contact</h4>
-          <p>Karbi Anglong &amp; Dimag Hasao, Assam</p>
-          <p>Email: <a href="mailto:info@almmah.org" style="color: var(--color-accent);">info@almmah.org</a></p>
-          <p>Phone: <a href="tel:+919876543210" style="color: var(--color-accent);">+91 98765 43210</a></p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>Built with care for the community.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
