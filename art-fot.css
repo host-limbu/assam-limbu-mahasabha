@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article – Assam Limbu Mahasabha</title>
+  <meta name="description" content="News and articles from the Assam Limbu Mahasabha Karbi Anglong & Dimag Hasao District Committee." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="art-fot.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="site-brand">
+        <a href="index.html">
+          <span class="brand-main">Assam Limbu Mahasabha</span>
+          <span class="brand-sub">Karbi Anglong &amp; Dimag Hasao District Committee</span>
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li class="has-dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">About</button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="about.html" role="menuitem">About Us</a></li>
+              <li><a href="organization.html" role="menuitem">Our Organization</a></li>
+              <li><a href="committee.html" role="menuitem">Committee</a></li>
+              <li><a href="objectives.html" role="menuitem">Objectives</a></li>
+            </ul>
+          </li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="members.html">Members</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <section style="padding: var(--spacing-xl) 0;">
+      <div class="container">
+
+        <!-- Article header: back link and date -->
+        <div style="margin-bottom: var(--spacing-lg);">
+          <a href="events.html" class="article-back-link">&larr; Back to Events</a>
+          <p class="article-date"><time datetime="2026-05-15">May 15, 2026</time></p>
+        </div>
+
+        <!-- Article content -->
+        <article class="article-content">
+
+          <!-- Image -->
+          <figure class="article-image-wrapper">
+            <img src="#" alt="Article featured image" />
+          </figure>
+
+          <!-- Title -->
+          <h1>Annual Cultural Festival 2026</h1>
+
+          <!-- Content -->
+          <p>
+            A vibrant celebration of Limbu culture with music, dance, and traditional cuisine.
+            The festival brought together community members from across Karbi Anglong and
+            Dimag Hasao to showcase our rich heritage.
+          </p>
+
+          <p>
+            The event featured performances by local artists, traditional Limbu cuisine stalls,
+            and interactive workshops on language and crafts. It was a wonderful opportunity
+            for the younger generation to connect with their roots and for elders to pass on
+            their knowledge.
+          </p>
+
+          <p>
+            We extend our heartfelt gratitude to all the volunteers, performers, and attendees
+            who made this event a grand success. Your support strengthens our community bonds
+            and keeps our culture alive.
+          </p>
+
+          <p>
+            Stay tuned for more events and activities planned throughout the year.
+          </p>
+
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SIMPLE FOOTER (minimal) ===== -->
+  <footer class="simple-footer">
+    <div class="simple-footer-inner">
+      <div class="simple-footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="events.html">Events</a>
+        <a href="members.html">Members</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="simple-footer-copy">&copy; 2026 Assam Limbu Mahasabha. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
