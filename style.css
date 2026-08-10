@@ -161,12 +161,12 @@ p {
 
 .brand-main {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 3rem;
   letter-spacing: -0.01em;
 }
 
 .brand-sub {
-  font-size: 0.8rem;
+  font-size: 1.8rem;
   color: var(--color-grey-dark);
   font-weight: 400;
 }
