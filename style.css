@@ -29,11 +29,11 @@ body {
    ============================================================ */
 :root {
     /* Primary palette — restrained, institutional */
-    --color-primary: #1a3a5c;        /* deep navy */
+    --color-primary: #1a3a5c;
     --color-primary-light: #2b5a7a;
     --color-primary-dark: #0f263b;
-    --color-secondary: #4a6a85;       /* muted blue-grey */
-    --color-accent: #6a8ca0;          /* soft slate */
+    --color-secondary: #4a6a85;
+    --color-accent: #6a8ca0;
 
     /* Neutrals */
     --color-background: #f8f9fb;
@@ -635,7 +635,7 @@ img {
     flex-wrap: wrap;
 }
 .hero-image {
-    background: url('/images/hero/image1.jpg') center / cover no-repeat;
+    background: url('images/hero/image1.jpg') center / cover no-repeat;
     min-height: 400px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
