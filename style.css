@@ -101,7 +101,7 @@ h4 {
 
 p {
   margin-bottom: var(--spacing-md);
-  text-align: justify; /* Added as requested */
+  text-align: justify;
 }
 
 .section-title {
@@ -161,12 +161,12 @@ p {
 
 .brand-main {
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 1.5rem;
   letter-spacing: -0.01em;
 }
 
 .brand-sub {
-  font-size: 1.8rem;
+  font-size: 1rem;
   color: var(--color-grey-dark);
   font-weight: 400;
 }
@@ -358,7 +358,7 @@ p {
   }
 }
 
-/* ========== HERO ========== */
+/* ========== HERO (LEFT ALIGNED) ========== */
 .hero-section {
   padding: var(--spacing-xxl) 0 var(--spacing-xl);
   background: var(--color-white);
@@ -367,12 +367,12 @@ p {
 
 .hero-content {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0;
   text-align: left;
 }
 
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 3.2rem;
   margin-bottom: var(--spacing-sm);
 }
 
@@ -386,7 +386,7 @@ p {
   font-size: 1.1rem;
   color: var(--color-grey-dark);
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 /* ========== HORIZONTAL SCROLL ========== */
@@ -634,7 +634,7 @@ p {
   margin-bottom: 0;
 }
 
-/* ========== LEADERSHIP ========== */
+/* ========== LEADERSHIP (CENTERED) ========== */
 .leadership-section {
   padding: var(--spacing-xl) 0;
   background: var(--color-white);
@@ -806,7 +806,7 @@ p {
     --spacing-xl: 1.5rem;
   }
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   .hero-sub {
     font-size: 1rem;
@@ -815,10 +815,10 @@ p {
     font-size: 1.6rem;
   }
   .brand-main {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   .brand-sub {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
   .scroll-card {
     flex: 0 0 180px;
@@ -835,8 +835,6 @@ p {
 }
 
 /* ========== ADDITIONAL STYLES FOR STATIC PAGES ========== */
-/* These ensure consistency across all new pages */
-
 .article-content {
   max-width: 800px;
   margin: 0 auto;
