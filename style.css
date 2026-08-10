@@ -1266,3 +1266,7 @@ img {
         padding: var(--spacing-xxl) calc(var(--spacing-xl) * 2);
     }
 }
+/*------JUSTIFY------*/
+p {
+    text-align: justify;
+}
