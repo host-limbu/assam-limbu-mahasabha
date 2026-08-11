@@ -9,6 +9,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with all pages */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Gallery image styling */
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: var(--radius);
+        }
+    </style>
 </head>
 <body>
 
@@ -109,8 +142,8 @@
                 </div>
             </section>
 
-            <!-- GALLERY GRID -->
-            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+            <!-- ==================== GALLERY GRID WITH PAGINATION (SAME AS UPDATES/EVENTS/DOCUMENTS) ==================== -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Gallery</div>
                     <h2>Community Memories</h2>
@@ -119,65 +152,67 @@
                         workshops, and other important events.
                     </p>
 
-                    <div class="gallery-grid" id="gallery-grid">
+                    <!-- Grid container — same ID as updates.html for global pagination -->
+                    <div class="updates-grid" id="updates-grid">
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image1.jpg" alt="Limbu cultural dance performance" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image1.jpg" alt="Limbu cultural dance performance" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image2.jpg" alt="Community gathering at Diphu" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image2.jpg" alt="Community gathering at Diphu" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image3.jpg" alt="Traditional Limbu attire showcase" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image3.jpg" alt="Traditional Limbu attire showcase" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image4.jpg" alt="Committee meeting with community elders" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image4.jpg" alt="Committee meeting with community elders" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image5.jpg" alt="Children participating in cultural event" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image5.jpg" alt="Children participating in cultural event" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image6.jpg" alt="Limbu festival celebration at Haflong" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image6.jpg" alt="Limbu festival celebration at Haflong" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image7.jpg" alt="Traditional Limbu musical instruments" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image7.jpg" alt="Traditional Limbu musical instruments" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image8.jpg" alt="Community service initiative" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image8.jpg" alt="Community service initiative" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image9.jpg" alt="Limbu New Year celebration" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image9.jpg" alt="Limbu New Year celebration" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image10.jpg" alt="Youth workshop session" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image10.jpg" alt="Youth workshop session" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image11.jpg" alt="Women's wing community gathering" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image11.jpg" alt="Women's wing community gathering" class="gallery-img" loading="lazy" />
+                        </div>
 
-                        <figure class="gallery-item">
-                            <img src="images/gallery/image12.jpg" alt="Cultural exchange program" loading="lazy" />
-                        </figure>
+                        <div class="update-card" style="padding: var(--spacing-sm);">
+                            <img src="images/gallery/image12.jpg" alt="Cultural exchange program" class="gallery-img" loading="lazy" />
+                        </div>
 
                     </div>
 
+                    <!-- Pagination controls — same ID as updates.html -->
                     <nav class="pagination" aria-label="Gallery pagination">
-                        <ul class="pagination-list" id="gallery-pagination"></ul>
+                        <ul class="pagination-list" id="updates-pagination"></ul>
                     </nav>
                 </div>
             </section>
 
-            <!-- CALL TO ACTION -->
+            <!-- CTA SECTION (consistent with other pages) -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Share Your Photos</h2>
