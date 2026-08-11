@@ -9,37 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Responsive grid helpers — consistent with about.html and history.html */
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -86,20 +60,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -117,10 +77,8 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO (same as about.html) -->
             <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -134,14 +92,12 @@
                 </div>
             </section>
 
-            <!-- ==================== VISION STATEMENT (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Vision</div>
                     <h2>Looking Ahead</h2>
                     <div class="updates-grid grid-2">
-
-                        <div class="update-card" style="text-align: left;">
+                        <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <p style="font-size: 1.1rem; color: var(--color-text); font-weight: var(--font-medium);">
                                 A vibrant and united Limbu community in Karbi Anglong and Dima Hasao
@@ -149,8 +105,7 @@
                                 meaningfully to the social and economic development of Assam.
                             </p>
                         </div>
-
-                        <div class="update-card" style="text-align: left;">
+                        <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <p style="color: var(--color-text-muted);">
                                 We envision a future where every Limbu family in our district is empowered,
@@ -158,18 +113,15 @@
                                 and values thrive alongside the progress of modern society.
                             </p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== MISSION (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Mission</div>
                     <h2>What We Do</h2>
                     <div class="updates-grid grid-2">
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Preserve Limbu Culture</h3>
@@ -188,7 +140,6 @@
                                 </li>
                             </ul>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Promote Education</h3>
@@ -207,12 +158,9 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
 
-                    <!-- Second row of mission cards -->
                     <div class="updates-grid grid-2" style="margin-top: var(--spacing-lg);">
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Foster Community Welfare</h3>
@@ -231,7 +179,6 @@
                                 </li>
                             </ul>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Advocate for Our Community</h3>
@@ -250,53 +197,44 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== CORE VALUES (4 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Core Values</div>
                     <h2>What We Believe In</h2>
                     <div class="updates-grid grid-4">
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Unity</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We believe in the power of togetherness. Our strength lies in our unity.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Culture</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We are committed to preserving and promoting our rich Limbu heritage.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Education</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We believe education is the key to empowerment and progress.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Service</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We serve with integrity, compassion, and dedication to our community.</p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== STRATEGIC GOALS (3 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Strategic Goals</div>
                     <h2>Our Roadmap for 2026–2028</h2>
                     <div class="updates-grid grid-3">
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 1</h3>
@@ -304,7 +242,6 @@
                                 Expand language workshops to reach 200+ students across the district.
                             </p>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 2</h3>
@@ -312,7 +249,6 @@
                                 Establish a community resource center for cultural activities and events.
                             </p>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 3</h3>
@@ -320,12 +256,10 @@
                                 Increase scholarship funding and support for higher education.
                             </p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- CTA SECTION (same as about.html) -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Be Part of Our Vision</h2>
@@ -338,7 +272,6 @@
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
