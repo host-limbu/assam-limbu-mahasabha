@@ -9,6 +9,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with about.html, history.html, vision.html */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -109,12 +134,12 @@
                 </div>
             </section>
 
-            <!-- ==================== ELECTED MEMBERS (same as updates.html grid) ==================== -->
+            <!-- ==================== ELECTED MEMBERS (grid-4) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">2026–2028 Term</div>
                     <h2>Elected Committee Members</h2>
-                    <div class="updates-grid" id="committee-grid">
+                    <div class="updates-grid grid-4" id="committee-grid">
 
                         <!-- Member 1 -->
                         <div class="update-card" style="text-align: center;">
@@ -291,12 +316,12 @@
                 </div>
             </section>
 
-            <!-- ==================== ADVISORY BOARD (SAME CARD STYLE AS MEMBERS) ==================== -->
+            <!-- ==================== ADVISORY BOARD (grid-3) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Advisory Board</div>
                     <h2>Eminent Advisors</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="updates-grid grid-3">
 
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
@@ -320,12 +345,12 @@
                 </div>
             </section>
 
-            <!-- ==================== COMMITTEE STRUCTURE (SAME CARD STYLE AS MEMBERS) ==================== -->
+            <!-- ==================== COMMITTEE STRUCTURE (grid-3) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">How We Function</div>
                     <h2>Committee Structure</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="updates-grid grid-3">
 
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
