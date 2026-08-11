@@ -9,37 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Responsive grid helpers — consistent with about.html, history.html, vision.html */
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -86,20 +60,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -117,10 +77,8 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -134,14 +92,12 @@
                 </div>
             </section>
 
-            <!-- ==================== ELECTED MEMBERS (grid-4) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">2026–2028 Term</div>
                     <h2>Elected Committee Members</h2>
                     <div class="updates-grid grid-4" id="committee-grid">
 
-                        <!-- Member 1 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Bal.jpg" alt="Bal Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>BS</span>';" />
@@ -150,7 +106,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">President</p>
                         </div>
 
-                        <!-- Member 2 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Tilak.jpg" alt="Tilak Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>TS</span>';" />
@@ -159,7 +114,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Working President</p>
                         </div>
 
-                        <!-- Member 3 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Dil.jpg" alt="Dil Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>DS</span>';" />
@@ -168,7 +122,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
-                        <!-- Member 4 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Indra.jpg" alt="Indra Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>IS</span>';" />
@@ -177,7 +130,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
-                        <!-- Member 5 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Jibon.jpg" alt="Jibon Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JS</span>';" />
@@ -186,7 +138,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
-                        <!-- Member 6 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Tek.jpg" alt="Tek Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>TS</span>';" />
@@ -195,7 +146,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
-                        <!-- Member 7 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Joya.jpg" alt="Joya Limbu" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JL</span>';" />
@@ -204,7 +154,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
-                        <!-- Member 8 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Subash.jpg" alt="Subash Subba (Kerung)" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
@@ -213,7 +162,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">General Secretary</p>
                         </div>
 
-                        <!-- Member 9 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Suk.jpg" alt="Suk Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
@@ -222,7 +170,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant General Secretary</p>
                         </div>
 
-                        <!-- Member 10 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Mon.jpg" alt="Mon Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>MS</span>';" />
@@ -231,7 +178,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Secretary</p>
                         </div>
 
-                        <!-- Member 11 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Puja.jpg" alt="Puja Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>PS</span>';" />
@@ -240,7 +186,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Secretary</p>
                         </div>
 
-                        <!-- Member 12 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Jagat.jpg" alt="Jagat Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JS</span>';" />
@@ -249,7 +194,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Treasurer</p>
                         </div>
 
-                        <!-- Member 13 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Narayan.jpg" alt="Narayan Subba (Khapung)" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>NS</span>';" />
@@ -258,7 +202,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Cultural Secretary</p>
                         </div>
 
-                        <!-- Member 14 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Dhan.jpg" alt="Dhan Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>DS</span>';" />
@@ -267,7 +210,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Organizing Secretary</p>
                         </div>
 
-                        <!-- Member 15 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Subash2.jpg" alt="Subash Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
@@ -276,7 +218,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Organizing Secretary</p>
                         </div>
 
-                        <!-- Member 16 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Sher.jpg" alt="Sher Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
@@ -285,7 +226,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Education Secretary</p>
                         </div>
 
-                        <!-- Member 17 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Yadav.jpg" alt="Yadav Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>YS</span>';" />
@@ -294,7 +234,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Publicity Secretary</p>
                         </div>
 
-                        <!-- Member 18 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Raj.jpg" alt="Raj Limbu" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>RL</span>';" />
@@ -303,7 +242,6 @@
                             <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Publicity Secretary</p>
                         </div>
 
-                        <!-- Member 19 -->
                         <div class="update-card" style="text-align: center;">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-sm); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Santa.jpg" alt="Santa Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
@@ -316,42 +254,35 @@
                 </div>
             </section>
 
-            <!-- ==================== ADVISORY BOARD (grid-3) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Advisory Board</div>
                     <h2>Eminent Advisors</h2>
                     <div class="updates-grid grid-3">
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Ganga Prasad Limbu</h3>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted);">Former President, ALM</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Krishna Kumar Subba</h3>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted);">Elder, Haflong</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Laxmi Rai</h3>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted);">Community Leader, Maibang</p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== COMMITTEE STRUCTURE (grid-3) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">How We Function</div>
                     <h2>Committee Structure</h2>
                     <div class="updates-grid grid-3">
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Executive Body</h3>
@@ -359,7 +290,6 @@
                                 The President, Working President, Vice Presidents, General Secretary, Assistant Secretaries, and Treasurer form the core executive team.
                             </p>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Wings &amp; Cells</h3>
@@ -367,7 +297,6 @@
                                 Specialized secretaries for culture, education, organizing, and publicity ensure focused attention on different areas.
                             </p>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Village Representatives</h3>
@@ -375,12 +304,10 @@
                                 Each village elects a representative to ensure the committee's work reaches every corner of the district.
                             </p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- CTA SECTION -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Want to Contribute?</h2>
@@ -394,7 +321,6 @@
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
