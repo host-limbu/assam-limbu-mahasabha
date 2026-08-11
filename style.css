@@ -1265,6 +1265,7 @@ img {
         padding: 0.7rem var(--spacing-md);
         border-radius: 0;
         border-bottom: 1px solid var(--color-border);
+        text-align: left; /* LEFT-ALIGNED */
     }
     .nav-dropdown .dropdown-menu {
         position: static;
@@ -1283,6 +1284,10 @@ img {
     }
     .nav-dropdown > a::after {
         margin-left: auto;
+    }
+    .dropdown-menu li a {
+        text-align: left; /* LEFT-ALIGNED SUB-MENU */
+        padding-left: var(--spacing-lg);
     }
     .mobile-nav-toggle {
         display: flex;
