@@ -9,72 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Responsive grid helpers — consistent with all pages */
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .event-image {
-            width: 100%;
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .event-meta-list {
-            list-style: none;
-            padding: 0;
-            font-size: 0.95rem;
-            color: var(--color-text-muted);
-        }
-        .event-meta-list li {
-            padding: 0.4rem 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .event-meta-list li:last-child {
-            border-bottom: none;
-        }
-        .event-meta-list strong {
-            color: var(--color-text);
-        }
-
-        .event-schedule-list {
-            list-style: none;
-            padding: 0;
-        }
-        .event-schedule-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .event-schedule-list li:last-child {
-            border-bottom: none;
-        }
-    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -121,20 +60,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -152,10 +77,8 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -168,7 +91,6 @@
                 </div>
             </section>
 
-            <!-- ==================== EVENT DETAILS (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Event Details</div>
@@ -176,9 +98,7 @@
 
                     <div class="updates-grid grid-2" style="align-items: start;">
 
-                        <!-- Left Column: Main Content -->
                         <div>
-
                             <img src="images/events/event1.jpg" alt="Limbu cultural festival celebration" class="event-image" />
                             <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: -0.5rem; margin-bottom: var(--spacing-md);">
                                 Cultural performances at the Annual Limbu Cultural Festival 2026
@@ -212,9 +132,7 @@
 
                         </div>
 
-                        <!-- Right Column: Sidebar (Event at a Glance + Quote) -->
                         <div>
-
                             <div class="update-card" style="text-align: left;">
                                 <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Event at a Glance</h3>
@@ -238,7 +156,6 @@
                                 </p>
                             </div>
 
-                            <!-- Back link -->
                             <p style="margin-top: var(--spacing-lg);">
                                 <a href="events.html" style="font-weight: var(--font-medium);">&larr; Back to Events</a>
                             </p>
@@ -249,7 +166,6 @@
                 </div>
             </section>
 
-            <!-- CTA SECTION -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Attend This Event</h2>
@@ -262,7 +178,6 @@
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
