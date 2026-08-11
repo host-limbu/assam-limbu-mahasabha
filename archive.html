@@ -95,7 +95,7 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO (same as updates.html) -->
+            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -108,15 +108,18 @@
                 </div>
             </section>
 
-            <!-- ARCHIVE GRID (EXACT SAME STRUCTURE AS UPDATES.HTML) -->
+            <!-- ARCHIVE GRID — SAME AS UPDATES.HTML WITH PAGINATION -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Archive</div>
                     <h2>All Archived Updates</h2>
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        Browse all past updates from the district committee.
+                    </p>
+
                     <div class="updates-grid" id="updates-grid">
 
-                        <!-- ====== 2025 Archive Items ====== -->
-
+                        <!-- 2025 -->
                         <article class="update-card">
                             <div class="update-card-body">
                                 <div class="update-meta">
@@ -165,8 +168,7 @@
                             </div>
                         </article>
 
-                        <!-- ====== 2024 Archive Items ====== -->
-
+                        <!-- 2024 -->
                         <article class="update-card">
                             <div class="update-card-body">
                                 <div class="update-meta">
@@ -215,8 +217,7 @@
                             </div>
                         </article>
 
-                        <!-- ====== 2023 Archive Items ====== -->
-
+                        <!-- 2023 -->
                         <article class="update-card">
                             <div class="update-card-body">
                                 <div class="update-meta">
@@ -267,14 +268,13 @@
 
                     </div>
 
-                    <!-- PAGINATION (same as updates.html) -->
                     <nav class="pagination" aria-label="Archive pagination">
                         <ul class="pagination-list" id="updates-pagination"></ul>
                     </nav>
                 </div>
             </section>
 
-            <!-- CTA SECTION (same as updates.html) -->
+            <!-- CTA SECTION (consistent with other pages) -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Stay Connected</h2>
