@@ -9,37 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Responsive grid helpers — consistent with updates.html */
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -86,20 +60,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -117,10 +77,8 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -134,15 +92,12 @@
                 </div>
             </section>
 
-            <!-- ==================== OUR STORY (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Story</div>
                     <h2>A Legacy of Community Service</h2>
                     <div class="updates-grid grid-2">
-
-                        <!-- Left Card: Story Text -->
-                        <div class="update-card" style="text-align: left;">
+                        <div class="update-card">
                             <p style="font-size: 1.05rem; color: var(--color-text-muted);">
                                 The Assam Limbu Mahasabha was established in 1972 with a vision to unite,
                                 preserve, and promote the rich cultural heritage of the Limbu community
@@ -161,9 +116,7 @@
                             </p>
                             <a href="history.html" class="btn btn-secondary" style="margin-top: var(--spacing-sm);">Read Our Full History</a>
                         </div>
-
-                        <!-- Right Card: Quote -->
-                        <div class="update-card" style="text-align: left;">
+                        <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <blockquote style="font-style: italic; font-size: 1.1rem; color: var(--color-text); border-left: 4px solid var(--color-primary); padding-left: var(--spacing-md); margin: 0;">
                                 "Our strength lies in our unity, our culture, and our commitment to
@@ -174,18 +127,15 @@
                                 — Late Shri G.B. Limbu, Founding Member
                             </p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== VISION & MISSION (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Guiding Principles</div>
                     <h2>Vision &amp; Mission</h2>
                     <div class="updates-grid grid-2">
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Our Vision</h3>
@@ -195,7 +145,6 @@
                                 meaningfully to the social and economic development of Assam.
                             </p>
                         </div>
-
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Our Mission</h3>
@@ -218,68 +167,56 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== CORE VALUES (4 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">What We Stand For</div>
                     <h2>Our Core Values</h2>
                     <div class="updates-grid grid-4">
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Unity</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Strength through togetherness.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Culture</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Preserving our heritage.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Education</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Empowering the next generation.</p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Service</h4>
                             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Community first, always.</p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== DISTRICT OVERVIEW (3 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our District</div>
                     <h2>Karbi Anglong &amp; Dima Hasao</h2>
                     <div class="updates-grid grid-3">
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">48</div>
                             <div style="font-size: 0.9rem; color: var(--color-text-muted);">Villages Connected</div>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">1,200+</div>
                             <div style="font-size: 0.9rem; color: var(--color-text-muted);">Community Members</div>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">52</div>
                             <div style="font-size: 0.9rem; color: var(--color-text-muted);">Years of Service</div>
                         </div>
-
                     </div>
                     <p style="text-align: center; color: var(--color-text-muted); max-width: 700px; margin: var(--spacing-lg) auto 0;">
                         The district committee serves Limbu families across Diphu, Haflong, Maibang,
@@ -289,7 +226,6 @@
                 </div>
             </section>
 
-            <!-- CTA SECTION -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Meet Our Committee</h2>
@@ -303,7 +239,6 @@
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
