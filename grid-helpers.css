@@ -32,7 +32,7 @@
     }
 }
 
-/* Optional: Extra small devices (if needed) */
+/* Extra small devices */
 @media (max-width: 480px) {
     .grid-2,
     .grid-3,
