@@ -9,6 +9,61 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with about.html and updates.html */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Timeline specific styling */
+        .timeline-item {
+            position: relative;
+            padding-left: var(--spacing-lg);
+            border-left: 3px solid var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-year {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-weight: var(--font-bold);
+            font-size: 0.85rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        .timeline-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        .timeline-item p {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -95,13 +150,13 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
-            <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
+            <!-- HERO (same as about.html) -->
+            <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
                         <p class="hero-tag">Our History</p>
-                        <h1 style="font-size: 2.8rem;">A Journey of Service<br />Since 1972</h1>
-                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                        <h1 style="font-size: 3rem;">A Journey of Service<br />Since 1972</h1>
+                        <p class="hero-description" style="max-width: 650px; margin: 0 auto;">
                             Tracing the history of the Assam Limbu Mahasabha and its commitment to the
                             Limbu community in Karbi Anglong and Dima Hasao.
                         </p>
@@ -109,97 +164,16 @@
                 </div>
             </section>
 
-            <!-- TIMELINE -->
+            <!-- ==================== FOUNDING STORY (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="section-label">Timeline</div>
-                    <h2>Key Milestones</h2>
-                    <div style="position: relative; padding-left: 2rem; border-left: 3px solid var(--color-primary); margin-top: var(--spacing-lg);">
-
-                        <div style="margin-bottom: var(--spacing-lg);">
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">1972</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">Foundation of Assam Limbu Mahasabha</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        The Assam Limbu Mahasabha was established with a vision to unite and uplift the Limbu community in Assam.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: var(--spacing-lg);">
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">1985</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">Formation of District Committee</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        The Karbi Anglong &amp; Dima Hasao District Committee was formed to serve the growing community in the hill districts.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: var(--spacing-lg);">
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">1995</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">First Cultural Festival</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        The first annual Limbu Cultural Festival was organized in Diphu, bringing together community members from across the region.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: var(--spacing-lg);">
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">2005</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">Youth &amp; Women's Wings Established</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        Specialized wings for youth and women were created to address the unique needs of these groups within the community.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: var(--spacing-lg);">
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">2015</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">Limbu Language Initiative</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        A major initiative to promote the Limbu language and Sirijanga script was launched, including workshops for youth.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div style="display: flex; gap: var(--spacing-md); align-items: flex-start;">
-                                <span style="background: var(--color-primary); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: var(--font-bold); flex-shrink: 0;">2024</span>
-                                <div>
-                                    <h3 style="font-size: 1.1rem; margin-bottom: var(--spacing-xs);">Golden Jubilee &amp; New Constitution</h3>
-                                    <p style="color: var(--color-text-muted); margin: 0;">
-                                        The committee celebrated 50 years of service and adopted a new constitution to guide its future growth.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <!-- FOUNDING STORY -->
-            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-                <div class="section-content">
-                    <div class="section-label">The Founding Story</div>
+                    <div class="section-label">The Beginning</div>
                     <h2>How It All Began</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center; margin-top: var(--spacing-lg);">
-                        <div>
-                            <p style="color: var(--color-text-muted);">
+                    <div class="updates-grid grid-2">
+
+                        <div class="update-card" style="text-align: left;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <p style="font-size: 1.05rem; color: var(--color-text-muted);">
                                 In the early 1970s, a group of Limbu visionaries recognized the need for a unified
                                 organization to preserve their culture, language, and identity. The Limbu community,
                                 though small in numbers, had a rich heritage that was at risk of fading away.
@@ -215,8 +189,10 @@
                                 future generations.
                             </p>
                         </div>
-                        <div style="background: var(--color-surface); border-radius: var(--radius-lg); padding: var(--spacing-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
-                            <blockquote style="font-style: italic; font-size: 1.1rem; color: var(--color-text); border-left: 4px solid var(--color-primary); padding-left: var(--spacing-md);">
+
+                        <div class="update-card" style="text-align: left;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <blockquote style="font-style: italic; font-size: 1.1rem; color: var(--color-text); border-left: 4px solid var(--color-primary); padding-left: var(--spacing-md); margin: 0;">
                                 "The Assam Limbu Mahasabha was born out of the collective will of our people to
                                 preserve our identity and ensure that our children grow up with pride in their
                                 Limbu heritage."
@@ -225,37 +201,161 @@
                                 — G.B. Limbu, Founding Member
                             </p>
                         </div>
+
                     </div>
                 </div>
             </section>
 
-            <!-- LEGACY -->
+            <!-- ==================== TIMELINE (cards with timeline styling) ==================== -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Timeline</div>
+                    <h2>Key Milestones</h2>
+                    <div class="updates-grid grid-2">
+
+                        <div class="update-card" style="text-align: left;">
+                            <div class="timeline-item">
+                                <span class="timeline-year">1972</span>
+                                <h3>Foundation of Assam Limbu Mahasabha</h3>
+                                <p>The Assam Limbu Mahasabha was established with a vision to unite and uplift the Limbu community in Assam.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">1985</span>
+                                <h3>Formation of District Committee</h3>
+                                <p>The Karbi Anglong &amp; Dima Hasao District Committee was formed to serve the growing community in the hill districts.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">1995</span>
+                                <h3>First Cultural Festival</h3>
+                                <p>The first annual Limbu Cultural Festival was organized in Diphu, bringing together community members from across the region.</p>
+                            </div>
+                        </div>
+
+                        <div class="update-card" style="text-align: left;">
+                            <div class="timeline-item">
+                                <span class="timeline-year">2005</span>
+                                <h3>Youth &amp; Women's Wings Established</h3>
+                                <p>Specialized wings for youth and women were created to address the unique needs of these groups within the community.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">2015</span>
+                                <h3>Limbu Language Initiative</h3>
+                                <p>A major initiative to promote the Limbu language and Sirijanga script was launched, including workshops for youth.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">2024</span>
+                                <h3>Golden Jubilee &amp; New Constitution</h3>
+                                <p>The committee celebrated 50 years of service and adopted a new constitution to guide its future growth.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== LEGACY (3 cards) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Legacy</div>
                     <h2>Carrying the Torch Forward</h2>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-lg);">
-                        <div style="text-align: center; padding: var(--spacing-md);">
-                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
-                            <h3 style="font-size: 1rem;">Cultural Preservation</h3>
-                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                    <div class="updates-grid grid-3">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Cultural Preservation</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
                                 We have kept Limbu traditions alive through festivals, music, dance, and language workshops.
                             </p>
                         </div>
-                        <div style="text-align: center; padding: var(--spacing-md);">
-                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
-                            <h3 style="font-size: 1rem;">Education &amp; Scholarship</h3>
-                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Education &amp; Scholarship</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
                                 Hundreds of Limbu students have received scholarships and educational support through the committee.
                             </p>
                         </div>
-                        <div style="text-align: center; padding: var(--spacing-md);">
-                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
-                            <h3 style="font-size: 1rem;">Community Welfare</h3>
-                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Community Welfare</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
                                 From health camps to relief efforts, we have always stood by our community in times of need.
                             </p>
                         </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== FOUNDING MEMBERS / LEADERSHIP (3 cards) ==================== -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Founding Leaders</div>
+                    <h2>Visionaries Who Started It All</h2>
+                    <div class="updates-grid grid-3">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">G.B. Limbu</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">Founding Member &amp; First President</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">K.B. Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">Founding Member &amp; General Secretary</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">L.R. Limbu</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">Founding Member &amp; Treasurer</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== STATS (3 cards) ==================== -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">By the Numbers</div>
+                    <h2>Our Impact Over Five Decades</h2>
+                    <div class="updates-grid grid-3">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">52</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Years of Service</div>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: var(--spacing-xs);">1972 – Present</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">48</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Villages Reached</div>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: var(--spacing-xs);">Across Karbi Anglong &amp; Dima Hasao</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">1,200+</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Community Members</div>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: var(--spacing-xs);">And growing every year</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA SECTION (same as about.html) -->
+            <section class="full-width" style="background: var(--color-primary); color: #fff;">
+                <div class="section-content" style="text-align: center;">
+                    <h2 style="color: #fff;">Continue Exploring Our Journey</h2>
+                    <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        Learn more about our vision for the future and how you can be part of our story.
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center;">
+                        <a href="vision.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">Our Vision &amp; Mission</a>
+                        <a href="committee.html" class="btn" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.5);">Meet the Committee</a>
                     </div>
                 </div>
             </section>
