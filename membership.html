@@ -9,37 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Responsive grid helpers — consistent with all pages */
-        .grid-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .grid-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -86,20 +60,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -117,10 +77,8 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -134,13 +92,11 @@
                 </div>
             </section>
 
-            <!-- ==================== MEMBERSHIP BENEFITS (grid-3) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Why Join</div>
                     <h2>Membership Benefits</h2>
                     <div class="updates-grid grid-3">
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Community Connection</h3>
@@ -148,7 +104,6 @@
                                 Connect with fellow Limbu families across Karbi Anglong and Dima Hasao.
                             </p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Cultural Preservation</h3>
@@ -156,7 +111,6 @@
                                 Participate in cultural events, language workshops, and heritage programs.
                             </p>
                         </div>
-
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
                             <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Community Support</h3>
@@ -164,12 +118,10 @@
                                 Access to welfare programs, scholarships, and community initiatives.
                             </p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- ==================== APPLICATION FORM ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Apply Now</div>
@@ -231,7 +183,6 @@
                 </div>
             </section>
 
-            <!-- CTA SECTION (consistent with other pages) -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Have Questions?</h2>
@@ -244,7 +195,6 @@
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
