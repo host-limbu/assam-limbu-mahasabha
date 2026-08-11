@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vision & Mission — Assam Limbu Mahasabha</title>
+    <meta name="description" content="The vision and mission of the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with about.html and history.html */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <!-- HEADER -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
+                </div>
+
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="about.html" class="active">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html" class="active">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="updates.html">Latest Updates</a></li>
+                                <li><a href="archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <div class="language-selector">
+                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
+                            EN
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                        <ul class="lang-dropdown" role="listbox">
+                            <li role="option" data-lang="en" aria-selected="true">English</li>
+                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
+                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
+                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
+                        </ul>
+                    </div>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="site-main" role="main">
+
+            <!-- HERO (same as about.html) -->
+            <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Our Purpose</p>
+                        <h1 style="font-size: 3rem;">Vision &amp; Mission</h1>
+                        <p class="hero-description" style="max-width: 650px; margin: 0 auto;">
+                            Guiding principles that shape our work and define our commitment to the
+                            Limbu community in Karbi Anglong and Dima Hasao.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== VISION STATEMENT (2 columns on desktop, 1 on mobile) ==================== -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Our Vision</div>
+                    <h2>Looking Ahead</h2>
+                    <div class="updates-grid grid-2">
+
+                        <div class="update-card" style="text-align: left;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <p style="font-size: 1.1rem; color: var(--color-text); font-weight: var(--font-medium);">
+                                A vibrant and united Limbu community in Karbi Anglong and Dima Hasao
+                                that preserves its cultural heritage, promotes education, and contributes
+                                meaningfully to the social and economic development of Assam.
+                            </p>
+                        </div>
+
+                        <div class="update-card" style="text-align: left;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <p style="color: var(--color-text-muted);">
+                                We envision a future where every Limbu family in our district is empowered,
+                                connected, and proud of their identity. A future where our language, traditions,
+                                and values thrive alongside the progress of modern society.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MISSION (2 columns on desktop, 1 on mobile) ==================== -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Our Mission</div>
+                    <h2>What We Do</h2>
+                    <div class="updates-grid grid-2">
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Preserve Limbu Culture</h3>
+                            <ul style="list-style: none; padding: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Promote Limbu language and Sirijanga script
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Organize cultural festivals and events
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Document oral traditions and history
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Promote Education</h3>
+                            <ul style="list-style: none; padding: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Provide scholarships to deserving students
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Organize career guidance workshops
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Support literacy and skill development
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- Second row of mission cards -->
+                    <div class="updates-grid grid-2" style="margin-top: var(--spacing-lg);">
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Foster Community Welfare</h3>
+                            <ul style="list-style: none; padding: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Support families in times of need
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Organize health awareness camps
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Strengthen community bonds and solidarity
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Advocate for Our Community</h3>
+                            <ul style="list-style: none; padding: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Represent community interests at various forums
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Work for recognition of Limbu rights
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Build bridges with other communities
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== CORE VALUES (4 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Core Values</div>
+                    <h2>What We Believe In</h2>
+                    <div class="updates-grid grid-4">
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Unity</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We believe in the power of togetherness. Our strength lies in our unity.</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Culture</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We are committed to preserving and promoting our rich Limbu heritage.</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Education</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We believe education is the key to empowerment and progress.</p>
+                        </div>
+
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Service</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">We serve with integrity, compassion, and dedication to our community.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== STRATEGIC GOALS (3 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Strategic Goals</div>
+                    <h2>Our Roadmap for 2026–2028</h2>
+                    <div class="updates-grid grid-3">
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 1</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                Expand language workshops to reach 200+ students across the district.
+                            </p>
+                        </div>
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 2</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                Establish a community resource center for cultural activities and events.
+                            </p>
+                        </div>
+
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Goal 3</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); margin: 0;">
+                                Increase scholarship funding and support for higher education.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA SECTION (same as about.html) -->
+            <section class="full-width" style="background: var(--color-primary); color: #fff;">
+                <div class="section-content" style="text-align: center;">
+                    <h2 style="color: #fff;">Be Part of Our Vision</h2>
+                    <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        Join us in building a brighter future for the Limbu community. Your support makes our mission possible.
+                    </p>
+                    <a href="membership.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">Become a Member</a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
