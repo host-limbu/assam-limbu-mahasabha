@@ -9,6 +9,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with updates.html */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -95,7 +120,7 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO (same as updates.html) -->
+            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -109,12 +134,12 @@
                 </div>
             </section>
 
-            <!-- ==================== OUR STORY (card grid like updates.html) ==================== -->
+            <!-- ==================== OUR STORY (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Story</div>
                     <h2>A Legacy of Community Service</h2>
-                    <div class="updates-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="updates-grid grid-2">
 
                         <!-- Left Card: Story Text -->
                         <div class="update-card" style="text-align: left;">
@@ -154,12 +179,12 @@
                 </div>
             </section>
 
-            <!-- ==================== VISION & MISSION (card grid) ==================== -->
+            <!-- ==================== VISION & MISSION (2 columns on desktop, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our Guiding Principles</div>
                     <h2>Vision &amp; Mission</h2>
-                    <div class="updates-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="updates-grid grid-2">
 
                         <div class="update-card">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
@@ -198,12 +223,12 @@
                 </div>
             </section>
 
-            <!-- ==================== CORE VALUES (card grid) ==================== -->
+            <!-- ==================== CORE VALUES (4 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">What We Stand For</div>
                     <h2>Our Core Values</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="updates-grid grid-4">
 
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
@@ -233,12 +258,12 @@
                 </div>
             </section>
 
-            <!-- ==================== DISTRICT OVERVIEW (card grid) ==================== -->
+            <!-- ==================== DISTRICT OVERVIEW (3 columns on desktop, 2 on tablet, 1 on mobile) ==================== -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Our District</div>
                     <h2>Karbi Anglong &amp; Dima Hasao</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="updates-grid grid-3">
 
                         <div class="update-card" style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">48</div>
@@ -264,7 +289,7 @@
                 </div>
             </section>
 
-            <!-- CTA SECTION (same as updates.html) -->
+            <!-- CTA SECTION -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Meet Our Committee</h2>
