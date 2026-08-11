@@ -95,7 +95,7 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO (same as updates.html) -->
+            <!-- HERO (same style as about page) -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -109,340 +109,274 @@
                 </div>
             </section>
 
-            <!-- COMMITTEE GRID (EXACT SAME STRUCTURE AS UPDATES.HTML) -->
+            <!-- ============================================================
+            COMMITTEE MEMBERS GRID (same as updates.html grid)
+            ============================================================ -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">2026–2028 Term</div>
                     <h2>Elected Committee Members</h2>
-                    <div class="updates-grid" id="updates-grid">
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        The following members were elected to serve the district committee for the
+                        term 2026–2028. They represent various villages and bring diverse experience
+                        to the committee.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-lg);">
 
                         <!-- Member 1: Bal Bahadur Subba (Loksom) — President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Bal.jpg" alt="Bal Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>BS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary);">President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Bal Bahadur Subba (Loksom)</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Bal Bahadur Subba (Loksom)</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">President</p>
                         </div>
 
                         <!-- Member 2: Tilak Subba (Kondangwa) — Working President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Tilak.jpg" alt="Tilak Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>TS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">Working President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Tilak Subba (Kondangwa)</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Tilak Subba (Kondangwa)</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Working President</p>
                         </div>
 
                         <!-- Member 3: Dil Bahadur Subba (Khapung) — Vice President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Dil.jpg" alt="Dil Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>DS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Vice President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Dil Bahadur Subba (Khapung)</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Dil Bahadur Subba (Khapung)</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
                         <!-- Member 4: Indra Bahadur Subba — Vice President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Indra.jpg" alt="Indra Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>IS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary-light);">Vice President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Indra Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Indra Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
                         <!-- Member 5: Jibon Subba — Vice President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Jibon.jpg" alt="Jibon Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">Vice President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Jibon Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Jibon Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
                         <!-- Member 6: Tek Bahadur Subba — Vice President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Tek.jpg" alt="Tek Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>TS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Vice President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Tek Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Tek Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
                         <!-- Member 7: Joya Limbu — Vice President -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Joya.jpg" alt="Joya Limbu" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JL</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary);">Vice President</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Joya Limbu</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Joya Limbu</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Vice President</p>
                         </div>
 
                         <!-- Member 8: Subash Subba (Kerung) — General Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Subash.jpg" alt="Subash Subba (Kerung)" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">General Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Subash Subba (Kerung)</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Subash Subba (Kerung)</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">General Secretary</p>
                         </div>
 
                         <!-- Member 9: Suk Bahadur Subba — Assistant General Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Suk.jpg" alt="Suk Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Assistant General Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Suk Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Suk Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant General Secretary</p>
                         </div>
 
                         <!-- Member 10: Mon Bahadur Subba — Assistant Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Mon.jpg" alt="Mon Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>MS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary-light);">Assistant Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Mon Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Mon Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Secretary</p>
                         </div>
 
                         <!-- Member 11: Puja Subba — Assistant Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Puja.jpg" alt="Puja Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>PS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">Assistant Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Puja Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Puja Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Secretary</p>
                         </div>
 
                         <!-- Member 12: Jagat Bahadur Subba — Treasurer -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Jagat.jpg" alt="Jagat Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>JS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Treasurer</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Jagat Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Jagat Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Treasurer</p>
                         </div>
 
                         <!-- Member 13: Narayan Subba (Khapung) — Cultural Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Narayan.jpg" alt="Narayan Subba (Khapung)" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>NS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary);">Cultural Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Narayan Subba (Khapung)</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Narayan Subba (Khapung)</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Cultural Secretary</p>
                         </div>
 
                         <!-- Member 14: Dhan Bahadur Subba — Organizing Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Dhan.jpg" alt="Dhan Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>DS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">Organizing Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Dhan Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Dhan Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Organizing Secretary</p>
                         </div>
 
                         <!-- Member 15: Subash Subba — Assistant Organizing Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Subash2.jpg" alt="Subash Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Assistant Organizing Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Subash Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Subash Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Assistant Organizing Secretary</p>
                         </div>
 
                         <!-- Member 16: Sher Bahadur Subba — Education Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Sher.jpg" alt="Sher Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary-light);">Education Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Sher Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Sher Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Education Secretary</p>
                         </div>
 
                         <!-- Member 17: Yadav Subba — Publicity Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-secondary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Yadav.jpg" alt="Yadav Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>YS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-secondary);">Publicity Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Yadav Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Yadav Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Publicity Secretary</p>
                         </div>
 
                         <!-- Member 18: Raj Limbu — Publicity Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-accent); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Raj.jpg" alt="Raj Limbu" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>RL</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-accent);">Publicity Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Raj Limbu</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Raj Limbu</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Publicity Secretary</p>
                         </div>
 
                         <!-- Member 19: Santa Bahadur Subba — Publicity Secretary -->
-                        <div class="update-card" style="text-align: center;">
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; transition: box-shadow var(--transition);">
                             <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto var(--spacing-md); overflow: hidden; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
                                 <img src="assets/images/Santa.jpg" alt="Santa Bahadur Subba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:2.5rem;font-weight:bold;color:#fff;\'>SS</span>';" />
                             </div>
-                            <div class="update-card-body" style="padding: 0;">
-                                <div class="update-meta" style="justify-content: center; margin-bottom: 0.2rem;">
-                                    <span class="update-category" style="background: var(--color-primary);">Publicity Secretary</span>
-                                </div>
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Santa Bahadur Subba</h3>
-                            </div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Santa Bahadur Subba</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: var(--font-medium);">Publicity Secretary</p>
                         </div>
 
                     </div>
-
-                    <!-- PAGINATION (same as updates.html) -->
-                    <nav class="pagination" aria-label="Committee pagination">
-                        <ul class="pagination-list" id="updates-pagination"></ul>
-                    </nav>
                 </div>
             </section>
 
-            <!-- ADVISORY BOARD (same structure as updates.html CTA) -->
+            <!-- ============================================================
+            ADVISORY BOARD (same structure as about page "Vision & Mission")
+            ============================================================ -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Advisory Board</div>
                     <h2>Eminent Advisors</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        Our advisory board consists of respected elders and community leaders who
+                        provide guidance and wisdom to the committee.
+                    </p>
 
-                        <div class="update-card" style="text-align: center;">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Ganga Prasad Limbu</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Former President, ALM</p>
-                            </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg);">
+                        <div style="background: var(--color-surface); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.2rem;">Ganga Prasad Limbu</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Former President, ALM</p>
                         </div>
 
-                        <div class="update-card" style="text-align: center;">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Krishna Kumar Subba</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Elder, Haflong</p>
-                            </div>
+                        <div style="background: var(--color-surface); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.2rem;">Krishna Kumar Subba</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Elder, Haflong</p>
                         </div>
 
-                        <div class="update-card" style="text-align: center;">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Laxmi Rai</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Community Leader, Maibang</p>
-                            </div>
+                        <div style="background: var(--color-surface); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--spacing-lg); text-align: center; box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 2rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text); margin-bottom: 0.2rem;">Laxmi Rai</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Community Leader, Maibang</p>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- COMMITTEE STRUCTURE (same as updates.html CTA) -->
+            <!-- ============================================================
+            COMMITTEE STRUCTURE (same as about page "Core Values")
+            ============================================================ -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">How We Function</div>
                     <h2>Committee Structure</h2>
-                    <div class="updates-grid" style="grid-template-columns: repeat(3, 1fr);">
 
-                        <div class="update-card" style="border-left: 3px solid var(--color-primary);">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1rem; margin-bottom: 0.2rem;">Executive Body</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
-                                    The President, Working President, Vice Presidents, General Secretary, Assistant Secretaries, and Treasurer form the core executive team.
-                                </p>
-                            </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-lg);">
+
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); padding: var(--spacing-lg); text-align: center; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 1.8rem; font-weight: var(--font-bold); color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Executive Body</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                The President, Working President, Vice Presidents, General Secretary,
+                                Assistant Secretaries, and Treasurer form the core executive team.
+                            </p>
                         </div>
 
-                        <div class="update-card" style="border-left: 3px solid var(--color-secondary);">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1rem; margin-bottom: 0.2rem;">Wings &amp; Cells</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
-                                    Specialized secretaries for culture, education, organizing, and publicity ensure focused attention on different areas.
-                                </p>
-                            </div>
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); padding: var(--spacing-lg); text-align: center; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 1.8rem; font-weight: var(--font-bold); color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Wings &amp; Cells</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                Specialized secretaries for culture, education, organizing, and publicity
+                                ensure focused attention on different areas.
+                            </p>
                         </div>
 
-                        <div class="update-card" style="border-left: 3px solid var(--color-accent);">
-                            <div class="update-card-body">
-                                <h3 style="font-size: 1rem; margin-bottom: 0.2rem;">Village Representatives</h3>
-                                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
-                                    Each village elects a representative to ensure the committee's work reaches every corner of the district.
-                                </p>
-                            </div>
+                        <div style="background: var(--color-surface-alt); border-radius: var(--radius-lg); padding: var(--spacing-lg); text-align: center; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
+                            <div style="font-size: 1.8rem; font-weight: var(--font-bold); color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Village Representatives</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                Each village elects a representative to ensure the committee's work
+                                reaches every corner of the district.
+                            </p>
                         </div>
 
                     </div>
                 </div>
             </section>
 
-            <!-- CTA SECTION (same as updates.html) -->
+            <!-- ============================================================
+            CALL TO ACTION (same as about page)
+            ============================================================ -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
                     <h2 style="color: #fff;">Want to Contribute?</h2>
