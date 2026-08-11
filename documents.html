@@ -9,6 +9,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Responsive grid helpers — consistent with all pages */
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Small badge for file size in document cards */
+        .doc-size {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            background: var(--color-surface-alt);
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -108,151 +142,276 @@
                 </div>
             </section>
 
-            <!-- DOCUMENTS LIST -->
+            <!-- ==================== DOCUMENT CATEGORIES (grid-3) — quick reference ==================== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Document Library</div>
-                    <h2>Available Documents</h2>
+                    <h2>Browse by Category</h2>
                     <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
-                        Browse through our collection of official documents, reports, and resources.
-                        All documents are available for download in PDF format.
+                        Quickly find documents by category. For a complete list, scroll down to the full document grid.
+                    </p>
+                    <div class="updates-grid grid-3">
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Constitution &amp; Bylaws</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Annual Reports</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Minutes of Meetings</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Policies &amp; Guidelines</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Forms</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Reports &amp; Publications</h3>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted);">3 documents available</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PAGINATED DOCUMENT LIST (same as updates/events) ==================== -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">All Documents</div>
+                    <h2>Complete Document List</h2>
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        Browse all available documents. Each entry includes the document title, category, file size, and a download link.
                     </p>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                    <!-- Grid container — the ID is used by the pagination script -->
+                    <div class="updates-grid" id="documents-grid">
 
-                        <!-- Category: Constitution & Bylaws -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Constitution &amp; Bylaws</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Constitution of Assam Limbu Mahasabha (2024)</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 2.4 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Bylaws of District Committee</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 1.1 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Amendment to Constitution (2025)</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.8 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 1 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Constitution of ALM (2024)</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Constitution &amp; Bylaws</span>
+                                <span class="doc-size">PDF, 2.4 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
-                        <!-- Category: Annual Reports -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Annual Reports</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Annual Report 2025–2026</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 3.2 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Annual Report 2024–2025</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 2.8 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Annual Report 2023–2024</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 2.5 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 2 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Bylaws of District Committee</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Constitution &amp; Bylaws</span>
+                                <span class="doc-size">PDF, 1.1 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
-                        <!-- Category: Minutes of Meetings -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Minutes of Meetings</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">General Body Meeting — July 2026</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 1.5 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Executive Committee Meeting — May 2026</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 1.2 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">District Committee Meeting — March 2026</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 1.0 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 3 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Amendment to Constitution (2025)</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Constitution &amp; Bylaws</span>
+                                <span class="doc-size">PDF, 0.8 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
-                        <!-- Category: Policies & Guidelines -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Policies &amp; Guidelines</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Scholarship Policy 2026</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.9 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Cultural Event Guidelines</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.7 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Code of Conduct for Members</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.6 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 4 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Annual Report 2025–2026</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Annual Reports</span>
+                                <span class="doc-size">PDF, 3.2 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
-                        <!-- Category: Forms -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Forms</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Membership Application Form</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.5 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Scholarship Application Form</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.6 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Event Registration Form</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 0.5 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 5 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Annual Report 2024–2025</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Annual Reports</span>
+                                <span class="doc-size">PDF, 2.8 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
-                        <!-- Category: Reports & Publications -->
-                        <div>
-                            <h3 style="font-size: 1.1rem; border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md);">Reports &amp; Publications</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Limbu Language Primer (2025)</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 4.2 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Community Survey Report 2025</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 3.8 MB</span>
-                                </li>
-                                <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: var(--spacing-sm);">
-                                    <span style="color: var(--color-primary); font-weight: var(--font-bold);">&#9670;</span>
-                                    <a href="#" style="flex: 1;">Cultural Heritage Brochure</a>
-                                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">PDF, 5.0 MB</span>
-                                </li>
-                            </ul>
+                        <!-- Document 6 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Annual Report 2023–2024</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Annual Reports</span>
+                                <span class="doc-size">PDF, 2.5 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 7 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">General Body Meeting — Jul 2026</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Minutes of Meetings</span>
+                                <span class="doc-size">PDF, 1.5 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 8 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Executive Committee — May 2026</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Minutes of Meetings</span>
+                                <span class="doc-size">PDF, 1.2 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 9 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">District Committee — Mar 2026</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Minutes of Meetings</span>
+                                <span class="doc-size">PDF, 1.0 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 10 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Scholarship Policy 2026</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Policies &amp; Guidelines</span>
+                                <span class="doc-size">PDF, 0.9 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 11 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Cultural Event Guidelines</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Policies &amp; Guidelines</span>
+                                <span class="doc-size">PDF, 0.7 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 12 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Code of Conduct for Members</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Policies &amp; Guidelines</span>
+                                <span class="doc-size">PDF, 0.6 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 13 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Membership Application Form</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Forms</span>
+                                <span class="doc-size">PDF, 0.5 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 14 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Scholarship Application Form</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Forms</span>
+                                <span class="doc-size">PDF, 0.6 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 15 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Event Registration Form</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Forms</span>
+                                <span class="doc-size">PDF, 0.5 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 16 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Limbu Language Primer (2025)</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Reports &amp; Publications</span>
+                                <span class="doc-size">PDF, 4.2 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 17 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Community Survey Report 2025</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Reports &amp; Publications</span>
+                                <span class="doc-size">PDF, 3.8 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
+                        </div>
+
+                        <!-- Document 18 -->
+                        <div class="update-card">
+                            <div style="font-size: 1.8rem; color: var(--color-primary); margin-bottom: var(--spacing-xs);">&#9670;</div>
+                            <h3 style="font-size: 1rem; margin-bottom: 0.1rem;">Cultural Heritage Brochure</h3>
+                            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--spacing-xs);">
+                                <span>Reports &amp; Publications</span>
+                                <span class="doc-size">PDF, 5.0 MB</span>
+                            </div>
+                            <a href="#" class="btn-link" style="font-size: 0.85rem;">Download</a>
                         </div>
 
                     </div>
+
+                    <!-- Pagination controls (same structure as updates/events) -->
+                    <nav class="pagination" aria-label="Documents pagination">
+                        <ul class="pagination-list" id="documents-pagination"></ul>
+                    </nav>
+                </div>
+            </section>
+
+            <!-- CTA SECTION (consistent with other pages) -->
+            <section class="full-width" style="background: var(--color-primary); color: #fff;">
+                <div class="section-content" style="text-align: center;">
+                    <h2 style="color: #fff;">Need a Document?</h2>
+                    <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        Don't see what you're looking for? Contact us and we'll help you find the information you need.
+                    </p>
+                    <a href="contact.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">Contact Us</a>
                 </div>
             </section>
 
@@ -314,6 +473,22 @@
         </footer>
 
     </div>
+
+    <!-- ============================================================
+    PAGINATION INITIALIZATION (uses the global function from script.js)
+    ============================================================ -->
+    <script>
+        // Wait for DOM and script.js to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if the global pagination function exists (defined in script.js)
+            if (typeof initPagination === 'function') {
+                // Initialize pagination for documents grid
+                initPagination('#documents-grid', '.update-card', 'documents-pagination', 4);
+            } else {
+                console.warn('initPagination not found. Make sure script.js is loaded.');
+            }
+        });
+    </script>
 
     <script src="script.js"></script>
 
