@@ -6,6 +6,7 @@
     <title>Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee</title>
     <meta name="description" content="Official website of the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="gallery-grid.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -61,20 +62,6 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </button>
-                    <div class="language-selector">
-                        <button class="lang-current" aria-haspopup="true" aria-expanded="false">
-                            EN
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <ul class="lang-dropdown" role="listbox">
-                            <li role="option" data-lang="en" aria-selected="true">English</li>
-                            <li role="option" data-lang="hi">&#2341;&#2367;&#2344;&#2381;&#2342;&#2368; (Hindi)</li>
-                            <li role="option" data-lang="as">&#0985;&#0997;&#0999;&#09f0;&#09bf;&#09af;&#09bc;&#09be; (Assamese)</li>
-                            <li role="option" data-lang="ne">&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; (Nepali)</li>
-                        </ul>
-                    </div>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
@@ -306,7 +293,7 @@
                 </div>
             </section>
 
-            <!-- GALLERY PREVIEW -->
+            <!-- GALLERY PREVIEW (NO PAGINATION) -->
             <section class="gallery-preview full-width" id="gallery">
                 <div class="section-content">
                     <div class="section-header">
@@ -317,6 +304,7 @@
                         <a href="gallery.html" class="btn btn-secondary">View Full Gallery</a>
                     </div>
 
+                    <!-- Gallery Grid — Responsive 4→2→1 columns, NO PAGINATION -->
                     <div class="gallery-grid" id="gallery-grid">
                         <figure class="gallery-item">
                             <img src="images/gallery/image1.jpg" alt="Limbu cultural dance performance" loading="lazy" />
@@ -344,9 +332,7 @@
                         </figure>
                     </div>
 
-                    <nav class="pagination" aria-label="Gallery pagination">
-                        <ul class="pagination-list" id="gallery-pagination"></ul>
-                    </nav>
+                    <!-- PAGINATION REMOVED FROM GALLERY PREVIEW -->
                 </div>
             </section>
 
@@ -427,7 +413,6 @@
     </div>
 
     <script src="script.js"></script>
-    <script src="lang.js"></script>
 
 </body>
 </html>
