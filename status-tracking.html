@@ -4,70 +4,79 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Check Application Status — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Check the status of your membership application for the Assam Limbu Mahasabha." />
+    <meta name="description" content="Check the status of your membership application using your unique reference number." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        /* Status tracking styles */
-        .status-container {
-            max-width: 700px;
+        .tracking-form {
+            max-width: 500px;
             margin: 0 auto;
         }
-
-        .status-search {
-            display: flex;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
+        .tracking-form .form-group {
+            margin-bottom: var(--spacing-md);
         }
-        .status-search input {
-            flex: 1;
+        .tracking-form .form-group label {
+            display: block;
+            font-weight: var(--font-medium);
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+        .tracking-form .form-group input {
+            width: 100%;
             padding: 0.7rem 1rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
             font-size: 1rem;
             font-family: inherit;
+            background: var(--color-surface);
             transition: border-color var(--transition);
             box-sizing: border-box;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .status-search input:focus {
+        .tracking-form .form-group input:focus {
             outline: none;
             border-color: var(--color-primary);
         }
-        .status-search .btn {
-            min-width: 120px;
-            white-space: nowrap;
+
+        .status-result {
+            margin-top: var(--spacing-lg);
+            display: none;
+        }
+        .status-result.visible {
+            display: block;
         }
 
-        .result-card {
-            display: none;
-            margin-top: var(--spacing-lg);
-        }
-        .result-card.visible {
-            display: block;
+        .status-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
         }
 
         .status-badge {
             display: inline-block;
             padding: 0.3rem 1.2rem;
             border-radius: 20px;
-            font-weight: var(--font-semibold);
             font-size: 0.85rem;
+            font-weight: var(--font-semibold);
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
         .status-badge.submitted { background: #e2e3e5; color: #383d41; }
         .status-badge.da_reviewed { background: #cce5ff; color: #004085; }
-        .status-badge.da_forwarded { background: #b8d4e3; color: #1c3d5a; }
+        .status-badge.da_forwarded { background: #b8daff; color: #004085; }
         .status-badge.president_reviewed { background: #d4edda; color: #155724; }
-        .status-badge.president_forwarded { background: #c3e6cb; color: #0e5a3a; }
+        .status-badge.president_forwarded { background: #c3e6cb; color: #155724; }
         .status-badge.aa_reviewed { background: #fff3cd; color: #856404; }
         .status-badge.approved { background: #28a745; color: #fff; }
         .status-badge.rejected { background: #dc3545; color: #fff; }
 
-        /* Timeline */
         .status-timeline {
             position: relative;
             padding-left: 2rem;
@@ -93,10 +102,10 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -1.6rem;
+            left: -1.5rem;
             top: 4px;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: var(--color-border);
             border: 2px solid var(--color-surface);
@@ -109,96 +118,72 @@
             box-shadow: 0 0 0 4px rgba(26, 58, 92, 0.2);
             animation: pulse 1.5s infinite;
         }
-        .timeline-item.rejected::before {
-            background: #dc3545;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(26, 58, 92, 0.2); }
+            100% { box-shadow: 0 0 0 8px rgba(26, 58, 92, 0); }
         }
         .timeline-item .timeline-title {
-            font-weight: var(--font-semibold);
-            font-size: 0.95rem;
-            margin-bottom: 0.1rem;
+            font-weight: var(--font-medium);
+            color: var(--color-text);
         }
         .timeline-item .timeline-date {
             font-size: 0.8rem;
             color: var(--color-text-muted);
         }
         .timeline-item .timeline-remarks {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--color-text-muted);
             margin-top: var(--spacing-xs);
-            padding: var(--spacing-sm);
-            background: var(--color-surface-alt);
-            border-radius: var(--radius);
         }
 
-        .certificate-link {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: 0.7rem 1.5rem;
-            background: var(--color-primary);
-            color: #fff;
-            border-radius: var(--radius);
-            font-weight: var(--font-medium);
-            transition: background var(--transition);
+        .certificate-btn {
             margin-top: var(--spacing-md);
         }
-        .certificate-link:hover {
-            background: var(--color-primary-light);
-            color: #fff;
-        }
 
-        .application-details {
-            background: var(--color-surface-alt);
+        .error-message {
             padding: var(--spacing-md);
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
             border-radius: var(--radius-lg);
+            color: #721c24;
             margin-top: var(--spacing-md);
-            border: 1px solid var(--color-border);
         }
-        .application-details h4 {
-            font-size: 1rem;
-            text-transform: none;
-            letter-spacing: 0;
-            color: var(--color-text);
-            margin-bottom: var(--spacing-sm);
+
+        .info-message {
+            padding: var(--spacing-md);
+            background: #cce5ff;
+            border: 1px solid #b8daff;
+            border-radius: var(--radius-lg);
+            color: #004085;
+            margin-top: var(--spacing-md);
         }
-        .application-details .detail-row {
+
+        .status-detail-row {
             display: flex;
-            padding: 0.3rem 0;
+            justify-content: space-between;
+            padding: 0.4rem 0;
             border-bottom: 1px solid var(--color-border);
-            font-size: 0.9rem;
         }
-        .application-details .detail-row:last-child {
+        .status-detail-row:last-child {
             border-bottom: none;
         }
-        .application-details .detail-label {
+        .status-detail-row .label {
             font-weight: var(--font-medium);
-            min-width: 120px;
             color: var(--color-text-muted);
         }
-        .application-details .detail-value {
+        .status-detail-row .value {
             color: var(--color-text);
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(26, 58, 92, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(26, 58, 92, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 58, 92, 0); }
+            text-align: right;
         }
 
         @media (max-width: 768px) {
-            .status-search {
+            .status-detail-row {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
             }
-            .status-search .btn {
-                width: 100%;
-            }
-            .application-details .detail-row {
-                flex-direction: column;
-                padding: 0.5rem 0;
-            }
-            .application-details .detail-label {
-                min-width: auto;
-                font-size: 0.8rem;
+            .status-detail-row .value {
+                text-align: left;
             }
         }
     </style>
@@ -241,7 +226,7 @@
                         </li>
                         <li><a href="events.html">Events</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="membership.html" class="active">Membership</a></li>
                         <li><a href="documents.html">Documents</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -287,82 +272,25 @@
                 </div>
             </section>
 
-            <!-- STATUS TRACKING -->
+            <!-- STATUS TRACKING FORM -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="status-container">
+                    <div class="section-label">Track Status</div>
+                    <h2>Find Your Application</h2>
 
-                        <!-- Search Form -->
-                        <div class="status-search">
-                            <input type="text" id="reference-input" placeholder="Enter your reference number (e.g., ALM202600001)" maxlength="20" />
-                            <button class="btn btn-primary" id="check-status-btn">Check Status</button>
-                        </div>
-
-                        <!-- Error Message -->
-                        <div id="error-message" style="display: none; color: #dc3545; text-align: center; padding: var(--spacing-md); background: #f8d7da; border-radius: var(--radius-lg);">
-                            <strong>Error:</strong> <span id="error-text">Please enter a valid reference number.</span>
-                        </div>
-
-                        <!-- Result Card -->
-                        <div id="result-card" class="result-card">
-
-                            <!-- Application Details -->
-                            <div id="application-details" class="application-details">
-                                <h4>Application Information</h4>
-                                <div class="detail-row">
-                                    <span class="detail-label">Reference Number</span>
-                                    <span class="detail-value" id="detail-ref">-</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Applicant Name</span>
-                                    <span class="detail-value" id="detail-name">-</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Email</span>
-                                    <span class="detail-value" id="detail-email">-</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Phone</span>
-                                    <span class="detail-value" id="detail-phone">-</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Membership Type</span>
-                                    <span class="detail-value" id="detail-type">-</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Status</span>
-                                    <span class="detail-value"><span id="detail-status-badge" class="status-badge submitted">Submitted</span></span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">Submitted Date</span>
-                                    <span class="detail-value" id="detail-date">-</span>
-                                </div>
+                    <div class="tracking-form">
+                        <form id="tracking-form">
+                            <div class="form-group">
+                                <label for="reference-input">Reference Number</label>
+                                <input type="text" id="reference-input" placeholder="e.g. ALM2026000123" required pattern="ALM[0-9]{10}" title="Enter a valid reference number (e.g. ALM2026000123)" />
                             </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Check Status</button>
+                        </form>
+                    </div>
 
-                            <!-- Status Timeline -->
-                            <div id="status-timeline" class="status-timeline">
-                                <!-- Timeline items will be inserted here -->
-                            </div>
-
-                            <!-- Certificate Link (only visible when approved) -->
-                            <div id="certificate-section" style="display: none; text-align: center; margin-top: var(--spacing-lg); padding: var(--spacing-lg); background: var(--color-surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
-                                <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">📄</div>
-                                <h3 style="color: var(--color-primary);">Your Membership is Approved!</h3>
-                                <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-md);">
-                                    You can now download your official membership certificate.
-                                </p>
-                                <a href="certificate.html?ref=" id="certificate-link" class="certificate-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <polyline points="14 2 14 8 20 8" />
-                                        <line x1="12" y1="18" x2="12" y2="12" />
-                                        <polyline points="9 15 12 18 15 15" />
-                                    </svg>
-                                    Download Membership Certificate
-                                </a>
-                            </div>
-
-                        </div>
+                    <!-- Status Result -->
+                    <div id="status-result" class="status-result">
+                        <div id="status-content"></div>
                     </div>
                 </div>
             </section>
@@ -370,11 +298,11 @@
             <!-- CTA SECTION -->
             <section class="full-width" style="background: var(--color-primary); color: #fff;">
                 <div class="section-content" style="text-align: center;">
-                    <h2 style="color: #fff;">Not Applied Yet?</h2>
+                    <h2 style="color: #fff;">Need Help?</h2>
                     <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Join the Assam Limbu Mahasabha and become part of our community.
+                        If you have any issues checking your application status, please contact us.
                     </p>
-                    <a href="membership.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">Apply Now</a>
+                    <a href="contact.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">Contact Us</a>
                 </div>
             </section>
 
@@ -453,49 +381,46 @@
     <script type="module">
         import { db, doc, getDoc } from './firebase-config.js';
 
-        const input = document.getElementById('reference-input');
-        const checkBtn = document.getElementById('check-status-btn');
-        const resultCard = document.getElementById('result-card');
-        const errorMessage = document.getElementById('error-message');
-        const errorText = document.getElementById('error-text');
+        const form = document.getElementById('tracking-form');
+        const resultContainer = document.getElementById('status-result');
+        const contentContainer = document.getElementById('status-content');
 
-        // Status badge mapping
-        const statusBadgeMap = {
-            'submitted': { class: 'submitted', label: 'Submitted' },
-            'da_reviewed': { class: 'da_reviewed', label: 'Under Review (DA)' },
-            'da_forwarded': { class: 'da_forwarded', label: 'Forwarded by DA' },
-            'president_reviewed': { class: 'president_reviewed', label: 'Under Review (President)' },
-            'president_forwarded': { class: 'president_forwarded', label: 'Forwarded by President' },
-            'aa_reviewed': { class: 'aa_reviewed', label: 'Under Review (Approving Authority)' },
-            'approved': { class: 'approved', label: 'Approved ✅' },
-            'rejected': { class: 'rejected', label: 'Rejected ❌' }
+        const STATUS_LABELS = {
+            'submitted': 'Application Submitted',
+            'da_reviewed': 'Under Review — Dealing Assistant',
+            'da_forwarded': 'Forwarded to President / Assistant President',
+            'president_reviewed': 'Under Review — President / Assistant President',
+            'president_forwarded': 'Forwarded to Approving Authority',
+            'aa_reviewed': 'Under Review — Approving Authority',
+            'approved': 'Approved',
+            'rejected': 'Rejected'
         };
 
-        // Status display order for timeline
-        const statusOrder = [
-            'submitted',
-            'da_reviewed',
-            'da_forwarded',
-            'president_reviewed',
-            'president_forwarded',
-            'aa_reviewed',
-            'approved'
-        ];
-
-        function showError(msg) {
-            errorText.textContent = msg;
-            errorMessage.style.display = 'block';
-            resultCard.classList.remove('visible');
-        }
-
-        function hideError() {
-            errorMessage.style.display = 'none';
-        }
+        const STATUS_STYLES = {
+            'submitted': 'submitted',
+            'da_reviewed': 'da_reviewed',
+            'da_forwarded': 'da_forwarded',
+            'president_reviewed': 'president_reviewed',
+            'president_forwarded': 'president_forwarded',
+            'aa_reviewed': 'aa_reviewed',
+            'approved': 'approved',
+            'rejected': 'rejected'
+        };
 
         function formatDate(timestamp) {
             if (!timestamp) return 'N/A';
             const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
             return date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function formatDateTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleString('en-IN', {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric',
@@ -504,236 +429,190 @@
             });
         }
 
-        function getStatusDisplay(status) {
-            return statusBadgeMap[status] || { class: 'submitted', label: status || 'Submitted' };
+        function getStatusTimeline(status) {
+            const timeline = [
+                { key: 'submitted', label: 'Application Submitted' },
+                { key: 'da_reviewed', label: 'Reviewed by Dealing Assistant' },
+                { key: 'da_forwarded', label: 'Forwarded to President / Assistant President' },
+                { key: 'president_reviewed', label: 'Reviewed by President / Assistant President' },
+                { key: 'president_forwarded', label: 'Forwarded to Approving Authority' },
+                { key: 'aa_reviewed', label: 'Reviewed by Approving Authority' },
+                { key: 'approved', label: 'Approved' },
+                { key: 'rejected', label: 'Rejected' }
+            ];
+
+            const statusIndex = timeline.findIndex(s => s.key === status);
+            if (statusIndex === -1) return timeline;
+
+            return timeline.map((item, index) => ({
+                ...item,
+                completed: index < statusIndex,
+                active: index === statusIndex && status !== 'approved' && status !== 'rejected'
+            }));
         }
 
-        async function checkStatus(ref) {
-            hideError();
-            resultCard.classList.remove('visible');
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-            if (!ref || ref.length < 10) {
-                showError('Please enter a valid reference number.');
+            const reference = document.getElementById('reference-input').value.trim().toUpperCase();
+
+            if (!reference) {
+                contentContainer.innerHTML = `
+                    <div class="error-message">
+                        Please enter a reference number.
+                    </div>
+                `;
+                resultContainer.classList.add('visible');
                 return;
             }
 
             try {
-                const docRef = doc(db, 'applications', ref);
+                const docRef = doc(db, 'applications', reference);
                 const docSnap = await getDoc(docRef);
 
                 if (!docSnap.exists()) {
-                    showError('No application found with this reference number. Please check and try again.');
+                    contentContainer.innerHTML = `
+                        <div class="error-message">
+                            No application found with reference number: <strong>${reference}</strong>.<br />
+                            Please check the number and try again.
+                        </div>
+                    `;
+                    resultContainer.classList.add('visible');
                     return;
                 }
 
                 const data = docSnap.data();
-                displayResult(data);
-                resultCard.classList.add('visible');
+                const status = data.status || 'submitted';
 
-            } catch (error) {
-                console.error('Error checking status:', error);
-                showError('Something went wrong. Please try again later.');
-            }
-        }
-
-        function displayResult(data) {
-            // Application details
-            document.getElementById('detail-ref').textContent = data.reference || '-';
-            document.getElementById('detail-name').textContent = data.personal?.fullName || '-';
-            document.getElementById('detail-email').textContent = data.personal?.email || '-';
-            document.getElementById('detail-phone').textContent = data.personal?.phone || '-';
-            document.getElementById('detail-type').textContent = data.membership?.type || '-';
-
-            // Status badge
-            const status = data.status || 'submitted';
-            const statusDisplay = getStatusDisplay(status);
-            const badgeEl = document.getElementById('detail-status-badge');
-            badgeEl.className = 'status-badge ' + statusDisplay.class;
-            badgeEl.textContent = statusDisplay.label;
-
-            document.getElementById('detail-date').textContent = formatDate(data.createdAt);
-
-            // Timeline
-            renderTimeline(data);
-
-            // Certificate
-            const certSection = document.getElementById('certificate-section');
-            if (status === 'approved') {
-                certSection.style.display = 'block';
-                document.getElementById('certificate-link').href = `certificate.html?ref=${data.reference}`;
-            } else {
-                certSection.style.display = 'none';
-            }
-        }
-
-        function renderTimeline(data) {
-            const timeline = document.getElementById('status-timeline');
-            const status = data.status || 'submitted';
-            
-            // Build timeline items based on the actual status path
-            let items = [];
-            let currentStatus = 'submitted';
-            let index = 0;
-
-            // Always show submission
-            items.push({
-                status: 'submitted',
-                label: 'Application Submitted',
-                date: data.createdAt,
-                remarks: 'Your application was successfully submitted.',
-                completed: true
-            });
-
-            // Define the path based on current status
-            const statusPath = [];
-            let tempStatus = status;
-            while (tempStatus && statusOrder.includes(tempStatus)) {
-                const idx = statusOrder.indexOf(tempStatus);
-                for (let i = 1; i <= idx; i++) {
-                    if (!statusPath.includes(statusOrder[i])) {
-                        statusPath.push(statusOrder[i]);
-                    }
+                // Build application details
+                let personalHtml = '';
+                if (data.personal) {
+                    personalHtml = `
+                        <div class="status-detail-row">
+                            <span class="label">Full Name</span>
+                            <span class="value">${data.personal.fullName || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">Email</span>
+                            <span class="value">${data.personal.email || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">Phone</span>
+                            <span class="value">${data.personal.phone || 'N/A'}</span>
+                        </div>
+                    `;
                 }
-                break;
-            }
 
-            // If status is not in the normal path (e.g., rejected), still show what's available
-            if (status === 'rejected') {
-                // Show all steps up to aa_reviewed then rejected
-                for (let i = 1; i < statusOrder.length - 1; i++) {
-                    if (!statusPath.includes(statusOrder[i])) {
-                        statusPath.push(statusOrder[i]);
-                    }
+                let addressHtml = '';
+                if (data.address) {
+                    addressHtml = `
+                        <div class="status-detail-row">
+                            <span class="label">Village</span>
+                            <span class="value">${data.address.village || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">District</span>
+                            <span class="value">${data.address.district || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">PIN</span>
+                            <span class="value">${data.address.pin || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">Post Office</span>
+                            <span class="value">${data.address.po || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">Police Station</span>
+                            <span class="value">${data.address.ps || 'N/A'}</span>
+                        </div>
+                        <div class="status-detail-row">
+                            <span class="label">Mouza</span>
+                            <span class="value">${data.address.mouza || 'N/A'}</span>
+                        </div>
+                    `;
                 }
-                statusPath.push('rejected');
-            } else {
-                // Add all statuses up to the current one
-                for (let i = 1; i < statusOrder.length; i++) {
-                    if (!statusPath.includes(statusOrder[i])) {
-                        statusPath.push(statusOrder[i]);
-                    }
-                    if (statusOrder[i] === status) break;
-                }
-            }
 
-            // Map status to display labels
-            const statusLabels = {
-                'submitted': 'Application Submitted',
-                'da_reviewed': 'Under Review — Dealing Assistant',
-                'da_forwarded': 'Forwarded to President',
-                'president_reviewed': 'Under Review — President',
-                'president_forwarded': 'Forwarded to Approving Authority',
-                'aa_reviewed': 'Under Review — Approving Authority',
-                'approved': 'Approved ✅',
-                'rejected': 'Rejected ❌'
-            };
+                // Build timeline
+                const timelineItems = getStatusTimeline(status);
+                let timelineHtml = timelineItems.map(item => `
+                    <div class="timeline-item ${item.completed ? 'completed' : ''} ${item.active ? 'active' : ''}">
+                        <div class="timeline-title">${item.label}</div>
+                        ${item.active ? '<div class="timeline-date">Current stage</div>' : ''}
+                    </div>
+                `).join('');
 
-            // Check if we have history data
-            const history = data.history || [];
-            
-            // Build timeline from history if available, otherwise use path
-            let html = '';
-            let isCompleted = true;
-            let foundCurrent = false;
+                // Check if certificate is available
+                const isApproved = status === 'approved';
+                const certificateHtml = isApproved ? `
+                    <div class="certificate-btn">
+                        <a href="certificate.html?ref=${reference}" class="btn btn-primary">
+                            Download Membership Certificate
+                        </a>
+                    </div>
+                ` : '';
 
-            // First, use history data if available
-            if (history.length > 0) {
-                // Show submission first
-                html += `
-                    <div class="timeline-item completed">
-                        <div class="timeline-title">Application Submitted</div>
-                        <div class="timeline-date">${formatDate(data.createdAt)}</div>
-                        <div class="timeline-remarks">Your application was successfully submitted.</div>
+                contentContainer.innerHTML = `
+                    <div class="status-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: var(--spacing-md);">
+                            <h3 style="font-size: 1.2rem;">Application Status</h3>
+                            <span class="status-badge ${STATUS_STYLES[status] || 'submitted'}">
+                                ${STATUS_LABELS[status] || status}
+                            </span>
+                        </div>
+
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <div class="status-detail-row">
+                                <span class="label">Reference Number</span>
+                                <span class="value" style="font-weight: var(--font-bold); color: var(--color-primary);">${reference}</span>
+                            </div>
+                            <div class="status-detail-row">
+                                <span class="label">Submitted On</span>
+                                <span class="value">${formatDate(data.createdAt)}</span>
+                            </div>
+                            <div class="status-detail-row">
+                                <span class="label">Last Updated</span>
+                                <span class="value">${formatDateTime(data.updatedAt)}</span>
+                            </div>
+                            <div class="status-detail-row">
+                                <span class="label">Membership Type</span>
+                                <span class="value">${data.membership?.type ? data.membership.type.charAt(0).toUpperCase() + data.membership.type.slice(1) : 'N/A'}</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Personal Information</h4>
+                            ${personalHtml}
+                        </div>
+
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Address Details</h4>
+                            ${addressHtml}
+                        </div>
+
+                        <div>
+                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Application Progress</h4>
+                            <div class="status-timeline">
+                                ${timelineHtml}
+                            </div>
+                        </div>
+
+                        ${certificateHtml}
                     </div>
                 `;
 
-                // Show history items
-                history.forEach((item, idx) => {
-                    const isLast = idx === history.length - 1;
-                    const itemStatus = item.newStatus || item.status;
-                    const isActive = isLast && status !== 'approved' && status !== 'rejected';
-                    const isFinal = status === 'approved' || status === 'rejected';
-                    const isRejected = status === 'rejected' && isLast;
+                resultContainer.classList.add('visible');
 
-                    let className = 'timeline-item';
-                    if (isRejected) className += ' rejected';
-                    else if (isActive) className += ' active';
-                    else if (isLast && isFinal) className += ' completed';
-                    else if (!isLast) className += ' completed';
-
-                    const label = statusLabels[itemStatus] || item.action || itemStatus;
-
-                    html += `
-                        <div class="${className}">
-                            <div class="timeline-title">${label}</div>
-                            <div class="timeline-date">${formatDate(item.dateTime || item.createdAt)}</div>
-                            ${item.remarks ? `<div class="timeline-remarks">${item.remarks}</div>` : ''}
-                            ${item.role ? `<div style="font-size:0.8rem;color:var(--color-text-muted);margin-top:0.2rem;">By: ${item.role}</div>` : ''}
-                        </div>
-                    `;
-                });
-
-                // If rejected, add a final rejected item if not already shown
-                if (status === 'rejected' && history.length > 0 && history[history.length-1].newStatus !== 'rejected') {
-                    html += `
-                        <div class="timeline-item rejected">
-                            <div class="timeline-title">Rejected ❌</div>
-                            <div class="timeline-date">${formatDate(data.updatedAt)}</div>
-                            ${data.remarks ? `<div class="timeline-remarks">${data.remarks}</div>` : ''}
-                        </div>
-                    `;
-                }
-
-            } else {
-                // Fallback: build from status path
-                const pathItems = ['submitted', ...statusPath];
-                pathItems.forEach((st, idx) => {
-                    const isLast = idx === pathItems.length - 1;
-                    const isActive = isLast && status !== 'approved' && status !== 'rejected';
-                    const isFinal = status === 'approved' || status === 'rejected';
-                    const isRejected = status === 'rejected' && isLast;
-
-                    let className = 'timeline-item';
-                    if (isRejected) className += ' rejected';
-                    else if (isActive && !isFinal) className += ' active';
-                    else if (isLast && isFinal) className += ' completed';
-                    else if (!isLast) className += ' completed';
-
-                    const label = statusLabels[st] || st;
-
-                    html += `
-                        <div class="${className}">
-                            <div class="timeline-title">${label}</div>
-                            ${idx === 0 ? `<div class="timeline-date">${formatDate(data.createdAt)}</div>` : ''}
-                            ${idx > 0 && isLast ? `<div class="timeline-date">${formatDate(data.updatedAt)}</div>` : ''}
-                            ${isLast && data.remarks ? `<div class="timeline-remarks">${data.remarks}</div>` : ''}
-                        </div>
-                    `;
-                });
-            }
-
-            timeline.innerHTML = html;
-        }
-
-        // Event listeners
-        checkBtn.addEventListener('click', function() {
-            const ref = input.value.trim();
-            checkStatus(ref);
-        });
-
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                checkBtn.click();
+            } catch (error) {
+                console.error('Error checking status:', error);
+                contentContainer.innerHTML = `
+                    <div class="error-message">
+                        Something went wrong. Please try again later.
+                    </div>
+                `;
+                resultContainer.classList.add('visible');
             }
         });
-
-        // Check if ref was passed via URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const refParam = urlParams.get('ref');
-        if (refParam) {
-            input.value = refParam;
-            checkStatus(refParam);
-        }
     </script>
 
     <script src="script.js"></script>
