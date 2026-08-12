@@ -4,466 +4,130 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Login — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Admin login for the Assam Limbu Mahasabha membership system." />
-    <link rel="stylesheet" href="../style.css" />
+    <!-- No public site styles, only admin-specific minimal reset -->
+    <link rel="stylesheet" href="admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* Minimal admin page — reuses global styles, only adds login-specific layout */
-        .login-wrapper {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--spacing-lg);
-            background: var(--color-background);
-        }
-
-        .login-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-            max-width: 420px;
-            width: 100%;
-            box-shadow: var(--shadow-md);
-        }
-
-        .login-card .login-header {
-            text-align: center;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .login-card .login-header .logo-icon {
-            font-size: 2.5rem;
-            color: var(--color-primary);
-            display: block;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .login-card .login-header h2 {
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-xs);
-            font-size: 1.6rem;
-        }
-
-        .login-card .login-header p {
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .login-card .form-group {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .login-card .form-group label {
-            display: block;
-            font-weight: var(--font-medium);
-            margin-bottom: var(--spacing-xs);
-            font-size: 0.9rem;
-            color: var(--color-text);
-        }
-
-        .login-card .form-group input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-family: inherit;
-            background: var(--color-surface);
-            transition: border-color var(--transition), box-shadow var(--transition);
-            box-sizing: border-box;
-        }
-
-        .login-card .form-group input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
-        }
-
-        .login-card .form-group .error-text {
-            font-size: 0.8rem;
-            color: #c0392b;
-            margin-top: 0.2rem;
-            display: none;
-        }
-
-        .login-card .form-group.has-error input {
-            border-color: #c0392b;
-        }
-
-        .login-card .form-group.has-error .error-text {
-            display: block;
-        }
-
-        .login-card .login-btn {
-            width: 100%;
-            padding: 0.8rem;
-            font-size: 1rem;
-            font-weight: var(--font-semibold);
-            margin-top: var(--spacing-sm);
-        }
-
-        .login-card .login-error {
-            background: #fdf2f2;
-            border: 1px solid #f5c6cb;
-            border-radius: var(--radius);
-            padding: var(--spacing-sm) var(--spacing-md);
-            color: #c0392b;
-            font-size: 0.9rem;
-            display: none;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .login-card .login-error.visible {
-            display: block;
-        }
-
-        .login-card .back-link {
-            text-align: center;
-            margin-top: var(--spacing-md);
-            font-size: 0.85rem;
-        }
-
-        .login-card .back-link a {
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-
-        .login-card .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Loading spinner inline */
-        .login-card .spinner-container {
-            display: none;
-            text-align: center;
-            padding: var(--spacing-sm) 0;
-        }
-        .login-card .spinner-container.active {
-            display: block;
-        }
-        .login-card .spinner-container .spinner {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            border: 3px solid var(--color-border);
-            border-top-color: var(--color-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 480px) {
-            .login-card {
-                padding: var(--spacing-lg);
-            }
-            .login-card .login-header h2 {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
-    <div class="site-shell">
-
-        <!-- ========== HEADER (minimal, but consistent) ========== -->
-        <header class="site-header" role="banner">
-            <div class="header-inner">
-                <div class="header-logo">
-                    <a href="../index.html" aria-label="Assam Limbu Mahasabha Home">
-                        <span class="logo-emblem">&#9670;</span>
-                        <span class="logo-text">
-                            <span class="logo-main">Assam Limbu Mahasabha</span>
-                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
-                        </span>
-                    </a>
-                </div>
-
-                <nav class="header-nav" aria-label="Main navigation">
-                    <ul class="nav-list">
-                        <li><a href="../index.html">Home</a></li>
-                        <li class="nav-dropdown">
-                            <a href="../about.html">About</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="../about.html">About Us</a></li>
-                                <li><a href="../history.html">History</a></li>
-                                <li><a href="../vision.html">Vision &amp; Mission</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="../committee.html">Committee</a></li>
-                        <li class="nav-dropdown">
-                            <a href="../updates.html">Updates</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="../updates.html">Latest Updates</a></li>
-                                <li><a href="../archive.html">Archive</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="../events.html">Events</a></li>
-                        <li><a href="../gallery.html">Gallery</a></li>
-                        <li><a href="../membership.html">Membership</a></li>
-                        <li><a href="../documents.html">Documents</a></li>
-                        <li><a href="../contact.html">Contact</a></li>
-                    </ul>
-                </nav>
-
-                <div class="header-actions">
-                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                    </button>
-                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
-                        <span></span><span></span><span></span>
-                    </button>
-                </div>
+    <div class="admin-login-wrapper">
+        <div class="admin-login-card">
+            <div class="login-brand">
+                <span class="brand-icon">&#9670;</span>
+                <h1>ALM Admin</h1>
+                <p>Assam Limbu Mahasabha — District Committee</p>
             </div>
 
-            <div class="search-overlay" hidden>
-                <div class="search-overlay-inner">
-                    <form role="search" action="../search.html" method="get">
-                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
-                        <button type="submit">Search</button>
-                    </form>
-                    <button class="search-close" aria-label="Close search">&times;</button>
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="emailInput">Email Address</label>
+                    <input type="email" id="emailInput" placeholder="admin@assamlimbumahasabha.org" required autofocus />
+                    <div class="error-text">Please enter a valid email.</div>
                 </div>
+
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" id="passwordInput" placeholder="Enter your password" required />
+                    <div class="error-text">Password is required.</div>
+                </div>
+
+                <div id="loginError" class="login-error" style="display:none;">Invalid email or password.</div>
+
+                <div class="spinner-container" id="spinnerContainer">
+                    <div class="spinner"></div>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+            </form>
+
+            <div class="login-footer">
+                <span>Protected system — authorised access only</span>
             </div>
-        </header>
-
-        <!-- ========== MAIN ========== -->
-        <main class="site-main" role="main">
-
-            <div class="login-wrapper">
-
-                <div class="login-card">
-
-                    <div class="login-header">
-                        <span class="logo-icon">&#9670;</span>
-                        <h2>Admin Login</h2>
-                        <p>Access the membership management dashboard</p>
-                    </div>
-
-                    <!-- Login Error -->
-                    <div class="login-error" id="loginError">
-                        Invalid email or password. Please try again.
-                    </div>
-
-                    <!-- Login Form -->
-                    <form id="loginForm" novalidate>
-                        <div class="form-group" id="emailGroup">
-                            <label for="emailInput">Email Address</label>
-                            <input type="email" id="emailInput" placeholder="admin@assamlimbumahasabha.org" required autofocus />
-                            <div class="error-text">Please enter a valid email address.</div>
-                        </div>
-
-                        <div class="form-group" id="passwordGroup">
-                            <label for="passwordInput">Password</label>
-                            <input type="password" id="passwordInput" placeholder="Enter your password" required />
-                            <div class="error-text">Password is required.</div>
-                        </div>
-
-                        <div class="spinner-container" id="spinnerContainer">
-                            <div class="spinner"></div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary login-btn" id="loginBtn">Sign In</button>
-                    </form>
-
-                    <div class="back-link">
-                        <a href="../index.html">&larr; Back to Homepage</a>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </main>
-
-        <!-- ========== FOOTER ========== -->
-        <footer class="site-footer" role="contentinfo">
-            <div class="footer-inner">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <span class="footer-logo">
-                            <span class="logo-emblem">&#9670;</span>
-                            <span class="logo-main">Assam Limbu Mahasabha</span>
-                        </span>
-                        <p class="footer-sub">
-                            Karbi Anglong &amp; Dima Hasao District Committee
-                        </p>
-                        <p class="footer-address">
-                            Diphu, Karbi Anglong, Assam — 782460
-                        </p>
-                    </div>
-
-                    <div class="footer-links">
-                        <div class="footer-links-col">
-                            <h4>Quick Links</h4>
-                            <ul>
-                                <li><a href="../about.html">About Us</a></li>
-                                <li><a href="../committee.html">Committee</a></li>
-                                <li><a href="../events.html">Events</a></li>
-                                <li><a href="../updates.html">Updates</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Resources</h4>
-                            <ul>
-                                <li><a href="../documents.html">Documents</a></li>
-                                <li><a href="../membership.html">Membership</a></li>
-                                <li><a href="../gallery.html">Gallery</a></li>
-                                <li><a href="../contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Connect</h4>
-                            <ul class="footer-social">
-                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
-                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
-                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
-                                <li><a href="#" aria-label="Email">Email</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
-                    <p class="footer-credit">Designed with care for the Limbu community.</p>
-                </div>
-            </div>
-        </footer>
-
+        </div>
     </div>
 
-    <!-- ========== SCRIPTS ========== -->
-    <script src="../script.js"></script>
+    <!-- Scripts -->
     <script src="../firebase-config.js"></script>
     <script src="../firebase-auth.js"></script>
-
+    <script src="admin.js"></script>
     <script>
         (function() {
-            'use strict';
-
             const form = document.getElementById('loginForm');
             const emailInput = document.getElementById('emailInput');
             const passwordInput = document.getElementById('passwordInput');
             const loginBtn = document.getElementById('loginBtn');
             const loginError = document.getElementById('loginError');
             const spinnerContainer = document.getElementById('spinnerContainer');
-            const emailGroup = document.getElementById('emailGroup');
-            const passwordGroup = document.getElementById('passwordGroup');
 
-            // If already logged in, redirect to dashboard
             if (window.Auth && window.Auth.isAuthenticated()) {
                 window.location.href = 'dashboard.html';
                 return;
             }
 
             function showError(msg) {
-                loginError.textContent = msg || 'Invalid email or password. Please try again.';
-                loginError.classList.add('visible');
+                loginError.textContent = msg || 'Invalid credentials.';
+                loginError.style.display = 'block';
             }
 
             function hideError() {
-                loginError.classList.remove('visible');
+                loginError.style.display = 'none';
             }
 
             function setLoading(isLoading) {
-                if (isLoading) {
-                    loginBtn.disabled = true;
-                    loginBtn.textContent = 'Signing In...';
-                    spinnerContainer.classList.add('active');
-                } else {
-                    loginBtn.disabled = false;
-                    loginBtn.textContent = 'Sign In';
-                    spinnerContainer.classList.remove('active');
-                }
-            }
-
-            function clearFieldErrors() {
-                emailGroup.classList.remove('has-error');
-                passwordGroup.classList.remove('has-error');
+                loginBtn.disabled = isLoading;
+                loginBtn.textContent = isLoading ? 'Signing In...' : 'Sign In';
+                spinnerContainer.style.display = isLoading ? 'block' : 'none';
             }
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 hideError();
-                clearFieldErrors();
-
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
 
-                // Basic validation
-                let valid = true;
                 if (!email || !email.includes('@')) {
-                    emailGroup.classList.add('has-error');
-                    valid = false;
+                    document.querySelector('#emailInput').parentElement.classList.add('has-error');
+                    return;
                 }
                 if (!password || password.length < 6) {
-                    passwordGroup.classList.add('has-error');
-                    valid = false;
-                }
-                if (!valid) {
+                    document.querySelector('#passwordInput').parentElement.classList.add('has-error');
                     return;
                 }
 
                 setLoading(true);
 
-                // Use Auth.login from firebase-auth.js
                 if (window.Auth && typeof window.Auth.login === 'function') {
                     window.Auth.login(email, password)
-                        .then(function(user) {
+                        .then(function() {
                             setLoading(false);
-                            // Redirect to dashboard
                             window.location.href = 'dashboard.html';
                         })
                         .catch(function(error) {
                             setLoading(false);
                             console.error('Login error:', error);
-                            var errorMsg = 'Invalid email or password. Please try again.';
-                            if (error.code === 'auth/user-not-found') {
-                                errorMsg = 'No account found with this email address.';
-                            } else if (error.code === 'auth/wrong-password') {
-                                errorMsg = 'Incorrect password. Please try again.';
-                            } else if (error.code === 'auth/too-many-requests') {
-                                errorMsg = 'Too many failed attempts. Please try again later.';
-                            } else if (error.code === 'auth/invalid-email') {
-                                errorMsg = 'Invalid email format. Please check and try again.';
-                            }
-                            showError(errorMsg);
+                            let msg = 'Invalid email or password.';
+                            if (error.code === 'auth/user-not-found') msg = 'No account found with this email.';
+                            else if (error.code === 'auth/wrong-password') msg = 'Incorrect password.';
+                            else if (error.code === 'auth/too-many-requests') msg = 'Too many attempts. Try again later.';
+                            showError(msg);
                         });
                 } else {
                     setLoading(false);
-                    showError('Authentication service not available. Please try again later.');
-                }
-            });
-
-            // Allow Enter key to submit
-            passwordInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    form.dispatchEvent(new Event('submit'));
+                    showError('Authentication service unavailable.');
                 }
             });
 
             // Clear errors on input
             emailInput.addEventListener('input', function() {
-                emailGroup.classList.remove('has-error');
+                this.parentElement.classList.remove('has-error');
                 hideError();
             });
             passwordInput.addEventListener('input', function() {
-                passwordGroup.classList.remove('has-error');
+                this.parentElement.classList.remove('has-error');
                 hideError();
             });
-
         })();
     </script>
 
