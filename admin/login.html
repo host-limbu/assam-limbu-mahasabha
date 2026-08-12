@@ -4,50 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Login — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Admin login for the Assam Limbu Mahasabha membership system." />
-    <link rel="stylesheet" href="../style.css" />
+    <meta name="description" content="Secure login for administrators of the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee." />
+    <link rel="stylesheet" href="/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        /* Admin login page specific styles */
-        .login-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--color-background);
-            padding: var(--spacing-lg);
+        /* Page-specific styles — extends global design system */
+        .login-container {
+            max-width: 440px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) 0;
         }
         .login-card {
             background: var(--color-surface);
-            border-radius: var(--radius-lg);
             border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
             padding: var(--spacing-xl);
-            max-width: 420px;
-            width: 100%;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
         }
-        .login-card .logo-container {
-            text-align: center;
-            margin-bottom: var(--spacing-lg);
-        }
-        .login-card .logo-container .logo-emblem {
-            font-size: 2.5rem;
+        .login-card .logo-emblem-large {
+            font-size: 3rem;
             color: var(--color-primary);
+            text-align: center;
+            display: block;
+            margin-bottom: var(--spacing-sm);
         }
-        .login-card .logo-container h1 {
-            font-size: 1.3rem;
-            font-weight: var(--font-bold);
-            color: var(--color-text);
-            margin-top: var(--spacing-sm);
-            margin-bottom: 0.1rem;
+        .login-card h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: var(--spacing-xs);
         }
-        .login-card .logo-container p {
-            font-size: 0.85rem;
+        .login-card .subtitle {
+            text-align: center;
             color: var(--color-text-muted);
-            margin: 0;
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-lg);
         }
         .login-card .form-group {
             margin-bottom: var(--spacing-md);
@@ -55,7 +48,7 @@
         .login-card .form-group label {
             display: block;
             font-weight: var(--font-medium);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: var(--spacing-xs);
             color: var(--color-text);
         }
@@ -74,131 +67,474 @@
             outline: none;
             border-color: var(--color-primary);
         }
-        .login-card .error-message {
+        .login-card .form-group .error-message {
+            font-size: 0.8rem;
+            color: #d32f2f;
+            margin-top: var(--spacing-xs);
             display: none;
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 0.7rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.9rem;
-            margin-bottom: var(--spacing-md);
-            border: 1px solid #fecaca;
         }
-        .login-card .error-message.visible {
+        .login-card .form-group.error input {
+            border-color: #d32f2f;
+        }
+        .login-card .form-group.error .error-message {
             display: block;
         }
-        .login-card .btn-login {
+        .login-card .btn {
             width: 100%;
-            padding: 0.7rem;
+            padding: 0.8rem;
             font-size: 1rem;
         }
         .login-card .login-footer {
             text-align: center;
-            margin-top: var(--spacing-lg);
-            font-size: 0.8rem;
+            margin-top: var(--spacing-md);
+            font-size: 0.85rem;
             color: var(--color-text-muted);
         }
         .login-card .login-footer a {
             color: var(--color-primary);
-            text-decoration: none;
+            font-weight: var(--font-medium);
         }
-        .login-card .login-footer a:hover {
-            text-decoration: underline;
-        }
-        .login-card .loading-spinner {
+        .login-card .alert {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-md);
             display: none;
-            text-align: center;
-            padding: 0.5rem 0;
         }
-        .login-card .loading-spinner.visible {
+        .login-card .alert.error {
+            background: #fde8e8;
+            color: #d32f2f;
+            border: 1px solid #f5c6c6;
             display: block;
         }
-        .login-card .loading-spinner::after {
-            content: '';
+        .login-card .alert.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            display: block;
+        }
+        .login-card .loading-overlay {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-md) 0;
+        }
+        .login-card .loading-overlay .spinner {
             display: inline-block;
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             border: 3px solid var(--color-border);
-            border-top: 3px solid var(--color-primary);
+            border-top-color: var(--color-primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .login-card .role-hint {
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-            text-align: center;
+        .login-card .loading-overlay p {
             margin-top: var(--spacing-sm);
-            padding: 0.5rem;
-            background: var(--color-surface-alt);
-            border-radius: var(--radius);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
         }
-        .login-card .role-hint strong {
-            color: var(--color-text);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: var(--spacing-md);
+            }
+            .login-container {
+                padding: var(--spacing-md) 0;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-wrapper">
+    <div class="site-shell">
 
-        <div class="login-card">
-
-            <!-- Logo -->
-            <div class="logo-container">
-                <span class="logo-emblem">&#9670;</span>
-                <h1>Assam Limbu Mahasabha</h1>
-                <p>Karbi Anglong &amp; Dima Hasao District Committee</p>
-                <p style="font-size: 0.8rem; color: var(--color-primary); font-weight: var(--font-medium); margin-top: var(--spacing-sm);">Admin Login</p>
-            </div>
-
-            <!-- Error Message -->
-            <div id="error-message" class="error-message">
-                Invalid email or password. Please try again.
-            </div>
-
-            <!-- Login Form -->
-            <form id="login-form" autocomplete="off">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="admin@assamlimbumahasabha.org" required autofocus />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        <!-- HEADER (same as all pages) -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="/index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
                 </div>
 
-                <!-- Loading Spinner -->
-                <div id="loading-spinner" class="loading-spinner"></div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="/index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="/about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/about.html">About Us</a></li>
+                                <li><a href="/history.html">History</a></li>
+                                <li><a href="/vision.html">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="/updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/updates.html">Latest Updates</a></li>
+                                <li><a href="/archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/events.html">Events</a></li>
+                        <li><a href="/gallery.html">Gallery</a></li>
+                        <li><a href="/membership/membership.html">Membership</a></li>
+                        <li><a href="/documents.html">Documents</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </nav>
 
-                <button type="submit" id="login-btn" class="btn btn-primary btn-login">Sign In</button>
-            </form>
-
-            <!-- Role Hint -->
-            <div class="role-hint">
-                <strong>Authorized Admin Accounts Only</strong><br />
-                DA &bull; President &bull; Approving Authority
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
             </div>
 
-            <!-- Footer -->
-            <div class="login-footer">
-                <a href="../index.html">&larr; Back to Homepage</a>
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="/search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
             </div>
+        </header>
 
-        </div>
+        <!-- MAIN -->
+        <main class="site-main" role="main">
+
+            <!-- HERO (minimal) -->
+            <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 600px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Administrator Access</p>
+                        <h1 style="font-size: 2rem;">Secure Login</h1>
+                        <p class="hero-description" style="max-width: 400px; margin: 0 auto;">
+                            Please enter your credentials to access the admin dashboard.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOGIN FORM -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="login-container">
+
+                        <div class="login-card">
+
+                            <span class="logo-emblem-large">&#9670;</span>
+                            <h1>Admin Login</h1>
+                            <p class="subtitle">Assam Limbu Mahasabha — District Committee</p>
+
+                            <!-- Alert messages -->
+                            <div id="alertMessage" class="alert" role="alert"></div>
+
+                            <!-- Login Form -->
+                            <form id="loginForm" novalidate>
+
+                                <div class="form-group" id="emailGroup">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="admin@assamlimbumahasabha.org" required autocomplete="email" />
+                                    <div class="error-message">Please enter a valid email address.</div>
+                                </div>
+
+                                <div class="form-group" id="passwordGroup">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+                                    <div class="error-message">Please enter your password.</div>
+                                </div>
+
+                                <div id="loadingIndicator" class="loading-overlay">
+                                    <div class="spinner"></div>
+                                    <p>Authenticating...</p>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+
+                                <div class="login-footer">
+                                    <p>
+                                        <a href="/admin/check-status.html">Check Application Status</a>
+                                        &nbsp;·&nbsp;
+                                        <a href="/membership/membership.html">Apply for Membership</a>
+                                    </p>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/about.html">About Us</a></li>
+                                <li><a href="/committee.html">Committee</a></li>
+                                <li><a href="/events.html">Events</a></li>
+                                <li><a href="/updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="/documents.html">Documents</a></li>
+                                <li><a href="/membership/membership.html">Membership</a></li>
+                                <li><a href="/gallery.html">Gallery</a></li>
+                                <li><a href="/contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
 
     </div>
 
-    <!-- Firebase & Login JS -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="admin-common.js"></script>
-    <script src="login.js"></script>
+    <!-- ============================================================
+    FIREBASE SDK
+    ============================================================ -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIGURATION
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-s4o4QLzh5FZGvN-uQyK7ATmOUWn7TWA",
+            authDomain: "alm-membership-6d1dd.firebaseapp.com",
+            databaseURL: "https://alm-membership-6d1dd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "alm-membership-6d1dd",
+            storageBucket: "alm-membership-6d1dd.appspot.com",
+            messagingSenderId: "595862596938",
+            appId: "1:595862596938:web:1dc10f4bcf6886fe7a326d",
+            measurementId: "G-DP54YP5BB1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // ============================================================
+        // ROLE MAPPING
+        // ============================================================
+        const ROLE_IDS = {
+            da: 'ubCraWH2LiScAlCs14SvWd3piGV2',
+            president: 'DmBj882BV1cjdVv4g6yt7POAUrK2',
+            approvingAuthority: 'IRfvKbCresb6lzj7uTpUGxbDCc12'
+        };
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const alertMessage = document.getElementById('alertMessage');
+        const emailGroup = document.getElementById('emailGroup');
+        const passwordGroup = document.getElementById('passwordGroup');
+
+        // ============================================================
+        // CHECK IF ALREADY LOGGED IN
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                // User is already logged in — determine role and redirect
+                determineRoleAndRedirect(user.uid);
+            }
+        });
+
+        // ============================================================
+        // LOGIN HANDLER
+        // ============================================================
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear previous errors
+            emailGroup.classList.remove('error');
+            passwordGroup.classList.remove('error');
+            hideAlert();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Validate
+            let isValid = true;
+            if (!email || !email.includes('@')) {
+                emailGroup.classList.add('error');
+                isValid = false;
+            }
+            if (!password || password.length < 6) {
+                passwordGroup.classList.add('error');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Show loading
+            loginBtn.disabled = true;
+            loadingIndicator.style.display = 'block';
+            loginBtn.textContent = 'Signing in...';
+
+            // Authenticate with Firebase
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(userCredential) {
+                    const user = userCredential.user;
+                    // Determine role and redirect
+                    return determineRoleAndRedirect(user.uid);
+                })
+                .catch(function(error) {
+                    console.error('Login error:', error);
+                    let message = 'Invalid email or password. Please try again.';
+                    if (error.code === 'auth/user-not-found') {
+                        message = 'No account found with this email address.';
+                    } else if (error.code === 'auth/wrong-password') {
+                        message = 'Incorrect password. Please try again.';
+                    } else if (error.code === 'auth/too-many-requests') {
+                        message = 'Too many failed attempts. Please try again later.';
+                    }
+                    showAlert(message, 'error');
+                })
+                .finally(function() {
+                    loginBtn.disabled = false;
+                    loadingIndicator.style.display = 'none';
+                    loginBtn.textContent = 'Sign In';
+                });
+        });
+
+        // ============================================================
+        // DETERMINE ROLE AND REDIRECT
+        // ============================================================
+        function determineRoleAndRedirect(uid) {
+            // Check role by looking up the user's UID in the admin roles node
+            return database.ref('admin-roles/' + uid).once('value')
+                .then(function(snapshot) {
+                    const role = snapshot.val();
+                    if (!role) {
+                        // User is not authorized as admin
+                        auth.signOut();
+                        showAlert('You do not have administrator access. Please contact the committee.', 'error');
+                        return;
+                    }
+
+                    // Redirect based on role
+                    let redirectUrl = '/admin/dashboard.html';
+                    if (role === 'da') {
+                        redirectUrl = '/admin/dashboard.html?role=da';
+                    } else if (role === 'president') {
+                        redirectUrl = '/admin/dashboard.html?role=president';
+                    } else if (role === 'approvingAuthority') {
+                        redirectUrl = '/admin/dashboard.html?role=approvingAuthority';
+                    } else {
+                        // Unknown role
+                        auth.signOut();
+                        showAlert('Invalid role assigned. Please contact the administrator.', 'error');
+                        return;
+                    }
+
+                    // Store role in session for dashboard to read
+                    sessionStorage.setItem('adminRole', role);
+                    sessionStorage.setItem('adminUid', uid);
+
+                    // Redirect
+                    window.location.href = redirectUrl;
+                })
+                .catch(function(error) {
+                    console.error('Error checking role:', error);
+                    showAlert('Error verifying your permissions. Please try again.', 'error');
+                });
+        }
+
+        // ============================================================
+        // UI HELPERS
+        // ============================================================
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = 'alert ' + type;
+            alertMessage.style.display = 'block';
+        }
+
+        function hideAlert() {
+            alertMessage.style.display = 'none';
+            alertMessage.className = 'alert';
+        }
+
+        // ============================================================
+        // KEYBOARD SUPPORT — Enter key submits form
+        // ============================================================
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // ============================================================
+        // Clear errors on input
+        // ============================================================
+        emailInput.addEventListener('input', function() {
+            emailGroup.classList.remove('error');
+            hideAlert();
+        });
+        passwordInput.addEventListener('input', function() {
+            passwordGroup.classList.remove('error');
+            hideAlert();
+        });
+    </script>
 
 </body>
 </html>
