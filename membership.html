@@ -9,30 +9,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
     <style>
-        /* Membership form specific styles – minimal, uses global variables */
-        .membership-form {
+        /* Page-specific overrides — only what's not already in global style.css */
+        .form-section {
             max-width: 800px;
             margin: 0 auto;
         }
-        .membership-form .form-row {
+        .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: var(--spacing-md);
+        }
+        .form-group {
             margin-bottom: var(--spacing-md);
         }
-        .membership-form .form-row.full {
-            grid-template-columns: 1fr;
-        }
-        .membership-form label {
+        .form-group label {
             display: block;
             font-weight: var(--font-medium);
             margin-bottom: var(--spacing-xs);
             font-size: 0.9rem;
+            color: var(--color-text);
         }
-        .membership-form input,
-        .membership-form select,
-        .membership-form textarea {
+        .form-group .required {
+            color: #c0392b;
+            margin-left: 2px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 0.7rem 1rem;
             border: 1px solid var(--color-border);
@@ -40,93 +45,162 @@
             font-size: 1rem;
             font-family: inherit;
             background: var(--color-surface);
-            transition: border-color var(--transition);
+            transition: border-color var(--transition), box-shadow var(--transition);
             box-sizing: border-box;
         }
-        .membership-form input:focus,
-        .membership-form select:focus,
-        .membership-form textarea:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
         }
-        .membership-form .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-sm);
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            margin-top: 0.2rem;
         }
-        .membership-form .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-right: var(--spacing-xs);
-        }
-        .membership-form .checkbox-group label {
-            margin-bottom: 0;
-            font-weight: var(--font-regular);
-            font-size: 0.95rem;
-        }
-        .membership-form .photo-upload {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-        .membership-form .photo-upload input[type="file"] {
-            padding: 0.3rem;
-        }
-        .membership-form .photo-preview {
-            max-width: 150px;
-            max-height: 150px;
-            border-radius: var(--radius);
-            border: 1px solid var(--color-border);
+        .form-group .error-text {
+            font-size: 0.8rem;
+            color: #c0392b;
+            margin-top: 0.2rem;
             display: none;
         }
-        .membership-form .photo-preview.visible {
+        .form-group.has-error input,
+        .form-group.has-error select {
+            border-color: #c0392b;
+        }
+        .form-group.has-error .error-text {
             display: block;
         }
-        .membership-form .form-actions {
+
+        .photo-upload-wrapper {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
             flex-wrap: wrap;
             gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
+            align-items: flex-start;
         }
-        .membership-form .form-actions .btn {
+        .photo-upload-wrapper .file-input-area {
+            flex: 1;
             min-width: 200px;
         }
-        @media (max-width: 768px) {
-            .membership-form .form-row {
-                grid-template-columns: 1fr;
-            }
+        .photo-upload-wrapper .photo-preview {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-surface-alt);
+            flex-shrink: 0;
         }
-        .hidden-field {
+        .photo-upload-wrapper .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: none;
         }
-        .error-message {
-            color: #b91c1c;
-            font-size: 0.85rem;
-            margin-top: var(--spacing-xs);
+        .photo-upload-wrapper .photo-preview .placeholder-icon {
+            font-size: 2.5rem;
+            color: var(--color-text-muted);
+            opacity: 0.4;
+            user-select: none;
         }
-        .success-message {
-            background: #d1fae5;
-            color: #065f46;
-            padding: var(--spacing-md);
-            border-radius: var(--radius);
-            border: 1px solid #a7f3d0;
-            margin-bottom: var(--spacing-lg);
+        .photo-upload-wrapper .photo-preview.has-image .placeholder-icon {
+            display: none;
         }
-        .acknowledgement {
-            background: var(--color-surface-alt);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            text-align: center;
+        .photo-upload-wrapper .photo-preview.has-image img {
+            display: block;
         }
-        .acknowledgement .ref-number {
-            font-size: 1.8rem;
-            font-weight: var(--font-bold);
-            color: var(--color-primary);
-            letter-spacing: 1px;
+
+        .declaration-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
             margin: var(--spacing-md) 0;
+        }
+        .declaration-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: var(--color-primary);
+            cursor: pointer;
+        }
+        .declaration-checkbox label {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+        }
+        .declaration-checkbox label a {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+
+        .submit-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .submit-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .submit-wrapper .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .photo-upload-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .photo-upload-wrapper .photo-preview {
+                width: 100%;
+                height: 200px;
+            }
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .loading-overlay .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-overlay .loading-text {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            font-weight: var(--font-medium);
         }
     </style>
 </head>
@@ -134,6 +208,7 @@
 
     <div class="site-shell">
 
+        <!-- ========== HEADER (no language button) ========== -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -197,8 +272,10 @@
             </div>
         </header>
 
+        <!-- ========== MAIN ========== -->
         <main class="site-main" role="main">
 
+            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -212,254 +289,271 @@
                 </div>
             </section>
 
-            <!-- ==================== MEMBERSHIP APPLICATION FORM ==================== -->
+            <!-- ========== MEMBERSHIP FORM ========== -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Apply Now</div>
                     <h2>Membership Application</h2>
                     <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
-                        Fill in the details below to apply for membership. All fields marked with <span style="color: #b91c1c;">*</span> are required.
+                        Fill in the details below to apply for membership. Fields marked with <span style="color:#c0392b;">*</span> are required.
+                        Your application will be reviewed by the committee.
                     </p>
 
-                    <div id="form-status"></div>
+                    <form id="membershipForm" class="form-section" enctype="multipart/form-data" novalidate>
 
-                    <form id="membership-form" class="membership-form" enctype="multipart/form-data" novalidate>
-
-                        <!-- Membership Type -->
-                        <div class="form-row full">
-                            <label for="membership-type">Membership Type <span style="color:#b91c1c;">*</span></label>
-                            <select id="membership-type" name="membershipType" required>
-                                <option value="">Please select</option>
+                        <!-- ===== Membership Type ===== -->
+                        <div class="form-group">
+                            <label for="membershipType">Membership Type <span class="required">*</span></label>
+                            <select id="membershipType" name="membershipType" required>
+                                <option value="">Please Select</option>
                                 <option value="General">General</option>
                                 <option value="Advisory">Advisory</option>
                                 <option value="Well Wisher">Well Wisher</option>
                             </select>
+                            <div class="error-text">Please select a membership type.</div>
                         </div>
 
-                        <!-- Name -->
+                        <!-- ===== Name ===== -->
                         <div class="form-row">
-                            <div>
-                                <label for="first-name">First Name <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="first-name" name="firstName" required placeholder="e.g. John" />
+                            <div class="form-group">
+                                <label for="firstName">First Name <span class="required">*</span></label>
+                                <input type="text" id="firstName" name="firstName" required placeholder="Your first name" />
+                                <div class="error-text">First name is required.</div>
                             </div>
-                            <div>
-                                <label for="second-name">Second Name <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="second-name" name="secondName" required placeholder="e.g. Doe" />
+                            <div class="form-group">
+                                <label for="secondName">Second Name <span class="required">*</span></label>
+                                <input type="text" id="secondName" name="secondName" required placeholder="Your second name / surname" />
+                                <div class="error-text">Second name is required.</div>
                             </div>
                         </div>
 
-                        <!-- DOB -->
-                        <div class="form-row full">
-                            <label for="dob">Date of Birth <span style="color:#b91c1c;">*</span></label>
-                            <input type="date" id="dob" name="dob" required />
-                        </div>
-
-                        <!-- Contact -->
+                        <!-- ===== Personal ===== -->
                         <div class="form-row">
-                            <div>
-                                <label for="email">Email Address <span style="color:#b91c1c;">*</span></label>
-                                <input type="email" id="email" name="email" required placeholder="you@example.com" />
+                            <div class="form-group">
+                                <label for="dob">Date of Birth <span class="required">*</span></label>
+                                <input type="date" id="dob" name="dob" required />
+                                <div class="error-text">Date of birth is required.</div>
                             </div>
-                            <div>
-                                <label for="phone">Phone Number <span style="color:#b91c1c;">*</span></label>
-                                <input type="tel" id="phone" name="phone" required placeholder="9876543210" />
+                            <div class="form-group">
+                                <label for="bloodGroup">Blood Group <span class="required">*</span></label>
+                                <select id="bloodGroup" name="bloodGroup" required>
+                                    <option value="">Please Select</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="Not Known">Not Known</option>
+                                </select>
+                                <div class="error-text">Please select your blood group.</div>
                             </div>
-                        </div>
-                        <div class="form-row full">
-                            <label for="alt-phone">Alternative Phone Number</label>
-                            <input type="tel" id="alt-phone" name="altPhone" placeholder="9876543211" />
                         </div>
 
-                        <!-- Education Qualification -->
-                        <div class="form-row full">
-                            <label for="education">Education Qualification <span style="color:#b91c1c;">*</span></label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required placeholder="your@email.com" />
+                                <div class="error-text">Valid email is required.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" required placeholder="10-digit mobile number" pattern="[0-9]{10}" />
+                                <div class="error-text">Valid 10-digit phone number is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="altPhone">Alternative Phone</label>
+                            <input type="tel" id="altPhone" name="altPhone" placeholder="Optional — 10-digit number" pattern="[0-9]{10}" />
+                            <div class="hint">Optional, but recommended.</div>
+                        </div>
+
+                        <!-- ===== Education ===== -->
+                        <div class="form-group">
+                            <label for="education">Education Qualification <span class="required">*</span></label>
                             <select id="education" name="education" required>
-                                <option value="">Please select</option>
+                                <option value="">Please Select</option>
                                 <option value="Undergraduate">Undergraduate</option>
                                 <option value="Postgraduate">Postgraduate</option>
                                 <option value="Matriculate">Matriculate</option>
                                 <option value="Graduate">Graduate</option>
                                 <option value="Other">Other</option>
                             </select>
-                        </div>
-                        <div class="form-row full hidden-field" id="other-education-group">
-                            <label for="other-education">Other Education</label>
-                            <input type="text" id="other-education" name="otherEducation" placeholder="Specify your qualification" />
+                            <div class="error-text">Please select your education qualification.</div>
                         </div>
 
-                        <!-- Blood Group -->
-                        <div class="form-row full">
-                            <label for="blood-group">Blood Group <span style="color:#b91c1c;">*</span></label>
-                            <select id="blood-group" name="bloodGroup" required>
-                                <option value="">Please select</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                                <option value="Not Known">Not Known</option>
+                        <div class="form-group" id="otherEducationGroup" style="display: none;">
+                            <label for="otherEducation">Other Education</label>
+                            <input type="text" id="otherEducation" name="otherEducation" placeholder="Please specify your qualification" />
+                        </div>
+
+                        <!-- ===== Address ===== -->
+                        <div class="form-group">
+                            <label for="district">District <span class="required">*</span></label>
+                            <select id="district" name="district" required>
+                                <option value="">Please Select</option>
+                                <option value="East Karbi Anglong">East Karbi Anglong</option>
+                                <option value="West Karbi Anglong">West Karbi Anglong</option>
+                                <option value="Dima Hasao">Dima Hasao</option>
                             </select>
+                            <div class="error-text">Please select a district.</div>
                         </div>
 
-                        <!-- Address -->
-                        <div class="form-row full">
-                            <label>Address</label>
-                        </div>
                         <div class="form-row">
-                            <div>
-                                <label for="district">District <span style="color:#b91c1c;">*</span></label>
-                                <select id="district" name="district" required>
-                                    <option value="">Please select</option>
-                                    <option value="East Karbi Anglong">East Karbi Anglong</option>
-                                    <option value="West Karbi Anglong">West Karbi Anglong</option>
-                                    <option value="Dima Hasao">Dima Hasao</option>
-                                </select>
+                            <div class="form-group">
+                                <label for="lac">LAC <span class="required">*</span></label>
+                                <input type="text" id="lac" name="lac" required placeholder="e.g. LAC-1" />
+                                <div class="error-text">LAC is required.</div>
                             </div>
-                            <div>
-                                <label for="lac">LAC <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="lac" name="lac" required placeholder="e.g. Diphu" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div>
-                                <label for="village">Village <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="village" name="village" required placeholder="Village name" />
-                            </div>
-                            <div>
-                                <label for="post-office">Post Office <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="post-office" name="postOffice" required placeholder="Post office" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div>
-                                <label for="police-station">Police Station <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="police-station" name="policeStation" required placeholder="Police station" />
-                            </div>
-                            <div>
-                                <label for="pin">PIN Code <span style="color:#b91c1c;">*</span></label>
-                                <input type="text" id="pin" name="pin" required placeholder="782460" pattern="[0-9]{6}" />
+                            <div class="form-group">
+                                <label for="village">Village <span class="required">*</span></label>
+                                <input type="text" id="village" name="village" required placeholder="Your village" />
+                                <div class="error-text">Village name is required.</div>
                             </div>
                         </div>
 
-                        <!-- Family Information -->
-                        <div class="form-row full">
-                            <label>Family Information</label>
-                        </div>
                         <div class="form-row">
-                            <div>
-                                <label for="male-count">Male <span style="color:#b91c1c;">*</span></label>
-                                <input type="number" id="male-count" name="maleCount" required min="0" value="0" />
+                            <div class="form-group">
+                                <label for="postOffice">Post Office <span class="required">*</span></label>
+                                <input type="text" id="postOffice" name="postOffice" required placeholder="Post office" />
+                                <div class="error-text">Post office is required.</div>
                             </div>
-                            <div>
-                                <label for="female-count">Female <span style="color:#b91c1c;">*</span></label>
-                                <input type="number" id="female-count" name="femaleCount" required min="0" value="0" />
+                            <div class="form-group">
+                                <label for="policeStation">Police Station <span class="required">*</span></label>
+                                <input type="text" id="policeStation" name="policeStation" required placeholder="Police station" />
+                                <div class="error-text">Police station is required.</div>
                             </div>
-                        </div>
-                        <div class="form-row full">
-                            <label for="total-members">Total Members <span style="color:#b91c1c;">*</span></label>
-                            <input type="number" id="total-members" name="totalMembers" required min="0" readonly />
                         </div>
 
-                        <!-- Housing / Land / Vehicle / Administrative -->
-                        <div class="form-row full">
-                            <label>Housing, Land, Vehicle &amp; Administrative Information</label>
+                        <div class="form-group">
+                            <label for="pin">PIN Code <span class="required">*</span></label>
+                            <input type="text" id="pin" name="pin" required placeholder="6-digit PIN" pattern="[0-9]{6}" />
+                            <div class="error-text">Valid 6-digit PIN is required.</div>
                         </div>
+
+                        <!-- ===== Family Status ===== -->
                         <div class="form-row">
-                            <div>
-                                <label for="house-type">Type of House <span style="color:#b91c1c;">*</span></label>
-                                <select id="house-type" name="houseType" required>
-                                    <option value="">Please select</option>
+                            <div class="form-group">
+                                <label for="maleCount">Male Members <span class="required">*</span></label>
+                                <input type="number" id="maleCount" name="maleCount" required min="0" value="0" />
+                                <div class="error-text">Number of male members is required.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="femaleCount">Female Members <span class="required">*</span></label>
+                                <input type="number" id="femaleCount" name="femaleCount" required min="0" value="0" />
+                                <div class="error-text">Number of female members is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalMembers">Total Family Members <span class="required">*</span></label>
+                            <input type="number" id="totalMembers" name="totalMembers" required min="1" value="1" />
+                            <div class="error-text">Total family members must be at least 1.</div>
+                        </div>
+
+                        <!-- ===== Other Information ===== -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="typeOfHouse">Type of House <span class="required">*</span></label>
+                                <select id="typeOfHouse" name="typeOfHouse" required>
+                                    <option value="">Please Select</option>
                                     <option value="Owned">Owned</option>
                                     <option value="Rented">Rented</option>
-                                    <option value="Leased">Leased</option>
-                                    <option value="Family Property">Family Property</option>
+                                    <option value="Shared">Shared</option>
                                     <option value="Other">Other</option>
                                 </select>
+                                <div class="error-text">Please select type of house.</div>
                             </div>
-                            <div>
-                                <label for="land-ownership">Land Ownership Status <span style="color:#b91c1c;">*</span></label>
-                                <select id="land-ownership" name="landOwnership" required>
-                                    <option value="">Please select</option>
-                                    <option value="Owned">Owned</option>
-                                    <option value="Leased">Leased</option>
-                                    <option value="Sharecropper">Sharecropper</option>
-                                    <option value="Government Allotment">Government Allotment</option>
+                            <div class="form-group">
+                                <label for="landOwnership">Land Ownership Status <span class="required">*</span></label>
+                                <select id="landOwnership" name="landOwnership" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Private">Private</option>
+                                    <option value="Government">Government</option>
+                                    <option value="Community">Community</option>
                                     <option value="Other">Other</option>
                                 </select>
+                                <div class="error-text">Please select land ownership status.</div>
                             </div>
                         </div>
+
                         <div class="form-row">
-                            <div>
-                                <label for="vehicle-owned">Vehicle Owned <span style="color:#b91c1c;">*</span></label>
-                                <select id="vehicle-owned" name="vehicleOwned" required>
-                                    <option value="">Please select</option>
+                            <div class="form-group">
+                                <label for="vehicleOwned">Vehicle Owned</label>
+                                <select id="vehicleOwned" name="vehicleOwned">
+                                    <option value="">Please Select</option>
+                                    <option value="Two-wheeler">Two-wheeler</option>
+                                    <option value="Three-wheeler">Three-wheeler</option>
+                                    <option value="Four-wheeler">Four-wheeler</option>
                                     <option value="None">None</option>
-                                    <option value="Two Wheeler">Two Wheeler</option>
-                                    <option value="Four Wheeler">Four Wheeler</option>
-                                    <option value="Both">Both</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <div>
-                                <label for="under-belt-block">Under Belt &amp; Block <span style="color:#b91c1c;">*</span></label>
-                                <select id="under-belt-block" name="underBeltBlock" required>
-                                    <option value="">Please select</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
+                            <div class="form-group">
+                                <label for="underBeltBlock">Under Belt &amp; Block</label>
+                                <input type="text" id="underBeltBlock" name="underBeltBlock" placeholder="e.g. Block A" />
                             </div>
                         </div>
+
                         <div class="form-row">
-                            <div>
-                                <label for="autonomous-council">Autonomous Council? <span style="color:#b91c1c;">*</span></label>
-                                <select id="autonomous-council" name="autonomousCouncil" required>
-                                    <option value="">Please select</option>
+                            <div class="form-group">
+                                <label for="autonomousCouncil">Autonomous Council?</label>
+                                <select id="autonomousCouncil" name="autonomousCouncil">
+                                    <option value="">Please Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
                             </div>
-                            <div>
-                                <label for="govt-scheme-beneficiary">Beneficiary of any Government Scheme? <span style="color:#b91c1c;">*</span></label>
-                                <select id="govt-scheme-beneficiary" name="govtSchemeBeneficiary" required>
-                                    <option value="">Please select</option>
+                            <div class="form-group">
+                                <label for="govtSchemeBeneficiary">Government Scheme Beneficiary?</label>
+                                <select id="govtSchemeBeneficiary" name="govtSchemeBeneficiary">
+                                    <option value="">Please Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-row full">
-                            <label for="family-govt-employees">Number of Family Members who are Government Employees <span style="color:#b91c1c;">*</span></label>
-                            <input type="number" id="family-govt-employees" name="familyGovtEmployees" required min="0" value="0" />
+
+                        <div class="form-group">
+                            <label for="govtEmployeesCount">Number of Family Members who are Government Employees</label>
+                            <input type="number" id="govtEmployeesCount" name="govtEmployeesCount" min="0" value="0" />
                         </div>
 
-                        <!-- Passport Photo -->
-                        <div class="form-row full">
-                            <label>Upload Passport Photo <span style="color:#b91c1c;">*</span></label>
-                            <div class="photo-upload">
-                                <input type="file" id="passport-photo" name="passportPhoto" accept="image/*" required />
-                                <img id="photo-preview" class="photo-preview" alt="Passport photo preview" />
-                                <span style="font-size:0.85rem; color:var(--color-text-muted);">Allowed: JPG, PNG, GIF (max 5MB)</span>
+                        <!-- ===== Passport Photo Upload ===== -->
+                        <div class="form-group">
+                            <label>Passport Photo <span class="required">*</span></label>
+                            <div class="photo-upload-wrapper">
+                                <div class="file-input-area">
+                                    <input type="file" id="photoInput" name="photo" accept="image/jpeg,image/png,image/jpg" required />
+                                    <div class="hint">Upload a recent passport-size photo (JPG or PNG, max 2MB).</div>
+                                    <div class="error-text">A valid passport photo is required.</div>
+                                </div>
+                                <div class="photo-preview" id="photoPreview">
+                                    <span class="placeholder-icon">&#9670;</span>
+                                    <img id="previewImage" alt="Passport photo preview" />
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Terms & Declaration -->
-                        <div class="form-row full">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="terms" name="terms" required />
-                                <label for="terms">I have read and agree to the Terms and Conditions of the Assam Limbu Mahasabha membership.</label>
-                            </div>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="self-declaration" name="selfDeclaration" required />
-                                <label for="self-declaration">I hereby declare that all information provided is true and complete to the best of my knowledge.</label>
-                            </div>
+                        <!-- ===== Declaration ===== -->
+                        <div class="declaration-checkbox">
+                            <input type="checkbox" id="declaration" name="declaration" required />
+                            <label for="declaration">
+                                I hereby declare that all the information provided in this application is true, complete, and correct to the best of my knowledge. I agree to abide by the
+                                <a href="#" target="_blank">Terms and Conditions</a> and the
+                                <a href="#" target="_blank">Code of Conduct</a> of the Assam Limbu Mahasabha.
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="error-text" id="declarationError" style="display: none; color: #c0392b; font-size: 0.85rem; margin-top: -0.5rem;">
+                            You must accept the declaration to submit.
                         </div>
 
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="submit-btn">Submit Membership Application</button>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Fields marked with <span style="color:#b91c1c;">*</span> are required.</span>
+                        <!-- ===== Submit ===== -->
+                        <div class="submit-wrapper">
+                            <button type="reset" class="btn btn-secondary">Clear All</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
                         </div>
 
                     </form>
@@ -468,6 +562,7 @@
 
         </main>
 
+        <!-- ========== FOOTER ========== -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -524,194 +619,267 @@
 
     </div>
 
-    <!-- Firebase SDK and custom scripts -->
-    <script type="module">
-        // Firebase config (from requirements)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCdHDWh-CJkJqBSNxKAd7dWwX8agBYuuc",
-            authDomain: "prompt-ai-a0c21.firebaseapp.com",
-            databaseURL: "https://prompt-ai-a0c21-default-rtdb.firebaseio.com",
-            projectId: "prompt-ai-a0c21",
-            storageBucket: "prompt-ai-a0c21.firebasestorage.app",
-            messagingSenderId: "322416217341",
-            appId: "1:322416217341:web:c43dcc16ac86bbba24c294",
-            measurementId: "G-B98ZKD5KP9"
-        };
+    <!-- ========== LOADING OVERLAY ========== -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Submitting your application...</div>
+    </div>
 
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getDatabase, ref, push, set, get, child, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+    <!-- ========== SCRIPTS ========== -->
+    <script src="script.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="firebase-auth.js"></script>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        const storage = getStorage(app);
+    <script>
+        (function() {
+            'use strict';
 
-        // DOM references
-        const form = document.getElementById('membership-form');
-        const statusDiv = document.getElementById('form-status');
+            // ---- DOM refs ----
+            const form = document.getElementById('membershipForm');
+            const educationSelect = document.getElementById('education');
+            const otherEduGroup = document.getElementById('otherEducationGroup');
+            const otherEduInput = document.getElementById('otherEducation');
+            const photoInput = document.getElementById('photoInput');
+            const previewWrapper = document.getElementById('photoPreview');
+            const previewImg = document.getElementById('previewImage');
+            const declarationCheck = document.getElementById('declaration');
+            const declarationError = document.getElementById('declarationError');
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
 
-        // Helper: show message
-        function showMessage(msg, type = 'info') {
-            statusDiv.innerHTML = `<div class="${type === 'success' ? 'success-message' : 'error-message'}">${msg}</div>`;
-        }
+            // ---- Education toggle ----
+            educationSelect.addEventListener('change', function() {
+                if (this.value === 'Other') {
+                    otherEduGroup.style.display = 'block';
+                    otherEduInput.setAttribute('required', 'required');
+                } else {
+                    otherEduGroup.style.display = 'none';
+                    otherEduInput.removeAttribute('required');
+                    otherEduInput.value = '';
+                }
+            });
 
-        // Toggle "Other Education" field
-        const educationSelect = document.getElementById('education');
-        const otherEducationGroup = document.getElementById('other-education-group');
-        educationSelect.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                otherEducationGroup.classList.remove('hidden-field');
-            } else {
-                otherEducationGroup.classList.add('hidden-field');
-                document.getElementById('other-education').value = '';
-            }
-        });
+            // ---- Photo preview ----
+            photoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validate file type and size
+                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Please upload a JPG or PNG image.');
+                        this.value = '';
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Image size must be less than 2MB.');
+                        this.value = '';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        previewImg.src = ev.target.result;
+                        previewWrapper.classList.add('has-image');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewWrapper.classList.remove('has-image');
+                    previewImg.src = '';
+                }
+            });
 
-        // Auto-calculate total members
-        const maleInput = document.getElementById('male-count');
-        const femaleInput = document.getElementById('female-count');
-        const totalInput = document.getElementById('total-members');
-        function updateTotal() {
-            const male = parseInt(maleInput.value) || 0;
-            const female = parseInt(femaleInput.value) || 0;
-            totalInput.value = male + female;
-        }
-        maleInput.addEventListener('input', updateTotal);
-        femaleInput.addEventListener('input', updateTotal);
+            // ---- Total family members auto-calc (optional helper) ----
+            const maleInput = document.getElementById('maleCount');
+            const femaleInput = document.getElementById('femaleCount');
+            const totalInput = document.getElementById('totalMembers');
 
-        // Photo preview
-        const photoInput = document.getElementById('passport-photo');
-        const preview = document.getElementById('photo-preview');
-        photoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    preview.src = ev.target.result;
-                    preview.classList.add('visible');
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.classList.remove('visible');
-                preview.src = '';
-            }
-        });
-
-        // Form submit
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            statusDiv.innerHTML = '';
-
-            // Validate required fields (HTML5 will catch most)
-            // Additional validation for file
-            const photoFile = photoInput.files[0];
-            if (!photoFile) {
-                showMessage('Please upload a passport photo.', 'error');
-                return;
-            }
-            // Validate file size (max 5MB)
-            if (photoFile.size > 5 * 1024 * 1024) {
-                showMessage('Photo file size exceeds 5MB limit.', 'error');
-                return;
-            }
-            // Validate file type
-            if (!photoFile.type.startsWith('image/')) {
-                showMessage('Please upload an image file.', 'error');
-                return;
-            }
-
-            // Collect form data (exclude fields that are hidden)
-            const formData = new FormData(form);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                // Skip empty hidden fields and file (we handle separately)
-                if (key === 'passportPhoto') continue;
-                if (key === 'otherEducation' && !document.getElementById('other-education-group').classList.contains('hidden-field')) {
-                    data[key] = value;
-                } else if (key !== 'otherEducation') {
-                    data[key] = value;
+            function updateTotal() {
+                const male = parseInt(maleInput.value) || 0;
+                const female = parseInt(femaleInput.value) || 0;
+                const total = male + female;
+                if (total > 0) {
+                    totalInput.value = total;
                 }
             }
+            maleInput.addEventListener('input', updateTotal);
+            femaleInput.addEventListener('input', updateTotal);
 
-            // Add computed fields
-            data.firstName = data.firstName.trim();
-            data.secondName = data.secondName.trim();
-            data.fullName = data.firstName + ' ' + data.secondName;
-            // Ensure numeric fields
-            data.maleCount = parseInt(data.maleCount) || 0;
-            data.femaleCount = parseInt(data.femaleCount) || 0;
-            data.totalMembers = parseInt(data.totalMembers) || 0;
-            data.familyGovtEmployees = parseInt(data.familyGovtEmployees) || 0;
+            // ---- Form validation & submission ----
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            // Status
-            data.status = 'submitted';
-            data.submittedAt = serverTimestamp();
+                // Reset errors
+                document.querySelectorAll('.form-group.has-error').forEach(el => el.classList.remove('has-error'));
+                declarationError.style.display = 'none';
 
-            // Generate reference number: ALM + timestamp + random
-            const now = new Date();
-            const ts = now.getFullYear().toString().slice(-2) +
-                String(now.getMonth() + 1).padStart(2, '0') +
-                String(now.getDate()).padStart(2, '0') +
-                String(now.getHours()).padStart(2, '0') +
-                String(now.getMinutes()).padStart(2, '0');
-            const rand = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-            const refNumber = 'ALM' + ts + rand;
+                let isValid = true;
 
-            data.referenceNumber = refNumber;
+                // Required fields (HTML5 will handle most, but we need custom for checkbox)
+                const requiredFields = form.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value || field.value.trim() === '') {
+                        const group = field.closest('.form-group');
+                        if (group) group.classList.add('has-error');
+                        isValid = false;
+                    }
+                });
 
-            try {
-                // Upload photo to Firebase Storage
-                const storagePath = `passport_photos/${refNumber}_${photoFile.name}`;
-                const storageReference = storageRef(storage, storagePath);
-                const uploadSnapshot = await uploadBytes(storageReference, photoFile);
-                const downloadURL = await getDownloadURL(uploadSnapshot.ref);
-                data.photoUrl = downloadURL;
+                // Check declaration checkbox
+                if (!declarationCheck.checked) {
+                    declarationError.style.display = 'block';
+                    isValid = false;
+                }
 
-                // Save application to Realtime Database
-                const appRef = ref(database, 'applications/' + refNumber);
-                await set(appRef, data);
+                // Check photo
+                if (!photoInput.files || photoInput.files.length === 0) {
+                    const group = photoInput.closest('.form-group');
+                    if (group) group.classList.add('has-error');
+                    isValid = false;
+                }
 
-                // Save initial history entry
-                const historyRef = ref(database, 'history/' + refNumber);
-                const historyEntry = {
-                    action: 'Application Submitted',
-                    actorUid: 'public',
-                    actorRole: 'Applicant',
-                    fromStatus: null,
-                    toStatus: 'submitted',
-                    remarks: 'Initial submission by applicant.',
-                    timestamp: serverTimestamp()
+                if (!isValid) {
+                    // Scroll to first error
+                    const firstError = document.querySelector('.form-group.has-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // ---- If valid, proceed with submission ----
+                submitBtn.disabled = true;
+                loadingOverlay.classList.add('active');
+
+                // Build data object
+                const formData = new FormData(form);
+                const applicationData = {
+                    membershipType: formData.get('membershipType'),
+                    firstName: formData.get('firstName').trim(),
+                    secondName: formData.get('secondName').trim(),
+                    dob: formData.get('dob'),
+                    email: formData.get('email').trim(),
+                    phone: formData.get('phone').trim(),
+                    altPhone: formData.get('altPhone') ? formData.get('altPhone').trim() : '',
+                    education: formData.get('education'),
+                    otherEducation: formData.get('otherEducation') || '',
+                    bloodGroup: formData.get('bloodGroup'),
+                    address: {
+                        district: formData.get('district'),
+                        lac: formData.get('lac').trim(),
+                        village: formData.get('village').trim(),
+                        postOffice: formData.get('postOffice').trim(),
+                        policeStation: formData.get('policeStation').trim(),
+                        pin: formData.get('pin').trim()
+                    },
+                    family: {
+                        male: parseInt(formData.get('maleCount')) || 0,
+                        female: parseInt(formData.get('femaleCount')) || 0,
+                        totalMembers: parseInt(formData.get('totalMembers')) || 1
+                    },
+                    otherInfo: {
+                        typeOfHouse: formData.get('typeOfHouse'),
+                        landOwnership: formData.get('landOwnership'),
+                        vehicleOwned: formData.get('vehicleOwned') || '',
+                        underBeltBlock: formData.get('underBeltBlock') || '',
+                        autonomousCouncil: formData.get('autonomousCouncil') || '',
+                        govtSchemeBeneficiary: formData.get('govtSchemeBeneficiary') || '',
+                        govtEmployeesCount: parseInt(formData.get('govtEmployeesCount')) || 0
+                    }
                 };
-                await push(historyRef, historyEntry);
 
-                // Show acknowledgement
-                statusDiv.innerHTML = `
-                    <div class="acknowledgement">
-                        <h3 style="color: var(--color-primary);">Membership Application Submitted Successfully</h3>
-                        <p>Your application reference number is:</p>
-                        <div class="ref-number">${refNumber}</div>
-                        <p>Please keep this number for future status tracking.</p>
-                        <p style="margin-top: var(--spacing-md);">
-                            <a href="status.html" class="btn btn-secondary">Check Application Status</a>
-                        </p>
-                    </div>
-                `;
-                form.reset();
-                preview.classList.remove('visible');
-                preview.src = '';
-                // Recalculate total
-                updateTotal();
-                // Scroll to top of status
-                statusDiv.scrollIntoView({ behavior: 'smooth' });
-            } catch (error) {
-                console.error('Submission error:', error);
-                showMessage('An error occurred while submitting your application. Please try again.', 'error');
-            }
-        });
+                // ---- Upload photo to Firebase Storage (using the global firebase object from firebase-config.js) ----
+                const photoFile = photoInput.files[0];
+                const storageRef = firebase.storage().ref();
+                const refNumber = 'ALM-DH-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+                const photoPath = 'membership_photos/' + refNumber + '.jpg';
+                const uploadTask = storageRef.child(photoPath).put(photoFile);
+
+                uploadTask.on('state_changed',
+                    function(snapshot) {
+                        // Progress (optional)
+                    },
+                    function(error) {
+                        console.error('Upload error:', error);
+                        alert('Photo upload failed. Please try again.');
+                        loadingOverlay.classList.remove('active');
+                        submitBtn.disabled = false;
+                    },
+                    function() {
+                        // Upload complete — get download URL
+                        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                            applicationData.photoURL = downloadURL;
+                            applicationData.photoStoragePath = photoPath;
+
+                            // ---- Save to Firebase Realtime Database ----
+                            const db = firebase.database();
+                            const ref = db.ref('applications/' + refNumber);
+
+                            // Add metadata
+                            applicationData.referenceNumber = refNumber;
+                            applicationData.status = 'submitted';
+                            applicationData.createdAt = Date.now();
+                            applicationData.updatedAt = Date.now();
+                            applicationData.submittedAt = Date.now();
+                            applicationData.history = [{
+                                action: 'submitted',
+                                actorUID: null,
+                                actorRole: 'applicant',
+                                remark: 'Application submitted',
+                                timestamp: Date.now(),
+                                fromStatus: null,
+                                toStatus: 'submitted'
+                            }];
+                            applicationData.daRemark = null;
+                            applicationData.presidentRemark = null;
+                            applicationData.approvingRemark = null;
+                            applicationData.finalDecision = null;
+                            applicationData.certificateIssuedAt = null;
+
+                            ref.set(applicationData)
+                                .then(function() {
+                                    // Update counter
+                                    const counterRef = db.ref('applicationCounter');
+                                    counterRef.transaction(function(current) {
+                                        return (current || 0) + 1;
+                                    });
+
+                                    // Redirect to thank-you page with reference number
+                                    window.location.href = 'membership-thankyou.html?ref=' + encodeURIComponent(refNumber);
+                                })
+                                .catch(function(err) {
+                                    console.error('Database save error:', err);
+                                    alert('Failed to save application. Please try again.');
+                                    loadingOverlay.classList.remove('active');
+                                    submitBtn.disabled = false;
+                                });
+
+                        }).catch(function(err) {
+                            console.error('Get download URL error:', err);
+                            alert('Photo upload succeeded but could not retrieve URL. Please try again.');
+                            loadingOverlay.classList.remove('active');
+                            submitBtn.disabled = false;
+                        });
+                    }
+                );
+
+            });
+
+            // ---- Reset clears preview ----
+            form.querySelector('button[type="reset"]').addEventListener('click', function() {
+                previewWrapper.classList.remove('has-image');
+                previewImg.src = '';
+                photoInput.value = '';
+                otherEduGroup.style.display = 'none';
+                otherEduInput.value = '';
+                document.querySelectorAll('.form-group.has-error').forEach(el => el.classList.remove('has-error'));
+                declarationError.style.display = 'none';
+                // Reset total members
+                totalInput.value = 1;
+                maleInput.value = 0;
+                femaleInput.value = 0;
+            });
+
+        })();
     </script>
 
-    <script src="script.js"></script>
 </body>
 </html>
