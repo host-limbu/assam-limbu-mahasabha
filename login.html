@@ -11,17 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        .login-container {
-            max-width: 440px;
-            margin: 0 auto;
-            padding: var(--spacing-lg) 0;
-        }
+        /* Page-specific styles — extends global design system */
         .login-card {
-            background: var(--color-surface);
+            background: var(--color-surface-alt);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             padding: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition);
+        }
+        .login-card:hover {
+            box-shadow: var(--shadow-md);
         }
         .login-card .logo-emblem-large {
             font-size: 3rem;
@@ -30,7 +29,7 @@
             display: block;
             margin-bottom: var(--spacing-sm);
         }
-        .login-card h1 {
+        .login-card h2 {
             font-size: 1.5rem;
             text-align: center;
             margin-bottom: var(--spacing-xs);
@@ -134,12 +133,24 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        @media (max-width: 480px) {
+
+        .about-text p {
+            color: var(--color-text-muted);
+            text-align: justify;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
             .login-card {
                 padding: var(--spacing-md);
             }
-            .login-container {
-                padding: var(--spacing-md) 0;
+            .about-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .login-card {
+                padding: var(--spacing-md);
             }
         }
     </style>
@@ -148,10 +159,11 @@
 
     <div class="site-shell">
 
+        <!-- HEADER (same as all pages) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
-                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                    <a href="/index.html" aria-label="Assam Limbu Mahasabha Home">
                         <span class="logo-emblem">&#9670;</span>
                         <span class="logo-text">
                             <span class="logo-main">Assam Limbu Mahasabha</span>
@@ -162,28 +174,28 @@
 
                 <nav class="header-nav" aria-label="Main navigation">
                     <ul class="nav-list">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/index.html">Home</a></li>
                         <li class="nav-dropdown">
-                            <a href="about.html">About</a>
+                            <a href="/about.html">About</a>
                             <ul class="dropdown-menu">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="history.html">History</a></li>
-                                <li><a href="vision.html">Vision &amp; Mission</a></li>
+                                <li><a href="/about.html">About Us</a></li>
+                                <li><a href="/history.html">History</a></li>
+                                <li><a href="/vision.html">Vision &amp; Mission</a></li>
                             </ul>
                         </li>
-                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="/committee.html">Committee</a></li>
                         <li class="nav-dropdown">
-                            <a href="updates.html">Updates</a>
+                            <a href="/updates.html">Updates</a>
                             <ul class="dropdown-menu">
-                                <li><a href="updates.html">Latest Updates</a></li>
-                                <li><a href="archive.html">Archive</a></li>
+                                <li><a href="/updates.html">Latest Updates</a></li>
+                                <li><a href="/archive.html">Archive</a></li>
                             </ul>
                         </li>
-                        <li><a href="events.html">Events</a></li>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html">Membership</a></li>
-                        <li><a href="documents.html">Documents</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="/events.html">Events</a></li>
+                        <li><a href="/gallery.html">Gallery</a></li>
+                        <li><a href="/membership/membership.html">Membership</a></li>
+                        <li><a href="/documents.html">Documents</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
                     </ul>
                 </nav>
 
@@ -211,62 +223,100 @@
             </div>
         </header>
 
+        <!-- MAIN -->
         <main class="site-main" role="main">
 
+            <!-- ==================== HERO ==================== -->
             <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
-                    <div class="hero-text" style="max-width: 600px; text-align: center; margin: 0 auto;">
+                    <div class="hero-text" style="max-width: 700px; text-align: center; margin: 0 auto;">
                         <p class="hero-tag">Administrator Access</p>
-                        <h1 style="font-size: 2rem;">Secure Login</h1>
-                        <p class="hero-description" style="max-width: 400px; margin: 0 auto;">
-                            Please enter your credentials to access the admin dashboard.
+                        <h1 style="font-size: 2.4rem;">Secure Login</h1>
+                        <p class="hero-description" style="max-width: 500px; margin: 0 auto;">
+                            Enter your credentials to access the administrative dashboard.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+            <!-- ==================== LOGIN SECTION (exact same as about-preview) ==================== -->
+            <section class="about-preview full-width" id="login-section">
                 <div class="section-content">
-                    <div class="login-container">
+                    <div class="section-label">Administrator Login</div>
+                    <h2>Assam Limbu Mahasabha — District Committee</h2>
 
-                        <div class="login-card">
+                    <div class="about-grid" style="grid-template-columns: 1fr 1fr;">
 
-                            <span class="logo-emblem-large">&#9670;</span>
-                            <h1>Admin Login</h1>
-                            <p class="subtitle">Assam Limbu Mahasabha — District Committee</p>
+                        <!-- Left Column: Login Form -->
+                        <div class="about-text" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
 
-                            <div id="alertMessage" class="alert" role="alert"></div>
+                            <div class="login-card">
+                                <span class="logo-emblem-large">&#9670;</span>
 
-                            <form id="loginForm" novalidate>
+                                <div id="alertMessage" class="alert" role="alert"></div>
 
-                                <div class="form-group" id="emailGroup">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" placeholder="admin@assamlimbumahasabha.org" required autocomplete="email" />
-                                    <div class="error-message">Please enter a valid email address.</div>
-                                </div>
+                                <form id="loginForm" novalidate>
 
-                                <div class="form-group" id="passwordGroup">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
-                                    <div class="error-message">Please enter your password.</div>
-                                </div>
+                                    <div class="form-group" id="emailGroup">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" name="email" placeholder="admin@assamlimbumahasabha.org" required autocomplete="email" />
+                                        <div class="error-message">Please enter a valid email address.</div>
+                                    </div>
 
-                                <div id="loadingIndicator" class="loading-overlay">
-                                    <div class="spinner"></div>
-                                    <p>Authenticating...</p>
-                                </div>
+                                    <div class="form-group" id="passwordGroup">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+                                        <div class="error-message">Please enter your password.</div>
+                                    </div>
 
-                                <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+                                    <div id="loadingIndicator" class="loading-overlay">
+                                        <div class="spinner"></div>
+                                        <p>Authenticating...</p>
+                                    </div>
 
-                                <div class="login-footer">
-                                    <p>
-                                        <a href="check-status.html">Check Application Status</a>
-                                        &nbsp;·&nbsp;
-                                        <a href="membership.html">Apply for Membership</a>
+                                    <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+
+                                    <div class="login-footer">
+                                        <p>
+                                            <a href="check-status.html">Check Application Status</a>
+                                            &nbsp;·&nbsp;
+                                            <a href="membership.html">Apply for Membership</a>
+                                        </p>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Column: Information -->
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+
+                            <div class="about-stats" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                                <div class="stat-item" style="text-align: left; padding: var(--spacing-lg);">
+                                    <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Dealing Assistant</h3>
+                                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                        Review and forward pending applications to the President.
                                     </p>
                                 </div>
 
-                            </form>
+                                <div class="stat-item" style="text-align: left; padding: var(--spacing-lg);">
+                                    <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">President</h3>
+                                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                        Verify and forward applications to the Approving Authority.
+                                    </p>
+                                </div>
+
+                                <div class="stat-item" style="text-align: left; padding: var(--spacing-lg);">
+                                    <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Approving Authority</h3>
+                                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">
+                                        Final review and decision — Approve or Reject applications.
+                                    </p>
+                                </div>
+                            </div>
 
                         </div>
 
@@ -276,6 +326,7 @@
 
         </main>
 
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -296,19 +347,19 @@
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="committee.html">Committee</a></li>
-                                <li><a href="events.html">Events</a></li>
-                                <li><a href="updates.html">Updates</a></li>
+                                <li><a href="/about.html">About Us</a></li>
+                                <li><a href="/committee.html">Committee</a></li>
+                                <li><a href="/events.html">Events</a></li>
+                                <li><a href="/updates.html">Updates</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
                             <h4>Resources</h4>
                             <ul>
-                                <li><a href="documents.html">Documents</a></li>
-                                <li><a href="membership/membership.html">Membership</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="/documents.html">Documents</a></li>
+                                <li><a href="/membership/membership.html">Membership</a></li>
+                                <li><a href="/gallery.html">Gallery</a></li>
+                                <li><a href="/contact.html">Contact</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
@@ -359,7 +410,7 @@
         const database = firebase.database();
 
         // ============================================================
-        // ROLE MAPPING — matches UIDs in admin-roles
+        // ROLE MAPPING
         // ============================================================
         const ROLE_IDS = {
             da: 'ubCraWH2LiScAlCs14SvWd3piGV2',
@@ -384,7 +435,6 @@
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
-                // User is already logged in — determine role and redirect
                 determineRoleAndRedirect(user.uid);
             }
         });
@@ -431,6 +481,8 @@
                         message = 'Incorrect password. Please try again.';
                     } else if (error.code === 'auth/too-many-requests') {
                         message = 'Too many failed attempts. Please try again later.';
+                    } else if (error.code === 'auth/network-request-failed') {
+                        message = 'Network error. Please check your internet connection.';
                     }
                     showAlert(message, 'error');
                 })
@@ -454,13 +506,13 @@
                         return;
                     }
 
-                    let redirectUrl = 'dashboard.html';
+                    let redirectUrl = '/admin/dashboard.html';
                     if (role === 'da') {
-                        redirectUrl = 'dashboard.html?role=da';
+                        redirectUrl = '/admin/dashboard.html?role=da';
                     } else if (role === 'president') {
-                        redirectUrl = 'dashboard.html?role=president';
+                        redirectUrl = '/admin/dashboard.html?role=president';
                     } else if (role === 'approvingAuthority') {
-                        redirectUrl = 'cashboard.html?role=approvingAuthority';
+                        redirectUrl = '/admin/dashboard.html?role=approvingAuthority';
                     } else {
                         auth.signOut();
                         showAlert('Invalid role assigned. Please contact the administrator.', 'error');
@@ -491,7 +543,6 @@
             alertMessage.className = 'alert';
         }
 
-        // Clear errors on input
         emailInput.addEventListener('input', function() {
             emailGroup.classList.remove('error');
             hideAlert();
