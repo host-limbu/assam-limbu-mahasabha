@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Admin panel for managing membership applications." />
+    <title>Admin Dashboard — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Administration panel for the Assam Limbu Mahasabha membership workflow." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
     <style>
-        /* Admin styles - same as before with updated detail view */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-md) 0;
+        }
+
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -22,91 +26,209 @@
             padding-bottom: var(--spacing-md);
             border-bottom: 1px solid var(--color-border);
         }
-        .admin-header .user-info {
-            font-size: 0.9rem;
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.95rem;
             color: var(--color-text-muted);
         }
-        .admin-header .user-info strong {
-            color: var(--color-text);
+        .admin-user .role-badge {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: var(--font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
-        .admin-header .btn-logout {
-            padding: 0.4rem 1.2rem;
-            font-size: 0.85rem;
-        }
+
         .admin-tabs {
             display: flex;
+            gap: var(--spacing-sm);
             flex-wrap: wrap;
-            gap: var(--spacing-xs);
             margin-bottom: var(--spacing-lg);
-            border-bottom: 2px solid var(--color-border);
         }
-        .admin-tabs .tab {
+        .admin-tabs .tab-btn {
             padding: 0.5rem 1.2rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            background: var(--color-surface);
+            cursor: pointer;
             font-size: 0.9rem;
             font-weight: var(--font-medium);
             color: var(--color-text-muted);
-            border: none;
-            background: none;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
             transition: all var(--transition);
-            font-family: inherit;
         }
-        .admin-tabs .tab:hover {
-            color: var(--color-text);
+        .admin-tabs .tab-btn:hover {
+            background: var(--color-surface-alt);
+            border-color: var(--color-primary);
         }
-        .admin-tabs .tab.active {
-            color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
+        .admin-tabs .tab-btn.active {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
         }
+
         .tab-content {
             display: none;
         }
         .tab-content.active {
             display: block;
         }
-        .application-detail {
-            background: var(--color-surface-alt);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-            border: 1px solid var(--color-border);
-            max-height: 80vh;
-            overflow-y: auto;
+
+        .app-list {
+            display: grid;
+            gap: var(--spacing-md);
         }
-        .application-detail .detail-row {
+
+        .app-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            transition: box-shadow var(--transition);
+        }
+        .app-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .app-card .app-header {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+        .app-card .app-ref {
+            font-weight: var(--font-bold);
+            color: var(--color-primary);
+            font-size: 1.05rem;
+        }
+        .app-card .app-name {
+            font-weight: var(--font-medium);
+        }
+        .app-card .app-meta {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        .app-card .app-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+        .app-card .app-actions .btn {
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .app-detail-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+        }
+        .app-detail-modal.visible {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .app-detail-modal .modal-content {
+            background: var(--color-surface);
+            max-width: 900px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            position: relative;
+            margin: var(--spacing-md) auto;
+            box-shadow: var(--shadow-lg);
+        }
+        .app-detail-modal .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color var(--transition);
+        }
+        .app-detail-modal .modal-close:hover {
+            color: var(--color-text);
+        }
+        .app-detail-modal .detail-section {
+            margin-bottom: var(--spacing-lg);
+        }
+        .app-detail-modal .detail-section h4 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-xs);
+            margin-bottom: var(--spacing-sm);
+        }
+        .app-detail-modal .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--spacing-sm);
             padding: 0.3rem 0;
             border-bottom: 1px solid var(--color-border);
-            font-size: 0.95rem;
         }
-        .application-detail .detail-row:last-child {
-            border-bottom: none;
-        }
-        .application-detail .detail-row .label {
+        .app-detail-modal .detail-row .label {
             font-weight: var(--font-medium);
             color: var(--color-text-muted);
-            flex: 0 0 40%;
         }
-        .application-detail .detail-row .value {
+        .app-detail-modal .detail-row .value {
             color: var(--color-text);
-            flex: 1;
-            text-align: right;
         }
-        .application-detail .section-title {
-            font-size: 1rem;
-            font-weight: var(--font-semibold);
+        .app-detail-modal .photo-thumb {
+            max-width: 150px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+        }
+
+        .app-detail-modal .history-list {
+            list-style: none;
+            padding: 0;
+        }
+        .app-detail-modal .history-list li {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+        }
+        .app-detail-modal .history-list .history-actor {
+            font-weight: var(--font-medium);
             color: var(--color-primary);
-            margin-top: var(--spacing-md);
-            margin-bottom: var(--spacing-sm);
-            padding-bottom: var(--spacing-xs);
-            border-bottom: 2px solid var(--color-border);
         }
-        .application-detail .section-title:first-of-type {
-            margin-top: 0;
+        .app-detail-modal .history-list .history-status {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            background: var(--color-surface-alt);
         }
-        .remarks-section textarea {
+        .app-detail-modal .history-list .history-remark {
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+
+        .remark-form textarea {
             width: 100%;
             padding: 0.7rem 1rem;
             border: 1px solid var(--color-border);
@@ -116,117 +238,77 @@
             resize: vertical;
             min-height: 80px;
             box-sizing: border-box;
-            background: var(--color-surface);
-            transition: border-color var(--transition);
         }
-        .remarks-section textarea:focus {
+        .remark-form textarea:focus {
             outline: none;
             border-color: var(--color-primary);
         }
-        .history-timeline {
-            margin-top: var(--spacing-md);
-        }
-        .history-item {
+        .remark-form .remark-actions {
             display: flex;
-            gap: var(--spacing-md);
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--color-border);
-            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
         }
-        .history-item:last-child {
-            border-bottom: none;
-        }
-        .history-item .role-badge {
-            display: inline-block;
-            padding: 0.1rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: var(--font-semibold);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--color-surface-alt);
-            color: var(--color-text-muted);
-            min-width: 60px;
-            text-align: center;
-        }
-        .history-item .role-badge.da { background: #cce5ff; color: #004085; }
-        .history-item .role-badge.president { background: #d4edda; color: #155724; }
-        .history-item .role-badge.aa { background: #fff3cd; color: #856404; }
-        .history-item .history-details {
-            flex: 1;
-        }
-        .history-item .history-details .action {
-            font-weight: var(--font-medium);
-            color: var(--color-text);
-        }
-        .history-item .history-details .remarks {
-            color: var(--color-text-muted);
-            font-style: italic;
-        }
-        .history-item .history-details .date {
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: var(--font-semibold);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .status-badge.submitted { background: #e2e3e5; color: #383d41; }
-        .status-badge.da_reviewed { background: #cce5ff; color: #004085; }
-        .status-badge.da_forwarded { background: #b8daff; color: #004085; }
-        .status-badge.president_reviewed { background: #d4edda; color: #155724; }
-        .status-badge.president_forwarded { background: #c3e6cb; color: #155724; }
-        .status-badge.aa_reviewed { background: #fff3cd; color: #856404; }
-        .status-badge.approved { background: #28a745; color: #fff; }
-        .status-badge.rejected { background: #dc3545; color: #fff; }
-        .empty-state {
-            text-align: center;
-            padding: var(--spacing-xl) 0;
-            color: var(--color-text-muted);
-        }
-        .empty-state h3 {
-            font-size: 1.2rem;
-            color: var(--color-text);
-            margin-bottom: var(--spacing-sm);
-        }
-        .detail-photo {
-            max-width: 100px;
-            max-height: 100px;
-            border-radius: var(--radius);
-            border: 1px solid var(--color-border);
-        }
+
         @media (max-width: 768px) {
+            .app-detail-modal .detail-row {
+                grid-template-columns: 1fr;
+                gap: 0.1rem;
+            }
             .admin-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .admin-tabs {
-                flex-direction: column;
+            .admin-tabs .tab-btn {
+                flex: 1;
+                text-align: center;
+                min-width: 80px;
             }
-            .admin-tabs .tab {
-                border-bottom: 1px solid var(--color-border);
-                text-align: left;
-            }
-            .admin-tabs .tab.active {
-                border-bottom-color: var(--color-primary);
-            }
-            .application-detail .detail-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.2rem;
-            }
-            .application-detail .detail-row .value {
-                text-align: left;
-            }
-            .history-item {
-                flex-direction: column;
-                gap: 0.3rem;
-            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            color: var(--color-text-muted);
+        }
+        .empty-state .icon {
+            font-size: 3rem;
+            color: var(--color-border);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: var(--spacing-xl) auto;
+            text-align: center;
+        }
+        .login-container .login-form {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            margin-top: var(--spacing-md);
+        }
+        .login-container .login-form input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            margin-bottom: var(--spacing-md);
+            box-sizing: border-box;
+        }
+        .login-container .login-form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .login-container .login-form .btn {
+            width: 100%;
+        }
+        .login-error {
+            color: #b91c1c;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
         }
     </style>
 </head>
@@ -234,7 +316,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -246,6 +327,7 @@
                         </span>
                     </a>
                 </div>
+
                 <nav class="header-nav" aria-label="Main navigation">
                     <ul class="nav-list">
                         <li><a href="index.html">Home</a></li>
@@ -267,11 +349,12 @@
                         </li>
                         <li><a href="events.html">Events</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html" class="active">Membership</a></li>
+                        <li><a href="membership.html">Membership</a></li>
                         <li><a href="documents.html">Documents</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </nav>
+
                 <div class="header-actions">
                     <button class="search-toggle" aria-label="Search" aria-expanded="false">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -284,6 +367,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="search-overlay" hidden>
                 <div class="search-overlay-inner">
                     <form role="search" action="search.html" method="get">
@@ -297,50 +381,95 @@
 
         <main class="site-main" role="main">
 
-            <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
-                <div class="hero-content" style="grid-template-columns: 1fr;">
-                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
-                        <p class="hero-tag">Administration</p>
-                        <h1 style="font-size: 2.8rem;">Admin Panel</h1>
-                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
-                            Manage membership applications efficiently.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
 
-                    <!-- Admin Header -->
-                    <div class="admin-header">
-                        <div class="user-info">
-                            Logged in as: <strong id="admin-name">Loading...</strong>
-                            <span id="admin-role" style="margin-left: var(--spacing-sm); padding: 0.1rem 0.6rem; border-radius: 12px; font-size: 0.7rem; background: var(--color-primary); color: #fff; text-transform: uppercase;"></span>
+                    <!-- Login / Admin Container -->
+                    <div id="admin-app">
+                        <!-- Login Screen -->
+                        <div id="login-screen" class="login-container">
+                            <div class="section-label">Admin Access</div>
+                            <h2>Sign In</h2>
+                            <p style="color: var(--color-text-muted);">Please sign in with your authorized account.</p>
+                            <div class="login-form">
+                                <input type="email" id="login-email" placeholder="Email" />
+                                <input type="password" id="login-password" placeholder="Password" />
+                                <button id="login-btn" class="btn btn-primary">Sign In</button>
+                                <div id="login-error" class="login-error"></div>
+                            </div>
                         </div>
-                        <button id="logout-btn" class="btn btn-secondary btn-logout">Sign Out</button>
-                    </div>
 
-                    <!-- Tabs -->
-                    <div class="admin-tabs" id="admin-tabs">
-                        <button class="tab active" data-tab="pending">Pending Applications</button>
-                        <button class="tab" data-tab="all">All Applications</button>
-                    </div>
+                        <!-- Admin Dashboard -->
+                        <div id="admin-dashboard" style="display: none;">
+                            <div class="admin-container">
 
-                    <!-- Pending -->
-                    <div class="tab-content active" id="tab-pending">
-                        <div id="pending-list"></div>
-                    </div>
+                                <div class="admin-header">
+                                    <div>
+                                        <h2 style="margin-bottom: 0;">Admin Dashboard</h2>
+                                        <p style="color: var(--color-text-muted); font-size: 0.95rem;">Membership Workflow Management</p>
+                                    </div>
+                                    <div class="admin-user">
+                                        <span id="admin-name">User</span>
+                                        <span class="role-badge" id="admin-role">Role</span>
+                                        <button id="logout-btn" class="btn btn-secondary" style="padding: 0.2rem 0.8rem; font-size: 0.8rem;">Logout</button>
+                                    </div>
+                                </div>
 
-                    <!-- All -->
-                    <div class="tab-content" id="tab-all">
-                        <div id="all-list"></div>
+                                <!-- Tabs -->
+                                <div class="admin-tabs" id="admin-tabs">
+                                    <button class="tab-btn active" data-tab="pending">Pending</button>
+                                    <button class="tab-btn" data-tab="in-progress">In Progress</button>
+                                    <button class="tab-btn" data-tab="history">History</button>
+                                </div>
+
+                                <!-- Pending Tab -->
+                                <div class="tab-content active" id="tab-pending">
+                                    <div id="pending-list" class="app-list">
+                                        <div class="empty-state">
+                                            <div class="icon">&#9670;</div>
+                                            <p>No pending applications.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- In Progress Tab -->
+                                <div class="tab-content" id="tab-in-progress">
+                                    <div id="in-progress-list" class="app-list">
+                                        <div class="empty-state">
+                                            <div class="icon">&#9670;</div>
+                                            <p>No applications in progress.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- History Tab -->
+                                <div class="tab-content" id="tab-history">
+                                    <div id="history-list" class="app-list">
+                                        <div class="empty-state">
+                                            <div class="icon">&#9670;</div>
+                                            <p>No history available.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
                 </div>
             </section>
 
         </main>
+
+        <!-- Application Detail Modal -->
+        <div id="app-detail-modal" class="app-detail-modal">
+            <div class="modal-content">
+                <button class="modal-close" id="modal-close">&times;</button>
+                <div id="modal-body">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
 
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
@@ -350,9 +479,14 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
-                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
                     </div>
+
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
@@ -383,6 +517,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
                     <p class="footer-credit">Designed with care for the Limbu community.</p>
@@ -392,561 +527,531 @@
 
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js",
-                "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js",
-                "firebase/database": "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js"
-            }
-        }
-    </script>
-
-    <script type="module" src="firebase-config.js"></script>
+    <!-- Firebase SDK -->
     <script type="module">
-        import { 
-            auth, db, ref, get, update, onValue, onAuthStateChanged, signOut
-        } from './firebase-config.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getDatabase, ref, get, child, update, push, serverTimestamp, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-        // --- State ---
-        let currentUser = null;
-        let userRole = null;
-        let allApps = {};
-        let pendingApps = [];
-        let allAppsList = [];
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCdHDWh-CJkJqBSNxKAd7dWwX8agBYuuc",
+            authDomain: "prompt-ai-a0c21.firebaseapp.com",
+            databaseURL: "https://prompt-ai-a0c21-default-rtdb.firebaseio.com",
+            projectId: "prompt-ai-a0c21",
+            storageBucket: "prompt-ai-a0c21.firebasestorage.app",
+            messagingSenderId: "322416217341",
+            appId: "1:322416217341:web:c43dcc16ac86bbba24c294",
+            measurementId: "G-B98ZKD5KP9"
+        };
 
-        // --- DOM refs ---
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // UIDs from requirements
+        const DA_UID = 'ubCraWH2LiScAlCs14SvWd3piGV2';
+        const PRESIDENT_UID = 'DmBj882BV1cjdVv4g6yt7POAUrK2';
+        const AA_UID = 'IRfvKbCresb6lzj7uTpUGxbDCc12';
+
+        // DOM refs
+        const loginScreen = document.getElementById('login-screen');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginBtn = document.getElementById('login-btn');
+        const loginError = document.getElementById('login-error');
+        const logoutBtn = document.getElementById('logout-btn');
         const adminName = document.getElementById('admin-name');
         const adminRole = document.getElementById('admin-role');
+
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = {
+            pending: document.getElementById('tab-pending'),
+            inProgress: document.getElementById('tab-in-progress'),
+            history: document.getElementById('tab-history')
+        };
         const pendingList = document.getElementById('pending-list');
-        const allList = document.getElementById('all-list');
-        const logoutBtn = document.getElementById('logout-btn');
+        const inProgressList = document.getElementById('in-progress-list');
+        const historyList = document.getElementById('history-list');
 
-        // --- Auth ---
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'admin-login.html';
-                return;
-            }
-            currentUser = user;
-            const roleSnap = await get(ref(db, `users/${user.uid}/role`));
-            userRole = roleSnap.val();
+        const modal = document.getElementById('app-detail-modal');
+        const modalBody = document.getElementById('modal-body');
+        const modalClose = document.getElementById('modal-close');
 
-            if (!userRole || !['da', 'president', 'aa'].includes(userRole)) {
-                await signOut(auth);
-                window.location.href = 'admin-login.html';
-                return;
-            }
+        let currentUser = null;
+        let currentRole = null;
+        let allApps = {};
 
-            adminName.textContent = user.email;
-            adminRole.textContent = userRole.toUpperCase();
-            adminRole.style.background = 
-                userRole === 'da' ? '#004085' : 
-                userRole === 'president' ? '#155724' : '#856404';
-
-            loadApplications();
-        });
-
-        // --- Logout ---
-        logoutBtn.addEventListener('click', async () => {
-            await signOut(auth);
-            window.location.href = 'admin-login.html';
-        });
-
-        // --- Tabs ---
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-            });
-        });
-
-        // --- Load Applications (real-time) ---
-        function loadApplications() {
-            const appsRef = ref(db, 'applications');
-            onValue(appsRef, (snapshot) => {
-                const data = snapshot.val();
-                allApps = data || {};
-                const allEntries = Object.keys(allApps).map(key => ({ id: key, ...allApps[key] }));
-                allAppsList = allEntries;
-
-                let pending = [];
-                if (userRole === 'da') {
-                    pending = allEntries.filter(app => app.status === 'submitted' || app.status === 'da_reviewed');
-                } else if (userRole === 'president') {
-                    pending = allEntries.filter(app => app.status === 'da_forwarded' || app.status === 'president_reviewed');
-                } else if (userRole === 'aa') {
-                    pending = allEntries.filter(app => app.status === 'president_forwarded' || app.status === 'aa_reviewed');
-                }
-
-                pendingApps = pending.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                allAppsList = allEntries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-                renderPending();
-                renderAll();
-            });
+        // Role mapping
+        function getRoleName(uid) {
+            if (uid === DA_UID) return 'Dealing Assistant';
+            if (uid === PRESIDENT_UID) return 'President / Assistant President';
+            if (uid === AA_UID) return 'Approving Authority';
+            return 'Unknown';
         }
 
-        // --- Render functions ---
-        function renderPending() {
-            if (pendingApps.length === 0) {
-                pendingList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No pending applications</h3>
-                        <p>All applications have been processed.</p>
-                    </div>
-                `;
-                return;
-            }
-            let html = '';
-            pendingApps.forEach(app => {
-                html += buildApplicationCard(app, true);
-            });
-            pendingList.innerHTML = html;
+        function getRoleKey(uid) {
+            if (uid === DA_UID) return 'da';
+            if (uid === PRESIDENT_UID) return 'president';
+            if (uid === AA_UID) return 'aa';
+            return 'unknown';
         }
 
-        function renderAll() {
-            if (allAppsList.length === 0) {
-                allList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No applications found</h3>
-                        <p>No membership applications have been submitted yet.</p>
-                    </div>
-                `;
-                return;
-            }
-            let html = '';
-            allAppsList.forEach(app => {
-                html += buildApplicationCard(app, false);
-            });
-            allList.innerHTML = html;
-        }
-
-        function buildApplicationCard(app, isPending) {
-            const statusLabel = getStatusLabel(app.status);
-            const statusClass = getStatusClass(app.status);
-            const name = app.personal?.firstName || 'N/A';
-            const lastName = app.personal?.secondName || '';
-            const fullName = lastName ? `${name} ${lastName}` : name;
-
-            return `
-                <div class="update-card" style="margin-bottom: var(--spacing-md);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-sm);">
-                        <div>
-                            <strong style="font-size: 1rem;">${fullName}</strong>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: var(--spacing-sm);">
-                                ${app.reference || app.id}
-                            </span>
-                        </div>
-                        <span class="status-badge ${statusClass}">${statusLabel}</span>
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-xs); font-size: 0.9rem; color: var(--color-text-muted);">
-                        <span>${app.personal?.email || 'N/A'}</span>
-                        <span>${app.personal?.phone || 'N/A'}</span>
-                        <span>${app.membershipType || 'N/A'}</span>
-                        <span>${app.address?.district || 'N/A'}</span>
-                    </div>
-                    <div style="margin-top: var(--spacing-sm);">
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.3rem 1rem;" onclick="viewApplication('${app.id}')">
-                            View Details
-                        </button>
-                        ${isPending ? `<button class="btn btn-primary" style="font-size: 0.85rem; padding: 0.3rem 1rem; margin-left: var(--spacing-sm);" onclick="openActionModal('${app.id}')">
-                            Process Application
-                        </button>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        function getStatusLabel(status) {
+        // Status badge HTML
+        function statusBadge(status) {
+            const map = {
+                'submitted': 'submitted',
+                'da_review': 'da_review',
+                'president_review': 'president_review',
+                'approving_authority_review': 'approving_authority_review',
+                'approved': 'approved',
+                'rejected': 'rejected',
+                'returned': 'returned'
+            };
+            const cls = map[status] || 'default';
             const labels = {
                 'submitted': 'Submitted',
-                'da_reviewed': 'Under Review (DA)',
-                'da_forwarded': 'Forwarded to President',
-                'president_reviewed': 'Under Review (President)',
-                'president_forwarded': 'Forwarded to AA',
-                'aa_reviewed': 'Under Review (AA)',
+                'da_review': 'DA Review',
+                'president_review': 'President Review',
+                'approving_authority_review': 'Final Review',
                 'approved': 'Approved',
-                'rejected': 'Rejected'
+                'rejected': 'Rejected',
+                'returned': 'Returned'
             };
-            return labels[status] || status;
+            return `<span class="status-badge ${cls}">${labels[status] || status}</span>`;
         }
 
-        function getStatusClass(status) {
-            const classes = {
-                'submitted': 'submitted',
-                'da_reviewed': 'da_reviewed',
-                'da_forwarded': 'da_forwarded',
-                'president_reviewed': 'president_reviewed',
-                'president_forwarded': 'president_forwarded',
-                'aa_reviewed': 'aa_reviewed',
-                'approved': 'approved',
-                'rejected': 'rejected'
-            };
-            return classes[status] || 'submitted';
+        // Load applications
+        async function loadApplications() {
+            try {
+                const snapshot = await get(ref(database, 'applications'));
+                if (!snapshot.exists()) {
+                    allApps = {};
+                    renderLists();
+                    return;
+                }
+                allApps = snapshot.val();
+                renderLists();
+            } catch (e) {
+                console.error('Error loading applications:', e);
+            }
         }
 
-        // --- View Application (Full Detail Modal) ---
-        window.viewApplication = function(appId) {
-            const app = allApps[appId];
-            if (!app) return;
+        // Render lists based on role
+        function renderLists() {
+            const apps = Object.values(allApps);
+            const now = Date.now();
 
-            const detailHtml = buildDetailHtml(app, appId);
-            showModal(detailHtml);
-        };
+            // Determine which statuses to show for each tab based on role
+            const pendingStatuses = [];
+            const inProgressStatuses = [];
+            const historyStatuses = ['approved', 'rejected', 'returned'];
 
-        function buildDetailHtml(app, appId) {
-            const name = app.personal?.firstName || 'N/A';
-            const lastName = app.personal?.secondName || '';
-            const fullName = lastName ? `${name} ${lastName}` : name;
+            if (currentRole === 'da') {
+                pendingStatuses.push('submitted');
+                inProgressStatuses.push('da_review');
+            } else if (currentRole === 'president') {
+                pendingStatuses.push('da_review');
+                inProgressStatuses.push('president_review');
+            } else if (currentRole === 'aa') {
+                pendingStatuses.push('president_review');
+                inProgressStatuses.push('approving_authority_review');
+            }
 
-            // Build all sections
-            const personalHtml = app.personal ? `
-                <div class="detail-row"><span class="label">First Name</span><span class="value">${app.personal.firstName || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Second Name</span><span class="value">${app.personal.secondName || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Date of Birth</span><span class="value">${app.personal.dob || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Email</span><span class="value">${app.personal.email || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Phone</span><span class="value">${app.personal.phone || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Alternate Phone</span><span class="value">${app.personal.alternatePhone || 'N/A'}</span></div>
-            ` : '<div class="detail-row"><span class="label">No data</span></div>';
+            const pendingApps = apps.filter(a => pendingStatuses.includes(a.status));
+            const inProgressApps = apps.filter(a => inProgressStatuses.includes(a.status));
+            const historyApps = apps.filter(a => historyStatuses.includes(a.status));
 
-            const addressHtml = app.address ? `
-                <div class="detail-row"><span class="label">District</span><span class="value">${app.address.district || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">LAC</span><span class="value">${app.address.lac || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Village / Town</span><span class="value">${app.address.village || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Post Office</span><span class="value">${app.address.po || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Police Station</span><span class="value">${app.address.ps || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">PIN Code</span><span class="value">${app.address.pin || 'N/A'}</span></div>
-            ` : '<div class="detail-row"><span class="label">No data</span></div>';
-
-            const familyHtml = app.family ? `
-                <div class="detail-row"><span class="label">Male Members</span><span class="value">${app.family.male || 0}</span></div>
-                <div class="detail-row"><span class="label">Female Members</span><span class="value">${app.family.female || 0}</span></div>
-                <div class="detail-row"><span class="label">Total Members</span><span class="value">${app.family.totalMembers || 0}</span></div>
-                <div class="detail-row"><span class="label">Type of House</span><span class="value">${app.family.houseType || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Land Ownership</span><span class="value">${app.family.landOwnership || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Vehicle Owned</span><span class="value">${app.family.vehicleOwned || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Belt &amp; Block</span><span class="value">${app.family.beltBlock || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Autonomous Council</span><span class="value">${app.family.autonomousCouncil || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Govt Scheme Beneficiary</span><span class="value">${app.family.govtScheme || 'N/A'}</span></div>
-                <div class="detail-row"><span class="label">Govt Employees in Family</span><span class="value">${app.family.govtEmployees || 0}</span></div>
-            ` : '<div class="detail-row"><span class="label">No data</span></div>';
-
-            const eduValue = app.education?.qualification || 'N/A';
-            const eduOther = app.education?.otherQualification || '';
-            const eduDisplay = eduValue === 'other' ? `Other: ${eduOther}` : eduValue;
-
-            const photoHtml = app.photo ? `
-                <div class="detail-row">
-                    <span class="label">Photo</span>
-                    <span class="value"><img src="${app.photo}" alt="Passport Photo" class="detail-photo" /></span>
-                </div>
-            ` : '';
-
-            return `
-                <div class="application-detail">
-                    <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-sm);">
-                        Application Details
-                        <span style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-muted); margin-left: var(--spacing-sm);">
-                            ${app.reference || appId}
-                        </span>
-                    </h3>
-                    <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md);">
-                        <span class="status-badge ${getStatusClass(app.status)}">${getStatusLabel(app.status)}</span>
-                        <span class="status-badge" style="background: var(--color-primary); color: #fff;">${app.membershipType || 'N/A'}</span>
-                    </div>
-
-                    <div class="section-title">Personal Information</div>
-                    ${personalHtml}
-                    <div class="detail-row"><span class="label">Blood Group</span><span class="value">${app.bloodGroup || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Education</span><span class="value">${eduDisplay}</span></div>
-                    ${photoHtml}
-
-                    <div class="section-title">Address Details</div>
-                    ${addressHtml}
-
-                    <div class="section-title">Family &amp; Status</div>
-                    ${familyHtml}
-
-                    <div class="section-title">Terms</div>
-                    <div class="detail-row"><span class="label">Terms Accepted</span><span class="value">${app.termsAccepted ? 'Yes' : 'No'}</span></div>
-                    <div class="detail-row"><span class="label">Self Declaration</span><span class="value">${app.selfDeclaration ? 'Yes' : 'No'}</span></div>
-
-                    <div class="section-title">Application History</div>
-                    <div class="history-timeline">
-                        ${buildHistoryHtml(app)}
-                    </div>
-                </div>
-            `;
+            renderAppList(pendingList, pendingApps, 'pending');
+            renderAppList(inProgressList, inProgressApps, 'in-progress');
+            renderAppList(historyList, historyApps, 'history');
         }
 
-        function buildHistoryHtml(app) {
-            if (app.history && Array.isArray(app.history) && app.history.length > 0) {
-                return app.history.map((h) => `
-                    <div class="history-item">
-                        <span class="role-badge ${h.role || 'submitted'}">${(h.role || 'System').toUpperCase()}</span>
-                        <div class="history-details">
-                            <div class="action">${h.action || 'Action'}</div>
-                            ${h.remarks ? `<div class="remarks">${h.remarks}</div>` : ''}
-                            <div class="date">${formatDateTime(h.dateTime)}</div>
+        function renderAppList(container, apps, type) {
+            if (!apps || apps.length === 0) {
+                const msg = type === 'pending' ? 'No pending applications.' :
+                           type === 'in-progress' ? 'No applications in progress.' :
+                           'No history available.';
+                container.innerHTML = `<div class="empty-state"><div class="icon">&#9670;</div><p>${msg}</p></div>`;
+                return;
+            }
+
+            let html = '';
+            apps.forEach((app, index) => {
+                const refNum = app.referenceNumber || `APP-${index}`;
+                const name = app.fullName || app.firstName + ' ' + app.secondName || 'N/A';
+                const typeLabel = app.membershipType || 'N/A';
+                const date = app.submittedAt ? new Date(app.submittedAt).toLocaleDateString('en-IN') : 'N/A';
+
+                html += `
+                    <div class="app-card">
+                        <div class="app-header">
+                            <span class="app-ref">${refNum}</span>
+                            ${statusBadge(app.status)}
+                        </div>
+                        <div class="app-name">${name}</div>
+                        <div class="app-meta">
+                            <span>${typeLabel}</span>
+                            <span>${date}</span>
+                        </div>
+                        <div class="app-actions">
+                            <button class="btn btn-secondary" onclick="window.viewApp('${refNum}')">View Details</button>
+                            ${getActionButtons(app, type)}
                         </div>
                     </div>
-                `).join('');
-            }
-            return '<div>No history available.</div>';
-        }
-
-        function formatDateTime(timestamp) {
-            if (!timestamp) return 'N/A';
-            const date = new Date(timestamp);
-            return date.toLocaleString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+                `;
             });
-        }
-
-        // --- Modal Helpers ---
-        function showModal(html) {
-            const container = document.createElement('div');
             container.innerHTML = html;
-            container.style.position = 'fixed';
-            container.style.top = '10%';
-            container.style.left = '50%';
-            container.style.transform = 'translateX(-50%)';
-            container.style.maxWidth = '800px';
-            container.style.width = '90%';
-            container.style.maxHeight = '80vh';
-            container.style.overflowY = 'auto';
-            container.style.zIndex = '9999';
-            container.style.background = 'var(--color-surface)';
-            container.style.borderRadius = 'var(--radius-lg)';
-            container.style.boxShadow = 'var(--shadow-lg)';
-            container.style.padding = 'var(--spacing-lg)';
-
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.background = 'rgba(0,0,0,0.5)';
-            overlay.style.zIndex = '9998';
-
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'Close';
-            closeBtn.className = 'btn btn-secondary';
-            closeBtn.style.marginTop = 'var(--spacing-md)';
-            closeBtn.style.width = '100%';
-            closeBtn.addEventListener('click', () => {
-                document.body.removeChild(overlay);
-                document.body.removeChild(container);
-            });
-
-            container.appendChild(closeBtn);
-            document.body.appendChild(overlay);
-            document.body.appendChild(container);
-
-            overlay.addEventListener('click', () => {
-                document.body.removeChild(overlay);
-                document.body.removeChild(container);
-            });
         }
 
-        // --- Action Modal ---
-        window.openActionModal = function(appId) {
-            const app = allApps[appId];
-            if (!app) return;
-
-            let actions = [];
-            let actionLabel = '';
-
-            if (userRole === 'da') {
-                if (app.status === 'submitted' || app.status === 'da_reviewed') {
-                    actions = ['forward'];
-                    actionLabel = 'Forward to President / Assistant President';
+        function getActionButtons(app, type) {
+            if (type === 'history') return '';
+            if (type === 'pending') {
+                if (currentRole === 'da' && app.status === 'submitted') {
+                    return `<button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','forward')">Forward to President</button>`;
                 }
-            } else if (userRole === 'president') {
-                if (app.status === 'da_forwarded' || app.status === 'president_reviewed') {
-                    actions = ['forward'];
-                    actionLabel = 'Forward to Approving Authority';
+                if (currentRole === 'president' && app.status === 'da_review') {
+                    return `<button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','forward')">Forward to Approving Authority</button>`;
                 }
-            } else if (userRole === 'aa') {
-                if (app.status === 'president_forwarded' || app.status === 'aa_reviewed') {
-                    actions = ['approve', 'reject'];
+                if (currentRole === 'aa' && app.status === 'president_review') {
+                    return `
+                        <button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','approve')">Approve</button>
+                        <button class="btn btn-secondary" onclick="window.actionApp('${app.referenceNumber}','reject')">Reject</button>
+                    `;
                 }
             }
-
-            if (actions.length === 0) {
-                alert('No actions available for this application at this stage.');
-                return;
+            if (type === 'in-progress') {
+                if (currentRole === 'da' && app.status === 'da_review') {
+                    return `<button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','forward')">Forward to President</button>`;
+                }
+                if (currentRole === 'president' && app.status === 'president_review') {
+                    return `<button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','forward')">Forward to Approving Authority</button>`;
+                }
+                if (currentRole === 'aa' && app.status === 'approving_authority_review') {
+                    return `
+                        <button class="btn btn-primary" onclick="window.actionApp('${app.referenceNumber}','approve')">Approve</button>
+                        <button class="btn btn-secondary" onclick="window.actionApp('${app.referenceNumber}','reject')">Reject</button>
+                    `;
+                }
             }
+            return '';
+        }
 
-            const modal = document.createElement('div');
-            modal.style.position = 'fixed';
-            modal.style.top = '10%';
-            modal.style.left = '50%';
-            modal.style.transform = 'translateX(-50%)';
-            modal.style.maxWidth = '500px';
-            modal.style.width = '90%';
-            modal.style.zIndex = '9999';
-            modal.style.background = 'var(--color-surface)';
-            modal.style.borderRadius = 'var(--radius-lg)';
-            modal.style.boxShadow = 'var(--shadow-lg)';
-            modal.style.padding = 'var(--spacing-lg)';
-
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.background = 'rgba(0,0,0,0.5)';
-            overlay.style.zIndex = '9998';
-
-            let actionButtonsHtml = '';
-            if (actions.includes('forward')) {
-                actionButtonsHtml += `
-                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm);" onclick="processAction('${appId}', 'forward')">
-                        ${actionLabel}
-                    </button>
-                `;
-            }
-            if (actions.includes('approve')) {
-                actionButtonsHtml += `
-                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm); background: #28a745; border-color: #28a745;" onclick="processAction('${appId}', 'approve')">
-                        Approve Application
-                    </button>
-                `;
-            }
-            if (actions.includes('reject')) {
-                actionButtonsHtml += `
-                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm); background: #dc3545; border-color: #dc3545;" onclick="processAction('${appId}', 'reject')">
-                        Reject Application
-                    </button>
-                `;
-            }
-
-            modal.innerHTML = `
-                <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-md);">
-                    Process Application
-                    <span style="font-size: 0.85rem; font-weight: normal; color: var(--color-text-muted); display: block;">
-                        ${app.personal?.firstName || 'N/A'} (${app.reference || appId})
-                    </span>
-                </h3>
-                <div class="remarks-section">
-                    <label for="action-remarks" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">
-                        Remarks (required)
-                    </label>
-                    <textarea id="action-remarks" placeholder="Enter your remarks here..."></textarea>
-                </div>
-                ${actionButtonsHtml}
-                <button class="btn btn-secondary" style="width: 100%; margin-top: var(--spacing-sm);" onclick="closeModal()">Cancel</button>
-            `;
-
-            window._actionModal = modal;
-            window._actionOverlay = overlay;
-
-            document.body.appendChild(overlay);
-            document.body.appendChild(modal);
-
-            overlay.addEventListener('click', () => closeModal());
-        };
-
-        window.closeModal = function() {
-            if (window._actionModal) {
-                document.body.removeChild(window._actionModal);
-                document.body.removeChild(window._actionOverlay);
-                window._actionModal = null;
-                window._actionOverlay = null;
-            }
-        };
-
-        // --- Process Action ---
-        window.processAction = async function(appId, action) {
-            const remarks = document.getElementById('action-remarks')?.value.trim();
-            if (!remarks) {
-                alert('Please enter remarks before proceeding.');
-                return;
-            }
-
-            const app = allApps[appId];
-            if (!app) {
-                alert('Application not found.');
-                return;
-            }
-
-            let newStatus = app.status;
-            let actionLabel = '';
-
-            if (userRole === 'da' && action === 'forward') {
-                newStatus = 'da_forwarded';
-                actionLabel = 'Forwarded to President / Assistant President';
-            } else if (userRole === 'president' && action === 'forward') {
-                newStatus = 'president_forwarded';
-                actionLabel = 'Forwarded to Approving Authority';
-            } else if (userRole === 'aa' && action === 'approve') {
-                newStatus = 'approved';
-                actionLabel = 'Application Approved';
-            } else if (userRole === 'aa' && action === 'reject') {
-                newStatus = 'rejected';
-                actionLabel = 'Application Rejected';
-            } else {
-                alert('Invalid action for your role.');
-                return;
-            }
-
+        // View application details
+        window.viewApp = async function(refNum) {
             try {
-                const appRef = ref(db, `applications/${appId}`);
-                const historyEntry = {
-                    role: userRole,
-                    action: actionLabel,
-                    remarks: remarks,
-                    dateTime: Date.now(),
-                    previousStatus: app.status,
-                    newStatus: newStatus
-                };
+                const snapshot = await get(child(ref(database), `applications/${refNum}`));
+                if (!snapshot.exists()) return;
+                const app = snapshot.val();
 
-                const historySnap = await get(ref(db, `applications/${appId}/history`));
-                const history = historySnap.val() || [];
+                // Get history
+                let historyHtml = '<ul class="history-list">';
+                try {
+                    const histSnap = await get(child(ref(database), `history/${refNum}`));
+                    if (histSnap.exists()) {
+                        const histData = histSnap.val();
+                        const entries = Object.values(histData);
+                        entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                        entries.forEach(h => {
+                            const date = h.timestamp ? new Date(h.timestamp).toLocaleString('en-IN') : 'N/A';
+                            const statusLabel = h.toStatus || h.fromStatus || '';
+                            historyHtml += `
+                                <li>
+                                    <span><span class="history-actor">${h.actorRole || 'System'}</span> — ${h.action || 'Update'}</span>
+                                    <span class="history-status">${statusLabel}</span>
+                                    <span style="width:100%;font-size:0.85rem;color:var(--color-text-muted);">${h.remarks || ''}</span>
+                                    <span style="width:100%;font-size:0.75rem;color:var(--color-text-muted);">${date}</span>
+                                </li>
+                            `;
+                        });
+                    } else {
+                        historyHtml += '<li>No history available.</li>';
+                    }
+                } catch (e) {
+                    historyHtml += '<li>Error loading history.</li>';
+                }
+                historyHtml += '</ul>';
 
-                await update(appRef, {
-                    status: newStatus,
-                    currentStage: userRole,
-                    updatedAt: Date.now(),
-                    history: [...history, historyEntry]
+                // Build detail view
+                modalBody.innerHTML = `
+                    <h3 style="margin-bottom: var(--spacing-sm);">Application: ${refNum}</h3>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                        <div>
+                            ${app.photoUrl ? `<img src="${app.photoUrl}" alt="Passport Photo" class="photo-thumb" />` : '<p style="color:var(--color-text-muted);">No photo uploaded.</p>'}
+                        </div>
+                        <div>
+                            <div class="detail-row"><span class="label">Status</span><span class="value">${statusBadge(app.status)}</span></div>
+                            <div class="detail-row"><span class="label">Name</span><span class="value">${app.fullName || app.firstName + ' ' + app.secondName}</span></div>
+                            <div class="detail-row"><span class="label">Membership Type</span><span class="value">${app.membershipType}</span></div>
+                            <div class="detail-row"><span class="label">Submitted</span><span class="value">${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString('en-IN') : 'N/A'}</span></div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Personal Information</h4>
+                        <div class="detail-row"><span class="label">First Name</span><span class="value">${app.firstName || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Second Name</span><span class="value">${app.secondName || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Date of Birth</span><span class="value">${app.dob || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Email</span><span class="value">${app.email || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Phone</span><span class="value">${app.phone || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Alternative Phone</span><span class="value">${app.altPhone || 'N/A'}</span></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Education & Blood Group</h4>
+                        <div class="detail-row"><span class="label">Education</span><span class="value">${app.education || 'N/A'} ${app.otherEducation ? '— ' + app.otherEducation : ''}</span></div>
+                        <div class="detail-row"><span class="label">Blood Group</span><span class="value">${app.bloodGroup || 'N/A'}</span></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Address</h4>
+                        <div class="detail-row"><span class="label">District</span><span class="value">${app.district || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">LAC</span><span class="value">${app.lac || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Village</span><span class="value">${app.village || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Post Office</span><span class="value">${app.postOffice || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Police Station</span><span class="value">${app.policeStation || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">PIN</span><span class="value">${app.pin || 'N/A'}</span></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Family Information</h4>
+                        <div class="detail-row"><span class="label">Male</span><span class="value">${app.maleCount || 0}</span></div>
+                        <div class="detail-row"><span class="label">Female</span><span class="value">${app.femaleCount || 0}</span></div>
+                        <div class="detail-row"><span class="label">Total Members</span><span class="value">${app.totalMembers || 0}</span></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Housing, Land & Administrative</h4>
+                        <div class="detail-row"><span class="label">House Type</span><span class="value">${app.houseType || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Land Ownership</span><span class="value">${app.landOwnership || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Vehicle Owned</span><span class="value">${app.vehicleOwned || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Under Belt & Block</span><span class="value">${app.underBeltBlock || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Autonomous Council</span><span class="value">${app.autonomousCouncil || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Govt Scheme Beneficiary</span><span class="value">${app.govtSchemeBeneficiary || 'N/A'}</span></div>
+                        <div class="detail-row"><span class="label">Family Govt Employees</span><span class="value">${app.familyGovtEmployees || 0}</span></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Workflow History</h4>
+                        ${historyHtml}
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Admin Action</h4>
+                        <form id="admin-action-form" class="remark-form">
+                            <textarea id="admin-remark" placeholder="Add remarks..."></textarea>
+                            <div class="remark-actions">
+                                ${getAdminActions(app)}
+                            </div>
+                        </form>
+                    </div>
+                `;
+
+                modal.classList.add('visible');
+
+                // Bind form actions
+                const form = document.getElementById('admin-action-form');
+                if (form) {
+                    form.addEventListener('submit', (e) => e.preventDefault());
+                    const btns = form.querySelectorAll('button');
+                    btns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const action = e.target.dataset.action;
+                            const remark = document.getElementById('admin-remark').value;
+                            if (action) {
+                                window.actionApp(refNum, action, remark);
+                            }
+                        });
+                    });
+                }
+
+            } catch (e) {
+                console.error('Error loading application detail:', e);
+            }
+        };
+
+        function getAdminActions(app) {
+            const status = app.status;
+            let html = '';
+            if (currentRole === 'da' && (status === 'submitted' || status === 'da_review')) {
+                html += `<button class="btn btn-primary" data-action="forward">Forward to President</button>`;
+                html += `<button class="btn btn-secondary" data-action="return">Return</button>`;
+            }
+            if (currentRole === 'president' && (status === 'da_review' || status === 'president_review')) {
+                html += `<button class="btn btn-primary" data-action="forward">Forward to Approving Authority</button>`;
+                html += `<button class="btn btn-secondary" data-action="return">Return</button>`;
+            }
+            if (currentRole === 'aa' && (status === 'president_review' || status === 'approving_authority_review')) {
+                html += `<button class="btn btn-primary" data-action="approve">Approve</button>`;
+                html += `<button class="btn btn-secondary" data-action="reject">Reject</button>`;
+                html += `<button class="btn btn-secondary" data-action="return">Return</button>`;
+            }
+            if (!html) {
+                html = '<p style="color:var(--color-text-muted);">No actions available for this application.</p>';
+            }
+            return html;
+        }
+
+        // Perform workflow action
+        window.actionApp = async function(refNum, action, remark = '') {
+            try {
+                const snapshot = await get(child(ref(database), `applications/${refNum}`));
+                if (!snapshot.exists()) {
+                    alert('Application not found.');
+                    return;
+                }
+                const app = snapshot.val();
+
+                let fromStatus = app.status;
+                let toStatus = fromStatus;
+                let actionLabel = '';
+
+                if (currentRole === 'da') {
+                    if (action === 'forward') {
+                        toStatus = 'president_review';
+                        actionLabel = 'Forwarded to President';
+                    } else if (action === 'return') {
+                        toStatus = 'submitted';
+                        actionLabel = 'Returned to Submitted';
+                    }
+                } else if (currentRole === 'president') {
+                    if (action === 'forward') {
+                        toStatus = 'approving_authority_review';
+                        actionLabel = 'Forwarded to Approving Authority';
+                    } else if (action === 'return') {
+                        toStatus = 'da_review';
+                        actionLabel = 'Returned to DA';
+                    }
+                } else if (currentRole === 'aa') {
+                    if (action === 'approve') {
+                        toStatus = 'approved';
+                        actionLabel = 'Approved';
+                    } else if (action === 'reject') {
+                        toStatus = 'rejected';
+                        actionLabel = 'Rejected';
+                    } else if (action === 'return') {
+                        toStatus = 'president_review';
+                        actionLabel = 'Returned to President';
+                    }
+                }
+
+                if (fromStatus === toStatus) {
+                    alert('No status change. Please take a valid action.');
+                    return;
+                }
+
+                // Confirm
+                if (!confirm(`Are you sure you want to ${actionLabel} this application?`)) return;
+
+                // Update application status
+                await update(ref(database, `applications/${refNum}`), {
+                    status: toStatus,
+                    lastUpdated: serverTimestamp()
                 });
 
-                if (newStatus === 'approved') {
-                    const certData = {
-                        applicationRef: appId,
-                        fullName: `${app.personal?.firstName || ''} ${app.personal?.secondName || ''}`.trim() || 'N/A',
-                        membershipType: app.membershipType || 'N/A',
-                        issuedAt: Date.now(),
-                        reference: app.reference || appId
-                    };
-                    await update(ref(db, `certificates/${appId}`), certData);
-                }
+                // Add history entry
+                const historyRef = ref(database, `history/${refNum}`);
+                await push(historyRef, {
+                    action: actionLabel,
+                    actorUid: currentUser.uid,
+                    actorRole: currentRole,
+                    fromStatus: fromStatus,
+                    toStatus: toStatus,
+                    remarks: remark || 'No remarks provided.',
+                    timestamp: serverTimestamp()
+                });
 
-                closeModal();
-                alert(`Application ${actionLabel} successfully.`);
+                // Close modal and reload
+                modal.classList.remove('visible');
+                await loadApplications();
+                alert(`Application ${refNum} ${actionLabel} successfully.`);
 
-            } catch (error) {
-                console.error('Error processing application:', error);
-                alert('Error processing application. Please try again.');
+            } catch (e) {
+                console.error('Action error:', e);
+                alert('An error occurred. Please try again.');
             }
         };
 
-        // --- Expose globally ---
-        window.viewApplication = viewApplication;
-        window.openActionModal = openActionModal;
-        window.closeModal = closeModal;
-        window.processAction = processAction;
+        // Modal close
+        modalClose.addEventListener('click', () => modal.classList.remove('visible'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('visible');
+        });
+
+        // Tab switching
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const tab = btn.dataset.tab;
+                Object.keys(tabContents).forEach(key => {
+                    tabContents[key].classList.toggle('active', key === tab);
+                });
+            });
+        });
+
+        // Auth
+        loginBtn.addEventListener('click', async () => {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+            loginError.textContent = '';
+            if (!email || !password) {
+                loginError.textContent = 'Please enter email and password.';
+                return;
+            }
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the rest
+            } catch (e) {
+                loginError.textContent = 'Invalid email or password.';
+                console.error(e);
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (e) {
+                console.error(e);
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const uid = user.uid;
+                const roleKey = getRoleKey(uid);
+                if (roleKey === 'unknown') {
+                    loginScreen.style.display = 'block';
+                    adminDashboard.style.display = 'none';
+                    loginError.textContent = 'Your account is not authorized for admin access.';
+                    return;
+                }
+                currentRole = roleKey;
+                adminName.textContent = user.displayName || user.email || 'User';
+                adminRole.textContent = getRoleName(uid);
+
+                loginScreen.style.display = 'none';
+                adminDashboard.style.display = 'block';
+                await loadApplications();
+            } else {
+                currentUser = null;
+                currentRole = null;
+                loginScreen.style.display = 'block';
+                adminDashboard.style.display = 'none';
+                loginError.textContent = '';
+                loginEmail.value = '';
+                loginPassword.value = '';
+            }
+        });
+
+        // Enter key for login
+        loginPassword.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+        loginEmail.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
 
     </script>
 
