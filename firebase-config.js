@@ -1,6 +1,7 @@
-// ============================================================
-// FIREBASE CONFIGURATION
-// ============================================================
+/* ============================================================
+   FIREBASE CONFIGURATION — Assam Limbu Mahasabha
+   Membership System — Public Config
+   ============================================================ */
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCdHDWh-CJkJqBSNxKAd7dWwX8agBYuuc",
@@ -16,12 +17,13 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Make auth, database, and storage globally available
-window.auth = firebase.auth();
-window.db = firebase.database();
-window.storage = firebase.storage();
+// Initialize services
+const auth = firebase.auth();
+const database = firebase.database();
 
-// Also expose the config object
-window.firebaseConfig = firebaseConfig;
-
-console.log('Firebase initialized successfully.');
+// Role UIDs (for reference)
+const ADMIN_UIDS = {
+    DA: 'ubCraWH2LiScAlCs14SvWd3piGV2',
+    PRESIDENT: 'DmBj882BV1cjdVv4g6yt7POAUrK2',
+    APPROVING_AUTHORITY: 'IRfvKbCresb6lzj7uTpUGxbDCc12'
+};
