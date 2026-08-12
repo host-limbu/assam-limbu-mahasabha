@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        /* same tracking styles as before – keep for consistency */
+        /* Reuse styles from membership.html */
         .tracking-form {
             max-width: 500px;
             margin: 0 auto;
@@ -127,11 +127,6 @@
             font-size: 0.8rem;
             color: var(--color-text-muted);
         }
-        .timeline-item .timeline-remarks {
-            font-size: 0.9rem;
-            color: var(--color-text-muted);
-            margin-top: var(--spacing-xs);
-        }
         .certificate-btn {
             margin-top: var(--spacing-md);
         }
@@ -141,14 +136,6 @@
             border: 1px solid #f5c6cb;
             border-radius: var(--radius-lg);
             color: #721c24;
-            margin-top: var(--spacing-md);
-        }
-        .info-message {
-            padding: var(--spacing-md);
-            background: #cce5ff;
-            border: 1px solid #b8daff;
-            border-radius: var(--radius-lg);
-            color: #004085;
             margin-top: var(--spacing-md);
         }
         .status-detail-row {
@@ -168,6 +155,23 @@
             color: var(--color-text);
             text-align: right;
         }
+        .status-section-title {
+            font-size: 1rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-primary);
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 2px solid var(--color-border);
+        }
+        .status-section-title:first-of-type {
+            margin-top: 0;
+        }
+        .status-photo {
+            max-width: 100px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+        }
         @media (max-width: 768px) {
             .status-detail-row {
                 flex-direction: column;
@@ -184,7 +188,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as before) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -293,7 +297,6 @@
         </main>
 
         <footer class="site-footer" role="contentinfo">
-            <!-- same footer as before -->
             <div class="footer-inner">
                 <div class="footer-main">
                     <div class="footer-brand">
@@ -301,12 +304,8 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">
-                            Karbi Anglong &amp; Dima Hasao District Committee
-                        </p>
-                        <p class="footer-address">
-                            Diphu, Karbi Anglong, Assam — 782460
-                        </p>
+                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
@@ -430,6 +429,20 @@
             }));
         }
 
+        function buildDetailRows(data, section, fields) {
+            let html = '';
+            fields.forEach(field => {
+                const value = data[section]?.[field.key] ?? 'N/A';
+                html += `
+                    <div class="status-detail-row">
+                        <span class="label">${field.label}</span>
+                        <span class="value">${value}</span>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             const reference = document.getElementById('reference-input').value.trim().toUpperCase();
@@ -457,22 +470,57 @@
                 const data = snapshot.val();
                 const status = data.status || 'submitted';
 
-                // Build personal info rows
-                const personalHtml = data.personal ? `
-                    <div class="status-detail-row"><span class="label">Full Name</span><span class="value">${data.personal.fullName || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">Email</span><span class="value">${data.personal.email || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">Phone</span><span class="value">${data.personal.phone || 'N/A'}</span></div>
+                // --- Personal Info ---
+                const personalFields = [
+                    { key: 'firstName', label: 'First Name' },
+                    { key: 'secondName', label: 'Second Name' },
+                    { key: 'dob', label: 'Date of Birth' },
+                    { key: 'email', label: 'Email' },
+                    { key: 'phone', label: 'Phone' },
+                    { key: 'alternatePhone', label: 'Alternate Phone' }
+                ];
+                const personalHtml = buildDetailRows(data, 'personal', personalFields);
+
+                // --- Address Info ---
+                const addressFields = [
+                    { key: 'district', label: 'District' },
+                    { key: 'lac', label: 'LAC' },
+                    { key: 'village', label: 'Village / Town' },
+                    { key: 'po', label: 'Post Office' },
+                    { key: 'ps', label: 'Police Station' },
+                    { key: 'pin', label: 'PIN Code' }
+                ];
+                const addressHtml = buildDetailRows(data, 'address', addressFields);
+
+                // --- Family Info ---
+                const familyFields = [
+                    { key: 'male', label: 'Male Members' },
+                    { key: 'female', label: 'Female Members' },
+                    { key: 'totalMembers', label: 'Total Members' },
+                    { key: 'houseType', label: 'Type of House' },
+                    { key: 'landOwnership', label: 'Land Ownership' },
+                    { key: 'vehicleOwned', label: 'Vehicle Owned' },
+                    { key: 'beltBlock', label: 'Belt & Block' },
+                    { key: 'autonomousCouncil', label: 'Autonomous Council' },
+                    { key: 'govtScheme', label: 'Govt Scheme Beneficiary' },
+                    { key: 'govtEmployees', label: 'Govt Employees in Family' }
+                ];
+                const familyHtml = buildDetailRows(data, 'family', familyFields);
+
+                // --- Education ---
+                const eduValue = data.education?.qualification || 'N/A';
+                const eduOther = data.education?.otherQualification || '';
+                const eduDisplay = eduValue === 'other' ? `Other: ${eduOther}` : eduValue;
+
+                // --- Photo ---
+                const photoHtml = data.photo ? `
+                    <div class="status-detail-row">
+                        <span class="label">Photo</span>
+                        <span class="value"><img src="${data.photo}" alt="Passport Photo" class="status-photo" /></span>
+                    </div>
                 ` : '';
 
-                const addressHtml = data.address ? `
-                    <div class="status-detail-row"><span class="label">Village</span><span class="value">${data.address.village || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">District</span><span class="value">${data.address.district || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">PIN</span><span class="value">${data.address.pin || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">Post Office</span><span class="value">${data.address.po || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">Police Station</span><span class="value">${data.address.ps || 'N/A'}</span></div>
-                    <div class="status-detail-row"><span class="label">Mouza</span><span class="value">${data.address.mouza || 'N/A'}</span></div>
-                ` : '';
-
+                // --- Timeline ---
                 const timelineItems = getStatusTimeline(status);
                 const timelineHtml = timelineItems.map(item => `
                     <div class="timeline-item ${item.completed ? 'completed' : ''} ${item.active ? 'active' : ''}">
@@ -501,26 +549,26 @@
 
                         <div style="margin-bottom: var(--spacing-md);">
                             <div class="status-detail-row"><span class="label">Reference Number</span><span class="value" style="font-weight: var(--font-bold); color: var(--color-primary);">${reference}</span></div>
+                            <div class="status-detail-row"><span class="label">Membership Type</span><span class="value">${data.membershipType ? data.membershipType.charAt(0).toUpperCase() + data.membershipType.slice(1) : 'N/A'}</span></div>
+                            <div class="status-detail-row"><span class="label">Education</span><span class="value">${eduDisplay}</span></div>
+                            <div class="status-detail-row"><span class="label">Blood Group</span><span class="value">${data.bloodGroup || 'N/A'}</span></div>
                             <div class="status-detail-row"><span class="label">Submitted On</span><span class="value">${formatDate(data.createdAt)}</span></div>
                             <div class="status-detail-row"><span class="label">Last Updated</span><span class="value">${formatDateTime(data.updatedAt)}</span></div>
-                            <div class="status-detail-row"><span class="label">Membership Type</span><span class="value">${data.membership?.type ? data.membership.type.charAt(0).toUpperCase() + data.membership.type.slice(1) : 'N/A'}</span></div>
+                            ${photoHtml}
                         </div>
 
-                        <div style="margin-bottom: var(--spacing-md);">
-                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Personal Information</h4>
-                            ${personalHtml}
-                        </div>
+                        <div class="status-section-title">Personal Information</div>
+                        ${personalHtml}
 
-                        <div style="margin-bottom: var(--spacing-md);">
-                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Address Details</h4>
-                            ${addressHtml}
-                        </div>
+                        <div class="status-section-title">Address Details</div>
+                        ${addressHtml}
 
-                        <div>
-                            <h4 style="font-size: 1rem; margin-bottom: var(--spacing-sm);">Application Progress</h4>
-                            <div class="status-timeline">
-                                ${timelineHtml}
-                            </div>
+                        <div class="status-section-title">Family &amp; Status</div>
+                        ${familyHtml}
+
+                        <div class="status-section-title">Application Progress</div>
+                        <div class="status-timeline">
+                            ${timelineHtml}
                         </div>
 
                         ${certificateHtml}
