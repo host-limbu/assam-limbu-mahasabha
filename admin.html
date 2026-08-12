@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        /* all admin styles – same as before, include the modal styles */
+        /* Admin styles - same as before with updated detail view */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -71,6 +71,8 @@
             padding: var(--spacing-lg);
             margin-top: var(--spacing-lg);
             border: 1px solid var(--color-border);
+            max-height: 80vh;
+            overflow-y: auto;
         }
         .application-detail .detail-row {
             display: flex;
@@ -85,9 +87,12 @@
         .application-detail .detail-row .label {
             font-weight: var(--font-medium);
             color: var(--color-text-muted);
+            flex: 0 0 40%;
         }
         .application-detail .detail-row .value {
             color: var(--color-text);
+            flex: 1;
+            text-align: right;
         }
         .application-detail .section-title {
             font-size: 1rem;
@@ -189,6 +194,12 @@
             color: var(--color-text);
             margin-bottom: var(--spacing-sm);
         }
+        .detail-photo {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+        }
         @media (max-width: 768px) {
             .admin-header {
                 flex-direction: column;
@@ -209,6 +220,9 @@
                 align-items: flex-start;
                 gap: 0.2rem;
             }
+            .application-detail .detail-row .value {
+                text-align: left;
+            }
             .history-item {
                 flex-direction: column;
                 gap: 0.3rem;
@@ -220,7 +234,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -329,7 +343,6 @@
         </main>
 
         <footer class="site-footer" role="contentinfo">
-            <!-- same footer -->
             <div class="footer-inner">
                 <div class="footer-main">
                     <div class="footer-brand">
@@ -337,12 +350,8 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">
-                            Karbi Anglong &amp; Dima Hasao District Committee
-                        </p>
-                        <p class="footer-address">
-                            Diphu, Karbi Anglong, Assam — 782460
-                        </p>
+                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
@@ -397,7 +406,7 @@
     <script type="module" src="firebase-config.js"></script>
     <script type="module">
         import { 
-            auth, db, ref, get, update, onValue, query, orderByChild, onAuthStateChanged, signOut
+            auth, db, ref, get, update, onValue, onAuthStateChanged, signOut
         } from './firebase-config.js';
 
         // --- State ---
@@ -464,7 +473,6 @@
                 const allEntries = Object.keys(allApps).map(key => ({ id: key, ...allApps[key] }));
                 allAppsList = allEntries;
 
-                // Filter pending based on role
                 let pending = [];
                 if (userRole === 'da') {
                     pending = allEntries.filter(app => app.status === 'submitted' || app.status === 'da_reviewed');
@@ -520,12 +528,15 @@
         function buildApplicationCard(app, isPending) {
             const statusLabel = getStatusLabel(app.status);
             const statusClass = getStatusClass(app.status);
+            const name = app.personal?.firstName || 'N/A';
+            const lastName = app.personal?.secondName || '';
+            const fullName = lastName ? `${name} ${lastName}` : name;
 
             return `
                 <div class="update-card" style="margin-bottom: var(--spacing-md);">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-sm);">
                         <div>
-                            <strong style="font-size: 1rem;">${app.personal?.fullName || 'N/A'}</strong>
+                            <strong style="font-size: 1rem;">${fullName}</strong>
                             <span style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: var(--spacing-sm);">
                                 ${app.reference || app.id}
                             </span>
@@ -535,7 +546,8 @@
                     <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-xs); font-size: 0.9rem; color: var(--color-text-muted);">
                         <span>${app.personal?.email || 'N/A'}</span>
                         <span>${app.personal?.phone || 'N/A'}</span>
-                        <span>${app.membership?.type || 'N/A'}</span>
+                        <span>${app.membershipType || 'N/A'}</span>
+                        <span>${app.address?.district || 'N/A'}</span>
                     </div>
                     <div style="margin-top: var(--spacing-sm);">
                         <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.3rem 1rem;" onclick="viewApplication('${app.id}')">
@@ -577,12 +589,64 @@
             return classes[status] || 'submitted';
         }
 
-        // --- View Application Modal (same as before) ---
+        // --- View Application (Full Detail Modal) ---
         window.viewApplication = function(appId) {
             const app = allApps[appId];
             if (!app) return;
 
-            const detailHtml = `
+            const detailHtml = buildDetailHtml(app, appId);
+            showModal(detailHtml);
+        };
+
+        function buildDetailHtml(app, appId) {
+            const name = app.personal?.firstName || 'N/A';
+            const lastName = app.personal?.secondName || '';
+            const fullName = lastName ? `${name} ${lastName}` : name;
+
+            // Build all sections
+            const personalHtml = app.personal ? `
+                <div class="detail-row"><span class="label">First Name</span><span class="value">${app.personal.firstName || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Second Name</span><span class="value">${app.personal.secondName || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Date of Birth</span><span class="value">${app.personal.dob || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Email</span><span class="value">${app.personal.email || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Phone</span><span class="value">${app.personal.phone || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Alternate Phone</span><span class="value">${app.personal.alternatePhone || 'N/A'}</span></div>
+            ` : '<div class="detail-row"><span class="label">No data</span></div>';
+
+            const addressHtml = app.address ? `
+                <div class="detail-row"><span class="label">District</span><span class="value">${app.address.district || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">LAC</span><span class="value">${app.address.lac || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Village / Town</span><span class="value">${app.address.village || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Post Office</span><span class="value">${app.address.po || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Police Station</span><span class="value">${app.address.ps || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">PIN Code</span><span class="value">${app.address.pin || 'N/A'}</span></div>
+            ` : '<div class="detail-row"><span class="label">No data</span></div>';
+
+            const familyHtml = app.family ? `
+                <div class="detail-row"><span class="label">Male Members</span><span class="value">${app.family.male || 0}</span></div>
+                <div class="detail-row"><span class="label">Female Members</span><span class="value">${app.family.female || 0}</span></div>
+                <div class="detail-row"><span class="label">Total Members</span><span class="value">${app.family.totalMembers || 0}</span></div>
+                <div class="detail-row"><span class="label">Type of House</span><span class="value">${app.family.houseType || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Land Ownership</span><span class="value">${app.family.landOwnership || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Vehicle Owned</span><span class="value">${app.family.vehicleOwned || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Belt &amp; Block</span><span class="value">${app.family.beltBlock || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Autonomous Council</span><span class="value">${app.family.autonomousCouncil || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Govt Scheme Beneficiary</span><span class="value">${app.family.govtScheme || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Govt Employees in Family</span><span class="value">${app.family.govtEmployees || 0}</span></div>
+            ` : '<div class="detail-row"><span class="label">No data</span></div>';
+
+            const eduValue = app.education?.qualification || 'N/A';
+            const eduOther = app.education?.otherQualification || '';
+            const eduDisplay = eduValue === 'other' ? `Other: ${eduOther}` : eduValue;
+
+            const photoHtml = app.photo ? `
+                <div class="detail-row">
+                    <span class="label">Photo</span>
+                    <span class="value"><img src="${app.photo}" alt="Passport Photo" class="detail-photo" /></span>
+                </div>
+            ` : '';
+
+            return `
                 <div class="application-detail">
                     <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-sm);">
                         Application Details
@@ -592,25 +656,24 @@
                     </h3>
                     <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md);">
                         <span class="status-badge ${getStatusClass(app.status)}">${getStatusLabel(app.status)}</span>
+                        <span class="status-badge" style="background: var(--color-primary); color: #fff;">${app.membershipType || 'N/A'}</span>
                     </div>
 
                     <div class="section-title">Personal Information</div>
-                    <div class="detail-row"><span class="label">Full Name</span><span class="value">${app.personal?.fullName || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Email</span><span class="value">${app.personal?.email || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Phone</span><span class="value">${app.personal?.phone || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Address</span><span class="value">${app.personal?.address || 'N/A'}</span></div>
+                    ${personalHtml}
+                    <div class="detail-row"><span class="label">Blood Group</span><span class="value">${app.bloodGroup || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Education</span><span class="value">${eduDisplay}</span></div>
+                    ${photoHtml}
 
                     <div class="section-title">Address Details</div>
-                    <div class="detail-row"><span class="label">Village</span><span class="value">${app.address?.village || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">District</span><span class="value">${app.address?.district || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">PIN</span><span class="value">${app.address?.pin || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Post Office</span><span class="value">${app.address?.po || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Police Station</span><span class="value">${app.address?.ps || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Mouza</span><span class="value">${app.address?.mouza || 'N/A'}</span></div>
+                    ${addressHtml}
 
-                    <div class="section-title">Membership Information</div>
-                    <div class="detail-row"><span class="label">Membership Type</span><span class="value">${app.membership?.type || 'N/A'}</span></div>
-                    ${app.message ? `<div class="detail-row"><span class="label">Additional Info</span><span class="value">${app.message}</span></div>` : ''}
+                    <div class="section-title">Family &amp; Status</div>
+                    ${familyHtml}
+
+                    <div class="section-title">Terms</div>
+                    <div class="detail-row"><span class="label">Terms Accepted</span><span class="value">${app.termsAccepted ? 'Yes' : 'No'}</span></div>
+                    <div class="detail-row"><span class="label">Self Declaration</span><span class="value">${app.selfDeclaration ? 'Yes' : 'No'}</span></div>
 
                     <div class="section-title">Application History</div>
                     <div class="history-timeline">
@@ -618,10 +681,40 @@
                     </div>
                 </div>
             `;
+        }
 
-            // Show modal (same as before)
+        function buildHistoryHtml(app) {
+            if (app.history && Array.isArray(app.history) && app.history.length > 0) {
+                return app.history.map((h) => `
+                    <div class="history-item">
+                        <span class="role-badge ${h.role || 'submitted'}">${(h.role || 'System').toUpperCase()}</span>
+                        <div class="history-details">
+                            <div class="action">${h.action || 'Action'}</div>
+                            ${h.remarks ? `<div class="remarks">${h.remarks}</div>` : ''}
+                            <div class="date">${formatDateTime(h.dateTime)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            return '<div>No history available.</div>';
+        }
+
+        function formatDateTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // --- Modal Helpers ---
+        function showModal(html) {
             const container = document.createElement('div');
-            container.innerHTML = detailHtml;
+            container.innerHTML = html;
             container.style.position = 'fixed';
             container.style.top = '10%';
             container.style.left = '50%';
@@ -663,34 +756,6 @@
                 document.body.removeChild(overlay);
                 document.body.removeChild(container);
             });
-        };
-
-        function buildHistoryHtml(app) {
-            if (app.history && Array.isArray(app.history) && app.history.length > 0) {
-                return app.history.map((h) => `
-                    <div class="history-item">
-                        <span class="role-badge ${h.role || 'submitted'}">${(h.role || 'System').toUpperCase()}</span>
-                        <div class="history-details">
-                            <div class="action">${h.action || 'Action'}</div>
-                            ${h.remarks ? `<div class="remarks">${h.remarks}</div>` : ''}
-                            <div class="date">${formatDateTime(h.dateTime)}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            return '<div>No history available.</div>';
-        }
-
-        function formatDateTime(timestamp) {
-            if (!timestamp) return 'N/A';
-            const date = new Date(timestamp);
-            return date.toLocaleString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
         }
 
         // --- Action Modal ---
@@ -699,19 +764,16 @@
             if (!app) return;
 
             let actions = [];
-            let nextStatus = '';
             let actionLabel = '';
 
             if (userRole === 'da') {
                 if (app.status === 'submitted' || app.status === 'da_reviewed') {
                     actions = ['forward'];
-                    nextStatus = 'da_forwarded';
                     actionLabel = 'Forward to President / Assistant President';
                 }
             } else if (userRole === 'president') {
                 if (app.status === 'da_forwarded' || app.status === 'president_reviewed') {
                     actions = ['forward'];
-                    nextStatus = 'president_forwarded';
                     actionLabel = 'Forward to Approving Authority';
                 }
             } else if (userRole === 'aa') {
@@ -725,7 +787,6 @@
                 return;
             }
 
-            // Build modal
             const modal = document.createElement('div');
             modal.style.position = 'fixed';
             modal.style.top = '10%';
@@ -775,7 +836,7 @@
                 <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-md);">
                     Process Application
                     <span style="font-size: 0.85rem; font-weight: normal; color: var(--color-text-muted); display: block;">
-                        ${app.personal?.fullName || 'N/A'} (${app.reference || appId})
+                        ${app.personal?.firstName || 'N/A'} (${app.reference || appId})
                     </span>
                 </h3>
                 <div class="remarks-section">
@@ -851,7 +912,6 @@
                     newStatus: newStatus
                 };
 
-                // Get existing history
                 const historySnap = await get(ref(db, `applications/${appId}/history`));
                 const history = historySnap.val() || [];
 
@@ -862,12 +922,11 @@
                     history: [...history, historyEntry]
                 });
 
-                // If approved, create certificate entry
                 if (newStatus === 'approved') {
                     const certData = {
                         applicationRef: appId,
-                        fullName: app.personal?.fullName || 'N/A',
-                        membershipType: app.membership?.type || 'N/A',
+                        fullName: `${app.personal?.firstName || ''} ${app.personal?.secondName || ''}`.trim() || 'N/A',
+                        membershipType: app.membershipType || 'N/A',
                         issuedAt: Date.now(),
                         reference: app.reference || appId
                     };
@@ -883,7 +942,7 @@
             }
         };
 
-        // Expose globally
+        // --- Expose globally ---
         window.viewApplication = viewApplication;
         window.openActionModal = openActionModal;
         window.closeModal = closeModal;
