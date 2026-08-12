@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Application Status — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Check the status of your membership application for the Assam Limbu Mahasabha." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        .check-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-card form {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        .search-card form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            box-sizing: border-box;
+        }
+        .search-card form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+        }
+        .search-card form button {
+            padding: 0.7rem 1.8rem;
+            white-space: nowrap;
+        }
+
+        .result-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            margin-top: var(--spacing-lg);
+            display: none;
+        }
+        .result-card.visible {
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: var(--font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .status-badge.submitted {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+        .status-badge.da_review {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .status-badge.president_review {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .status-badge.approving_review {
+            background: #e0f7fa;
+            color: #00695c;
+        }
+        .status-badge.approved {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-badge.rejected {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+            margin: var(--spacing-md) 0;
+        }
+        .result-details .item {
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .result-details .item .label {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .result-details .item .value {
+            font-size: 0.95rem;
+            font-weight: var(--font-medium);
+            color: var(--color-text);
+        }
+
+        .history-timeline {
+            margin-top: var(--spacing-lg);
+            border-left: 2px solid var(--color-border);
+            padding-left: var(--spacing-lg);
+        }
+        .history-item {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .history-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .history-item .h-time {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        .history-item .h-action {
+            font-weight: var(--font-medium);
+            color: var(--color-text);
+            margin-top: 0.1rem;
+        }
+        .history-item .h-remark {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+        .history-item .h-role {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .certificate-section {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 2px solid var(--color-primary);
+            text-align: center;
+        }
+        .certificate-section .btn {
+            min-width: 200px;
+        }
+
+        .error-msg {
+            color: #c0392b;
+            font-size: 0.95rem;
+            padding: var(--spacing-md);
+            background: #fdf2f2;
+            border-radius: var(--radius);
+            border: 1px solid #f5c6cb;
+            display: none;
+            margin-top: var(--spacing-md);
+        }
+        .error-msg.visible {
+            display: block;
+        }
+
+        .not-found-msg {
+            text-align: center;
+            padding: var(--spacing-lg);
+            color: var(--color-text-muted);
+        }
+        .not-found-msg .icon {
+            font-size: 3rem;
+            color: var(--color-border);
+            display: block;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-lg);
+        }
+        .loading-spinner.active {
+            display: block;
+        }
+        .loading-spinner .spinner {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border: 4px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-spinner .text {
+            margin-top: var(--spacing-sm);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-card form {
+                flex-direction: column;
+            }
+            .search-card form button {
+                width: 100%;
+                justify-content: center;
+            }
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+            .certificate-section .btn {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <!-- ========== HEADER ========== -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
+                </div>
+
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="updates.html">Latest Updates</a></li>
+                                <li><a href="archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html" class="active">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== MAIN ========== -->
+        <main class="site-main" role="main">
+
+            <!-- HERO -->
+            <section class="hero-section full-width" style="min-height: 35vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Track Your Application</p>
+                        <h1 style="font-size: 2.6rem;">Check Application Status</h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            Enter your unique reference number to check the current status of your membership application.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== CHECK STATUS SECTION ========== -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="check-container">
+
+                        <!-- Search Form -->
+                        <div class="search-card">
+                            <form id="checkForm">
+                                <input type="text" id="refInput" placeholder="Enter reference number (e.g. ALM-DH-2026-0001)" required />
+                                <button type="submit" class="btn btn-primary">Check Status</button>
+                            </form>
+                            <div class="error-msg" id="errorMsg">Please enter a valid reference number.</div>
+                        </div>
+
+                        <!-- Loading Spinner -->
+                        <div class="loading-spinner" id="loadingSpinner">
+                            <div class="spinner"></div>
+                            <div class="text">Fetching application details...</div>
+                        </div>
+
+                        <!-- Result Card -->
+                        <div class="result-card" id="resultCard">
+
+                            <!-- Header -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                                <div>
+                                    <div style="font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Reference Number</div>
+                                    <div style="font-size: 1.2rem; font-weight: var(--font-bold); color: var(--color-primary);" id="resultRef">---</div>
+                                </div>
+                                <div>
+                                    <span class="status-badge" id="resultStatus">---</span>
+                                </div>
+                            </div>
+
+                            <!-- Applicant Details -->
+                            <div class="result-details" id="resultDetails">
+                                <div class="item">
+                                    <div class="label">Name</div>
+                                    <div class="value" id="resultName">---</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">Membership Type</div>
+                                    <div class="value" id="resultType">---</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">Email</div>
+                                    <div class="value" id="resultEmail">---</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">Submitted On</div>
+                                    <div class="value" id="resultDate">---</div>
+                                </div>
+                            </div>
+
+                            <!-- Status Description -->
+                            <div style="background: var(--color-surface-alt); padding: var(--spacing-md); border-radius: var(--radius); margin: var(--spacing-md) 0; font-size: 0.95rem; color: var(--color-text-muted);">
+                                <strong>Current Status:</strong> <span id="resultStatusDesc">---</span>
+                            </div>
+
+                            <!-- History Timeline -->
+                            <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); margin-top: var(--spacing-lg);">Application Timeline</h4>
+                            <div class="history-timeline" id="historyTimeline">
+                                <!-- Dynamic content -->
+                            </div>
+
+                            <!-- Certificate Section (only shown if approved) -->
+                            <div class="certificate-section" id="certificateSection" style="display: none;">
+                                <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-md);">
+                                    Your application has been approved. You can now download your membership certificate.
+                                </p>
+                                <a href="membership-certificate.html?ref=" id="certificateLink" class="btn btn-primary">Download Certificate</a>
+                            </div>
+
+                        </div>
+
+                        <!-- Not Found -->
+                        <div class="result-card" id="notFoundCard" style="display: none;">
+                            <div class="not-found-msg">
+                                <span class="icon">&#9670;</span>
+                                <h3 style="color: var(--color-text); margin-bottom: var(--spacing-xs);">Application Not Found</h3>
+                                <p style="color: var(--color-text-muted);">No application exists with the provided reference number. Please check and try again.</p>
+                                <p style="color: var(--color-text-muted); margin-top: var(--spacing-sm);">
+                                    <a href="membership.html" style="color: var(--color-primary);">Apply for membership</a> if you haven't already.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="script.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="firebase-auth.js"></script>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('checkForm');
+            const refInput = document.getElementById('refInput');
+            const errorMsg = document.getElementById('errorMsg');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const resultCard = document.getElementById('resultCard');
+            const notFoundCard = document.getElementById('notFoundCard');
+
+            const statusMap = {
+                'submitted': { label: 'Submitted', class: 'submitted' },
+                'da_review': { label: 'Under DA Review', class: 'da_review' },
+                'president_review': { label: 'Under President Review', class: 'president_review' },
+                'approving_review': { label: 'Under Final Review', class: 'approving_review' },
+                'approved': { label: 'Approved', class: 'approved' },
+                'rejected': { label: 'Rejected', class: 'rejected' }
+            };
+
+            const statusDescriptions = {
+                'submitted': 'Your application has been submitted and is awaiting review by the District Committee.',
+                'da_review': 'Your application is currently being reviewed by the District Admin.',
+                'president_review': 'Your application has been forwarded to the President for review.',
+                'approving_review': 'Your application is under final review by the Approving Authority.',
+                'approved': 'Congratulations! Your membership has been approved.',
+                'rejected': 'We regret to inform you that your application has been rejected.'
+            };
+
+            function formatDate(timestamp) {
+                if (!timestamp) return '---';
+                const d = new Date(timestamp);
+                return d.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            function getStatusBadge(status) {
+                const info = statusMap[status] || { label: status, class: 'submitted' };
+                return '<span class="status-badge ' + info.class + '">' + info.label + '</span>';
+            }
+
+            function renderHistory(history) {
+                const container = document.getElementById('historyTimeline');
+                if (!history || history.length === 0) {
+                    container.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.9rem;">No history available.</p>';
+                    return;
+                }
+                let html = '';
+                // Show in chronological order (oldest first)
+                const sorted = history.slice().sort((a, b) => a.timestamp - b.timestamp);
+                sorted.forEach(function(item) {
+                    const roleLabel = item.actorRole ? item.actorRole.charAt(0).toUpperCase() + item.actorRole.slice(1) : 'System';
+                    const actionLabel = item.action ? item.action.replace(/_/g, ' ').toUpperCase() : '';
+                    html += `
+                        <div class="history-item">
+                            <div class="h-time">${formatDate(item.timestamp)}</div>
+                            <div class="h-action">${actionLabel}</div>
+                            ${item.remark ? '<div class="h-remark">" ' + item.remark + ' "</div>' : ''}
+                            <div class="h-role">${roleLabel}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function renderResult(data) {
+                // Reference
+                document.getElementById('resultRef').textContent = data.referenceNumber || '---';
+
+                // Status
+                const status = data.status || 'submitted';
+                document.getElementById('resultStatus').outerHTML = getStatusBadge(status);
+                document.getElementById('resultStatusDesc').textContent = statusDescriptions[status] || 'Status unknown.';
+
+                // Details
+                document.getElementById('resultName').textContent = (data.firstName || '') + ' ' + (data.secondName || '');
+                document.getElementById('resultType').textContent = data.membershipType || '---';
+                document.getElementById('resultEmail').textContent = data.email || '---';
+                document.getElementById('resultDate').textContent = formatDate(data.submittedAt);
+
+                // History
+                renderHistory(data.history);
+
+                // Certificate
+                const certSection = document.getElementById('certificateSection');
+                const certLink = document.getElementById('certificateLink');
+                if (status === 'approved') {
+                    certSection.style.display = 'block';
+                    certLink.href = 'membership-certificate.html?ref=' + encodeURIComponent(data.referenceNumber);
+                } else {
+                    certSection.style.display = 'none';
+                }
+            }
+
+            function showError(msg) {
+                errorMsg.textContent = msg;
+                errorMsg.classList.add('visible');
+                setTimeout(function() {
+                    errorMsg.classList.remove('visible');
+                }, 5000);
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const ref = refInput.value.trim();
+
+                if (!ref) {
+                    showError('Please enter a reference number.');
+                    return;
+                }
+
+                // Hide previous results
+                resultCard.classList.remove('visible');
+                resultCard.style.display = 'none';
+                notFoundCard.style.display = 'none';
+                loadingSpinner.classList.add('active');
+                errorMsg.classList.remove('visible');
+
+                // Query Firebase
+                const db = firebase.database();
+                const refPath = 'applications/' + ref;
+
+                db.ref(refPath).once('value')
+                    .then(function(snapshot) {
+                        loadingSpinner.classList.remove('active');
+                        const data = snapshot.val();
+
+                        if (!data) {
+                            notFoundCard.style.display = 'block';
+                            return;
+                        }
+
+                        // Show result
+                        renderResult(data);
+                        resultCard.style.display = 'block';
+                        resultCard.classList.add('visible');
+                    })
+                    .catch(function(err) {
+                        loadingSpinner.classList.remove('active');
+                        console.error('Error fetching application:', err);
+                        showError('An error occurred while fetching your application. Please try again.');
+                    });
+            });
+
+            // Check if ref is in URL (for direct linking)
+            const urlParams = new URLSearchParams(window.location.search);
+            const refFromUrl = urlParams.get('ref');
+            if (refFromUrl) {
+                refInput.value = refFromUrl;
+                form.dispatchEvent(new Event('submit'));
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
