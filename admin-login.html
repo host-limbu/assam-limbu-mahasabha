@@ -71,7 +71,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -178,7 +178,6 @@
         </main>
 
         <footer class="site-footer" role="contentinfo">
-            <!-- same footer -->
             <div class="footer-inner">
                 <div class="footer-main">
                     <div class="footer-brand">
@@ -186,12 +185,8 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">
-                            Karbi Anglong &amp; Dima Hasao District Committee
-                        </p>
-                        <p class="footer-address">
-                            Diphu, Karbi Anglong, Assam — 782460
-                        </p>
+                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
@@ -245,20 +240,18 @@
 
     <script type="module" src="firebase-config.js"></script>
     <script type="module">
-        import { auth, db, ref, get, signInWithEmailAndPassword, onAuthStateChanged } from './firebase-config.js';
+        import { auth, db, ref, get, signInWithEmailAndPassword, onAuthStateChanged, signOut } from './firebase-config.js';
 
         const form = document.getElementById('login-form');
         const errorDiv = document.getElementById('login-error');
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Check role in Realtime DB
                 const roleSnap = await get(ref(db, `users/${user.uid}/role`));
                 const role = roleSnap.val();
                 if (role && ['da', 'president', 'aa'].includes(role)) {
                     window.location.href = 'admin.html';
                 } else {
-                    // No role, sign out
                     await signOut(auth);
                     errorDiv.textContent = 'You do not have administrative access.';
                     errorDiv.classList.add('visible');
@@ -276,8 +269,6 @@
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const uid = userCredential.user.uid;
-
-                // Check role in Realtime DB
                 const roleSnap = await get(ref(db, `users/${uid}/role`));
                 const role = roleSnap.val();
 
