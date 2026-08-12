@@ -1,28 +1,23 @@
 // firebase-config.js
-// Firebase SDK V9 Modular
+// Firebase V9 Modular SDK with Realtime Database
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  getDocs, 
-  query, 
-  where, 
-  orderBy, 
-  updateDoc, 
-  deleteDoc, 
-  addDoc, 
+  getDatabase, 
+  ref, 
+  set, 
+  get, 
+  update, 
+  push, 
+  onValue, 
   serverTimestamp, 
-  arrayUnion,
-  increment,
-  limit,
-  startAfter,
-  onSnapshot
-} from "firebase/firestore";
+  query, 
+  orderByChild, 
+  equalTo,
+  remove,
+  child
+} from "firebase/database";
 import { 
   getAuth, 
   signInWithEmailAndPassword, 
@@ -46,32 +41,26 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const db = getFirestore(app);
+const db = getDatabase(app);
 const auth = getAuth(app);
 
-// Export everything
 export { 
   app, 
   analytics, 
   db, 
   auth,
-  collection, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  getDocs, 
-  query, 
-  where, 
-  orderBy, 
-  updateDoc, 
-  deleteDoc, 
-  addDoc, 
+  ref, 
+  set, 
+  get, 
+  update, 
+  push, 
+  onValue, 
   serverTimestamp, 
-  arrayUnion,
-  increment,
-  limit,
-  startAfter,
-  onSnapshot,
+  query, 
+  orderByChild, 
+  equalTo,
+  remove,
+  child,
   signInWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
