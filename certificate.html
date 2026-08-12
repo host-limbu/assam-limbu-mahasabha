@@ -4,147 +4,218 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Membership Certificate — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Download your official membership certificate." />
+    <meta name="description" content="Membership certificate for the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <!-- html2canvas + jsPDF for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <style>
-        /* certificate styles – same as before */
         .certificate-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            padding: var(--spacing-lg) 0;
         }
-        .certificate-preview {
+
+        .certificate-box {
             background: var(--color-surface);
             border: 2px solid var(--color-primary);
             border-radius: var(--radius-lg);
             padding: var(--spacing-xl);
-            margin-bottom: var(--spacing-lg);
-            position: relative;
-        }
-        .certificate-preview .cert-header {
             text-align: center;
-            border-bottom: 2px solid var(--color-primary);
-            padding-bottom: var(--spacing-md);
+            position: relative;
+            box-shadow: var(--shadow-lg);
             margin-bottom: var(--spacing-lg);
         }
-        .certificate-preview .cert-header .org-name {
+
+        .certificate-box .seal {
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: var(--font-bold);
+            color: var(--color-primary);
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-align: center;
+            background: rgba(26, 58, 92, 0.05);
+        }
+
+        .certificate-box .emblem {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .certificate-box .org-name {
             font-size: 1.8rem;
             font-weight: var(--font-bold);
             color: var(--color-primary);
+            margin-bottom: 0.2rem;
         }
-        .certificate-preview .cert-header .org-sub {
+
+        .certificate-box .org-sub {
             font-size: 1rem;
             color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
         }
-        .certificate-preview .cert-title {
-            text-align: center;
-            font-size: 2rem;
+
+        .certificate-box .cert-title {
+            font-size: 2.2rem;
             font-weight: var(--font-bold);
             color: var(--color-primary);
-            margin: var(--spacing-lg) 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.08em;
+            border-top: 2px solid var(--color-primary);
+            border-bottom: 2px solid var(--color-primary);
+            display: inline-block;
+            padding: 0.3rem 2rem;
+            margin-bottom: var(--spacing-lg);
         }
-        .certificate-preview .cert-body {
-            padding: var(--spacing-md) 0;
-        }
-        .certificate-preview .cert-body .cert-text {
+
+        .certificate-box .cert-body {
             font-size: 1.1rem;
-            text-align: center;
-            line-height: 2;
+            line-height: 1.8;
+            color: var(--color-text);
+            max-width: 600px;
+            margin: 0 auto var(--spacing-lg);
         }
-        .certificate-preview .cert-body .member-name {
+
+        .certificate-box .cert-body .member-name {
             font-size: 1.8rem;
             font-weight: var(--font-bold);
             color: var(--color-primary);
-            text-align: center;
-            margin: var(--spacing-md) 0;
+            display: block;
+            margin: var(--spacing-sm) 0;
         }
-        .certificate-preview .cert-footer {
+
+        .certificate-box .cert-body .member-type {
+            font-weight: var(--font-medium);
+            color: var(--color-primary);
+        }
+
+        .certificate-box .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
             margin-top: var(--spacing-lg);
             padding-top: var(--spacing-md);
             border-top: 1px solid var(--color-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
         }
-        .certificate-preview .cert-footer .signatory {
+
+        .certificate-box .cert-footer .signature {
             text-align: center;
         }
-        .certificate-preview .cert-footer .signatory .line {
-            width: 200px;
-            border-top: 1px solid var(--color-text);
-            margin: var(--spacing-sm) auto;
+
+        .certificate-box .cert-footer .signature .line {
+            width: 180px;
+            border-bottom: 1px solid var(--color-text);
+            margin: 0 auto var(--spacing-xs);
         }
-        .certificate-preview .cert-footer .signatory .label {
-            font-size: 0.85rem;
+
+        .certificate-box .cert-ref {
+            font-size: 0.8rem;
             color: var(--color-text-muted);
+            margin-top: var(--spacing-md);
         }
-        .certificate-preview .cert-footer .cert-number {
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
-        }
+
         .certificate-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: var(--spacing-md);
             justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
         }
+
         .certificate-actions .btn {
-            min-width: 200px;
+            min-width: 160px;
         }
-        .error-message {
-            padding: var(--spacing-lg);
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
+
+        .error-box {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
             border-radius: var(--radius-lg);
-            color: #721c24;
+            padding: var(--spacing-lg);
             text-align: center;
+            color: #991b1b;
         }
+
+        .error-box .icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
         @media print {
-            .site-header, .site-footer, .certificate-actions, .hero-section {
+            .site-header,
+            .site-footer,
+            .certificate-actions,
+            .hero-section {
                 display: none !important;
             }
-            .certificate-preview {
-                border: none !important;
+            .certificate-box {
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+                padding: 40px !important;
+                margin: 0 !important;
+            }
+            .site-main {
                 padding: 0 !important;
             }
-            .certificate-preview .cert-footer .signatory .line {
-                border-top-color: #000 !important;
+            .section-content {
+                padding: 0 !important;
             }
-            body {
-                background: #fff !important;
+            .seal {
+                border-color: #000 !important;
+                color: #000 !important;
+            }
+            .certificate-box .org-name,
+            .certificate-box .cert-title,
+            .certificate-box .cert-body .member-name,
+            .certificate-box .cert-body .member-type,
+            .certificate-box .emblem {
+                color: #000 !important;
             }
         }
+
         @media (max-width: 768px) {
-            .certificate-preview {
-                padding: var(--spacing-md);
+            .certificate-box {
+                padding: var(--spacing-lg) var(--spacing-md);
             }
-            .certificate-preview .cert-header .org-name {
+            .certificate-box .seal {
+                position: static;
+                margin: 0 auto var(--spacing-md);
+                width: 60px;
+                height: 60px;
+                font-size: 0.6rem;
+            }
+            .certificate-box .org-name {
                 font-size: 1.3rem;
             }
-            .certificate-preview .cert-title {
+            .certificate-box .cert-title {
                 font-size: 1.5rem;
+                padding: 0.2rem 1rem;
             }
-            .certificate-preview .cert-body .member-name {
+            .certificate-box .cert-body {
+                font-size: 1rem;
+            }
+            .certificate-box .cert-body .member-name {
                 font-size: 1.4rem;
             }
-            .certificate-preview .cert-footer {
+            .certificate-box .cert-footer {
                 flex-direction: column;
                 align-items: center;
-                text-align: center;
             }
-            .certificate-actions .btn {
-                width: 100%;
+            .certificate-box .cert-footer .signature .line {
+                width: 120px;
             }
         }
     </style>
@@ -153,7 +224,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -165,6 +235,7 @@
                         </span>
                     </a>
                 </div>
+
                 <nav class="header-nav" aria-label="Main navigation">
                     <ul class="nav-list">
                         <li><a href="index.html">Home</a></li>
@@ -186,11 +257,12 @@
                         </li>
                         <li><a href="events.html">Events</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html" class="active">Membership</a></li>
+                        <li><a href="membership.html">Membership</a></li>
                         <li><a href="documents.html">Documents</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </nav>
+
                 <div class="header-actions">
                     <button class="search-toggle" aria-label="Search" aria-expanded="false">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -203,6 +275,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="search-overlay" hidden>
                 <div class="search-overlay-inner">
                     <form role="search" action="search.html" method="get">
@@ -216,27 +289,83 @@
 
         <main class="site-main" role="main">
 
-            <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
-                <div class="hero-content" style="grid-template-columns: 1fr;">
-                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
-                        <p class="hero-tag">Certificate</p>
-                        <h1 style="font-size: 2.8rem;">Membership Certificate</h1>
-                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
-                            Your official membership certificate from the Assam Limbu Mahasabha.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="certificate-container">
 
-                        <div id="certificate-content">
-                            <!-- Loaded dynamically -->
+                    <div class="certificate-container" id="certificate-app">
+
+                        <!-- Loading State -->
+                        <div id="loading-state" style="text-align:center; padding: var(--spacing-xl);">
+                            <p>Loading certificate...</p>
+                        </div>
+
+                        <!-- Error State -->
+                        <div id="error-state" class="error-box" style="display:none;">
+                            <div class="icon">&#9670;</div>
+                            <h3>Certificate Not Available</h3>
+                            <p id="error-message">The certificate could not be loaded.</p>
+                            <p style="margin-top: var(--spacing-md);">
+                                <a href="status.html" class="btn btn-secondary">Check Application Status</a>
+                            </p>
+                        </div>
+
+                        <!-- Certificate Content -->
+                        <div id="certificate-content" style="display:none;">
+
+                            <div class="certificate-box" id="certificate-box">
+                                <div class="seal">Committee<br />President</div>
+                                <div class="emblem">&#9670;</div>
+                                <div class="org-name">Assam Limbu Mahasabha</div>
+                                <div class="org-sub">Karbi Anglong &amp; Dima Hasao District Committee</div>
+
+                                <div class="cert-title">Membership Certificate</div>
+
+                                <div class="cert-body">
+                                    <p>This is to certify that</p>
+                                    <span class="member-name" id="cert-member-name">[Member Name]</span>
+                                    <p>has been duly enrolled as a</p>
+                                    <span class="member-type" id="cert-member-type">[Membership Type]</span>
+                                    <p>member of the Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee.</p>
+                                    <p style="margin-top: var(--spacing-sm); font-size:0.95rem; color:var(--color-text-muted);">
+                                        This certificate is issued in recognition of their commitment to the
+                                        preservation and promotion of Limbu culture, heritage, and community values.
+                                    </p>
+                                </div>
+
+                                <div class="cert-footer">
+                                    <div class="signature">
+                                        <div class="line"></div>
+                                        <strong>Committee President</strong>
+                                        <br />
+                                        <span style="font-size:0.8rem; color:var(--color-text-muted);">Authorised Signatory</span>
+                                    </div>
+                                    <div class="signature">
+                                        <div class="line"></div>
+                                        <strong>District Committee</strong>
+                                        <br />
+                                        <span style="font-size:0.8rem; color:var(--color-text-muted);">Karbi Anglong &amp; Dima Hasao</span>
+                                    </div>
+                                    <div style="text-align:center; flex:1;">
+                                        <strong>Date:</strong>
+                                        <br />
+                                        <span id="cert-date">[Date]</span>
+                                    </div>
+                                </div>
+
+                                <div class="cert-ref">
+                                    Membership No: <span id="cert-ref-number">[Ref Number]</span>
+                                </div>
+                            </div>
+
+                            <div class="certificate-actions">
+                                <button class="btn btn-primary" onclick="window.print()">Print Certificate</button>
+                                <a href="status.html" class="btn btn-secondary">Back to Status</a>
+                            </div>
+
                         </div>
 
                     </div>
+
                 </div>
             </section>
 
@@ -250,9 +379,14 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
-                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
                     </div>
+
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
@@ -283,6 +417,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
                     <p class="footer-credit">Designed with care for the Limbu community.</p>
@@ -292,192 +427,95 @@
 
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js",
-                "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js",
-                "firebase/database": "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js"
-            }
-        }
-    </script>
-
-    <script type="module" src="firebase-config.js"></script>
+    <!-- Firebase SDK -->
     <script type="module">
-        import { db, ref, get } from './firebase-config.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-        const certificateContent = document.getElementById('certificate-content');
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCdHDWh-CJkJqBSNxKAd7dWwX8agBYuuc",
+            authDomain: "prompt-ai-a0c21.firebaseapp.com",
+            databaseURL: "https://prompt-ai-a0c21-default-rtdb.firebaseio.com",
+            projectId: "prompt-ai-a0c21",
+            storageBucket: "prompt-ai-a0c21.firebasestorage.app",
+            messagingSenderId: "322416217341",
+            appId: "1:322416217341:web:c43dcc16ac86bbba24c294",
+            measurementId: "G-B98ZKD5KP9"
+        };
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const reference = urlParams.get('ref');
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-        if (!reference) {
-            certificateContent.innerHTML = `
-                <div class="error-message">
-                    <h3 style="color: #721c24; margin-bottom: var(--spacing-sm);">No Reference Number Provided</h3>
-                    <p>Please provide a valid reference number to view your certificate.</p>
-                    <a href="status-tracking.html" class="btn btn-primary" style="margin-top: var(--spacing-md);">Check Application Status</a>
-                </div>
-            `;
-        } else {
-            loadCertificate(reference);
-        }
+        const loadingEl = document.getElementById('loading-state');
+        const errorEl = document.getElementById('error-state');
+        const errorMsg = document.getElementById('error-message');
+        const contentEl = document.getElementById('certificate-content');
 
-        async function loadCertificate(ref) {
+        const certName = document.getElementById('cert-member-name');
+        const certType = document.getElementById('cert-member-type');
+        const certDate = document.getElementById('cert-date');
+        const certRef = document.getElementById('cert-ref-number');
+
+        // Get reference from URL
+        const params = new URLSearchParams(window.location.search);
+        const refNumber = params.get('ref');
+
+        async function loadCertificate() {
+            if (!refNumber) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorMsg.textContent = 'No reference number provided. Please use the link from the status page.';
+                return;
+            }
+
             try {
-                const snapshot = await get(ref(db, `applications/${ref}`));
+                const appRef = ref(database, 'applications/' + refNumber);
+                const snapshot = await get(appRef);
 
                 if (!snapshot.exists()) {
-                    certificateContent.innerHTML = `
-                        <div class="error-message">
-                            <h3 style="color: #721c24; margin-bottom: var(--spacing-sm);">Application Not Found</h3>
-                            <p>No application found with reference number: <strong>${ref}</strong>.</p>
-                            <a href="status-tracking.html" class="btn btn-primary" style="margin-top: var(--spacing-md);">Check Application Status</a>
-                        </div>
-                    `;
+                    loadingEl.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    errorMsg.textContent = 'No application found with reference number: ' + refNumber;
                     return;
                 }
 
-                const appData = snapshot.val();
+                const app = snapshot.val();
 
-                if (appData.status !== 'approved') {
-                    certificateContent.innerHTML = `
-                        <div class="error-message">
-                            <h3 style="color: #721c24; margin-bottom: var(--spacing-sm);">Certificate Not Available</h3>
-                            <p>Your application is not yet approved. Certificate is only available after final approval.</p>
-                            <p style="margin-top: var(--spacing-sm);"><strong>Current Status:</strong> ${getStatusLabel(appData.status)}</p>
-                            <a href="status-tracking.html" class="btn btn-primary" style="margin-top: var(--spacing-md);">Check Application Status</a>
-                        </div>
-                    `;
+                // Check if approved
+                if (app.status !== 'approved') {
+                    loadingEl.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    errorMsg.textContent = 'This application is not yet approved. Certificate will be available only after final approval.';
                     return;
                 }
 
-                const firstName = appData.personal?.firstName || 'N/A';
-                const lastName = appData.personal?.secondName || '';
-                const memberName = lastName ? `${firstName} ${lastName}` : firstName;
-                const membershipType = appData.membershipType || 'N/A';
-                const issueDate = appData.updatedAt ? formatDate(appData.updatedAt) : 'N/A';
+                // Populate certificate
+                const fullName = app.fullName || app.firstName + ' ' + app.secondName || 'Member';
+                certName.textContent = fullName;
+                certType.textContent = app.membershipType || 'General';
+                certRef.textContent = refNumber;
 
-                const certSnap = await get(ref(db, `certificates/${ref}`));
-                let certificateNumber = 'N/A';
-                if (certSnap.exists()) {
-                    certificateNumber = certSnap.val().certificateNumber || 'N/A';
-                } else {
-                    const year = new Date().getFullYear();
-                    const random = Math.floor(10000 + Math.random() * 90000);
-                    certificateNumber = `ALMCERT${year}${random}`;
-                    await update(ref(db, `certificates/${ref}`), { certificateNumber });
-                }
+                // Format date
+                const now = new Date();
+                const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                certDate.textContent = now.toLocaleDateString('en-IN', options);
 
-                const certHtml = `
-                    <div class="certificate-preview" id="certificate-preview">
-                        <div class="cert-header">
-                            <div class="org-name">Assam Limbu Mahasabha</div>
-                            <div class="org-sub">Karbi Anglong &amp; Dima Hasao District Committee</div>
-                        </div>
+                // Show content
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
 
-                        <div class="cert-title">Membership Certificate</div>
-
-                        <div class="cert-body">
-                            <p class="cert-text">
-                                This is to certify that
-                            </p>
-                            <div class="member-name">${memberName}</div>
-                            <p class="cert-text">
-                                has been officially enrolled as a
-                                <strong>${membershipType.charAt(0).toUpperCase() + membershipType.slice(1)} Member</strong>
-                                of the Assam Limbu Mahasabha,
-                                Karbi Anglong &amp; Dima Hasao District Committee.
-                            </p>
-                            <p class="cert-text" style="margin-top: var(--spacing-md);">
-                                This membership is valid from the date of issuance and is subject to
-                                the constitution and bylaws of the Assam Limbu Mahasabha.
-                            </p>
-                        </div>
-
-                        <div class="cert-footer">
-                            <div class="signatory">
-                                <div class="line"></div>
-                                <div class="label">Committee President</div>
-                                <div style="font-weight: var(--font-medium); margin-top: var(--spacing-xs);">Bal Bahadur Subba</div>
-                            </div>
-                            <div class="signatory">
-                                <div class="line"></div>
-                                <div class="label">Date of Issue</div>
-                                <div style="font-weight: var(--font-medium); margin-top: var(--spacing-xs);">${issueDate}</div>
-                            </div>
-                            <div class="cert-number">
-                                Certificate No: <strong>${certificateNumber}</strong><br />
-                                Reference: ${ref}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="certificate-actions">
-                        <button class="btn btn-primary" onclick="downloadPDF()">Download as PDF</button>
-                        <a href="status-tracking.html?ref=${ref}" class="btn btn-secondary">Back to Status</a>
-                    </div>
-                `;
-
-                certificateContent.innerHTML = certHtml;
+                // Also update page title
+                document.title = 'Membership Certificate — ' + fullName;
 
             } catch (error) {
-                console.error('Error loading certificate:', error);
-                certificateContent.innerHTML = `
-                    <div class="error-message">
-                        <h3 style="color: #721c24; margin-bottom: var(--spacing-sm);">Error Loading Certificate</h3>
-                        <p>Something went wrong. Please try again later.</p>
-                    </div>
-                `;
+                console.error('Certificate error:', error);
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorMsg.textContent = 'An error occurred while loading the certificate. Please try again later.';
             }
         }
 
-        function getStatusLabel(status) {
-            const labels = {
-                'submitted': 'Submitted',
-                'da_reviewed': 'Under Review (DA)',
-                'da_forwarded': 'Forwarded to President',
-                'president_reviewed': 'Under Review (President)',
-                'president_forwarded': 'Forwarded to AA',
-                'aa_reviewed': 'Under Review (AA)',
-                'approved': 'Approved',
-                'rejected': 'Rejected'
-            };
-            return labels[status] || status;
-        }
-
-        function formatDate(timestamp) {
-            if (!timestamp) return 'N/A';
-            const date = new Date(timestamp);
-            return date.toLocaleDateString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            });
-        }
-
-        window.downloadPDF = function() {
-            const element = document.getElementById('certificate-preview');
-            if (!element) return;
-
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff'
-            }).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('landscape', 'pt', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save('membership-certificate.pdf');
-            }).catch(error => {
-                console.error('PDF generation error:', error);
-                alert('Error generating PDF. Please try again.');
-            });
-        };
+        loadCertificate();
     </script>
 
     <script src="script.js"></script>
