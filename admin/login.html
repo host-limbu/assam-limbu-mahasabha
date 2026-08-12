@@ -1,126 +1,204 @@
-/* ============================================================
-   ADMIN LOGIN — Assam Limbu Mahasabha
-   Authentication, role validation, and redirect
-   ============================================================ */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Admin login for the Assam Limbu Mahasabha membership system." />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
-(function() {
-    'use strict';
-
-    // DOM references
-    const form = document.getElementById('login-form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('login-btn');
-    const errorMessage = document.getElementById('error-message');
-    const loadingSpinner = document.getElementById('loading-spinner');
-
-    // ============================================================
-    // LOGIN HANDLER
-    // ============================================================
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Clear previous error
-            hideError();
-
-            // Validate inputs
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (!email || !password) {
-                showError('Please enter both email and password.');
-                return;
-            }
-
-            // Show loading state
-            setLoading(true);
-
-            // Attempt sign in
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(function(userCredential) {
-                    const user = userCredential.user;
-                    // Check if user has a valid role
-                    const role = AdminCommon.getUserRole(user.uid);
-                    if (!role) {
-                        // User is authenticated but not authorized
-                        firebase.auth().signOut();
-                        showError('Access denied. You do not have admin privileges.');
-                        setLoading(false);
-                        return;
-                    }
-
-                    // Store role in session (optional)
-                    sessionStorage.setItem('adminRole', role);
-                    sessionStorage.setItem('adminUID', user.uid);
-
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                })
-                .catch(function(error) {
-                    setLoading(false);
-                    var errorMsg = error.message;
-                    // User-friendly error messages
-                    if (error.code === 'auth/user-not-found') {
-                        errorMsg = 'No account found with this email address.';
-                    } else if (error.code === 'auth/wrong-password') {
-                        errorMsg = 'Incorrect password. Please try again.';
-                    } else if (error.code === 'auth/invalid-email') {
-                        errorMsg = 'Please enter a valid email address.';
-                    } else if (error.code === 'auth/too-many-requests') {
-                        errorMsg = 'Too many failed attempts. Please try again later.';
-                    }
-                    showError(errorMsg);
-                });
-        });
-    }
-
-    // ============================================================
-    // ENTER KEY SUPPORT (already handled by form submit)
-    // ============================================================
-
-    // ============================================================
-    // UI HELPERS
-    // ============================================================
-    function showError(msg) {
-        errorMessage.textContent = msg;
-        errorMessage.classList.add('visible');
-    }
-
-    function hideError() {
-        errorMessage.classList.remove('visible');
-    }
-
-    function setLoading(loading) {
-        if (loading) {
-            loadingSpinner.classList.add('visible');
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Signing in...';
-        } else {
-            loadingSpinner.classList.remove('visible');
-            loginBtn.disabled = false;
-            loginBtn.textContent = 'Sign In';
+    <style>
+        /* Admin login page specific styles */
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-background);
+            padding: var(--spacing-lg);
         }
-    }
-
-    // ============================================================
-    // CHECK IF ALREADY LOGGED IN
-    // ============================================================
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // Check if user has a valid role
-            const role = AdminCommon.getUserRole(user.uid);
-            if (role) {
-                // Already logged in, redirect to dashboard
-                sessionStorage.setItem('adminRole', role);
-                sessionStorage.setItem('adminUID', user.uid);
-                window.location.href = 'dashboard.html';
-            } else {
-                // User logged in but no role - sign them out
-                firebase.auth().signOut();
-            }
+        .login-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-xl);
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow-md);
         }
-    });
+        .login-card .logo-container {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        .login-card .logo-container .logo-emblem {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+        }
+        .login-card .logo-container h1 {
+            font-size: 1.3rem;
+            font-weight: var(--font-bold);
+            color: var(--color-text);
+            margin-top: var(--spacing-sm);
+            margin-bottom: 0.1rem;
+        }
+        .login-card .logo-container p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+        .login-card .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        .login-card .form-group label {
+            display: block;
+            font-weight: var(--font-medium);
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text);
+        }
+        .login-card .form-group input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            transition: border-color var(--transition);
+            box-sizing: border-box;
+        }
+        .login-card .form-group input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .login-card .error-message {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid #fecaca;
+        }
+        .login-card .error-message.visible {
+            display: block;
+        }
+        .login-card .btn-login {
+            width: 100%;
+            padding: 0.7rem;
+            font-size: 1rem;
+        }
+        .login-card .login-footer {
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        .login-card .login-footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .login-card .login-footer a:hover {
+            text-decoration: underline;
+        }
+        .login-card .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+        .login-card .loading-spinner.visible {
+            display: block;
+        }
+        .login-card .loading-spinner::after {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .login-card .role-hint {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            margin-top: var(--spacing-sm);
+            padding: 0.5rem;
+            background: var(--color-surface-alt);
+            border-radius: var(--radius);
+        }
+        .login-card .role-hint strong {
+            color: var(--color-text);
+        }
+    </style>
+</head>
+<body>
 
-    console.log('login.js loaded successfully.');
-})();
+    <div class="login-wrapper">
+
+        <div class="login-card">
+
+            <!-- Logo -->
+            <div class="logo-container">
+                <span class="logo-emblem">&#9670;</span>
+                <h1>Assam Limbu Mahasabha</h1>
+                <p>Karbi Anglong &amp; Dima Hasao District Committee</p>
+                <p style="font-size: 0.8rem; color: var(--color-primary); font-weight: var(--font-medium); margin-top: var(--spacing-sm);">Admin Login</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="error-message">
+                Invalid email or password. Please try again.
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="admin@assamlimbumahasabha.org" required autofocus />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required />
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loading-spinner" class="loading-spinner"></div>
+
+                <button type="submit" id="login-btn" class="btn btn-primary btn-login">Sign In</button>
+            </form>
+
+            <!-- Role Hint -->
+            <div class="role-hint">
+                <strong>Authorized Admin Accounts Only</strong><br />
+                DA &bull; President &bull; Approving Authority
+            </div>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <a href="../index.html">&larr; Back to Homepage</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase & Login JS -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="admin-common.js"></script>
+    <script src="login.js"></script>
+
+</body>
+</html>
