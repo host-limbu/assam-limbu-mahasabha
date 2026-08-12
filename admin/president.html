@@ -15,16 +15,16 @@
 
         <div class="admin-container">
 
-            <!-- Loading -->
+            <!-- Loading State -->
             <div class="loading-spinner" id="loadingSpinner">
                 <div class="spinner"></div>
                 <div class="text">Loading applications...</div>
             </div>
 
-            <!-- Content -->
+            <!-- Dashboard Content -->
             <div id="dashboardContent" style="display: none;">
 
-                <!-- Admin Header (no public nav) -->
+                <!-- Admin Header -->
                 <div class="admin-header">
                     <div class="title">
                         <h1>President Dashboard</h1>
@@ -89,7 +89,7 @@
             const itemsPerPage = 5;
 
             function getStatusBadge(status) {
-                const map = {
+                var map = {
                     'submitted': 'submitted',
                     'da_review': 'da_review',
                     'president_review': 'president_review',
@@ -97,21 +97,31 @@
                     'approved': 'approved',
                     'rejected': 'rejected'
                 };
-                const cls = map[status] || 'submitted';
-                const label = window.Auth ? window.Auth.getStatusDisplayName(status) : status;
+                var cls = map[status] || 'submitted';
+                var label = window.Auth ? window.Auth.getStatusDisplayName(status) : status;
                 return '<span class="app-status ' + cls + '">' + label + '</span>';
             }
 
             function formatDate(timestamp) {
                 if (!timestamp) return '---';
-                const d = new Date(timestamp);
-                return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                var d = new Date(timestamp);
+                return d.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
             }
 
             function formatDateTime(timestamp) {
                 if (!timestamp) return '---';
-                const d = new Date(timestamp);
-                return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                var d = new Date(timestamp);
+                return d.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
             }
 
             function renderApplications(apps) {
@@ -126,16 +136,15 @@
                     return;
                 }
 
-                let html = '';
+                var html = '';
                 apps.forEach(function(app) {
-                    const name = (app.firstName || '') + ' ' + (app.secondName || '');
-                    const ref = app.referenceNumber || '---';
-                    const type = app.membershipType || '---';
-                    const status = app.status || 'submitted';
-                    const submittedAt = app.submittedAt;
-
-                    const daRemark = app.daRemark ? app.daRemark.text : '';
-                    const daRemarkDisplay = daRemark ? '<div style="font-size:0.8rem;color:var(--admin-text-muted);margin-top:0.2rem;"><strong>DA Remark:</strong> "' + daRemark + '"</div>' : '';
+                    var name = (app.firstName || '') + ' ' + (app.secondName || '');
+                    var ref = app.referenceNumber || '---';
+                    var type = app.membershipType || '---';
+                    var status = app.status || 'submitted';
+                    var submittedAt = app.submittedAt;
+                    var daRemark = app.daRemark ? app.daRemark.text : '';
+                    var daRemarkDisplay = daRemark ? '<div style="font-size:0.8rem;color:var(--admin-text-muted);margin-top:0.2rem;"><strong>DA Remark:</strong> "' + daRemark + '"</div>' : '';
 
                     html += `
                         <div class="app-card">
@@ -152,7 +161,7 @@
                             ${daRemarkDisplay}
                             <div class="app-actions">
                                 <button class="btn btn-secondary view-btn" data-ref="${ref}">View Details</button>
-                                ${status === 'da_review' ? `<button class="btn btn-primary forward-btn" data-ref="${ref}">Forward to Approving Authority</button>` : ''}
+                                ${status === 'da_review' ? '<button class="btn btn-primary forward-btn" data-ref="' + ref + '">Forward to Approving Authority</button>' : ''}
                             </div>
                         </div>
                     `;
@@ -162,27 +171,27 @@
 
                 document.querySelectorAll('.view-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        const ref = this.getAttribute('data-ref');
+                        var ref = this.getAttribute('data-ref');
                         openDetailModal(ref);
                     });
                 });
 
                 document.querySelectorAll('.forward-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        const ref = this.getAttribute('data-ref');
+                        var ref = this.getAttribute('data-ref');
                         openForwardModal(ref);
                     });
                 });
             }
 
             function renderPagination(totalItems) {
-                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                var totalPages = Math.ceil(totalItems / itemsPerPage);
                 if (totalPages <= 1) {
                     paginationList.innerHTML = '';
                     return;
                 }
 
-                let html = '';
+                var html = '';
                 html += '<li class="page-prev">';
                 if (currentPage > 1) {
                     html += '<a href="#" data-page="' + (currentPage - 1) + '">&laquo;</a>';
@@ -191,7 +200,7 @@
                 }
                 html += '</li>';
 
-                for (let i = 1; i <= totalPages; i++) {
+                for (var i = 1; i <= totalPages; i++) {
                     if (i === currentPage) {
                         html += '<li class="active"><span>' + i + '</span></li>';
                     } else {
@@ -212,7 +221,7 @@
                 paginationList.querySelectorAll('a[data-page]').forEach(function(link) {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const page = parseInt(this.getAttribute('data-page'), 10);
+                        var page = parseInt(this.getAttribute('data-page'), 10);
                         if (page >= 1 && page <= totalPages) {
                             currentPage = page;
                             updateView();
@@ -230,26 +239,24 @@
                     });
                 }
 
-                const start = (currentPage - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const pageApps = filteredApps.slice(start, end);
+                var start = (currentPage - 1) * itemsPerPage;
+                var end = start + itemsPerPage;
+                var pageApps = filteredApps.slice(start, end);
 
                 renderApplications(pageApps);
                 renderPagination(filteredApps.length);
             }
 
             function fetchApplications() {
-                const db = firebase.database();
-                const appsRef = db.ref('applications');
-
-                appsRef.once('value')
+                var db = firebase.database();
+                db.ref('applications').once('value')
                     .then(function(snapshot) {
-                        const data = snapshot.val();
+                        var data = snapshot.val();
                         allApps = [];
 
                         if (data) {
                             Object.keys(data).forEach(function(key) {
-                                const app = data[key];
+                                var app = data[key];
                                 app._key = key;
                                 allApps.push(app);
                             });
@@ -259,8 +266,8 @@
                             });
                         }
 
-                        const daReviewCount = allApps.filter(function(a) { return a.status === 'da_review'; }).length;
-                        const presReviewCount = allApps.filter(function(a) { return a.status === 'president_review'; }).length;
+                        var daReviewCount = allApps.filter(function(a) { return a.status === 'da_review'; }).length;
+                        var presReviewCount = allApps.filter(function(a) { return a.status === 'president_review'; }).length;
 
                         document.getElementById('pendingCount').textContent = daReviewCount;
                         document.getElementById('forwardedCount').textContent = presReviewCount;
@@ -288,12 +295,12 @@
             }
 
             function openDetailModal(ref) {
-                const app = allApps.find(function(a) { return a.referenceNumber === ref; });
+                var app = allApps.find(function(a) { return a.referenceNumber === ref; });
                 if (!app) return;
 
-                const name = (app.firstName || '') + ' ' + (app.secondName || '');
+                var name = (app.firstName || '') + ' ' + (app.secondName || '');
 
-                let html = `
+                var html = `
                     <div class="modal-title">Application Details</div>
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--admin-spacing-sm); margin-bottom: var(--admin-spacing-md);">
                         <div><strong>Reference:</strong> ${app.referenceNumber}</div>
@@ -301,7 +308,7 @@
                     </div>
 
                     <div class="photo-section">
-                        ${app.photoURL ? `<img src="${app.photoURL}" alt="Passport photo" />` : '<span class="no-photo">No photo uploaded</span>'}
+                        ${app.photoURL ? '<img src="' + app.photoURL + '" alt="Passport photo" />' : '<span class="no-photo">No photo uploaded</span>'}
                     </div>
 
                     <div class="detail-row">
@@ -311,7 +318,7 @@
                         <div><span class="label">Blood Group</span><div class="value">${app.bloodGroup || '---'}</div></div>
                         <div><span class="label">Email</span><div class="value">${app.email || '---'}</div></div>
                         <div><span class="label">Phone</span><div class="value">${app.phone || '---'}</div></div>
-                        <div><span class="label">Education</span><div class="value">${app.education || '---'} ${app.otherEducation ? ' (' + app.otherEducation + ')' : ''}</div></div>
+                        <div><span class="label">Education</span><div class="value">${app.education || '---'}${app.otherEducation ? ' (' + app.otherEducation + ')' : ''}</div></div>
                         <div><span class="label">District</span><div class="value">${app.address ? app.address.district : '---'}</div></div>
                         <div><span class="label">Village</span><div class="value">${app.address ? app.address.village : '---'}</div></div>
                         <div><span class="label">PIN</span><div class="value">${app.address ? app.address.pin : '---'}</div></div>
@@ -324,8 +331,8 @@
                         ${renderHistoryHtml(app.history)}
                     </div>
 
-                    ${app.daRemark ? `<div style="margin-top: var(--admin-spacing-sm); padding: var(--admin-spacing-sm); background: var(--admin-surface-alt); border-radius: var(--admin-radius);"><strong>DA Remark:</strong> ${app.daRemark.text || ''} <span style="color: var(--admin-text-muted); font-size: 0.8rem;">(${formatDateTime(app.daRemark.timestamp)})</span></div>` : ''}
-                    ${app.presidentRemark ? `<div style="margin-top: var(--admin-spacing-sm); padding: var(--admin-spacing-sm); background: var(--admin-surface-alt); border-radius: var(--admin-radius);"><strong>President Remark:</strong> ${app.presidentRemark.text || ''} <span style="color: var(--admin-text-muted); font-size: 0.8rem;">(${formatDateTime(app.presidentRemark.timestamp)})</span></div>` : ''}
+                    ${app.daRemark ? '<div style="margin-top: var(--admin-spacing-sm); padding: var(--admin-spacing-sm); background: var(--admin-surface-alt); border-radius: var(--admin-radius);"><strong>DA Remark:</strong> ' + app.daRemark.text + ' <span style="color: var(--admin-text-muted); font-size: 0.8rem;">(' + formatDateTime(app.daRemark.timestamp) + ')</span></div>' : ''}
+                    ${app.presidentRemark ? '<div style="margin-top: var(--admin-spacing-sm); padding: var(--admin-spacing-sm); background: var(--admin-surface-alt); border-radius: var(--admin-radius);"><strong>President Remark:</strong> ' + app.presidentRemark.text + ' <span style="color: var(--admin-text-muted); font-size: 0.8rem;">(' + formatDateTime(app.presidentRemark.timestamp) + ')</span></div>' : ''}
                 `;
 
                 modalBody.innerHTML = html;
@@ -336,12 +343,12 @@
                 if (!history || history.length === 0) {
                     return '<p style="color: var(--admin-text-muted); font-size: 0.9rem;">No history available.</p>';
                 }
-                let html = '';
-                const sorted = history.slice().sort(function(a, b) {
+                var html = '';
+                var sorted = history.slice().sort(function(a, b) {
                     return (a.timestamp || 0) - (b.timestamp || 0);
                 });
                 sorted.forEach(function(item) {
-                    const roleLabel = item.actorRole ? item.actorRole.charAt(0).toUpperCase() + item.actorRole.slice(1) : 'System';
+                    var roleLabel = item.actorRole ? item.actorRole.charAt(0).toUpperCase() + item.actorRole.slice(1) : 'System';
                     html += `
                         <div class="history-item">
                             <span class="h-time">${formatDateTime(item.timestamp)}</span>
@@ -355,12 +362,12 @@
             }
 
             function openForwardModal(ref) {
-                const app = allApps.find(function(a) { return a.referenceNumber === ref; });
+                var app = allApps.find(function(a) { return a.referenceNumber === ref; });
                 if (!app) return;
 
-                const name = (app.firstName || '') + ' ' + (app.secondName || '');
+                var name = (app.firstName || '') + ' ' + (app.secondName || '');
 
-                let html = `
+                var html = `
                     <div class="modal-title">Forward to Approving Authority</div>
                     <p style="color: var(--admin-text-muted); margin-bottom: var(--admin-spacing-md);">
                         You are about to forward application <strong>${app.referenceNumber}</strong> for <strong>${name}</strong> to the Approving Authority for final review.
@@ -388,26 +395,26 @@
                 });
 
                 document.getElementById('confirmForward').addEventListener('click', function() {
-                    const ref = this.getAttribute('data-ref');
-                    const remark = document.getElementById('forwardRemark').value.trim() || 'Forwarded to Approving Authority for final review.';
+                    var ref = this.getAttribute('data-ref');
+                    var remark = document.getElementById('forwardRemark').value.trim() || 'Forwarded to Approving Authority for final review.';
                     confirmForward(ref, remark);
                 });
             }
 
             function confirmForward(ref, remark) {
-                const db = firebase.database();
-                const appRef = db.ref('applications/' + ref);
+                var db = firebase.database();
+                var appRef = db.ref('applications/' + ref);
 
                 appRef.once('value')
                     .then(function(snapshot) {
-                        const app = snapshot.val();
+                        var app = snapshot.val();
                         if (!app) {
                             alert('Application not found.');
                             modalOverlay.classList.remove('active');
                             return;
                         }
 
-                        const updates = {
+                        var updates = {
                             status: 'president_review',
                             updatedAt: Date.now(),
                             presidentRemark: {
@@ -416,7 +423,7 @@
                             }
                         };
 
-                        const historyEntry = {
+                        var historyEntry = {
                             action: 'president_forwarded',
                             actorUID: window.Auth ? window.Auth.getCurrentUser().uid : 'unknown',
                             actorRole: 'president',
@@ -426,9 +433,92 @@
                             toStatus: 'president_review'
                         };
 
-                        const historyRef = appRef.child('history');
+                        var historyRef = appRef.child('history');
                         historyRef.push(historyEntry);
 
                         appRef.update(updates)
                             .then(function() {
-                                modalOverlay.classList.remove('active
+                                modalOverlay.classList.remove('active');
+                                fetchApplications();
+                            })
+                            .catch(function(err) {
+                                console.error('Error forwarding:', err);
+                                alert('Failed to forward application. Please try again.');
+                            });
+                    })
+                    .catch(function(err) {
+                        console.error('Error fetching application:', err);
+                        alert('Failed to process. Please try again.');
+                    });
+            }
+
+            // Modal close
+            modalClose.addEventListener('click', function() {
+                modalOverlay.classList.remove('active');
+            });
+
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                }
+            });
+
+            // Filter tabs
+            document.querySelectorAll('#filterTabs button').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#filterTabs button').forEach(function(t) {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    currentFilter = this.getAttribute('data-filter');
+                    currentPage = 1;
+                    updateView();
+                });
+            });
+
+            // Auth check
+            function checkAuth() {
+                if (!window.Auth) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                var user = window.Auth.getCurrentUser();
+                var role = window.Auth.getCurrentUserRole();
+
+                if (!user || !role) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                if (role !== 'president') {
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+
+                document.getElementById('roleBadge').textContent = 'President';
+                fetchApplications();
+            }
+
+            // Init
+            if (window.Auth) {
+                if (window.Auth.isAuthenticated()) {
+                    checkAuth();
+                } else {
+                    window.Auth.onAuthStateChanged(function(user, role) {
+                        if (user && role) {
+                            checkAuth();
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
