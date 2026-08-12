@@ -374,4 +374,113 @@
                     <div class="certificate-preview" id="certificate-preview">
                         <div class="cert-header">
                             <div class="org-name">Assam Limbu Mahasabha</div>
-                            <div class="org-sub">Karbi Anglong &amp; Dima Has
+                            <div class="org-sub">Karbi Anglong &amp; Dima Hasao District Committee</div>
+                        </div>
+
+                        <div class="cert-title">Membership Certificate</div>
+
+                        <div class="cert-body">
+                            <p class="cert-text">
+                                This is to certify that
+                            </p>
+                            <div class="member-name">${memberName}</div>
+                            <p class="cert-text">
+                                has been officially enrolled as a
+                                <strong>${membershipType.charAt(0).toUpperCase() + membershipType.slice(1)} Member</strong>
+                                of the Assam Limbu Mahasabha,
+                                Karbi Anglong &amp; Dima Hasao District Committee.
+                            </p>
+                            <p class="cert-text" style="margin-top: var(--spacing-md);">
+                                This membership is valid from the date of issuance and is subject to
+                                the constitution and bylaws of the Assam Limbu Mahasabha.
+                            </p>
+                        </div>
+
+                        <div class="cert-footer">
+                            <div class="signatory">
+                                <div class="line"></div>
+                                <div class="label">Committee President</div>
+                                <div style="font-weight: var(--font-medium); margin-top: var(--spacing-xs);">Bal Bahadur Subba</div>
+                            </div>
+                            <div class="signatory">
+                                <div class="line"></div>
+                                <div class="label">Date of Issue</div>
+                                <div style="font-weight: var(--font-medium); margin-top: var(--spacing-xs);">${issueDate}</div>
+                            </div>
+                            <div class="cert-number">
+                                Certificate No: <strong>${certificateNumber}</strong><br />
+                                Reference: ${ref}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="certificate-actions">
+                        <button class="btn btn-primary" onclick="downloadPDF()">Download as PDF</button>
+                        <a href="status-tracking.html?ref=${ref}" class="btn btn-secondary">Back to Status</a>
+                    </div>
+                `;
+
+                certificateContent.innerHTML = certHtml;
+
+            } catch (error) {
+                console.error('Error loading certificate:', error);
+                certificateContent.innerHTML = `
+                    <div class="error-message">
+                        <h3 style="color: #721c24; margin-bottom: var(--spacing-sm);">Error Loading Certificate</h3>
+                        <p>Something went wrong. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'submitted': 'Submitted',
+                'da_reviewed': 'Under Review (DA)',
+                'da_forwarded': 'Forwarded to President',
+                'president_reviewed': 'Under Review (President)',
+                'president_forwarded': 'Forwarded to AA',
+                'aa_reviewed': 'Under Review (AA)',
+                'approved': 'Approved',
+                'rejected': 'Rejected'
+            };
+            return labels[status] || status;
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        window.downloadPDF = function() {
+            const element = document.getElementById('certificate-preview');
+            if (!element) return;
+
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'pt', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('membership-certificate.pdf');
+            }).catch(error => {
+                console.error('PDF generation error:', error);
+                alert('Error generating PDF. Please try again.');
+            });
+        };
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
