@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Admin panel for managing membership applications." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Admin specific styles */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .admin-header .user-info {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+        }
+        .admin-header .user-info strong {
+            color: var(--color-text);
+        }
+        .admin-header .btn-logout {
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--color-border);
+        }
+        .admin-tabs .tab {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .admin-tabs .tab:hover {
+            color: var(--color-text);
+        }
+        .admin-tabs .tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+        .admin-actions .btn {
+            font-size: 0.85rem;
+            padding: 0.4rem 1.2rem;
+        }
+
+        .application-detail {
+            background: var(--color-surface-alt);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+        }
+        .application-detail .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.95rem;
+        }
+        .application-detail .detail-row:last-child {
+            border-bottom: none;
+        }
+        .application-detail .detail-row .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+        }
+        .application-detail .detail-row .value {
+            color: var(--color-text);
+        }
+
+        .application-detail .section-title {
+            font-size: 1rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-primary);
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 2px solid var(--color-border);
+        }
+        .application-detail .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .remarks-section {
+            margin-top: var(--spacing-md);
+        }
+        .remarks-section textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            box-sizing: border-box;
+            background: var(--color-surface);
+            transition: border-color var(--transition);
+        }
+        .remarks-section textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .history-timeline {
+            margin-top: var(--spacing-md);
+        }
+        .history-item {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item .role-badge {
+            display: inline-block;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: var(--font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--color-surface-alt);
+            color: var(--color-text-muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        .history-item .role-badge.da { background: #cce5ff; color: #004085; }
+        .history-item .role-badge.president { background: #d4edda; color: #155724; }
+        .history-item .role-badge.aa { background: #fff3cd; color: #856404; }
+
+        .history-item .history-details {
+            flex: 1;
+        }
+        .history-item .history-details .action {
+            font-weight: var(--font-medium);
+            color: var(--color-text);
+        }
+        .history-item .history-details .remarks {
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+        .history-item .history-details .date {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: var(--font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .status-badge.submitted { background: #e2e3e5; color: #383d41; }
+        .status-badge.da_reviewed { background: #cce5ff; color: #004085; }
+        .status-badge.da_forwarded { background: #b8daff; color: #004085; }
+        .status-badge.president_reviewed { background: #d4edda; color: #155724; }
+        .status-badge.president_forwarded { background: #c3e6cb; color: #155724; }
+        .status-badge.aa_reviewed { background: #fff3cd; color: #856404; }
+        .status-badge.approved { background: #28a745; color: #fff; }
+        .status-badge.rejected { background: #dc3545; color: #fff; }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            color: var(--color-text-muted);
+        }
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .admin-tabs {
+                flex-direction: column;
+            }
+            .admin-tabs .tab {
+                border-bottom: 1px solid var(--color-border);
+                text-align: left;
+            }
+            .admin-tabs .tab.active {
+                border-bottom-color: var(--color-primary);
+            }
+            .application-detail .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
+            }
+            .history-item {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <!-- HEADER -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
+                </div>
+
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="updates.html">Latest Updates</a></li>
+                                <li><a href="archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html" class="active">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="site-main" role="main">
+
+            <!-- HERO -->
+            <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Administration</p>
+                        <h1 style="font-size: 2.8rem;">Admin Panel</h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            Manage membership applications efficiently.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN DASHBOARD -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+
+                    <!-- Admin Header -->
+                    <div class="admin-header">
+                        <div class="user-info">
+                            Logged in as: <strong id="admin-name">Loading...</strong>
+                            <span id="admin-role" style="margin-left: var(--spacing-sm); padding: 0.1rem 0.6rem; border-radius: 12px; font-size: 0.7rem; background: var(--color-primary); color: #fff; text-transform: uppercase;"></span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-secondary btn-logout">Sign Out</button>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="admin-tabs" id="admin-tabs">
+                        <button class="tab active" data-tab="pending">Pending Applications</button>
+                        <button class="tab" data-tab="all">All Applications</button>
+                    </div>
+
+                    <!-- Pending Applications -->
+                    <div class="tab-content active" id="tab-pending">
+                        <div id="pending-list"></div>
+                    </div>
+
+                    <!-- All Applications -->
+                    <div class="tab-content" id="tab-all">
+                        <div id="all-list"></div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">
+                            Karbi Anglong &amp; Dima Hasao District Committee
+                        </p>
+                        <p class="footer-address">
+                            Diphu, Karbi Anglong, Assam — 782460
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js",
+                "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"
+            }
+        }
+    </script>
+
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module">
+        import { 
+            auth, 
+            db, 
+            collection, 
+            doc, 
+            getDoc, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy, 
+            updateDoc, 
+            serverTimestamp, 
+            arrayUnion,
+            onSnapshot,
+            signOut,
+            onAuthStateChanged
+        } from './firebase-config.js';
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentUser = null;
+        let userRole = null;
+        let applications = {};
+        let pendingApps = [];
+        let allApps = [];
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const adminName = document.getElementById('admin-name');
+        const adminRole = document.getElementById('admin-role');
+        const pendingList = document.getElementById('pending-list');
+        const allList = document.getElementById('all-list');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+
+            currentUser = user;
+
+            try {
+                const idTokenResult = await user.getIdTokenResult();
+                userRole = idTokenResult.claims.role;
+
+                if (!userRole || !['da', 'president', 'aa'].includes(userRole)) {
+                    await signOut(auth);
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+
+                // Update UI
+                adminName.textContent = user.email;
+                adminRole.textContent = userRole.toUpperCase();
+                adminRole.style.background = 
+                    userRole === 'da' ? '#004085' : 
+                    userRole === 'president' ? '#155724' : '#856404';
+
+                // Load data
+                loadApplications();
+
+            } catch (error) {
+                console.error('Error getting user role:', error);
+                window.location.href = 'admin-login.html';
+            }
+        });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'admin-login.html';
+        });
+
+        // ============================================================
+        // TABS
+        // ============================================================
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ============================================================
+        // LOAD APPLICATIONS
+        // ============================================================
+        function loadApplications() {
+            const q = query(
+                collection(db, 'applications'),
+                orderBy('createdAt', 'desc')
+            );
+
+            onSnapshot(q, (snapshot) => {
+                applications = {};
+                snapshot.forEach((doc) => {
+                    applications[doc.id] = { id: doc.id, ...doc.data() };
+                });
+                filterApplications();
+            }, (error) => {
+                console.error('Error loading applications:', error);
+            });
+        }
+
+        // ============================================================
+        // FILTER APPLICATIONS BASED ON ROLE
+        // ============================================================
+        function filterApplications() {
+            const all = Object.values(applications);
+
+            // Determine which applications are pending for this role
+            let pending = [];
+
+            if (userRole === 'da') {
+                // DA sees: submitted, da_reviewed
+                pending = all.filter(app => 
+                    app.status === 'submitted' || app.status === 'da_reviewed'
+                );
+            } else if (userRole === 'president') {
+                // President sees: da_forwarded, president_reviewed
+                pending = all.filter(app => 
+                    app.status === 'da_forwarded' || app.status === 'president_reviewed'
+                );
+            } else if (userRole === 'aa') {
+                // AA sees: president_forwarded, aa_reviewed
+                pending = all.filter(app => 
+                    app.status === 'president_forwarded' || app.status === 'aa_reviewed'
+                );
+            }
+
+            // Sort pending by createdAt (newest first)
+            pending.sort((a, b) => {
+                const dateA = a.createdAt?.toDate?.() || new Date(0);
+                const dateB = b.createdAt?.toDate?.() || new Date(0);
+                return dateB - dateA;
+            });
+
+            all.sort((a, b) => {
+                const dateA = a.createdAt?.toDate?.() || new Date(0);
+                const dateB = b.createdAt?.toDate?.() || new Date(0);
+                return dateB - dateA;
+            });
+
+            pendingApps = pending;
+            allApps = all;
+
+            renderPending();
+            renderAll();
+        }
+
+        // ============================================================
+        // RENDER FUNCTIONS
+        // ============================================================
+        function renderPending() {
+            if (pendingApps.length === 0) {
+                pendingList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No pending applications</h3>
+                        <p>All applications have been processed.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            pendingApps.forEach((app) => {
+                html += buildApplicationCard(app);
+            });
+            pendingList.innerHTML = html;
+        }
+
+        function renderAll() {
+            if (allApps.length === 0) {
+                allList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No applications found</h3>
+                        <p>No membership applications have been submitted yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            allApps.forEach((app) => {
+                html += buildApplicationCard(app);
+            });
+            allList.innerHTML = html;
+        }
+
+        // ============================================================
+        // BUILD APPLICATION CARD
+        // ============================================================
+        function buildApplicationCard(app) {
+            const statusLabel = getStatusLabel(app.status);
+            const statusClass = getStatusClass(app.status);
+
+            // Check if this app is pending for this role
+            const isPending = pendingApps.some(p => p.id === app.id);
+
+            return `
+                <div class="update-card" style="margin-bottom: var(--spacing-md);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-sm);">
+                        <div>
+                            <strong style="font-size: 1rem;">${app.personal?.fullName || 'N/A'}</strong>
+                            <span style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: var(--spacing-sm);">
+                                ${app.reference || app.id}
+                            </span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusLabel}</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-xs); font-size: 0.9rem; color: var(--color-text-muted);">
+                        <span>${app.personal?.email || 'N/A'}</span>
+                        <span>${app.personal?.phone || 'N/A'}</span>
+                        <span>${app.membership?.type || 'N/A'}</span>
+                    </div>
+                    <div style="margin-top: var(--spacing-sm);">
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.3rem 1rem;" onclick="viewApplication('${app.id}')">
+                            View Details
+                        </button>
+                        ${isPending ? `<button class="btn btn-primary" style="font-size: 0.85rem; padding: 0.3rem 1rem; margin-left: var(--spacing-sm);" onclick="openActionModal('${app.id}')">
+                            Process Application
+                        </button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // HELPER FUNCTIONS
+        // ============================================================
+        function getStatusLabel(status) {
+            const labels = {
+                'submitted': 'Submitted',
+                'da_reviewed': 'Under Review (DA)',
+                'da_forwarded': 'Forwarded to President',
+                'president_reviewed': 'Under Review (President)',
+                'president_forwarded': 'Forwarded to AA',
+                'aa_reviewed': 'Under Review (AA)',
+                'approved': 'Approved',
+                'rejected': 'Rejected'
+            };
+            return labels[status] || status;
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'submitted': 'submitted',
+                'da_reviewed': 'da_reviewed',
+                'da_forwarded': 'da_forwarded',
+                'president_reviewed': 'president_reviewed',
+                'president_forwarded': 'president_forwarded',
+                'aa_reviewed': 'aa_reviewed',
+                'approved': 'approved',
+                'rejected': 'rejected'
+            };
+            return classes[status] || 'submitted';
+        }
+
+        // ============================================================
+        // VIEW APPLICATION (show full details in a modal/expanded view)
+        // ============================================================
+        window.viewApplication = function(appId) {
+            const app = applications[appId];
+            if (!app) return;
+
+            // Build detail HTML
+            let detailHtml = `
+                <div class="application-detail">
+                    <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-sm);">
+                        Application Details
+                        <span style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-muted); margin-left: var(--spacing-sm);">
+                            ${app.reference || app.id}
+                        </span>
+                    </h3>
+                    <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md);">
+                        <span class="status-badge ${getStatusClass(app.status)}">${getStatusLabel(app.status)}</span>
+                    </div>
+
+                    <div class="section-title">Personal Information</div>
+                    <div class="detail-row"><span class="label">Full Name</span><span class="value">${app.personal?.fullName || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Email</span><span class="value">${app.personal?.email || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Phone</span><span class="value">${app.personal?.phone || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Address</span><span class="value">${app.personal?.address || 'N/A'}</span></div>
+
+                    <div class="section-title">Address Details</div>
+                    <div class="detail-row"><span class="label">Village</span><span class="value">${app.address?.village || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">District</span><span class="value">${app.address?.district || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">PIN</span><span class="value">${app.address?.pin || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Post Office</span><span class="value">${app.address?.po || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Police Station</span><span class="value">${app.address?.ps || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="label">Mouza</span><span class="value">${app.address?.mouza || 'N/A'}</span></div>
+
+                    <div class="section-title">Membership Information</div>
+                    <div class="detail-row"><span class="label">Membership Type</span><span class="value">${app.membership?.type || 'N/A'}</span></div>
+                    ${app.message ? `<div class="detail-row"><span class="label">Additional Info</span><span class="value">${app.message}</span></div>` : ''}
+
+                    <div class="section-title">Application History</div>
+                    <div class="history-timeline">
+                        ${buildHistoryHtml(app)}
+                    </div>
+                </div>
+            `;
+
+            // Show in a modal or expand in place
+            // For simplicity, we'll show it in an alert-like container
+            // You can replace this with a proper modal
+            const container = document.createElement('div');
+            container.innerHTML = detailHtml;
+            container.style.position = 'fixed';
+            container.style.top = '10%';
+            container.style.left = '50%';
+            container.style.transform = 'translateX(-50%)';
+            container.style.maxWidth = '800px';
+            container.style.width = '90%';
+            container.style.maxHeight = '80vh';
+            container.style.overflowY = 'auto';
+            container.style.zIndex = '9999';
+            container.style.background = 'var(--color-surface)';
+            container.style.borderRadius = 'var(--radius-lg)';
+            container.style.boxShadow = 'var(--shadow-lg)';
+            container.style.padding = 'var(--spacing-lg)';
+
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0,0,0,0.5)';
+            overlay.style.zIndex = '9998';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = 'Close';
+            closeBtn.className = 'btn btn-secondary';
+            closeBtn.style.marginTop = 'var(--spacing-md)';
+            closeBtn.style.width = '100%';
+            closeBtn.addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(container);
+            });
+
+            container.appendChild(closeBtn);
+            document.body.appendChild(overlay);
+            document.body.appendChild(container);
+
+            overlay.addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(container);
+            });
+        };
+
+        // ============================================================
+        // BUILD HISTORY HTML
+        // ============================================================
+        function buildHistoryHtml(app) {
+            // If app has history array, use it
+            if (app.history && app.history.length > 0) {
+                return app.history.map((h) => `
+                    <div class="history-item">
+                        <span class="role-badge ${h.role || 'submitted'}">${(h.role || 'System').toUpperCase()}</span>
+                        <div class="history-details">
+                            <div class="action">${h.action || 'Action'}</div>
+                            ${h.remarks ? `<div class="remarks">${h.remarks}</div>` : ''}
+                            <div class="date">${formatDateTime(h.dateTime)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Fallback: build from status
+            const statusSequence = [
+                { status: 'submitted', label: 'Application Submitted', role: 'system' },
+                { status: 'da_reviewed', label: 'Reviewed by Dealing Assistant', role: 'da' },
+                { status: 'da_forwarded', label: 'Forwarded by Dealing Assistant', role: 'da' },
+                { status: 'president_reviewed', label: 'Reviewed by President', role: 'president' },
+                { status: 'president_forwarded', label: 'Forwarded by President', role: 'president' },
+                { status: 'aa_reviewed', label: 'Reviewed by Approving Authority', role: 'aa' },
+                { status: 'approved', label: 'Approved', role: 'aa' },
+                { status: 'rejected', label: 'Rejected', role: 'aa' }
+            ];
+
+            const currentStatus = app.status || 'submitted';
+            const completedStatuses = statusSequence.filter(s => 
+                statusSequence.indexOf(s) <= statusSequence.findIndex(s2 => s2.status === currentStatus)
+            );
+
+            return completedStatuses.map((s) => `
+                <div class="history-item">
+                    <span class="role-badge ${s.role}">${s.role.toUpperCase()}</span>
+                    <div class="history-details">
+                        <div class="action">${s.label}</div>
+                        <div class="date">${formatDateTime(app.createdAt)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // ACTION MODAL (Forward/Approve/Reject)
+        // ============================================================
+        window.openActionModal = function(appId) {
+            const app = applications[appId];
+            if (!app) return;
+
+            // Determine available actions based on role and current status
+            let actions = [];
+            let nextStatus = '';
+            let actionLabel = '';
+
+            if (userRole === 'da') {
+                if (app.status === 'submitted' || app.status === 'da_reviewed') {
+                    actions = ['forward'];
+                    nextStatus = 'da_forwarded';
+                    actionLabel = 'Forward to President / Assistant President';
+                }
+            } else if (userRole === 'president') {
+                if (app.status === 'da_forwarded' || app.status === 'president_reviewed') {
+                    actions = ['forward'];
+                    nextStatus = 'president_forwarded';
+                    actionLabel = 'Forward to Approving Authority';
+                }
+            } else if (userRole === 'aa') {
+                if (app.status === 'president_forwarded' || app.status === 'aa_reviewed') {
+                    actions = ['approve', 'reject'];
+                }
+            }
+
+            if (actions.length === 0) {
+                alert('No actions available for this application at this stage.');
+                return;
+            }
+
+            // Build modal
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '10%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translateX(-50%)';
+            modal.style.maxWidth = '500px';
+            modal.style.width = '90%';
+            modal.style.zIndex = '9999';
+            modal.style.background = 'var(--color-surface)';
+            modal.style.borderRadius = 'var(--radius-lg)';
+            modal.style.boxShadow = 'var(--shadow-lg)';
+            modal.style.padding = 'var(--spacing-lg)';
+
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0,0,0,0.5)';
+            overlay.style.zIndex = '9998';
+
+            let actionButtonsHtml = '';
+            if (actions.includes('forward')) {
+                actionButtonsHtml += `
+                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm);" onclick="processAction('${appId}', 'forward')">
+                        ${actionLabel}
+                    </button>
+                `;
+            }
+            if (actions.includes('approve')) {
+                actionButtonsHtml += `
+                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm); background: #28a745; border-color: #28a745;" onclick="processAction('${appId}', 'approve')">
+                        Approve Application
+                    </button>
+                `;
+            }
+            if (actions.includes('reject')) {
+                actionButtonsHtml += `
+                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-sm); background: #dc3545; border-color: #dc3545;" onclick="processAction('${appId}', 'reject')">
+                        Reject Application
+                    </button>
+                `;
+            }
+
+            modal.innerHTML = `
+                <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-md);">
+                    Process Application
+                    <span style="font-size: 0.85rem; font-weight: normal; color: var(--color-text-muted); display: block;">
+                        ${app.personal?.fullName || 'N/A'} (${app.reference || app.id})
+                    </span>
+                </h3>
+                <div class="remarks-section">
+                    <label for="action-remarks" style="display: block; font-weight: var(--font-medium); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">
+                        Remarks (required)
+                    </label>
+                    <textarea id="action-remarks" placeholder="Enter your remarks here..."></textarea>
+                </div>
+                ${actionButtonsHtml}
+                <button class="btn btn-secondary" style="width: 100%; margin-top: var(--spacing-sm);" onclick="closeModal()">Cancel</button>
+            `;
+
+            // Store modal references for closing
+            window._actionModal = modal;
+            window._actionOverlay = overlay;
+
+            document.body.appendChild(overlay);
+            document.body.appendChild(modal);
+
+            overlay.addEventListener('click', () => {
+                closeModal();
+            });
+        };
+
+        window.closeModal = function() {
+            if (window._actionModal) {
+                document.body.removeChild(window._actionModal);
+                document.body.removeChild(window._actionOverlay);
+                window._actionModal = null;
+                window._actionOverlay = null;
+            }
+        };
+
+        // ============================================================
+        // PROCESS ACTION
+        // ============================================================
+        window.processAction = async function(appId, action) {
+            const remarks = document.getElementById('action-remarks')?.value.trim();
+            if (!remarks) {
+                alert('Please enter remarks before proceeding.');
+                return;
+            }
+
+            const app = applications[appId];
+            if (!app) {
+                alert('Application not found.');
+                return;
+            }
+
+            let newStatus = app.status;
+            let actionLabel = '';
+
+            if (userRole === 'da' && action === 'forward') {
+                newStatus = 'da_forwarded';
+                actionLabel = 'Forwarded to President / Assistant President';
+            } else if (userRole === 'president' && action === 'forward') {
+                newStatus = 'president_forwarded';
+                actionLabel = 'Forwarded to Approving Authority';
+            } else if (userRole === 'aa' && action === 'approve') {
+                newStatus = 'approved';
+                actionLabel = 'Application Approved';
+            } else if (userRole === 'aa' && action === 'reject') {
+                newStatus = 'rejected';
+                actionLabel = 'Application Rejected';
+            } else {
+                alert('Invalid action for your role.');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'applications', appId);
+
+                // Prepare history entry
+                const historyEntry = {
+                    role: userRole,
+                    action: actionLabel,
+                    remarks: remarks,
+                    dateTime: serverTimestamp(),
+                    previousStatus: app.status,
+                    newStatus: newStatus
+                };
+
+                // Update application
+                await updateDoc(docRef, {
+                    status: newStatus,
+                    currentStage: userRole,
+                    updatedAt: serverTimestamp(),
+                    history: arrayUnion(historyEntry)
+                });
+
+                // If approved, create certificate entry
+                if (newStatus === 'approved') {
+                    // Certificate will be generated on-demand
+                    // We'll create a certificate reference
+                    const certRef = doc(db, 'certificates', appId);
+                    await updateDoc(certRef, {
+                        applicationRef: appId,
+                        fullName: app.personal?.fullName || 'N/A',
+                        membershipType: app.membership?.type || 'N/A',
+                        issuedAt: serverTimestamp(),
+                        reference: app.reference || appId
+                    }, { merge: true });
+                }
+
+                // Close modal
+                closeModal();
+
+                // Show success
+                alert(`Application ${actionLabel} successfully.`);
+
+            } catch (error) {
+                console.error('Error processing application:', error);
+                alert('Error processing application. Please try again.');
+            }
+        };
+
+        // ============================================================
+        // HELPER: formatDateTime
+        // ============================================================
+        function formatDateTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // ============================================================
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ============================================================
+        window.viewApplication = viewApplication;
+        window.openActionModal = openActionModal;
+        window.closeModal = closeModal;
+        window.processAction = processAction;
+        window.formatDateTime = formatDateTime;
+
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
