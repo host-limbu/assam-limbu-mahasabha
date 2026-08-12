@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Login — ALM Admin</title>
-    <!-- Only admin.css – no public styles -->
     <link rel="stylesheet" href="admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +34,6 @@
 
                 <div id="loginError" class="login-error" style="display:none;"></div>
 
-                <!-- Spinner container – fixed height to prevent CLS -->
                 <div class="spinner-container" id="spinnerContainer" style="height:30px; display:flex; align-items:center; justify-content:center;">
                     <div class="spinner" style="display:none;"></div>
                 </div>
@@ -55,11 +53,11 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-    <!-- Your Firebase config (must exist at ../firebase-config.js) -->
+    <!-- Your Firebase config -->
     <script src="../firebase-config.js"></script>
     <!-- Auth wrapper -->
     <script src="../firebase-auth.js"></script>
-    <!-- Admin utilities (logout, inactivity) -->
+    <!-- Admin utilities -->
     <script src="admin.js"></script>
 
     <script>
@@ -73,7 +71,6 @@
             var loginError = document.getElementById('loginError');
             var spinner = document.querySelector('.spinner');
 
-            // If already authenticated, redirect to dashboard
             if (window.Auth && window.Auth.isAuthenticated()) {
                 window.location.href = 'dashboard.html';
                 return;
@@ -132,7 +129,6 @@
                 }
             });
 
-            // Clear errors on input
             emailInput.addEventListener('input', function() {
                 this.parentElement.classList.remove('has-error');
                 hideError();
