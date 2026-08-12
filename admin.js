@@ -1,372 +1,180 @@
-/* ============================================================
-   ADMIN SHARED JAVASCRIPT
-   Private admin panel utilities, session management, logout
-   ============================================================ */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — ALM Admin</title>
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+</head>
+<body>
 
-(function() {
-    'use strict';
+    <div class="admin-wrapper">
 
-    // ============================================================
-    // 1. CONFIGURATION
-    // ============================================================
-    const INACTIVITY_TIMEOUT = 2 * 60 * 1000; // 2 minutes
-    const CHECK_INTERVAL = 10 * 1000; // Check every 10 seconds
+        <div class="admin-container">
 
-    // ============================================================
-    // 2. STATE
-    // ============================================================
-    let lastActivity = Date.now();
-    let inactivityTimer = null;
-    let logoutConfirmCallback = null;
-    let sessionExpiredCallback = null;
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <div class="text">Loading dashboard...</div>
+            </div>
 
-    // ============================================================
-    // 3. INACTIVITY DETECTION
-    // ============================================================
-    function resetActivityTimer() {
-        lastActivity = Date.now();
-    }
+            <div id="dashboardContent" style="display: none;">
 
-    function checkInactivity() {
-        if (!window.Auth || !window.Auth.isAuthenticated()) {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastActivity > INACTIVITY_TIMEOUT) {
-            // Session expired due to inactivity
-            handleSessionExpired();
-        }
-    }
-
-    function startInactivityMonitoring() {
-        // Reset timer on user activity
-        const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click', 'wheel', 'touchmove'];
-        activityEvents.forEach(function(event) {
-            document.addEventListener(event, resetActivityTimer, { passive: true });
-        });
-
-        // Periodic check
-        inactivityTimer = setInterval(checkInactivity, CHECK_INTERVAL);
-
-        // Initial reset
-        resetActivityTimer();
-    }
-
-    function stopInactivityMonitoring() {
-        if (inactivityTimer) {
-            clearInterval(inactivityTimer);
-            inactivityTimer = null;
-        }
-        const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click', 'wheel', 'touchmove'];
-        activityEvents.forEach(function(event) {
-            document.removeEventListener(event, resetActivityTimer);
-        });
-    }
-
-    // ============================================================
-    // 4. SESSION EXPIRY HANDLER
-    // ============================================================
-    function handleSessionExpired() {
-        // Only handle if still authenticated
-        if (!window.Auth || !window.Auth.isAuthenticated()) {
-            return;
-        }
-
-        // Clear session
-        if (window.Auth && typeof window.Auth.logout === 'function') {
-            window.Auth.logout()
-                .then(function() {
-                    // Clear any sensitive state
-                    sessionStorage.clear();
-                    // Redirect to login with expired message
-                    var currentPath = window.location.pathname;
-                    if (!currentPath.includes('/admin/login.html')) {
-                        window.location.href = 'login.html?expired=1';
-                    }
-                })
-                .catch(function() {
-                    // Force redirect anyway
-                    sessionStorage.clear();
-                    window.location.href = 'login.html?expired=1';
-                });
-        } else {
-            sessionStorage.clear();
-            window.location.href = 'login.html?expired=1';
-        }
-    }
-
-    // ============================================================
-    // 5. LOGOUT CONFIRMATION DIALOG
-    // ============================================================
-    function showLogoutConfirmation() {
-        return new Promise(function(resolve, reject) {
-            // Check if modal already exists
-            let existingModal = document.getElementById('adminLogoutModal');
-            if (existingModal) {
-                existingModal.remove();
-            }
-
-            // Create modal overlay
-            var overlay = document.createElement('div');
-            overlay.id = 'adminLogoutModal';
-            overlay.className = 'modal-overlay active';
-            overlay.style.display = 'flex';
-
-            // Modal content
-            var content = document.createElement('div');
-            content.className = 'modal-content confirm-dialog';
-            content.style.maxWidth = '440px';
-
-            content.innerHTML = `
-                <div style="display:flex;align-items:center;gap:var(--admin-spacing-md);margin-bottom:var(--admin-spacing-md);">
-                    <span style="font-size:2rem;color:var(--admin-warning);">&#9670;</span>
-                    <div>
-                        <h3 style="font-size:1.1rem;font-weight:600;color:var(--admin-text);margin:0;">Confirm Logout</h3>
-                        <p style="color:var(--admin-text-muted);font-size:0.95rem;margin:0.2rem 0 0 0;">Are you sure you want to logout?</p>
+                <div class="admin-header">
+                    <div class="title">
+                        <h1>Dashboard</h1>
+                        <p id="welcomeMsg">Welcome back</p>
+                    </div>
+                    <div class="user-info">
+                        <span class="role-badge" id="roleBadge">Admin</span>
+                        <button class="logout-btn" id="logoutBtn">Logout</button>
                     </div>
                 </div>
-                <div class="dialog-actions">
-                    <button class="btn btn-secondary" id="logoutCancelBtn">Cancel</button>
-                    <button class="btn btn-danger" id="logoutConfirmBtn">Logout</button>
+
+                <div class="stats-row" id="statsRow">
+                    <div class="stat-box"><span class="number" id="totalApps">0</span><span class="label">Total Applications</span></div>
+                    <div class="stat-box"><span class="number" id="pendingApps">0</span><span class="label">Pending Review</span></div>
+                    <div class="stat-box"><span class="number" id="approvedApps">0</span><span class="label">Approved</span></div>
+                    <div class="stat-box"><span class="number" id="rejectedApps">0</span><span class="label">Rejected</span></div>
                 </div>
-            `;
 
-            overlay.appendChild(content);
-            document.body.appendChild(overlay);
+                <div class="dashboard-grid" id="dashboardGrid"></div>
 
-            // Focus management
-            var confirmBtn = content.querySelector('#logoutConfirmBtn');
-            var cancelBtn = content.querySelector('#logoutCancelBtn');
+            </div>
 
-            // Handle confirm
-            confirmBtn.addEventListener('click', function() {
-                overlay.remove();
-                resolve(true);
-            });
+        </div>
 
-            // Handle cancel
-            cancelBtn.addEventListener('click', function() {
-                overlay.remove();
-                resolve(false);
-            });
+    </div>
 
-            // Close on overlay click (click outside)
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) {
-                    overlay.remove();
-                    resolve(false);
+    <!-- Firebase SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth.js"></script>
+    <script src="admin.js"></script>
+
+    <script>
+        (function() {
+            var loadingSpinner = document.getElementById('loadingSpinner');
+            var dashboardContent = document.getElementById('dashboardContent');
+
+            var roleConfigs = {
+                'da': {
+                    title: 'DA Dashboard',
+                    welcome: 'District Admin',
+                    badge: 'DA',
+                    cards: [
+                        { icon: '&#9670;', title: 'Review Applications', description: 'Review new applications and forward to President.', link: 'da.html' },
+                        { icon: '&#9670;', title: 'View All Applications', description: 'Browse all applications.', link: 'da.html?view=all' }
+                    ]
+                },
+                'president': {
+                    title: 'President Dashboard',
+                    welcome: 'President / Assistant President',
+                    badge: 'President',
+                    cards: [
+                        { icon: '&#9670;', title: 'Review Applications', description: 'Review DA-forwarded applications and forward to Approving Authority.', link: 'president.html' },
+                        { icon: '&#9670;', title: 'View All Applications', description: 'Browse all applications.', link: 'president.html?view=all' }
+                    ]
+                },
+                'approving': {
+                    title: 'Approving Authority Dashboard',
+                    welcome: 'Approving Authority',
+                    badge: 'Approving',
+                    cards: [
+                        { icon: '&#9670;', title: 'Final Review', description: 'Review and approve or reject applications.', link: 'approving.html' },
+                        { icon: '&#9670;', title: 'View All Applications', description: 'Browse all applications.', link: 'approving.html?view=all' }
+                    ]
                 }
-            });
+            };
 
-            // Close on Escape key
-            function handleEscape(e) {
-                if (e.key === 'Escape') {
-                    overlay.remove();
-                    resolve(false);
-                    document.removeEventListener('keydown', handleEscape);
+            var commonCards = [
+                { icon: '&#9670;', title: 'Check Application Status', description: 'Look up any application by reference number.', link: '../membership-check.html' }
+            ];
+
+            function renderDashboard(role) {
+                var config = roleConfigs[role];
+                if (!config) {
+                    document.getElementById('welcomeMsg').textContent = 'Welcome, Admin';
+                    document.getElementById('roleBadge').textContent = 'Admin';
+                    return;
                 }
-            }
-            document.addEventListener('keydown', handleEscape);
 
-            // Focus the cancel button by default
-            cancelBtn.focus();
-        });
-    }
+                document.querySelector('.admin-header .title h1').textContent = config.title;
+                document.getElementById('welcomeMsg').textContent = 'Welcome, ' + config.welcome;
+                document.getElementById('roleBadge').textContent = config.badge;
 
-    // ============================================================
-    // 6. EXECUTE LOGOUT
-    // ============================================================
-    function performLogout() {
-        // Show loading state if needed
-        if (window.Auth && typeof window.Auth.logout === 'function') {
-            return window.Auth.logout()
-                .then(function() {
-                    sessionStorage.clear();
-                    // Show success message on login page via URL param
-                    window.location.href = 'login.html?logout=1';
-                })
-                .catch(function(err) {
-                    console.warn('Logout error:', err);
-                    sessionStorage.clear();
-                    window.location.href = 'login.html?logout=1';
+                var grid = document.getElementById('dashboardGrid');
+                var html = '';
+                config.cards.forEach(function(card) {
+                    html += '<a href="' + card.link + '" class="dashboard-card"><span class="card-icon">' + card.icon + '</span><h3>' + card.title + '</h3><p>' + card.description + '</p></a>';
                 });
-        } else {
-            sessionStorage.clear();
-            window.location.href = 'login.html?logout=1';
-            return Promise.resolve();
-        }
-    }
+                commonCards.forEach(function(card) {
+                    html += '<a href="' + card.link + '" class="dashboard-card"><span class="card-icon">' + card.icon + '</span><h3>' + card.title + '</h3><p>' + card.description + '</p></a>';
+                });
+                grid.innerHTML = html;
+            }
 
-    // ============================================================
-    // 7. HANDLE LOGOUT CLICK (to be used by admin pages)
-    // ============================================================
-    function handleLogoutClick(e) {
-        e.preventDefault();
-        showLogoutConfirmation()
-            .then(function(confirmed) {
-                if (confirmed) {
-                    return performLogout();
+            function fetchStats() {
+                var db = window.db;
+                db.ref('applications').once('value')
+                    .then(function(snapshot) {
+                        var data = snapshot.val();
+                        if (!data) {
+                            document.getElementById('totalApps').textContent = '0';
+                            document.getElementById('pendingApps').textContent = '0';
+                            document.getElementById('approvedApps').textContent = '0';
+                            document.getElementById('rejectedApps').textContent = '0';
+                            return;
+                        }
+                        var total = 0, pending = 0, approved = 0, rejected = 0;
+                        Object.keys(data).forEach(function(key) {
+                            var app = data[key];
+                            total++;
+                            if (app.status === 'approved') approved++;
+                            else if (app.status === 'rejected') rejected++;
+                            else pending++;
+                        });
+                        document.getElementById('totalApps').textContent = total;
+                        document.getElementById('pendingApps').textContent = pending;
+                        document.getElementById('approvedApps').textContent = approved;
+                        document.getElementById('rejectedApps').textContent = rejected;
+                    })
+                    .catch(function(err) { console.warn('Stats fetch error:', err); });
+            }
+
+            function loadDashboard() {
+                var user = window.Auth ? window.Auth.getCurrentUser() : null;
+                var role = window.Auth ? window.Auth.getCurrentUserRole() : null;
+                if (!user || !role) {
+                    window.location.href = 'login.html';
+                    return;
                 }
-            })
-            .catch(function(err) {
-                console.warn('Logout dialog error:', err);
-            });
-    }
+                renderDashboard(role);
+                fetchStats();
+                loadingSpinner.style.display = 'none';
+                dashboardContent.style.display = 'block';
+            }
 
-    // ============================================================
-    // 8. ADMIN PAGE INITIALIZATION
-    // ============================================================
-    function initAdminPage() {
-        // Only run on admin pages
-        if (!window.location.pathname.includes('/admin/')) {
-            return;
-        }
-
-        // Skip on login page
-        if (window.location.pathname.includes('/admin/login.html')) {
-            return;
-        }
-
-        // Check authentication
-        if (window.Auth) {
-            if (!window.Auth.isAuthenticated()) {
-                // Redirect to login
+            if (window.Auth) {
+                if (window.Auth.isAuthenticated()) {
+                    loadDashboard();
+                } else {
+                    window.Auth.onAuthStateChanged(function(user, role) {
+                        if (user && role) loadDashboard();
+                        else window.location.href = 'login.html';
+                    });
+                }
+            } else {
                 window.location.href = 'login.html';
-                return;
             }
+        })();
+    </script>
 
-            // Start inactivity monitoring
-            startInactivityMonitoring();
-
-            // Setup logout button
-            var logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                // Remove any existing listeners by cloning
-                var newBtn = logoutBtn.cloneNode(true);
-                logoutBtn.parentNode.replaceChild(newBtn, logoutBtn);
-                newBtn.addEventListener('click', handleLogoutClick);
-            }
-
-            // Also handle logout buttons with class .logout-btn
-            document.querySelectorAll('.logout-btn').forEach(function(btn) {
-                if (btn.id === 'logoutBtn') return; // already handled
-                btn.addEventListener('click', handleLogoutClick);
-            });
-        }
-
-        // Handle session expired message from URL
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('expired') === '1') {
-            // Show a subtle notification (not a full modal, just a toast-like message)
-            showToast('Your session has expired due to inactivity.', 'warning');
-            // Remove param from URL without reload
-            if (window.history && window.history.replaceState) {
-                var newUrl = window.location.pathname + window.location.search.replace(/[?&]expired=1/, '');
-                window.history.replaceState({}, document.title, newUrl);
-            }
-        }
-    }
-
-    // ============================================================
-    // 9. TOAST NOTIFICATION
-    // ============================================================
-    function showToast(message, type) {
-        type = type || 'info';
-        var existing = document.getElementById('adminToast');
-        if (existing) {
-            existing.remove();
-        }
-
-        var toast = document.createElement('div');
-        toast.id = 'adminToast';
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: ${type === 'warning' ? '#f39c12' : '#1a3a5c'};
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 99999;
-            max-width: 90%;
-            text-align: center;
-            animation: slideUp 0.3s ease;
-        `;
-        toast.textContent = message;
-
-        // Animation keyframes
-        if (!document.getElementById('adminToastStyles')) {
-            var style = document.createElement('style');
-            style.id = 'adminToastStyles';
-            style.textContent = `
-                @keyframes slideUp {
-                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(toast);
-
-        // Auto dismiss after 4 seconds
-        setTimeout(function() {
-            if (toast.parentNode) {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(function() {
-                    if (toast.parentNode) {
-                        toast.remove();
-                    }
-                }, 300);
-            }
-        }, 4000);
-    }
-
-    // ============================================================
-    // 10. CLEANUP ON PAGE UNLOAD
-    // ============================================================
-    window.addEventListener('beforeunload', function() {
-        stopInactivityMonitoring();
-    });
-
-    // ============================================================
-    // 11. EXPOSE PUBLIC API
-    // ============================================================
-    window.Admin = {
-        showLogoutConfirmation: showLogoutConfirmation,
-        performLogout: performLogout,
-        handleLogoutClick: handleLogoutClick,
-        showToast: showToast,
-        initAdminPage: initAdminPage,
-        startInactivityMonitoring: startInactivityMonitoring,
-        stopInactivityMonitoring: stopInactivityMonitoring
-    };
-
-    // ============================================================
-    // 12. AUTO-INIT
-    // ============================================================
-    // Initialize after DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAdminPage);
-    } else {
-        initAdminPage();
-    }
-
-    // Also init when Auth is ready (in case Auth loads after DOM)
-    if (window.Auth) {
-        window.Auth.onAuthStateChanged(function(user, role) {
-            // If user becomes authenticated, ensure monitoring is running
-            if (user && window.location.pathname.includes('/admin/') && !window.location.pathname.includes('/admin/login.html')) {
-                startInactivityMonitoring();
-            }
-        });
-    }
-
-    console.log('Admin JS initialized.');
-
-})();
+</body>
+</html>
