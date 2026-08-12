@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
     <style>
-        /* Same as before – form styles */
         .form-section-title {
             font-size: 1.1rem;
             font-weight: var(--font-semibold);
@@ -24,6 +23,11 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: var(--spacing-md);
         }
         .form-group {
@@ -68,6 +72,42 @@
         .form-group .required {
             color: #dc3545;
             margin-left: 2px;
+        }
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+        }
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: var(--spacing-sm);
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: var(--color-primary);
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            font-weight: var(--font-regular);
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+        .checkbox-group label a {
+            color: var(--color-primary);
+            text-decoration: underline;
         }
         .form-submit-row {
             display: flex;
@@ -127,8 +167,62 @@
             opacity: 0.7;
             pointer-events: none;
         }
+        .hidden {
+            display: none !important;
+        }
+        .photo-preview {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: var(--radius);
+            margin-top: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+        }
+        .membership-type-card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .membership-type-card .type-option {
+            padding: var(--spacing-md);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--color-surface);
+        }
+        .membership-type-card .type-option:hover {
+            border-color: var(--color-primary-light);
+        }
+        .membership-type-card .type-option.selected {
+            border-color: var(--color-primary);
+            background: var(--color-surface-alt);
+            box-shadow: var(--shadow-sm);
+        }
+        .membership-type-card .type-option input[type="radio"] {
+            display: none;
+        }
+        .membership-type-card .type-option .type-name {
+            font-weight: var(--font-semibold);
+            font-size: 1.1rem;
+            color: var(--color-text);
+            display: block;
+        }
+        .membership-type-card .type-option .type-desc {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            display: block;
+            margin-top: 2px;
+        }
         @media (max-width: 768px) {
             .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .membership-type-card {
                 grid-template-columns: 1fr;
             }
             .form-submit-row {
@@ -142,13 +236,18 @@
                 width: 100%;
             }
         }
+        @media (max-width: 480px) {
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER (same as before) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -257,103 +356,281 @@
                 </div>
             </section>
 
-            <!-- FORM -->
+            <!-- APPLICATION FORM -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="section-label">Apply Now</div>
                     <h2>Membership Application</h2>
                     <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
-                        Fill in the details below to apply for membership. We will contact you
-                        within 3–5 working days.
+                        Fill in the details below to apply for membership. All fields marked with <span style="color: #dc3545;">*</span> are required.
                     </p>
 
                     <div id="form-message" class="form-message">
                         <div id="form-message-content"></div>
                     </div>
 
-                    <form id="membership-form" style="max-width: 700px; margin: 0 auto;">
+                    <form id="membership-form" style="max-width: 800px; margin: 0 auto;" enctype="multipart/form-data">
 
-                        <!-- Personal -->
+                        <!-- === MEMBERSHIP TYPE === -->
+                        <div class="form-section-title">Membership Type</div>
+                        <div class="membership-type-card">
+                            <label class="type-option selected" id="type-general">
+                                <input type="radio" name="membership-type" value="general" checked />
+                                <span class="type-name">General Member</span>
+                                <span class="type-desc">Regular membership for all community members</span>
+                            </label>
+                            <label class="type-option" id="type-advisory">
+                                <input type="radio" name="membership-type" value="advisory" />
+                                <span class="type-name">Advisory Member</span>
+                                <span class="type-desc">For experienced community leaders and advisors</span>
+                            </label>
+                            <label class="type-option" id="type-wellwisher">
+                                <input type="radio" name="membership-type" value="wellwisher" />
+                                <span class="type-name">Well Wisher</span>
+                                <span class="type-desc">For supporters and well-wishers of the community</span>
+                            </label>
+                        </div>
+
+                        <!-- === PERSONAL INFORMATION === -->
                         <div class="form-section-title">Personal Information</div>
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="fullname">Full Name <span class="required">*</span></label>
-                                <input type="text" id="fullname" name="fullname" required />
+                                <label for="first-name">First Name <span class="required">*</span></label>
+                                <input type="text" id="first-name" name="first-name" required />
                             </div>
+                            <div class="form-group">
+                                <label for="second-name">Second Name</label>
+                                <input type="text" id="second-name" name="second-name" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob">Date of Birth <span class="required">*</span></label>
+                                <input type="date" id="dob" name="dob" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="blood-group">Blood Group <span class="required">*</span></label>
+                                <select id="blood-group" name="blood-group" required>
+                                    <option value="">Please Select</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="Not Known">Not Known</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="email">Email Address <span class="required">*</span></label>
                                 <input type="email" id="email" name="email" required />
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group">
                                 <label for="phone">Phone Number <span class="required">*</span></label>
                                 <input type="tel" id="phone" name="phone" required />
                             </div>
+                        </div>
+
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="address">Address <span class="required">*</span></label>
-                                <input type="text" id="address" name="address" required />
+                                <label for="alt-phone">Alternate Phone Number</label>
+                                <input type="tel" id="alt-phone" name="alt-phone" />
+                            </div>
+                            <div class="form-group">
+                                <label for="education">Education Qualification <span class="required">*</span></label>
+                                <select id="education" name="education" required>
+                                    <option value="">Please Select</option>
+                                    <option value="undergraduate">Under Graduate</option>
+                                    <option value="postgraduate">Post Graduate</option>
+                                    <option value="matriculate">Matriculate</option>
+                                    <option value="graduate">Graduate</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div id="other-education-container" class="hidden" style="margin-top: var(--spacing-sm);">
+                                    <input type="text" id="other-education" name="other-education" placeholder="Specify your qualification" />
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Address -->
+                        <!-- === ADDRESS INFORMATION === -->
                         <div class="form-section-title">Address Details</div>
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="village">Village <span class="required">*</span></label>
+                                <label for="district">District <span class="required">*</span></label>
+                                <select id="district" name="district" required>
+                                    <option value="">Please Select</option>
+                                    <option value="East">East</option>
+                                    <option value="West">West</option>
+                                    <option value="Karbi Anglong">Karbi Anglong</option>
+                                    <option value="Dima Hasao">Dima Hasao</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lac">LAC <span class="required">*</span></label>
+                                <input type="text" id="lac" name="lac" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="village">Village / Town <span class="required">*</span></label>
                                 <input type="text" id="village" name="village" required />
                             </div>
                             <div class="form-group">
-                                <label for="district">District <span class="required">*</span></label>
-                                <input type="text" id="district" name="district" required />
+                                <label for="po">Post Office <span class="required">*</span></label>
+                                <input type="text" id="po" name="po" required />
                             </div>
                         </div>
+
                         <div class="form-row">
+                            <div class="form-group">
+                                <label for="ps">Police Station <span class="required">*</span></label>
+                                <input type="text" id="ps" name="ps" required />
+                            </div>
                             <div class="form-group">
                                 <label for="pin">PIN Code <span class="required">*</span></label>
                                 <input type="text" id="pin" name="pin" required pattern="[0-9]{6}" maxlength="6" />
                             </div>
+                        </div>
+
+                        <!-- === FAMILY STATUS === -->
+                        <div class="form-section-title">Family Status</div>
+
+                        <div class="form-row-3">
                             <div class="form-group">
-                                <label for="po">Post Office (PO) <span class="required">*</span></label>
-                                <input type="text" id="po" name="po" required />
+                                <label for="male-count">Male <span class="required">*</span></label>
+                                <input type="number" id="male-count" name="male-count" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="female-count">Female <span class="required">*</span></label>
+                                <input type="number" id="female-count" name="female-count" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="total-members">Total Family Members</label>
+                                <input type="number" id="total-members" name="total-members" min="0" readonly style="background: var(--color-surface-alt);" />
+                                <span class="hint">Auto-calculated from Male + Female</span>
                             </div>
                         </div>
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="ps">Police Station (PS) <span class="required">*</span></label>
-                                <input type="text" id="ps" name="ps" required />
+                                <label for="house-type">Type of House <span class="required">*</span></label>
+                                <select id="house-type" name="house-type" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Pucca">Pucca</option>
+                                    <option value="Semi-Pucca">Semi-Pucca</option>
+                                    <option value="Kutcha">Kutcha</option>
+                                    <option value="Rented">Rented</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="mouza">Mouza <span class="required">*</span></label>
-                                <input type="text" id="mouza" name="mouza" required />
+                                <label for="land-ownership">Land Ownership Status <span class="required">*</span></label>
+                                <select id="land-ownership" name="land-ownership" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Owned">Owned</option>
+                                    <option value="Rented">Rented</option>
+                                    <option value="Leased">Leased</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Membership -->
-                        <div class="form-section-title">Membership Information</div>
-                        <div class="form-group">
-                            <label for="membership-type">Membership Type <span class="required">*</span></label>
-                            <select id="membership-type" name="membership-type" required>
-                                <option value="">Select a membership type</option>
-                                <option value="regular">Regular Member (Free)</option>
-                                <option value="life">Life Member (₹1,000)</option>
-                                <option value="patron">Patron Member (₹5,000+)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Additional Information (optional)</label>
-                            <textarea id="message" name="message" rows="4"></textarea>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicle-owned">Vehicle Owned <span class="required">*</span></label>
+                                <select id="vehicle-owned" name="vehicle-owned" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Two Wheeler">Two Wheeler</option>
+                                    <option value="Four Wheeler">Four Wheeler</option>
+                                    <option value="None">None</option>
+                                    <option value="Both">Both</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="belt-block">Under Belt &amp; Block <span class="required">*</span></label>
+                                <select id="belt-block" name="belt-block" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Belt A">Belt A</option>
+                                    <option value="Belt B">Belt B</option>
+                                    <option value="Block A">Block A</option>
+                                    <option value="Block B">Block B</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="autonomous-council">Autonomous Council? <span class="required">*</span></label>
+                                <select id="autonomous-council" name="autonomous-council" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="govt-scheme">Beneficiary of any Government Scheme? <span class="required">*</span></label>
+                                <select id="govt-scheme" name="govt-scheme" required>
+                                    <option value="">Please Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="govt-employees">Number of Family Members who are Government Employees <span class="required">*</span></label>
+                                <input type="number" id="govt-employees" name="govt-employees" min="0" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <!-- Empty for spacing -->
+                            </div>
+                        </div>
+
+                        <!-- === PHOTO === -->
+                        <div class="form-section-title">Photo Upload</div>
+
+                        <div class="form-group">
+                            <label for="passphoto">Upload Passport Size Photo <span class="required">*</span></label>
+                            <input type="file" id="passphoto" name="passphoto" accept="image/*" required />
+                            <span class="hint">Accepted formats: JPG, PNG (Max: 2MB)</span>
+                            <div id="photo-preview-container"></div>
+                        </div>
+
+                        <!-- === TERMS === -->
+                        <div class="form-section-title">Terms &amp; Conditions</div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" name="terms" required />
+                            <label for="terms">I agree to the <a href="#" target="_blank">Terms and Conditions</a> of the Assam Limbu Mahasabha membership. <span class="required">*</span></label>
+                        </div>
+
+                        <div class="checkbox-group" style="margin-top: var(--spacing-sm);">
+                            <input type="checkbox" id="declaration" name="declaration" required />
+                            <label for="declaration">I hereby declare that all the information provided above is true and correct to the best of my knowledge. <span class="required">*</span></label>
+                        </div>
+
+                        <!-- === SUBMIT === -->
                         <div class="form-submit-row">
                             <button type="submit" class="btn btn-primary" id="submit-btn">Submit Application</button>
                             <span class="note">We will contact you within 3–5 working days.</span>
                         </div>
+
                     </form>
                 </div>
             </section>
 
-            <!-- Track Status -->
+            <!-- TRACK STATUS -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content" style="text-align: center;">
                     <div class="section-label">Track Your Application</div>
@@ -385,12 +662,8 @@
                             <span class="logo-emblem">&#9670;</span>
                             <span class="logo-main">Assam Limbu Mahasabha</span>
                         </span>
-                        <p class="footer-sub">
-                            Karbi Anglong &amp; Dima Hasao District Committee
-                        </p>
-                        <p class="footer-address">
-                            Diphu, Karbi Anglong, Assam — 782460
-                        </p>
+                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
@@ -447,11 +720,66 @@
     <script type="module">
         import { db, ref, set, get, serverTimestamp } from './firebase-config.js';
 
+        // --- DOM Elements ---
         const form = document.getElementById('membership-form');
         const submitBtn = document.getElementById('submit-btn');
         const messageContainer = document.getElementById('form-message');
         const messageContent = document.getElementById('form-message-content');
 
+        // --- Membership Type Selection ---
+        const typeOptions = document.querySelectorAll('.type-option');
+        typeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                typeOptions.forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // --- Education "Other" conditional ---
+        const educationSelect = document.getElementById('education');
+        const otherEduContainer = document.getElementById('other-education-container');
+        educationSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                otherEduContainer.classList.remove('hidden');
+            } else {
+                otherEduContainer.classList.add('hidden');
+            }
+        });
+
+        // --- Auto-calculate total family members ---
+        const maleInput = document.getElementById('male-count');
+        const femaleInput = document.getElementById('female-count');
+        const totalInput = document.getElementById('total-members');
+
+        function calculateTotal() {
+            const male = parseInt(maleInput.value) || 0;
+            const female = parseInt(femaleInput.value) || 0;
+            totalInput.value = male + female;
+        }
+
+        maleInput.addEventListener('input', calculateTotal);
+        femaleInput.addEventListener('input', calculateTotal);
+
+        // --- Photo preview ---
+        const photoInput = document.getElementById('passphoto');
+        const previewContainer = document.getElementById('photo-preview-container');
+
+        photoInput.addEventListener('change', function() {
+            previewContainer.innerHTML = '';
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'photo-preview';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // --- Generate Reference ---
         function generateReference() {
             const year = new Date().getFullYear();
             const prefix = 'ALM';
@@ -459,6 +787,7 @@
             return `${prefix}${year}${random}`;
         }
 
+        // --- Show Message ---
         function showMessage(type, content) {
             messageContainer.className = 'form-message ' + type;
             messageContainer.style.display = 'block';
@@ -472,39 +801,73 @@
             messageContent.innerHTML = '';
         }
 
+        // --- Convert file to base64 ---
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // --- Form Submission ---
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             hideMessage();
 
+            // Get form data
             const formData = new FormData(form);
+            const membershipType = formData.get('membership-type');
+
+            // Build data object
             const data = {
+                membershipType: membershipType,
                 personal: {
-                    fullName: formData.get('fullname'),
+                    firstName: formData.get('first-name'),
+                    secondName: formData.get('second-name') || '',
+                    dob: formData.get('dob'),
                     email: formData.get('email'),
                     phone: formData.get('phone'),
-                    address: formData.get('address')
+                    alternatePhone: formData.get('alt-phone') || ''
                 },
+                education: {
+                    qualification: formData.get('education'),
+                    otherQualification: formData.get('education') === 'other' ? formData.get('other-education') || '' : ''
+                },
+                bloodGroup: formData.get('blood-group'),
                 address: {
-                    village: formData.get('village'),
                     district: formData.get('district'),
-                    pin: formData.get('pin'),
+                    lac: formData.get('lac'),
+                    village: formData.get('village'),
                     po: formData.get('po'),
                     ps: formData.get('ps'),
-                    mouza: formData.get('mouza')
+                    pin: formData.get('pin')
                 },
-                membership: {
-                    type: formData.get('membership-type')
+                family: {
+                    male: parseInt(formData.get('male-count')) || 0,
+                    female: parseInt(formData.get('female-count')) || 0,
+                    totalMembers: parseInt(formData.get('total-members')) || 0,
+                    houseType: formData.get('house-type'),
+                    landOwnership: formData.get('land-ownership'),
+                    vehicleOwned: formData.get('vehicle-owned'),
+                    beltBlock: formData.get('belt-block'),
+                    autonomousCouncil: formData.get('autonomous-council'),
+                    govtScheme: formData.get('govt-scheme'),
+                    govtEmployees: parseInt(formData.get('govt-employees')) || 0
                 },
-                message: formData.get('message') || '',
+                termsAccepted: formData.get('terms') === 'on',
+                selfDeclaration: formData.get('declaration') === 'on',
+                photo: '',
                 status: 'submitted',
                 currentStage: 'da',
                 createdAt: null,
                 updatedAt: null
             };
 
-            // Validation
-            if (!data.personal.fullName || !data.personal.email || !data.personal.phone) {
-                showMessage('error', '<strong>Error:</strong> Please fill in all required fields.');
+            // --- Validation ---
+            if (!data.personal.firstName || !data.personal.dob || !data.personal.email || !data.personal.phone) {
+                showMessage('error', '<strong>Error:</strong> Please fill in all required personal information fields.');
                 return;
             }
             if (!data.personal.email.includes('@')) {
@@ -515,15 +878,35 @@
                 showMessage('error', '<strong>Error:</strong> Please enter a valid 6-digit PIN code.');
                 return;
             }
+            if (!photoInput.files || !photoInput.files[0]) {
+                showMessage('error', '<strong>Error:</strong> Please upload a passport size photo.');
+                return;
+            }
+            if (!data.termsAccepted) {
+                showMessage('error', '<strong>Error:</strong> Please accept the Terms and Conditions.');
+                return;
+            }
+            if (!data.selfDeclaration) {
+                showMessage('error', '<strong>Error:</strong> Please confirm the Self-Declaration.');
+                return;
+            }
 
+            // Convert photo to base64
+            let photoBase64 = '';
+            try {
+                photoBase64 = await fileToBase64(photoInput.files[0]);
+                data.photo = photoBase64;
+            } catch (error) {
+                showMessage('error', '<strong>Error:</strong> Failed to upload photo. Please try again.');
+                return;
+            }
+
+            // Generate reference
             const reference = generateReference();
-            const referencePath = `applications/${reference}`;
 
             try {
-                // Check if reference already exists (unlikely)
-                const snapshot = await get(ref(db, referencePath));
+                const snapshot = await get(ref(db, `applications/${reference}`));
                 if (snapshot.exists()) {
-                    // Regenerate
                     const newRef = generateReference();
                     await set(ref(db, `applications/${newRef}`), {
                         ...data,
@@ -533,7 +916,7 @@
                     });
                     showSuccess(newRef);
                 } else {
-                    await set(ref(db, referencePath), {
+                    await set(ref(db, `applications/${reference}`), {
                         ...data,
                         reference: reference,
                         createdAt: serverTimestamp(),
@@ -564,6 +947,7 @@
                 `;
                 showMessage('success', content);
                 form.reset();
+                previewContainer.innerHTML = '';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Application';
             }
