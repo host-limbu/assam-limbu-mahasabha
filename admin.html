@@ -15,7 +15,6 @@
             max-width: 400px;
             margin: 0 auto;
             padding: var(--spacing-lg);
-            /* No border, no background, no card */
         }
         .admin-login-form input {
             width: 100%;
@@ -59,6 +58,101 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: var(--font-medium);
+        }
+
+        /* Search & Filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            align-items: flex-end;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-surface-alt);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+        .filter-bar .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            flex: 1 1 180px;
+            min-width: 150px;
+        }
+        .filter-bar .filter-group label {
+            font-size: 0.75rem;
+            font-weight: var(--font-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+        }
+        .filter-bar .filter-group input,
+        .filter-bar .filter-group select {
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .filter-bar .filter-group input:focus,
+        .filter-bar .filter-group select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .filter-bar .filter-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+            flex: 0 0 auto;
+            padding-top: 0.5rem;
+        }
+        .filter-bar .filter-actions .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        .filter-bar .filter-actions .btn-clear {
+            background: transparent;
+            color: var(--color-text-muted);
+            border: 1px solid var(--color-border);
+        }
+        .filter-bar .filter-actions .btn-clear:hover {
+            background: var(--color-border);
+        }
+        .filter-bar .filter-actions .btn-apply {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .filter-bar .filter-actions .btn-apply:hover {
+            background: var(--color-primary-light);
+        }
+        .filter-bar .filter-result-info {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-left: auto;
+            align-self: center;
+        }
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar .filter-group {
+                flex: 1 1 auto;
+                min-width: unset;
+            }
+            .filter-bar .filter-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            .filter-bar .filter-result-info {
+                margin-left: 0;
+                text-align: left;
+                padding-top: var(--spacing-xs);
+            }
         }
 
         /* Table styles – same as check-status.html */
@@ -106,13 +200,16 @@
             padding: var(--spacing-lg);
         }
 
-        /* Modals */
+        /* ============================================================
+           MODALS – UPGRADED MODERN DESIGN
+           ============================================================ */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -124,55 +221,157 @@
         }
         .modal-content {
             background: var(--color-surface);
-            max-width: 800px;
+            max-width: 560px;
             width: 100%;
             border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
+            animation: modalFadeIn 0.25s ease;
         }
-        .modal-content h3 {
-            margin-top: 0;
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
-        .modal-content .close {
-            position: sticky;
-            top: 0;
-            float: right;
+        .modal-content .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
             background: none;
             border: none;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
+            line-height: 1;
             cursor: pointer;
             color: var(--color-text-muted);
+            transition: color var(--transition);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius);
         }
-        .modal-content .close:hover {
+        .modal-content .modal-close:hover {
             color: var(--color-text);
+            background: var(--color-surface-alt);
         }
-        .detail-grid {
+        .modal-content .modal-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+        .modal-content h3 {
+            font-size: 1.3rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+        .modal-content .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+        .modal-content label {
+            display: block;
+            font-weight: var(--font-medium);
+            font-size: 0.9rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-xs);
+        }
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+        }
+        .modal-content textarea::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.6;
+        }
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        .modal-actions .btn {
+            padding: 0.6rem 1.6rem;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            font-weight: var(--font-medium);
+            transition: all var(--transition);
+        }
+        .modal-actions .btn-secondary {
+            background: var(--color-surface-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        .modal-actions .btn-secondary:hover {
+            background: var(--color-border);
+        }
+        .modal-actions .btn-primary {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .modal-actions .btn-primary:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary-light);
+        }
+
+        /* For the larger View / Certificate modals, keep them scrollable */
+        .modal-content.large {
+            max-width: 800px;
+        }
+        .modal-content.large .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: var(--spacing-sm);
         }
-        .detail-item {
+        .modal-content.large .detail-item {
             padding: 0.3rem 0;
             border-bottom: 1px solid var(--color-border);
         }
-        .detail-item .label {
+        .modal-content.large .detail-item .label {
             font-weight: var(--font-medium);
             color: var(--color-text-muted);
             display: inline-block;
             width: 40%;
         }
-        .detail-item .value {
+        .modal-content.large .detail-item .value {
             color: var(--color-text);
             display: inline-block;
             width: 58%;
         }
+
+        /* Certificate preview inside modal */
         .certificate-preview {
             background: #fff;
             padding: 30px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             margin-top: var(--spacing-md);
             border-radius: var(--radius);
         }
@@ -211,24 +410,8 @@
             border-radius: 3px;
             border: 1px solid #ddd;
         }
-        .modal-actions {
-            display: flex;
-            gap: var(--spacing-sm);
-            justify-content: flex-end;
-            margin-top: var(--spacing-md);
-        }
-        .modal-actions .btn {
-            padding: 0.5rem 1.2rem;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9rem;
-            margin-top: var(--spacing-sm);
-            display: none;
-        }
-        .error-message.visible {
-            display: block;
-        }
+
+        /* Toast */
         .toast {
             position: fixed;
             bottom: var(--spacing-lg);
@@ -240,24 +423,65 @@
             box-shadow: var(--shadow-lg);
             z-index: 3000;
             display: none;
+            max-width: 400px;
         }
         .toast.visible {
             display: block;
             animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .admin-table { font-size: 0.8rem; min-width: 500px; }
-            .admin-table th, .admin-table td { padding: 0.3rem 0.5rem; }
-            .detail-grid { grid-template-columns: 1fr; }
-            .certificate-preview .body { flex-direction: column; align-items: center; }
+            .admin-table {
+                font-size: 0.8rem;
+                min-width: 500px;
+            }
+            .admin-table th,
+            .admin-table td {
+                padding: 0.3rem 0.5rem;
+            }
+            .modal-content {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-sm);
+            }
+            .modal-content.large .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .certificate-preview .body {
+                flex-direction: column;
+                align-items: center;
+            }
             .admin-table .actions .btn {
                 font-size: 0.65rem;
                 padding: 0.1rem 0.3rem;
+            }
+            .modal-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .modal-actions .btn {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
             }
         }
     </style>
@@ -266,7 +490,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as all pages) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -314,7 +538,7 @@
             </div>
         </header>
 
-        <!-- ==================== ADMIN SECTION (FULL-WIDTH WHITE, same as check-status.html) ==================== -->
+        <!-- ==================== ADMIN SECTION ==================== -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
@@ -323,7 +547,7 @@
                         Secure admin panel for Dealing Assistant, President, and Approving Authority.
                     </p>
 
-                    <!-- Login Section – no grey border/card -->
+                    <!-- Login Section -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
@@ -345,33 +569,86 @@
                             </div>
                             <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
+
+                        <!-- ==================== SEARCH & FILTER BAR ==================== -->
+                        <div class="filter-bar" id="filterBar">
+                            <div class="filter-group">
+                                <label for="searchInput">Search</label>
+                                <input type="text" id="searchInput" placeholder="Name or Ref No..." />
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateFrom">From Date</label>
+                                <input type="date" id="dateFrom" />
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateTo">To Date</label>
+                                <input type="date" id="dateTo" />
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn btn-apply" id="applyFilterBtn">Apply Filters</button>
+                                <button class="btn btn-clear" id="clearFilterBtn">Clear</button>
+                                <span class="filter-result-info" id="resultCount"></span>
+                            </div>
+                        </div>
+
+                        <!-- Application List Container -->
                         <div id="appListContainer"></div>
                     </div>
                 </div>
             </section>
         </main>
 
-        <!-- MODALS -->
+        <!-- ============================================================
+        MODALS – UPGRADED MODERN DESIGN
+        ============================================================ -->
+
+        <!-- View Modal (large) -->
         <div id="viewModal" class="modal">
-            <div class="modal-content">
-                <button class="close" data-modal="viewModal">&times;</button>
-                <h3>Application Details</h3>
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="viewModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;">Application Details</h3>
+                </div>
                 <div id="viewContent"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-modal="viewModal">Close</button>
+                </div>
             </div>
         </div>
 
+        <!-- Certificate Preview Modal (large) -->
         <div id="certificateModal" class="modal">
-            <div class="modal-content">
-                <button class="close" data-modal="certificateModal">&times;</button>
-                <h3>Certificate Preview</h3>
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="certificateModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;">Certificate Preview</h3>
+                </div>
                 <div id="certificateContent"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-modal="certificateModal">Close</button>
+                </div>
             </div>
         </div>
 
+        <!-- ============================================================
+        REMARK / FORWARD MODAL – UPGRADED MODERN DESIGN
+        ============================================================ -->
         <div id="remarkModal" class="modal">
             <div class="modal-content">
-                <h3 id="modalTitle">Add Remarks</h3>
-                <textarea id="remarkText" rows="4" placeholder="Enter your remarks..."></textarea>
+                <button class="modal-close" id="remarkModalClose">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                    <span class="modal-icon">&#9670;</span>
+                    <div>
+                        <h3 id="modalTitle">Add Remarks</h3>
+                        <p class="modal-subtitle" id="modalSubtitle">Enter your remarks below and proceed.</p>
+                    </div>
+                </div>
+
+                <label for="remarkText">Remarks</label>
+                <textarea id="remarkText" rows="4" placeholder="Type your remarks here..."></textarea>
+
                 <div class="modal-actions">
                     <button class="btn btn-secondary" id="modalCancel">Cancel</button>
                     <button class="btn btn-primary" id="modalConfirm">Submit</button>
@@ -474,29 +751,231 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const roleBadge = document.getElementById('roleBadge');
         const appListContainer = document.getElementById('appListContainer');
+
+        // Search/filter elements
+        const searchInput = document.getElementById('searchInput');
+        const dateFrom = document.getElementById('dateFrom');
+        const dateTo = document.getElementById('dateTo');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+        const resultCount = document.getElementById('resultCount');
+
+        // Modals
         const viewModal = document.getElementById('viewModal');
         const viewContent = document.getElementById('viewContent');
         const certificateModal = document.getElementById('certificateModal');
         const certificateContent = document.getElementById('certificateContent');
         const remarkModal = document.getElementById('remarkModal');
         const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
         const remarkText = document.getElementById('remarkText');
         const modalConfirm = document.getElementById('modalConfirm');
         const modalCancel = document.getElementById('modalCancel');
+        const remarkModalClose = document.getElementById('remarkModalClose');
+
         const toast = document.getElementById('toast');
 
-        let currentUser = null, currentRole = null, currentAppKey = null, currentAction = null;
+        let currentUser = null,
+            currentRole = null,
+            currentAppKey = null,
+            currentAction = null;
+
+        // Store the full list of applications (role-filtered) for client-side filtering
+        let roleFilteredApps = [];
+        let allAppsData = {}; // full snapshot for key lookup
 
         function showToast(msg) {
             toast.textContent = msg;
             toast.classList.add('visible');
             setTimeout(() => toast.classList.remove('visible'), 3000);
         }
+
         function now() {
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
-        // LOGIN
+        // ----- FILTERING LOGIC -----
+        function filterApplications() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const fromDate = dateFrom.value;
+            const toDate = dateTo.value;
+
+            let filtered = roleFilteredApps.filter(app => {
+                // Search by name or ref number
+                if (searchTerm) {
+                    const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
+                    const ref = (app.refNumber || '').toLowerCase();
+                    if (!name.includes(searchTerm) && !ref.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+
+                // Date range filter
+                if (fromDate || toDate) {
+                    const appDate = app.timestamp ? app.timestamp.split(' ')[0] : ''; // YYYY-MM-DD
+                    if (fromDate && appDate < fromDate) return false;
+                    if (toDate && appDate > toDate) return false;
+                }
+
+                return true;
+            });
+
+            // Update result count
+            resultCount.textContent = `${filtered.length} application${filtered.length !== 1 ? 's' : ''} found`;
+
+            // Render the filtered table
+            renderTable(filtered);
+        }
+
+        // ----- RENDER TABLE -----
+        function renderTable(applications) {
+            if (!applications || applications.length === 0) {
+                appListContainer.innerHTML = '<div class="admin-empty">No applications match your filters.</div>';
+                return;
+            }
+
+            let html = `<div class="table-wrapper"><table class="admin-table">
+                <thead><tr>
+                    <th>Ref No</th>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr></thead><tbody>`;
+
+            applications.forEach(app => {
+                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                const refNum = app.refNumber || 'N/A';
+                const date = app.timestamp || 'N/A';
+                const status = app.status || 'Submitted';
+
+                let actionsHTML = `
+                    <button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>
+                `;
+                if (currentRole === 'DA') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>
+                    `;
+                } else if (currentRole === 'President') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>
+                    `;
+                } else if (currentRole === 'AA') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
+                        <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
+                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>
+                    `;
+                }
+                html += `
+                    <tr>
+                        <td>${refNum}</td>
+                        <td>${name}</td>
+                        <td>${status}</td>
+                        <td>${date}</td>
+                        <td><div class="actions">${actionsHTML}</div></td>
+                    </tr>
+                `;
+            });
+            html += '</tbody></table></div>';
+            appListContainer.innerHTML = html;
+
+            // Re-attach event listeners
+            document.querySelectorAll('[data-action]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const action = btn.dataset.action;
+                    const key = btn.dataset.key;
+                    currentAppKey = key;
+                    const appData = allAppsData[key]; // get full data from the snapshot
+                    if (action === 'view') {
+                        openViewModal(appData);
+                    } else if (action === 'previewcert') {
+                        openCertificatePreview(appData);
+                    } else if (action === 'remark') {
+                        modalTitle.textContent = 'Add Remarks';
+                        modalSubtitle.textContent = 'Enter your remarks below and proceed.';
+                        remarkText.value = '';
+                        currentAction = 'remark';
+                        remarkModal.classList.add('visible');
+                    } else if (action === 'forward') {
+                        modalTitle.textContent = 'Forward Application';
+                        modalSubtitle.textContent = 'Add your forwarding remarks below.';
+                        remarkText.value = '';
+                        currentAction = 'forward';
+                        remarkModal.classList.add('visible');
+                    } else if (action === 'approve') {
+                        if (confirm('Approve this application?')) {
+                            updateApplicationStatus(key, 'Approved', 'AA', 'Application approved.');
+                        }
+                    } else if (action === 'reject') {
+                        if (confirm('Reject this application?')) {
+                            updateApplicationStatus(key, 'Rejected', 'AA', 'Application rejected.');
+                        }
+                    }
+                });
+            });
+        }
+
+        // ----- LOAD APPLICATIONS (role-based) -----
+        function loadApplications(role) {
+            const appsRef = ref(db, 'applications');
+            onValue(appsRef, (snapshot) => {
+                if (!snapshot.exists()) {
+                    appListContainer.innerHTML = '<div class="admin-empty">No applications found.</div>';
+                    return;
+                }
+                allAppsData = snapshot.val();
+                const appKeys = Object.keys(allAppsData);
+
+                // Role-based filtering
+                let filtered = [];
+                if (role === 'DA') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.status === 'Submitted' || app.currentStage === 'DA' || !app.currentStage;
+                    });
+                } else if (role === 'President') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.currentStage === 'President';
+                    });
+                } else if (role === 'AA') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.currentStage === 'AA';
+                    });
+                }
+
+                // Map to array with _key
+                roleFilteredApps = filtered.map(key => ({ ...allAppsData[key], _key: key }));
+
+                // Apply search/filter (if any) and render
+                filterApplications();
+            });
+        }
+
+        // ----- FILTER EVENT LISTENERS -----
+        applyFilterBtn.addEventListener('click', filterApplications);
+        clearFilterBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            dateFrom.value = '';
+            dateTo.value = '';
+            filterApplications();
+        });
+
+        // Also filter on Enter key in search input
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') filterApplications();
+        });
+
+        // Also filter when date inputs change (optional)
+        dateFrom.addEventListener('change', filterApplications);
+        dateTo.addEventListener('change', filterApplications);
+
+        // ----- LOGIN -----
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
@@ -510,7 +989,7 @@
             }
         });
 
-        // AUTH STATE
+        // ----- AUTH STATE -----
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -530,7 +1009,8 @@
                 alert('No role assigned. Contact admin.');
                 await signOut(auth);
             } else {
-                currentUser = null; currentRole = null;
+                currentUser = null;
+                currentRole = null;
                 loginSection.style.display = 'block';
                 dashboard.classList.remove('visible');
                 appListContainer.innerHTML = '';
@@ -541,125 +1021,7 @@
             await signOut(auth);
         });
 
-        // LOAD APPLICATIONS
-        function loadApplications(role) {
-            const appsRef = ref(db, 'applications');
-            onValue(appsRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    appListContainer.innerHTML = '<div class="admin-empty">No applications found.</div>';
-                    return;
-                }
-                const allApps = snapshot.val();
-                const appKeys = Object.keys(allApps);
-                let filtered = [];
-                if (role === 'DA') {
-                    filtered = appKeys.filter(key => {
-                        const app = allApps[key];
-                        return app.status === 'Submitted' || app.currentStage === 'DA' || !app.currentStage;
-                    });
-                } else if (role === 'President') {
-                    filtered = appKeys.filter(key => {
-                        const app = allApps[key];
-                        return app.currentStage === 'President';
-                    });
-                } else if (role === 'AA') {
-                    filtered = appKeys.filter(key => {
-                        const app = allApps[key];
-                        return app.currentStage === 'AA';
-                    });
-                }
-
-                if (filtered.length === 0) {
-                    appListContainer.innerHTML = '<div class="admin-empty">No applications pending for your action.</div>';
-                    return;
-                }
-
-                // Build table with scroll wrapper
-                let html = `<div class="table-wrapper"><table class="admin-table">
-                    <thead><tr>
-                        <th>Ref No</th>
-                        <th>Applicant</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr></thead><tbody>`;
-                filtered.forEach(key => {
-                    const app = allApps[key];
-                    const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-                    const refNum = app.refNumber || 'N/A';
-                    const date = app.timestamp || 'N/A';
-                    const status = app.status || 'Submitted';
-
-                    let actionsHTML = `
-                        <button class="btn btn-secondary" data-action="view" data-key="${key}">View</button>
-                    `;
-                    if (role === 'DA') {
-                        actionsHTML += `
-                            <button class="btn btn-secondary" data-action="remark" data-key="${key}">Remark</button>
-                            <button class="btn btn-primary" data-action="forward" data-key="${key}">Forward</button>
-                        `;
-                    } else if (role === 'President') {
-                        actionsHTML += `
-                            <button class="btn btn-secondary" data-action="remark" data-key="${key}">Remark</button>
-                            <button class="btn btn-primary" data-action="forward" data-key="${key}">Forward</button>
-                        `;
-                    } else if (role === 'AA') {
-                        actionsHTML += `
-                            <button class="btn btn-secondary" data-action="remark" data-key="${key}">Remark</button>
-                            <button class="btn btn-success" data-action="approve" data-key="${key}">Approve</button>
-                            <button class="btn btn-danger" data-action="reject" data-key="${key}">Reject</button>
-                            <button class="btn btn-info" data-action="previewcert" data-key="${key}">Preview Cert</button>
-                        `;
-                    }
-                    html += `
-                        <tr>
-                            <td>${refNum}</td>
-                            <td>${name}</td>
-                            <td>${status}</td>
-                            <td>${date}</td>
-                            <td><div class="actions">${actionsHTML}</div></td>
-                        </tr>
-                    `;
-                });
-                html += '</tbody></table></div>';
-                appListContainer.innerHTML = html;
-
-                // Attach event listeners
-                document.querySelectorAll('[data-action]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const action = btn.dataset.action;
-                        const key = btn.dataset.key;
-                        currentAppKey = key;
-                        const appData = allApps[key];
-                        if (action === 'view') {
-                            openViewModal(appData);
-                        } else if (action === 'previewcert') {
-                            openCertificatePreview(appData);
-                        } else if (action === 'remark') {
-                            modalTitle.textContent = 'Add Remarks';
-                            remarkText.value = '';
-                            currentAction = 'remark';
-                            remarkModal.classList.add('visible');
-                        } else if (action === 'forward') {
-                            modalTitle.textContent = 'Forward Application';
-                            remarkText.value = '';
-                            currentAction = 'forward';
-                            remarkModal.classList.add('visible');
-                        } else if (action === 'approve') {
-                            if (confirm('Approve this application?')) {
-                                updateApplicationStatus(key, 'Approved', 'AA', 'Application approved.');
-                            }
-                        } else if (action === 'reject') {
-                            if (confirm('Reject this application?')) {
-                                updateApplicationStatus(key, 'Rejected', 'AA', 'Application rejected.');
-                            }
-                        }
-                    });
-                });
-            });
-        }
-
-        // Open View Modal
+        // ----- OPEN VIEW MODAL -----
         function openViewModal(app) {
             const fields = [
                 'refNumber', 'firstName', 'secondName', 'dob', 'email', 'phone', 'altPhone',
@@ -688,7 +1050,7 @@
             viewModal.classList.add('visible');
         }
 
-        // Open Certificate Preview
+        // ----- OPEN CERTIFICATE PREVIEW -----
         function openCertificatePreview(app) {
             const photoHtml = app.photoURL ? `<img src="${app.photoURL}" alt="Applicant photo" />` : '<p>No photo uploaded.</p>';
             certificateContent.innerHTML = `
@@ -724,23 +1086,36 @@
             certificateModal.classList.add('visible');
         }
 
-        // Close modals
-        document.querySelectorAll('.close').forEach(btn => {
+        // ----- CLOSE MODALS -----
+        document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.dataset.modal;
                 document.getElementById(modalId).classList.remove('visible');
             });
         });
+
+        // Close on backdrop click
         [viewModal, certificateModal, remarkModal].forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.classList.remove('visible');
             });
         });
 
-        // Remark modal actions
+        // Remark modal close buttons
+        remarkModalClose.addEventListener('click', () => {
+            remarkModal.classList.remove('visible');
+        });
+        modalCancel.addEventListener('click', () => {
+            remarkModal.classList.remove('visible');
+        });
+
+        // ----- REMARK / FORWARD CONFIRM -----
         modalConfirm.addEventListener('click', async () => {
             const remark = remarkText.value.trim();
-            if (!remark) { alert('Please enter a remark.'); return; }
+            if (!remark) {
+                alert('Please enter a remark.');
+                return;
+            }
             remarkModal.classList.remove('visible');
             if (currentAction === 'remark') {
                 await addRemark(currentAppKey, remark, currentRole);
@@ -750,9 +1125,8 @@
                 showToast('Application forwarded successfully.');
             }
         });
-        modalCancel.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
 
-        // Database functions
+        // ----- DATABASE FUNCTIONS -----
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -768,10 +1142,11 @@
             const snapshot = await get(appRef);
             if (!snapshot.exists()) return;
             const app = snapshot.val();
-            let nextStage = '', statusMsg = '';
-            if (role === 'DA') { nextStage = 'President'; statusMsg = 'Forwarded to President'; }
-            else if (role === 'President') { nextStage = 'AA'; statusMsg = 'Forwarded to Approving Authority'; }
-            else { alert('Invalid role for forwarding.'); return; }
+            let nextStage = '',
+                statusMsg = '';
+            if (role === 'DA') { nextStage = 'President';
+                statusMsg = 'Forwarded to President'; } else if (role === 'President') { nextStage = 'AA';
+                statusMsg = 'Forwarded to Approving Authority'; } else { alert('Invalid role for forwarding.'); return; }
             const remarks = app.remarks || [];
             if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
             const history = app.history || [];
@@ -800,7 +1175,7 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal loaded.');
+        console.log('Admin portal with search & filter loaded.');
     </script>
 
 </body>
