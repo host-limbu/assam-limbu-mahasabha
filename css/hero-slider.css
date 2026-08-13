@@ -1,10 +1,11 @@
 /* ============================================================
-   HERO SLIDER
+   HERO SLIDER — Reduced Height, No Crop
    ============================================================ */
 .hero-image {
     position: relative;
     overflow: hidden;
-    min-height: 400px;
+    height: 320px;                 /* ← reduced from 400px */
+    min-height: 280px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     background-color: var(--color-primary-light);
@@ -14,20 +15,22 @@
     display: flex;
     width: 100%;
     height: 100%;
-    min-height: 400px;
+    min-height: inherit;
     transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
 }
 
 .hero-slide {
     flex: 0 0 100%;
-    min-height: 400px;
-    background-size: cover;
+    height: 100%;
+    min-height: inherit;
+    background-size: contain;      /* ← shows full image, no cropping */
     background-position: center;
     background-repeat: no-repeat;
+    background-color: var(--color-primary-light); /* fills empty space */
 }
 
-/* Pause indicator (optional) */
+/* Pause indicator */
 .hero-slider.paused {
     opacity: 0.95;
     transition: opacity 0.3s ease;
@@ -36,4 +39,24 @@
 /* If JS fails, show first image */
 .hero-slider {
     transform: translateX(0%);
+}
+
+/* ---- Responsive Heights ----- */
+@media (max-width: 1024px) {
+    .hero-image {
+        height: 250px;
+        min-height: 220px;
+    }
+}
+@media (max-width: 768px) {
+    .hero-image {
+        height: 200px;
+        min-height: 180px;
+    }
+}
+@media (max-width: 480px) {
+    .hero-image {
+        height: 150px;
+        min-height: 130px;
+    }
 }
