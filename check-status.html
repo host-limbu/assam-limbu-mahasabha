@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
+        /* Same default background and colors as the website */
         .status-container {
             max-width: 900px;
             margin: var(--spacing-lg) auto;
@@ -30,41 +31,59 @@
             border-radius: var(--radius);
             font-size: 1rem;
             font-family: inherit;
+            background: var(--color-surface);
         }
         .search-box input:focus {
             outline: none;
             border-color: var(--color-primary);
         }
+        /* Table wrappers with horizontal scroll */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: var(--spacing-md);
+        }
         .status-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: var(--spacing-md);
+            white-space: nowrap;
+            min-width: 600px; /* ensures horizontal scroll appears when needed */
         }
         .status-table th,
         .status-table td {
             border: 1px solid var(--color-border);
-            padding: 0.5rem;
+            padding: 0.5rem 0.8rem;
             text-align: left;
             font-size: 0.9rem;
+            background: var(--color-surface); /* no grey */
+            color: var(--color-text);
         }
         .status-table th {
-            background: var(--color-surface-alt);
             font-weight: var(--font-medium);
+            background: var(--color-surface-alt); /* keep light grey for header only */
         }
-        .status-history {
+        /* History table */
+        .history-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             margin-top: var(--spacing-md);
         }
-        .status-history table {
+        .history-table {
             width: 100%;
             border-collapse: collapse;
+            white-space: nowrap;
+            min-width: 500px;
         }
-        .status-history th,
-        .status-history td {
+        .history-table th,
+        .history-table td {
             border: 1px solid var(--color-border);
-            padding: 0.4rem;
+            padding: 0.4rem 0.7rem;
             font-size: 0.85rem;
+            background: var(--color-surface);
+            color: var(--color-text);
         }
-        .status-history th {
+        .history-table th {
+            font-weight: var(--font-medium);
             background: var(--color-surface-alt);
         }
         .no-result {
@@ -75,6 +94,21 @@
         .certificate-download {
             margin-top: var(--spacing-md);
             text-align: center;
+        }
+        .status-detail {
+            margin-top: var(--spacing-md);
+        }
+        .status-detail .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+        }
+        .status-detail .value {
+            color: var(--color-text);
+        }
+        @media (max-width: 768px) {
+            .status-container { padding: var(--spacing-md); }
+            .status-table, .history-table { font-size: 0.8rem; }
+            .status-table th, .status-table td { padding: 0.3rem 0.5rem; }
         }
     </style>
 </head>
@@ -249,14 +283,17 @@
                 return;
             }
 
-            // Build status display
+            // Build history rows
             let historyRows = '';
             if (app.history && app.history.length) {
                 app.history.forEach(entry => {
                     historyRows += `<tr><td>${entry.timestamp}</td><td>${entry.action}</td><td>${entry.by || ''}</td></tr>`;
                 });
+            } else {
+                historyRows = '<tr><td colspan="3">No history available.</td></tr>';
             }
 
+            // Certificate download button (if approved)
             let certificateSection = '';
             if (app.status === 'Approved') {
                 certificateSection = `
@@ -266,33 +303,62 @@
                 `;
             }
 
+            // Build the result HTML with tables inside scrollable wrappers
             resultContainer.innerHTML = `
                 <h3>Application Status</h3>
-                <table class="status-table">
-                    <tr><th>Reference No</th><td>${app.refNumber}</td></tr>
-                    <tr><th>Applicant Name</th><td>${app.firstName} ${app.secondName}</td></tr>
-                    <tr><th>Email</th><td>${app.email}</td></tr>
-                    <tr><th>Phone</th><td>${app.phone}</td></tr>
-                    <tr><th>Membership Type</th><td>${app.membershipType}</td></tr>
-                    <tr><th>District</th><td>${app.district}</td></tr>
-                    <tr><th>Submission Date</th><td>${app.timestamp}</td></tr>
-                    <tr><th>Current Status</th><td style="font-weight:bold; color:${app.status === 'Approved' ? 'green' : app.status === 'Rejected' ? 'red' : 'var(--color-primary)'}">${app.status}</td></tr>
-                </table>
-                <div class="status-history">
-                    <h4>Processing History</h4>
-                    <table>
-                        <thead><tr><th>Date & Time</th><th>Action</th><th>By</th></tr></thead>
-                        <tbody>${historyRows || '<tr><td colspan="3">No history available.</td></tr>'}</tbody>
+                <div class="table-wrapper">
+                    <table class="status-table">
+                        <thead>
+                            <tr>
+                                <th>Reference No.</th>
+                                <th>Name</th>
+                                <th>Submission Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${app.refNumber}</td>
+                                <td>${app.firstName || ''} ${app.secondName || ''}</td>
+                                <td>${app.timestamp || ''}</td>
+                                <td style="font-weight:bold; color:${app.status === 'Approved' ? 'green' : app.status === 'Rejected' ? 'red' : 'var(--color-primary)'}">${app.status || 'Submitted'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="status-detail">
+                    <p><span class="label">Email:</span> <span class="value">${app.email || 'N/A'}</span></p>
+                    <p><span class="label">Phone:</span> <span class="value">${app.phone || 'N/A'}</span></p>
+                    <p><span class="label">Membership Type:</span> <span class="value">${app.membershipType || 'N/A'}</span></p>
+                    <p><span class="label">District:</span> <span class="value">${app.district || 'N/A'}</span></p>
+                </div>
+
+                <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
+                <div class="history-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date &amp; Time</th>
+                                <th>Action</th>
+                                <th>By</th>
+                            </tr>
+                        </thead>
+                        <tbody>${historyRows}</tbody>
                     </table>
                 </div>
                 ${certificateSection}
             `;
 
+            // Attach certificate download listener
             if (app.status === 'Approved') {
-                document.getElementById('downloadCertBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    alert('Certificate generation will be available soon.');
-                });
+                const certBtn = document.getElementById('downloadCertBtn');
+                if (certBtn) {
+                    certBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        alert('Certificate generation will be available soon.');
+                    });
+                }
             }
         }
 
@@ -305,7 +371,7 @@
             if (e.key === 'Enter') checkBtn.click();
         });
 
-        // Check if ref is in URL (for direct link)
+        // Auto-check if ref is in URL (for direct link)
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
         if (refParam) {
