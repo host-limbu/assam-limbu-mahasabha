@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* Admin specific styles */
         .admin-login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -201,7 +200,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as main site) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -249,7 +247,6 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
             <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
@@ -270,14 +267,13 @@
                     <div id="loginSection" class="admin-login-section">
                         <h2>Login</h2>
                         <form id="loginForm" class="admin-login-form">
-                            <input type="email" id="loginEmail" placeholder="Email (e.g., da@example.com)" required />
+                            <input type="email" id="loginEmail" placeholder="Email" required />
                             <input type="password" id="loginPassword" placeholder="Password" required />
                             <div id="loginError" class="error-message">Invalid credentials.</div>
                             <button type="submit" class="btn btn-primary">Sign In</button>
                         </form>
                     </div>
 
-                    <!-- DASHBOARD (hidden initially) -->
                     <div id="dashboard" class="admin-dashboard">
                         <div class="admin-header">
                             <div>
@@ -286,16 +282,14 @@
                             </div>
                             <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
-                        <div id="appListContainer">
-                            <!-- Applications will be rendered here -->
-                        </div>
+                        <div id="appListContainer"></div>
                     </div>
                 </div>
             </section>
 
         </main>
 
-        <!-- MODAL for remarks -->
+        <!-- MODAL -->
         <div id="remarkModal" class="modal">
             <div class="modal-content">
                 <h3 id="modalTitle">Add Remarks</h3>
@@ -310,7 +304,6 @@
         <!-- TOAST -->
         <div id="toast" class="toast"></div>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -375,12 +368,10 @@
     </script>
 
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
         import { getDatabase, ref, get, update, push, set, onValue } from "firebase/database";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
             authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -405,49 +396,30 @@
         const roleBadge = document.getElementById('roleBadge');
         const appListContainer = document.getElementById('appListContainer');
 
-        // Modal elements
         const modal = document.getElementById('remarkModal');
         const modalTitle = document.getElementById('modalTitle');
         const remarkText = document.getElementById('remarkText');
         const modalConfirm = document.getElementById('modalConfirm');
         const modalCancel = document.getElementById('modalCancel');
 
-        // Toast
         const toast = document.getElementById('toast');
 
-        // State
         let currentUser = null;
         let currentRole = null;
         let currentAppKey = null;
-        let currentAction = null; // 'remark' or 'forward'
+        let currentAction = null;
 
-        // Helper: show toast message
         function showToast(msg) {
             toast.textContent = msg;
             toast.classList.add('visible');
             setTimeout(() => toast.classList.remove('visible'), 3000);
         }
 
-        // Helper: get current date/time
         function now() {
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
-        // Role mapping
-        const roleMap = {
-            'da@example.com': 'DA',
-            'president@example.com': 'President',
-            'aa@example.com': 'AA'
-        };
-
-        // Role-based stages
-        const stageMap = {
-            'DA': 'DA',
-            'President': 'President',
-            'AA': 'AA'
-        };
-
-        // Login handler
+        // LOGIN
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
@@ -455,46 +427,38 @@
             loginError.classList.remove('visible');
 
             try {
-                const cred = await signInWithEmailAndPassword(auth, email, password);
-                // User signed in; onAuthStateChanged will handle the rest
+                await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
                 loginError.textContent = error.message;
                 loginError.classList.add('visible');
             }
         });
 
-        // Auth state listener
+        // AUTH STATE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                // Determine role from email (hardcoded mapping for demo)
-                // In production, you'd store roles in Firebase Database or custom claims.
-                const email = user.email;
-                let role = null;
-                if (email === 'da@example.com') role = 'DA';
-                else if (email === 'president@example.com') role = 'President';
-                else if (email === 'aa@example.com') role = 'AA';
-                else {
-                    // Fallback: check database for role
-                    try {
-                        const snapshot = await get(ref(db, `users/${user.uid}/role`));
-                        if (snapshot.exists()) {
-                            role = snapshot.val();
+                // Fetch role from database
+                try {
+                    const snapshot = await get(ref(db, `users/${user.uid}`));
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        const role = userData.role;
+                        if (role) {
+                            currentRole = role;
+                            loginSection.style.display = 'none';
+                            dashboard.classList.add('visible');
+                            roleBadge.textContent = role;
+                            loadApplications(role);
+                            return;
                         }
-                    } catch (e) {}
+                    }
+                } catch (e) {
+                    console.error('Error fetching role:', e);
                 }
-
-                if (!role) {
-                    alert('No role assigned. Contact admin.');
-                    await signOut(auth);
-                    return;
-                }
-
-                currentRole = role;
-                loginSection.style.display = 'none';
-                dashboard.classList.add('visible');
-                roleBadge.textContent = role;
-                loadApplications(role);
+                // If no role found, logout
+                alert('No role assigned. Contact admin.');
+                await signOut(auth);
             } else {
                 currentUser = null;
                 currentRole = null;
@@ -504,12 +468,12 @@
             }
         });
 
-        // Logout
+        // LOGOUT
         logoutBtn.addEventListener('click', async () => {
             await signOut(auth);
         });
 
-        // Load applications based on role
+        // LOAD APPLICATIONS
         function loadApplications(role) {
             const appsRef = ref(db, 'applications');
             onValue(appsRef, (snapshot) => {
@@ -523,19 +487,16 @@
                 let filtered = [];
 
                 if (role === 'DA') {
-                    // Show applications with status 'Submitted' or currentStage 'DA'
                     filtered = appKeys.filter(key => {
                         const app = allApps[key];
                         return app.status === 'Submitted' || app.currentStage === 'DA' || !app.currentStage;
                     });
                 } else if (role === 'President') {
-                    // Show applications forwarded by DA (currentStage === 'President')
                     filtered = appKeys.filter(key => {
                         const app = allApps[key];
                         return app.currentStage === 'President';
                     });
                 } else if (role === 'AA') {
-                    // Show applications forwarded by President (currentStage === 'AA')
                     filtered = appKeys.filter(key => {
                         const app = allApps[key];
                         return app.currentStage === 'AA';
@@ -555,7 +516,6 @@
                     const date = app.timestamp || 'N/A';
                     const status = app.status || 'Submitted';
 
-                    // Determine action buttons based on role
                     let actionsHTML = '';
                     if (role === 'DA') {
                         actionsHTML = `
@@ -590,7 +550,6 @@
                 html += '</div>';
                 appListContainer.innerHTML = html;
 
-                // Attach event listeners to action buttons
                 document.querySelectorAll('[data-action]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const action = btn.dataset.action;
@@ -602,7 +561,7 @@
             });
         }
 
-        // Handle actions
+        // HANDLE ACTIONS
         function handleAction(action, key, appData) {
             if (action === 'remark') {
                 modalTitle.textContent = 'Add Remarks';
@@ -625,7 +584,7 @@
             }
         }
 
-        // Modal confirm
+        // MODAL
         modalConfirm.addEventListener('click', async () => {
             const remark = remarkText.value.trim();
             if (!remark) {
@@ -646,12 +605,11 @@
         modalCancel.addEventListener('click', () => {
             modal.classList.remove('visible');
         });
-        // Close on backdrop click
         modal.addEventListener('click', (e) => {
             if (e.target === modal) modal.classList.remove('visible');
         });
 
-        // Add remark
+        // FUNCTIONS
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -662,7 +620,6 @@
             await update(appRef, { remarks });
         }
 
-        // Forward application
         async function forwardApplication(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -682,13 +639,11 @@
                 return;
             }
 
-            // Add remark if provided
             const remarks = app.remarks || [];
             if (remarkText) {
                 remarks.push({ by: role, text: remarkText, timestamp: now() });
             }
 
-            // Update history
             const history = app.history || [];
             history.push({ action: `Forwarded to ${nextStage} by ${role}`, timestamp: now(), by: role });
 
@@ -700,7 +655,6 @@
             });
         }
 
-        // Update status (approve/reject) by AA
         async function updateApplicationStatus(key, finalStatus, role, remarkText) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -725,10 +679,6 @@
             });
             showToast(`Application ${finalStatus}.`);
         }
-
-        // Pre-populate login for demo (you can remove this)
-        // loginEmail.value = 'da@example.com';
-        // loginPassword.value = 'password123';
 
         console.log('Admin portal loaded.');
     </script>
