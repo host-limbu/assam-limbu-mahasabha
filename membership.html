@@ -3,136 +3,128 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Membership Application — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Apply for membership to the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee." />
+    <title>Membership — Assam Limbu Mahasabha</title>
+    <meta name="description" content="Join the Assam Limbu Mahasabha, Karbi Anglong & Dima Hasao District Committee. Become a member and support the Limbu community." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
     <style>
-        /* Page-specific styles — extends global design system */
-        .form-section {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-        }
-        .form-section-title {
-            font-size: 1.1rem;
-            font-weight: var(--font-semibold);
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-md);
-            padding-bottom: var(--spacing-xs);
-            border-bottom: 2px solid var(--color-border);
-        }
-        .form-grid {
+        /* Additional form styles */
+        .membership-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: var(--spacing-md);
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-xs);
+        .membership-form-grid .full-width {
+            grid-column: 1 / -1;
         }
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-        .form-group label {
-            font-size: 0.85rem;
+        .membership-form-grid label {
+            display: block;
             font-weight: var(--font-medium);
-            color: var(--color-text);
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.9rem;
         }
-        .form-group label .required {
-            color: #d32f2f;
-            margin-left: 2px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 0.6rem 0.8rem;
+        .membership-form-grid input,
+        .membership-form-grid select,
+        .membership-form-grid textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-family: inherit;
             background: var(--color-surface);
             transition: border-color var(--transition);
-            width: 100%;
             box-sizing: border-box;
         }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .membership-form-grid input:focus,
+        .membership-form-grid select:focus,
+        .membership-form-grid textarea:focus {
             outline: none;
             border-color: var(--color-primary);
         }
-        .form-group input[type="file"] {
-            padding: 0.4rem 0;
-            border: none;
+        .membership-form-grid .form-group {
+            margin-bottom: var(--spacing-sm);
         }
-        .form-group .hint {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-        }
-        .form-group .error {
-            font-size: 0.75rem;
-            color: #d32f2f;
-            display: none;
-        }
-        .form-group.error input,
-        .form-group.error select {
-            border-color: #d32f2f;
-        }
-        .form-group.error .error {
-            display: block;
-        }
-        .checkbox-group {
+        .membership-form-grid .inline-group {
             display: flex;
-            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+        .membership-form-grid .inline-group label {
+            margin-bottom: 0;
+        }
+        .membership-form-grid .checkbox-group {
+            display: flex;
+            align-items: center;
             gap: var(--spacing-sm);
         }
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-            flex-shrink: 0;
-            accent-color: var(--color-primary);
-        }
-        .checkbox-group label {
-            font-size: 0.9rem;
-            color: var(--color-text-muted);
-            font-weight: var(--font-regular);
+        .membership-form-grid .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
         }
         .form-actions {
+            grid-column: 1 / -1;
             display: flex;
-            gap: var(--spacing-md);
             flex-wrap: wrap;
+            gap: var(--spacing-md);
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--spacing-md);
+        }
+        .receipt {
+            display: none;
+            background: var(--color-surface);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
             margin-top: var(--spacing-lg);
-            padding-top: var(--spacing-md);
-            border-top: 1px solid var(--color-border);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .form-actions .btn {
-            min-width: 160px;
+        .receipt.visible {
+            display: block;
         }
-
-        /* Responsive */
+        .receipt h3 {
+            color: var(--color-primary);
+            text-align: center;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: var(--spacing-sm);
+        }
+        .receipt .ref-number {
+            font-size: 1.5rem;
+            font-weight: var(--font-bold);
+            color: var(--color-primary);
+            text-align: center;
+            margin: var(--spacing-md) 0;
+        }
+        .receipt .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.95rem;
+        }
+        .receipt .detail-row .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+        }
+        .receipt .detail-row .value {
+            color: var(--color-text);
+        }
+        .receipt .print-btn {
+            display: block;
+            margin: var(--spacing-md) auto 0;
+        }
         @media (max-width: 768px) {
-            .form-grid {
+            .membership-form-grid {
                 grid-template-columns: 1fr;
             }
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-            .form-section {
-                padding: var(--spacing-md);
-            }
-            .form-actions {
-                flex-direction: column;
-            }
-            .form-actions .btn {
-                width: 100%;
+            .membership-form-grid .full-width {
+                grid-column: 1;
             }
         }
     </style>
@@ -141,7 +133,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as all pages) -->
+        <!-- HEADER (same as all pages, no language button) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -196,7 +188,7 @@
 
             <div class="search-overlay" hidden>
                 <div class="search-overlay-inner">
-                    <form role="search" action="/search.html" method="get">
+                    <form role="search" action="search.html" method="get">
                         <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
                         <button type="submit">Search</button>
                     </form>
@@ -209,332 +201,272 @@
         <main class="site-main" role="main">
 
             <!-- HERO -->
-            <section class="hero-section full-width" style="min-height: 30vh; background: var(--color-primary-dark);">
+            <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
                         <p class="hero-tag">Join Us</p>
-                        <h1 style="font-size: 2.4rem;">Membership Application</h1>
+                        <h1 style="font-size: 2.8rem;">Membership Application</h1>
                         <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
-                            Complete the form below to apply for membership in the Assam Limbu Mahasabha.
-                            All fields marked with <span style="color: #d32f2f;">*</span> are required.
+                            Fill in the details below to apply for membership. All fields are required unless marked optional.
                         </p>
                     </div>
                 </div>
             </section>
 
             <!-- APPLICATION FORM -->
-            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
+                    <div class="section-label">Apply Now</div>
+                    <h2>Membership Application Form</h2>
 
-                    <form id="membership-form" enctype="multipart/form-data" style="max-width: 900px; margin: 0 auto;">
+                    <form id="membershipForm" class="membership-form-grid" novalidate>
 
-                        <!-- ========== SECTION 1: Membership Type ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Membership Type</div>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="membershipType">Membership Type <span class="required">*</span></label>
-                                    <select id="membershipType" name="membershipType" required>
-                                        <option value="">Select Membership Type</option>
-                                        <option value="general">General</option>
-                                        <option value="advisory">Advisory</option>
-                                        <option value="wellwisher">Well Wisher</option>
-                                    </select>
-                                </div>
+                        <!-- Membership Type -->
+                        <div class="form-group full-width">
+                            <label for="membershipType">Membership Type *</label>
+                            <select id="membershipType" name="membershipType" required>
+                                <option value="">Select</option>
+                                <option value="General">General</option>
+                                <option value="Advisory">Advisory</option>
+                                <option value="Well Wisher">Well Wisher</option>
+                            </select>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required />
+                        </div>
+
+                        <!-- Second Name -->
+                        <div class="form-group">
+                            <label for="secondName">Second Name *</label>
+                            <input type="text" id="secondName" name="secondName" required />
+                        </div>
+
+                        <!-- DOB -->
+                        <div class="form-group">
+                            <label for="dob">Date of Birth *</label>
+                            <input type="date" id="dob" name="dob" required />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required />
+                        </div>
+
+                        <!-- Alternate Phone -->
+                        <div class="form-group">
+                            <label for="altPhone">Alternate Phone Number</label>
+                            <input type="tel" id="altPhone" name="altPhone" />
+                        </div>
+
+                        <!-- Educational Qualification -->
+                        <div class="form-group full-width">
+                            <label for="education">Educational Qualification *</label>
+                            <select id="education" name="education" required>
+                                <option value="">Select</option>
+                                <option value="Undergraduate">Undergraduate</option>
+                                <option value="Postgraduate">Postgraduate</option>
+                                <option value="Matriculate">Matriculate</option>
+                                <option value="Graduate">Graduate</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div id="otherEducationGroup" style="display:none; margin-top: var(--spacing-sm);">
+                                <label for="otherEducation">Other Education *</label>
+                                <input type="text" id="otherEducation" name="otherEducation" />
                             </div>
                         </div>
 
-                        <!-- ========== SECTION 2: Personal Information ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Personal Information</div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="firstName">First Name <span class="required">*</span></label>
-                                    <input type="text" id="firstName" name="firstName" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="secondName">Second Name <span class="required">*</span></label>
-                                    <input type="text" id="secondName" name="secondName" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="dob">Date of Birth <span class="required">*</span></label>
-                                    <input type="date" id="dob" name="dob" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email Address <span class="required">*</span></label>
-                                    <input type="email" id="email" name="email" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number <span class="required">*</span></label>
-                                    <input type="tel" id="phone" name="phone" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="alternatePhone">Alternate Number</label>
-                                    <input type="tel" id="alternatePhone" name="alternatePhone" />
-                                </div>
+                        <!-- Blood Group -->
+                        <div class="form-group">
+                            <label for="bloodGroup">Blood Group *</label>
+                            <select id="bloodGroup" name="bloodGroup" required>
+                                <option value="">Select</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Not Known">Not Known</option>
+                            </select>
+                        </div>
+
+                        <!-- District -->
+                        <div class="form-group">
+                            <label for="district">District *</label>
+                            <select id="district" name="district" required>
+                                <option value="">Select</option>
+                                <option value="East Karbi Anglong">East Karbi Anglong</option>
+                                <option value="West Karbi Anglong">West Karbi Anglong</option>
+                                <option value="Dima Hasao">Dima Hasao</option>
+                            </select>
+                        </div>
+
+                        <!-- LAC -->
+                        <div class="form-group">
+                            <label for="lac">LAC *</label>
+                            <input type="text" id="lac" name="lac" required />
+                        </div>
+
+                        <!-- Village -->
+                        <div class="form-group">
+                            <label for="village">Village *</label>
+                            <input type="text" id="village" name="village" required />
+                        </div>
+
+                        <!-- Post Office -->
+                        <div class="form-group">
+                            <label for="postOffice">Post Office *</label>
+                            <input type="text" id="postOffice" name="postOffice" required />
+                        </div>
+
+                        <!-- Police Station -->
+                        <div class="form-group">
+                            <label for="ps">Police Station (PS) *</label>
+                            <input type="text" id="ps" name="ps" required />
+                        </div>
+
+                        <!-- PIN -->
+                        <div class="form-group">
+                            <label for="pin">PIN *</label>
+                            <input type="text" id="pin" name="pin" required pattern="[0-9]{6}" title="6-digit PIN" />
+                        </div>
+
+                        <!-- Family Status -->
+                        <div class="form-group">
+                            <label for="familyStatus">Family Status *</label>
+                            <select id="familyStatus" name="familyStatus" required>
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <!-- Total Family Members -->
+                        <div class="form-group">
+                            <label for="totalFamily">Total Family Members *</label>
+                            <input type="number" id="totalFamily" name="totalFamily" min="1" required />
+                        </div>
+
+                        <!-- Type of House -->
+                        <div class="form-group full-width">
+                            <label for="houseType">Type of House *</label>
+                            <input type="text" id="houseType" name="houseType" required />
+                        </div>
+
+                        <!-- Land Ownership -->
+                        <div class="form-group full-width">
+                            <label for="landOwnership">Land Ownership Status *</label>
+                            <input type="text" id="landOwnership" name="landOwnership" required />
+                        </div>
+
+                        <!-- Vehicle Owned -->
+                        <div class="form-group full-width">
+                            <label for="vehicle">Vehicle Owned</label>
+                            <input type="text" id="vehicle" name="vehicle" />
+                        </div>
+
+                        <!-- Under Belt & Block -->
+                        <div class="form-group full-width">
+                            <label for="beltBlock">Under Belt &amp; Block *</label>
+                            <input type="text" id="beltBlock" name="beltBlock" required />
+                        </div>
+
+                        <!-- Autonomous Council -->
+                        <div class="form-group full-width">
+                            <label for="autonomousCouncil">Autonomous Council? *</label>
+                            <select id="autonomousCouncil" name="autonomousCouncil" required>
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <!-- Government Scheme Beneficiary -->
+                        <div class="form-group full-width">
+                            <label for="govtScheme">Are you a beneficiary of any Government Scheme? *</label>
+                            <select id="govtScheme" name="govtScheme" required>
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <!-- Government Employees in Family -->
+                        <div class="form-group full-width">
+                            <label for="govtEmployees">Number of Family Members Who Are Government Employees *</label>
+                            <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
+                        </div>
+
+                        <!-- Passport Photo Upload -->
+                        <div class="form-group full-width">
+                            <label for="photo">Passport Photo Upload *</label>
+                            <input type="file" id="photo" name="photo" accept="image/*" required />
+                            <small style="color: var(--color-text-muted);">Upload a recent passport-size photo (JPG, PNG)</small>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="form-group full-width">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="terms" name="terms" required />
+                                <label for="terms">I agree to the Terms and Conditions *</label>
                             </div>
                         </div>
 
-                        <!-- ========== SECTION 3: Education ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Education</div>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="education">Education Qualification <span class="required">*</span></label>
-                                    <select id="education" name="education" required>
-                                        <option value="">Select Education</option>
-                                        <option value="undergraduate">Undergraduate</option>
-                                        <option value="postgraduate">Postgraduate</option>
-                                        <option value="matriculate">Matriculate</option>
-                                        <option value="graduate">Graduate</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group full-width" id="otherEducationGroup" style="display: none;">
-                                    <label for="otherEducation">Other Education <span class="required">*</span></label>
-                                    <input type="text" id="otherEducation" name="otherEducation" placeholder="Please specify your education" />
-                                </div>
+                        <!-- Self-Declaration -->
+                        <div class="form-group full-width">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="selfDeclaration" name="selfDeclaration" required />
+                                <label for="selfDeclaration">I hereby declare that all information provided is true and correct to the best of my knowledge. *</label>
                             </div>
                         </div>
 
-                        <!-- ========== SECTION 4: Blood Group ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Blood Group</div>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="bloodGroup">Blood Group <span class="required">*</span></label>
-                                    <select id="bloodGroup" name="bloodGroup" required>
-                                        <option value="">Select Blood Group</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="not-known">Not Known</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 5: Address & Location ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Address &amp; Location</div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="district">District <span class="required">*</span></label>
-                                    <select id="district" name="district" required>
-                                        <option value="">Select District</option>
-                                        <option value="east-karbi-anglong">East Karbi Anglong</option>
-                                        <option value="west-karbi-anglong">West Karbi Anglong</option>
-                                        <option value="dima-hasao">Dima Hasao</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lac">LAC (Legislative Assembly Constituency) <span class="required">*</span></label>
-                                    <input type="text" id="lac" name="lac" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="village">Village <span class="required">*</span></label>
-                                    <input type="text" id="village" name="village" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="postOffice">Post Office <span class="required">*</span></label>
-                                    <input type="text" id="postOffice" name="postOffice" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="policeStation">Police Station <span class="required">*</span></label>
-                                    <input type="text" id="policeStation" name="policeStation" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="pin">PIN Code <span class="required">*</span></label>
-                                    <input type="text" id="pin" name="pin" pattern="[0-9]{6}" title="Enter a valid 6-digit PIN code" required />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 6: Family Details ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Family Details</div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="familyMale">Number of Male Members <span class="required">*</span></label>
-                                    <input type="number" id="familyMale" name="familyMale" min="0" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="familyFemale">Number of Female Members <span class="required">*</span></label>
-                                    <input type="number" id="familyFemale" name="familyFemale" min="0" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="familyTotal">Total Family Members <span class="required">*</span></label>
-                                    <input type="number" id="familyTotal" name="familyTotal" min="0" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="govtEmployees">Number of Govt. Employees in Family <span class="required">*</span></label>
-                                    <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 7: Property & Assets ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Property &amp; Assets</div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="houseType">Type of House <span class="required">*</span></label>
-                                    <select id="houseType" name="houseType" required>
-                                        <option value="">Select House Type</option>
-                                        <option value="kutcha">Kutcha</option>
-                                        <option value="semi-pucca">Semi-Pucca</option>
-                                        <option value="pucca">Pucca</option>
-                                        <option value="apartment">Apartment</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="landOwnership">Land Ownership Status <span class="required">*</span></label>
-                                    <select id="landOwnership" name="landOwnership" required>
-                                        <option value="">Select Status</option>
-                                        <option value="self-owned">Self-Owned</option>
-                                        <option value="rented">Rented</option>
-                                        <option value="leased">Leased</option>
-                                        <option value="ancestral">Ancestral</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="vehicleOwned">Vehicle Owned</label>
-                                    <select id="vehicleOwned" name="vehicleOwned">
-                                        <option value="none">None</option>
-                                        <option value="two-wheeler">Two Wheeler</option>
-                                        <option value="four-wheeler">Four Wheeler</option>
-                                        <option value="both">Both</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 8: Additional Information ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Additional Information</div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="beltBlock">Under Belt &amp; Block</label>
-                                    <input type="text" id="beltBlock" name="beltBlock" placeholder="e.g., Diphu Belt, Howraghat Block" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="autonomousCouncil">Autonomous Council?</label>
-                                    <select id="autonomousCouncil" name="autonomousCouncil">
-                                        <option value="no">No</option>
-                                        <option value="yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="form-group full-width">
-                                    <label for="govtScheme">Government Scheme Beneficiary?</label>
-                                    <select id="govtScheme" name="govtScheme">
-                                        <option value="no">No</option>
-                                        <option value="yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 9: Uploads ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Document Upload</div>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="photo">Passport Photo <span class="required">*</span></label>
-                                    <input type="file" id="photo" name="photo" accept="image/*" required />
-                                    <span class="hint">Upload a recent passport-size photograph (JPG, PNG, max 2MB)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== SECTION 10: Terms & Declaration ========== -->
-                        <div class="form-section">
-                            <div class="form-section-title">Terms &amp; Declaration</div>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <div class="checkbox-group">
-                                        <input type="checkbox" id="terms" name="terms" required />
-                                        <label for="terms">
-                                            I agree to the <a href="/documents.html" target="_blank">Terms &amp; Conditions</a> of the Assam Limbu Mahasabha.
-                                            <span class="required">*</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group full-width">
-                                    <div class="checkbox-group">
-                                        <input type="checkbox" id="selfDeclaration" name="selfDeclaration" required />
-                                        <label for="selfDeclaration">
-                                            I hereby declare that all information provided above is true and correct to the best of my knowledge.
-                                            I understand that providing false information may lead to rejection of my application.
-                                            <span class="required">*</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ========== FORM ACTIONS ========== -->
+                        <!-- Submit -->
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
-                            <button type="reset" class="btn btn-secondary">Reset Form</button>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted); align-self: center;">
-                                Fields marked with <span style="color: #d32f2f;">*</span> are required.
-                            </span>
+                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">All fields marked * are required.</span>
                         </div>
 
                     </form>
 
+                    <!-- Receipt (hidden initially) -->
+                    <div id="receipt" class="receipt">
+                        <h3>&#9670; Acknowledgement Receipt</h3>
+                        <div class="ref-number" id="refNumber">ALM-2026-XXXXX</div>
+                        <p style="text-align: center; color: var(--color-text-muted);">Thank you for applying. Please save this reference number for tracking your application status.</p>
+                        <div id="receiptDetails"></div>
+                        <button class="btn btn-secondary print-btn" onclick="window.print()">Print Receipt</button>
+                    </div>
+
                 </div>
             </section>
 
-            <!-- ========== SUCCESS / ERROR MODAL ========== -->
-            <div id="formModal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9999; align-items: center; justify-content: center; padding: var(--spacing-lg); backdrop-filter: blur(4px);">
-                <div style="background: var(--color-surface); max-width: 600px; width: 100%; border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-lg); position: relative;">
-                    <button onclick="closeModal()" style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--color-text-muted); line-height: 1;">&times;</button>
-                    <div id="modalIcon" style="font-size: 3rem; text-align: center; margin-bottom: var(--spacing-md);">&#9670;</div>
-                    <h2 id="modalTitle" style="text-align: center; color: var(--color-primary);">Success</h2>
-                    <div id="modalBody" style="color: var(--color-text-muted); text-align: center; line-height: 1.8;">
-                        <p>Your application has been submitted successfully.</p>
-                        <p><strong>Reference ID:</strong> <span id="refId" style="color: var(--color-primary); font-weight: var(--font-bold);">—</span></p>
-                        <p>You can track your application status using this Reference ID on the <a href="/admin/check-status.html" style="color: var(--color-primary); font-weight: var(--font-medium);">Check Status</a> page.</p>
-                    </div>
-                    <div style="display: flex; gap: var(--spacing-md); justify-content: center; margin-top: var(--spacing-lg); flex-wrap: wrap;">
-                        <button onclick="closeModal()" class="btn btn-secondary">Close</button>
-                        <a href="/admin/check-status.html" class="btn btn-primary">Check Status</a>
-                    </div>
+            <!-- CHECK STATUS SECTION -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Track Your Application</div>
+                    <h2>Check Application Status</h2>
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        Enter your unique reference number to check the current status.
+                    </p>
+                    <form id="statusForm" style="max-width: 500px; display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                        <input type="text" id="statusRef" placeholder="Enter Reference Number (e.g., ALM-2026-00001)" style="flex:1; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit;" required />
+                        <button type="submit" class="btn btn-secondary">Check Status</button>
+                    </form>
+                    <div id="statusResult" style="margin-top: var(--spacing-lg);"></div>
                 </div>
-            </div>
-
-            <!-- ========== LOADING OVERLAY ========== -->
-            <div id="loadingOverlay" style="display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.85); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; gap: var(--spacing-md);">
-                <div style="width: 40px; height: 40px; border: 4px solid var(--color-border); border-top-color: var(--color-primary); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-                <p style="color: var(--color-text-muted); font-weight: var(--font-medium);">Submitting your application...</p>
-            </div>
-
-            <style>
-                @keyframes spin { to { transform: rotate(360deg); } }
-                .modal-open { overflow: hidden; }
-            </style>
-
-            <!-- ========== CHECK STATUS SECTION ========== -->
-<section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-    <div class="section-content">
-        <div style="max-width: 900px; margin: 0 auto;">
-            <div class="form-section" style="text-align: center; padding: var(--spacing-lg);">
-                <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
-                <h2 style="font-size: 1.5rem; margin-bottom: var(--spacing-xs);">Already Applied?</h2>
-                <p style="color: var(--color-text-muted); max-width: 500px; margin: 0 auto var(--spacing-md);">
-                    Check the status of your membership application using your Reference ID.
-                </p>
-                <a href="/admin/check-status.html" class="btn btn-primary">Check Application Status</a>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 
         </main>
 
@@ -559,19 +491,19 @@
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="/about.html">About Us</a></li>
-                                <li><a href="/committee.html">Committee</a></li>
-                                <li><a href="/events.html">Events</a></li>
-                                <li><a href="/updates.html">Updates</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
                             <h4>Resources</h4>
                             <ul>
-                                <li><a href="/documents.html">Documents</a></li>
-                                <li><a href="/membership/membership.html">Membership</a></li>
-                                <li><a href="/gallery.html">Gallery</a></li>
-                                <li><a href="/contact.html">Contact</a></li>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
@@ -595,247 +527,286 @@
 
     </div>
 
-    <!-- ============================================================
-    FIREBASE SDK & GLOBAL SCRIPTS
-    ============================================================ -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <!-- ============================================================ -->
+    <!-- FIREBASE SDK (modular) via import map -->
+    <!-- ============================================================ -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js",
+                "firebase/storage": "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js"
+            }
+        }
+    </script>
 
-    <script>
-        // ============================================================
-        // FIREBASE CONFIGURATION — prompt-ai-a0c21 project
-        // ============================================================
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, push, set, get, child, update } from "firebase/database";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+
+        // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyCCdHDWh-CJkJqBSNxKAd7dWwX8agBYuuc",
-            authDomain: "prompt-ai-a0c21.firebaseapp.com",
-            databaseURL: "https://prompt-ai-a0c21-default-rtdb.firebaseio.com",
-            projectId: "prompt-ai-a0c21",
-            storageBucket: "prompt-ai-a0c21.firebasestorage.app",
-            messagingSenderId: "322416217341",
-            appId: "1:322416217341:web:c43dcc16ac86bbba24c294",
-            measurementId: "G-B98ZKD5KP9"
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
 
-        // ============================================================
-        // FORM HANDLING
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const form = document.getElementById('membership-form');
-            const submitBtn = document.getElementById('submitBtn');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-
-            // Show/hide "Other Education" field
-            const educationSelect = document.getElementById('education');
-            const otherEducationGroup = document.getElementById('otherEducationGroup');
-            const otherEducationInput = document.getElementById('otherEducation');
-
-            educationSelect.addEventListener('change', function() {
-                if (this.value === 'other') {
-                    otherEducationGroup.style.display = 'block';
-                    otherEducationInput.setAttribute('required', 'required');
-                } else {
-                    otherEducationGroup.style.display = 'none';
-                    otherEducationInput.removeAttribute('required');
-                    otherEducationInput.value = '';
-                }
-            });
-
-            // Auto-calculate total family members
-            const familyMale = document.getElementById('familyMale');
-            const familyFemale = document.getElementById('familyFemale');
-            const familyTotal = document.getElementById('familyTotal');
-
-            function updateFamilyTotal() {
-                const male = parseInt(familyMale.value) || 0;
-                const female = parseInt(familyFemale.value) || 0;
-                familyTotal.value = male + female;
-            }
-
-            familyMale.addEventListener('input', updateFamilyTotal);
-            familyFemale.addEventListener('input', updateFamilyTotal);
-
-            // ============================================================
-            // FORM SUBMISSION
-            // ============================================================
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                // Basic validation
-                const requiredFields = form.querySelectorAll('[required]');
-                let isValid = true;
-                requiredFields.forEach(field => {
-                    const group = field.closest('.form-group');
-                    if (!field.value || field.value.trim() === '') {
-                        if (group) group.classList.add('error');
-                        isValid = false;
-                    } else {
-                        if (group) group.classList.remove('error');
-                    }
-                });
-
-                // Check terms and self-declaration
-                const terms = document.getElementById('terms');
-                const selfDecl = document.getElementById('selfDeclaration');
-                if (!terms.checked) {
-                    alert('Please agree to the Terms & Conditions.');
-                    isValid = false;
-                }
-                if (!selfDecl.checked) {
-                    alert('Please complete the Self-Declaration.');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    alert('Please fill in all required fields.');
-                    return;
-                }
-
-                // Show loading
-                loadingOverlay.style.display = 'flex';
-                submitBtn.disabled = true;
-
-                try {
-                    // Collect form data
-                    const formData = {
-                        membershipType: document.getElementById('membershipType').value,
-                        firstName: document.getElementById('firstName').value.trim(),
-                        secondName: document.getElementById('secondName').value.trim(),
-                        dob: document.getElementById('dob').value,
-                        email: document.getElementById('email').value.trim(),
-                        phone: document.getElementById('phone').value.trim(),
-                        alternatePhone: document.getElementById('alternatePhone').value.trim(),
-                        education: document.getElementById('education').value,
-                        otherEducation: document.getElementById('otherEducation').value.trim(),
-                        bloodGroup: document.getElementById('bloodGroup').value,
-                        district: document.getElementById('district').value,
-                        lac: document.getElementById('lac').value.trim(),
-                        village: document.getElementById('village').value.trim(),
-                        postOffice: document.getElementById('postOffice').value.trim(),
-                        policeStation: document.getElementById('policeStation').value.trim(),
-                        pin: document.getElementById('pin').value.trim(),
-                        familyMale: parseInt(document.getElementById('familyMale').value) || 0,
-                        familyFemale: parseInt(document.getElementById('familyFemale').value) || 0,
-                        familyTotal: parseInt(document.getElementById('familyTotal').value) || 0,
-                        govtEmployees: parseInt(document.getElementById('govtEmployees').value) || 0,
-                        houseType: document.getElementById('houseType').value,
-                        landOwnership: document.getElementById('landOwnership').value,
-                        vehicleOwned: document.getElementById('vehicleOwned').value,
-                        beltBlock: document.getElementById('beltBlock').value.trim(),
-                        autonomousCouncil: document.getElementById('autonomousCouncil').value,
-                        govtScheme: document.getElementById('govtScheme').value,
-                        terms: terms.checked,
-                        selfDeclaration: selfDecl.checked,
-                        submittedAt: firebase.database.ServerValue.TIMESTAMP
-                    };
-
-                    // Generate unique reference ID
-                    const refId = 'ALM-' + Date.now().toString(36).toUpperCase() + '-' +
-                        Math.random().toString(36).substring(2, 6).toUpperCase();
-
-                    // Handle photo upload
-                    const photoFile = document.getElementById('photo').files[0];
-                    let photoUrl = '';
-
-                    if (photoFile) {
-                        const storageRef = storage.ref('membership-photos/' + refId + '/' + photoFile.name);
-                        const snapshot = await storageRef.put(photoFile);
-                        photoUrl = await snapshot.ref.getDownloadURL();
-                    }
-
-                    // Prepare application data
-                    const applicationData = {
-                        referenceId: refId,
-                        applicant: formData,
-                        photoUrl: photoUrl,
-                        status: 'pending',
-                        stage: 'submitted',
-                        submittedAt: firebase.database.ServerValue.TIMESTAMP,
-                        history: [{
-                            stage: 'submitted',
-                            status: 'pending',
-                            timestamp: firebase.database.ServerValue.TIMESTAMP,
-                            remark: 'Application submitted successfully.'
-                        }],
-                        da: {
-                            reviewed: false,
-                            forwarded: false,
-                            remarks: ''
-                        },
-                        president: {
-                            reviewed: false,
-                            forwarded: false,
-                            remarks: ''
-                        },
-                        approvingAuthority: {
-                            reviewed: false,
-                            approved: false,
-                            rejected: false,
-                            remarks: ''
-                        },
-                        finalStatus: 'pending'
-                    };
-
-                    // Save to Firebase Realtime Database
-                    const appRef = database.ref('applications/' + refId);
-                    await appRef.set(applicationData);
-
-                    // Show success modal
-                    document.getElementById('refId').textContent = refId;
-                    document.getElementById('modalIcon').textContent = '&#9670;';
-                    document.getElementById('modalTitle').textContent = 'Application Submitted!';
-                    document.getElementById('modalBody').innerHTML = `
-                        <p>Your application has been submitted successfully.</p>
-                        <p><strong>Reference ID:</strong> <span style="color: var(--color-primary); font-weight: var(--font-bold);">${refId}</span></p>
-                        <p style="font-size: 0.9rem; color: var(--color-text-muted);">
-                            Please note down your Reference ID. You will need it to check your application status.
-                        </p>
-                        <p>You can track your application status using this Reference ID on the <a href="/admin/check-status.html" style="color: var(--color-primary); font-weight: var(--font-medium);">Check Status</a> page.</p>
-                    `;
-                    document.getElementById('formModal').style.display = 'flex';
-                    document.body.classList.add('modal-open');
-
-                    // Reset form
-                    form.reset();
-                    otherEducationGroup.style.display = 'none';
-                    document.getElementById('familyTotal').value = 0;
-
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('There was an error submitting your application. Please try again.\n\nError: ' + error.message);
-                } finally {
-                    loadingOverlay.style.display = 'none';
-                    submitBtn.disabled = false;
-                }
-            });
-
-        });
-
-        // ============================================================
-        // MODAL HELPERS
-        // ============================================================
-        function closeModal() {
-            document.getElementById('formModal').style.display = 'none';
-            document.body.classList.remove('modal-open');
+        // Helper: generate unique reference number
+        function generateRefNumber() {
+            const year = new Date().getFullYear();
+            const random = String(Math.floor(10000 + Math.random() * 90000));
+            return `ALM-${year}-${random}`;
         }
 
-        // Close modal on backdrop click
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('formModal');
-            if (e.target === modal) {
-                closeModal();
+        // Helper: get current date/time string
+        function getCurrentDateTime() {
+            return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        }
+
+        // DOM elements
+        const form = document.getElementById('membershipForm');
+        const receiptDiv = document.getElementById('receipt');
+        const refNumberSpan = document.getElementById('refNumber');
+        const receiptDetails = document.getElementById('receiptDetails');
+
+        // Show/hide "Other Education" based on selection
+        const educationSelect = document.getElementById('education');
+        const otherEducationGroup = document.getElementById('otherEducationGroup');
+        educationSelect.addEventListener('change', () => {
+            if (educationSelect.value === 'Other') {
+                otherEducationGroup.style.display = 'block';
+                document.getElementById('otherEducation').required = true;
+            } else {
+                otherEducationGroup.style.display = 'none';
+                document.getElementById('otherEducation').required = false;
             }
         });
+
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validate checkboxes
+            if (!document.getElementById('terms').checked) {
+                alert('Please accept the Terms and Conditions.');
+                return;
+            }
+            if (!document.getElementById('selfDeclaration').checked) {
+                alert('Please complete the Self-Declaration.');
+                return;
+            }
+
+            // Collect form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Handle photo upload
+            const photoFile = document.getElementById('photo').files[0];
+            let photoURL = '';
+            if (photoFile) {
+                // Upload to Firebase Storage
+                const storageRefPath = storageRef(storage, `membership_photos/${data.firstName}_${data.secondName}_${Date.now()}.jpg`);
+                try {
+                    const snapshot = await uploadBytes(storageRefPath, photoFile);
+                    photoURL = await getDownloadURL(snapshot.ref);
+                } catch (error) {
+                    console.error('Photo upload failed:', error);
+                    alert('Photo upload failed. Please try again.');
+                    return;
+                }
+            } else {
+                alert('Please upload a passport photo.');
+                return;
+            }
+
+            // Generate reference number
+            const refNumber = generateRefNumber();
+            const timestamp = getCurrentDateTime();
+
+            // Prepare data object for Firebase
+            const applicationData = {
+                ...data,
+                photoURL,
+                refNumber,
+                timestamp,
+                status: 'Submitted',
+                history: [
+                    { action: 'Application submitted', timestamp, by: 'Applicant' }
+                ],
+                remarks: [],
+                recommendations: [],
+                // Additional fields for workflow
+                currentStage: 'DA', // DA, President, AA, Approved, Rejected
+                daRemarks: '',
+                presidentRemarks: '',
+                aaRemarks: '',
+                approved: false,
+                rejected: false,
+                finalDecision: null
+            };
+
+            // Remove undefined/empty fields
+            Object.keys(applicationData).forEach(key => {
+                if (applicationData[key] === '' || applicationData[key] === null || applicationData[key] === undefined) {
+                    delete applicationData[key];
+                }
+            });
+
+            // Save to Firebase Realtime Database under 'applications'
+            try {
+                const newAppRef = push(ref(db, 'applications'));
+                await set(newAppRef, applicationData);
+
+                // Show receipt
+                receiptDiv.classList.add('visible');
+                refNumberSpan.textContent = refNumber;
+
+                // Build receipt details
+                let detailsHTML = `
+                    <div class="detail-row"><span class="label">Name</span><span class="value">${data.firstName} ${data.secondName}</span></div>
+                    <div class="detail-row"><span class="label">Email</span><span class="value">${data.email}</span></div>
+                    <div class="detail-row"><span class="label">Phone</span><span class="value">${data.phone}</span></div>
+                    <div class="detail-row"><span class="label">Membership Type</span><span class="value">${data.membershipType}</span></div>
+                    <div class="detail-row"><span class="label">District</span><span class="value">${data.district}</span></div>
+                    <div class="detail-row"><span class="label">Application Date</span><span class="value">${timestamp}</span></div>
+                `;
+                receiptDetails.innerHTML = detailsHTML;
+
+                // Scroll to receipt
+                receiptDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Reset form? We can keep it for now.
+                // form.reset();
+
+            } catch (error) {
+                console.error('Error saving application:', error);
+                alert('There was an error submitting your application. Please try again.');
+            }
+        });
+
+        // ---------- Status Tracking ----------
+        const statusForm = document.getElementById('statusForm');
+        const statusResult = document.getElementById('statusResult');
+
+        statusForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const refNumber = document.getElementById('statusRef').value.trim();
+            if (!refNumber) {
+                statusResult.innerHTML = '<p style="color: var(--color-primary);">Please enter a reference number.</p>';
+                return;
+            }
+
+            // Query Firebase to find application with matching refNumber
+            const dbRef = ref(db, 'applications');
+            try {
+                const snapshot = await get(dbRef);
+                if (snapshot.exists()) {
+                    const allApps = snapshot.val();
+                    let found = null;
+                    let appKey = null;
+                    for (const key in allApps) {
+                        if (allApps[key].refNumber === refNumber) {
+                            found = allApps[key];
+                            appKey = key;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        // Build status display
+                        let statusText = found.status || 'Submitted';
+                        let statusColor = 'var(--color-primary)';
+                        if (statusText === 'Approved') statusColor = 'green';
+                        else if (statusText === 'Rejected') statusColor = 'red';
+
+                        let historyHTML = '';
+                        if (found.history && found.history.length > 0) {
+                            historyHTML = '<ul style="list-style: none; padding: 0;">';
+                            found.history.forEach(entry => {
+                                historyHTML += `<li style="padding: 0.3rem 0; border-bottom: 1px solid var(--color-border);">${entry.action} — ${entry.timestamp}</li>`;
+                            });
+                            historyHTML += '</ul>';
+                        }
+
+                        let remarksHTML = '';
+                        if (found.remarks && found.remarks.length > 0) {
+                            remarksHTML = '<h4>Remarks</h4><ul style="list-style: none; padding: 0;">';
+                            found.remarks.forEach(r => {
+                                remarksHTML += `<li style="padding: 0.2rem 0;">${r.by}: ${r.text} (${r.timestamp})</li>`;
+                            });
+                            remarksHTML += '</ul>';
+                        }
+
+                        let certificateHTML = '';
+                        if (found.status === 'Approved') {
+                            certificateHTML = `
+                                <p style="margin-top: var(--spacing-md);">
+                                    <a href="#" id="downloadCertBtn" class="btn btn-primary" style="display: inline-block;">Download Membership Certificate</a>
+                                </p>
+                            `;
+                        }
+
+                        statusResult.innerHTML = `
+                            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); max-width: 700px; margin: 0 auto;">
+                                <h3 style="color: var(--color-primary);">Application Status</h3>
+                                <p><strong>Reference Number:</strong> ${found.refNumber}</p>
+                                <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
+                                <p><strong>Applicant:</strong> ${found.firstName} ${found.secondName}</p>
+                                <p><strong>Submitted on:</strong> ${found.timestamp}</p>
+                                <hr style="border-color: var(--color-border); margin: var(--spacing-md) 0;">
+                                <h4>Timeline</h4>
+                                ${historyHTML}
+                                ${remarksHTML}
+                                ${certificateHTML}
+                                <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
+                                    For further assistance, please contact the committee office.
+                                </p>
+                            </div>
+                        `;
+
+                        // Handle certificate download (if approved)
+                        if (found.status === 'Approved') {
+                            document.getElementById('downloadCertBtn').addEventListener('click', (e) => {
+                                e.preventDefault();
+                                // In a real implementation, generate a PDF certificate with all details.
+                                // For now, we'll just show a message.
+                                alert('Certificate generation feature will be available soon. In production, this will download a professionally formatted PDF.');
+                            });
+                        }
+
+                    } else {
+                        statusResult.innerHTML = `<p style="color: red;">No application found with reference number: ${refNumber}</p>`;
+                    }
+                } else {
+                    statusResult.innerHTML = '<p style="color: red;">No applications found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching status:', error);
+                statusResult.innerHTML = '<p style="color: red;">Error retrieving status. Please try again later.</p>';
+            }
+        });
+
+        // Admin portal link (hidden in main site, but accessible for demo)
+        // We'll add a small admin link at the bottom of the page for testing.
+        const footerBottom = document.querySelector('.footer-bottom');
+        if (footerBottom) {
+            const adminLink = document.createElement('p');
+            adminLink.style.marginTop = 'var(--spacing-sm)';
+            adminLink.innerHTML = '<a href="admin.html" style="color: rgba(255,255,255,0.3); font-size: 0.7rem;">Admin Login</a>';
+            footerBottom.appendChild(adminLink);
+        }
+
+        console.log('Membership form with Firebase integration loaded.');
     </script>
-
     <script src="script.js"></script>
-
 </body>
 </html>
