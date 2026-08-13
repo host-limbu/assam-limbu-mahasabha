@@ -1,5 +1,5 @@
 /* ============================================================
-   HERO SLIDER — Reduced Height, No Crop
+   HERO SLIDER
    ============================================================ */
 .hero-image {
     position: relative;
@@ -27,10 +27,10 @@
     background-size: contain;      /* ← shows full image, no cropping */
     background-position: center;
     background-repeat: no-repeat;
-    background-color: var(--color-primary-light); /* fills empty space */
+    background-color: var(--color-primary-light);
 }
 
-/* Pause indicator */
+/* Pause indicator (optional) */
 .hero-slider.paused {
     opacity: 0.95;
     transition: opacity 0.3s ease;
@@ -58,5 +58,35 @@
     .hero-image {
         height: 150px;
         min-height: 130px;
+    }
+}
+
+/* ============================================================
+   HERO SCROLL INDICATOR — untouched
+   ============================================================ */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+}
+.hero-scroll-indicator svg {
+    margin-top: 4px;
+}
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(8px);
     }
 }
