@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Portal — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Admin portal for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        /* Login form – centered but no grey border/card appearance */
+        /* ===== Admin styles (unchanged) ===== */
         .admin-login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -59,8 +60,6 @@
             font-size: 0.8rem;
             font-weight: var(--font-medium);
         }
-
-        /* Search & Filter bar */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -155,7 +154,6 @@
             }
         }
 
-        /* Table styles – same as check-status.html */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -180,8 +178,6 @@
             font-weight: var(--font-medium);
             background: var(--color-surface-alt);
         }
-
-        /* Action buttons – horizontal, side by side */
         .admin-table .actions {
             display: flex;
             flex-wrap: nowrap;
@@ -200,9 +196,7 @@
             padding: var(--spacing-lg);
         }
 
-        /* ============================================================
-           MODALS – UPGRADED MODERN DESIGN
-           ============================================================ */
+        /* ===== MODALS ===== */
         .modal {
             display: none;
             position: fixed;
@@ -342,7 +336,6 @@
             border-color: var(--color-primary-light);
         }
 
-        /* For the larger View / Certificate modals, keep them scrollable */
         .modal-content.large {
             max-width: 800px;
         }
@@ -367,51 +360,115 @@
             width: 58%;
         }
 
-        /* Certificate preview inside modal */
-        .certificate-preview {
+        /* ===== CERTIFICATE PREVIEW ===== */
+        .certificate-wrapper {
             background: #fff;
-            padding: 30px;
-            border: 1px solid #ddd;
+            padding: 40px 35px;
             margin-top: var(--spacing-md);
             border-radius: var(--radius);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e5e7eb;
         }
-        .certificate-preview .header {
+        .certificate-wrapper .header {
             text-align: center;
-            border-bottom: 2px solid #1a3a5c;
-            padding-bottom: 10px;
+            border-bottom: 3px double #1a3a5c;
+            padding-bottom: 12px;
             margin-bottom: 20px;
         }
-        .certificate-preview .header .emblem {
-            font-size: 2.5rem;
+        .certificate-wrapper .header .emblem {
+            font-size: 3rem;
+            color: #1a3a5c;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .certificate-wrapper .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
             color: #1a3a5c;
         }
-        .certificate-preview .header h2 {
-            margin: 5px 0;
+        .certificate-wrapper .header h2 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 2px 0 0;
+            color: #2b5a7a;
+            letter-spacing: 0.5px;
         }
-        .certificate-preview .header p {
-            margin: 0;
+        .certificate-wrapper .header .sub {
+            font-size: 0.85rem;
             color: #475569;
+            margin-top: 2px;
         }
-        .certificate-preview .body {
+        .certificate-wrapper .title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a3a5c;
+            margin: 10px 0 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .certificate-wrapper .body {
+            padding: 0 10px;
+        }
+        .certificate-wrapper .body p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            text-align: justify;
+            margin: 0 0 12px 0;
+            color: #1e293b;
+        }
+        .certificate-wrapper .body .member-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .certificate-wrapper .body .signature-area {
             display: flex;
-            gap: 30px;
-            align-items: flex-start;
+            justify-content: space-between;
+            margin-top: 28px;
+            padding-top: 12px;
+            border-top: 1px solid #dce0e5;
         }
-        .certificate-preview .body .text {
+        .certificate-wrapper .body .signature-area .sig-item {
+            text-align: center;
             flex: 1;
         }
-        .certificate-preview .body .photo {
-            flex-shrink: 0;
+        .certificate-wrapper .body .signature-area .sig-item .line {
+            width: 160px;
+            border-bottom: 1px solid #1a3a5c;
+            margin: 6px auto 4px;
         }
-        .certificate-preview .body .photo img {
-            width: 100px;
-            height: 100px;
+        .certificate-wrapper .body .signature-area .sig-item .label {
+            font-size: 0.75rem;
+            color: #475569;
+        }
+        .certificate-wrapper .body .photo-bottom {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .certificate-wrapper .body .photo-bottom img {
+            width: 80px;
+            height: 80px;
             object-fit: cover;
-            border-radius: 3px;
-            border: 1px solid #ddd;
+            border-radius: 4px;
+            border: 1px solid #dce0e5;
         }
 
-        /* Toast */
+        /* Print & PDF styles */
+        @media print {
+            .certificate-wrapper {
+                border: none;
+                box-shadow: none;
+                padding: 40px 35px;
+                margin: 0;
+                border-radius: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
         .toast {
             position: fixed;
             bottom: var(--spacing-lg);
@@ -439,7 +496,6 @@
                 transform: translateY(0);
             }
         }
-
         .error-message {
             color: #dc2626;
             font-size: 0.9rem;
@@ -466,10 +522,6 @@
             .modal-content.large .detail-grid {
                 grid-template-columns: 1fr;
             }
-            .certificate-preview .body {
-                flex-direction: column;
-                align-items: center;
-            }
             .admin-table .actions .btn {
                 font-size: 0.65rem;
                 padding: 0.1rem 0.3rem;
@@ -483,6 +535,19 @@
                 min-width: 100px;
                 justify-content: center;
             }
+            .certificate-wrapper {
+                padding: 20px 15px;
+            }
+            .certificate-wrapper .header h1 {
+                font-size: 1.2rem;
+            }
+            .certificate-wrapper .body p {
+                font-size: 0.95rem;
+            }
+            .certificate-wrapper .body .signature-area {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
     </style>
 </head>
@@ -490,8 +555,8 @@
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
+            <!-- Same header as before, unchanged -->
             <div class="header-inner">
                 <div class="header-logo">
                     <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
@@ -538,7 +603,6 @@
             </div>
         </header>
 
-        <!-- ==================== ADMIN SECTION ==================== -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
@@ -547,7 +611,7 @@
                         Secure admin panel for Dealing Assistant, President, and Approving Authority.
                     </p>
 
-                    <!-- Login Section -->
+                    <!-- Login -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
@@ -570,7 +634,7 @@
                             <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
 
-                        <!-- ==================== SEARCH & FILTER BAR ==================== -->
+                        <!-- Filter Bar -->
                         <div class="filter-bar" id="filterBar">
                             <div class="filter-group">
                                 <label for="searchInput">Search</label>
@@ -591,18 +655,14 @@
                             </div>
                         </div>
 
-                        <!-- Application List Container -->
                         <div id="appListContainer"></div>
                     </div>
                 </div>
             </section>
         </main>
 
-        <!-- ============================================================
-        MODALS – UPGRADED MODERN DESIGN
-        ============================================================ -->
-
-        <!-- View Modal (large) -->
+        <!-- ===== MODALS ===== -->
+        <!-- View Modal -->
         <div id="viewModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="viewModal">&times;</button>
@@ -617,7 +677,7 @@
             </div>
         </div>
 
-        <!-- Certificate Preview Modal (large) -->
+        <!-- Certificate Preview Modal (updated layout) -->
         <div id="certificateModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="certificateModal">&times;</button>
@@ -625,16 +685,18 @@
                     <span style="font-size:1.5rem;">&#9670;</span>
                     <h3 style="margin:0;">Certificate Preview</h3>
                 </div>
-                <div id="certificateContent"></div>
-                <div class="modal-actions">
+                <div id="certificateContent">
+                    <!-- Certificate preview will be injected here by JavaScript -->
+                </div>
+                <div class="modal-actions no-print">
                     <button class="btn btn-secondary" data-modal="certificateModal">Close</button>
+                    <button class="btn btn-primary" id="downloadPdfBtn">Download PDF</button>
+                    <button class="btn btn-secondary" onclick="window.print()">Print</button>
                 </div>
             </div>
         </div>
 
-        <!-- ============================================================
-        REMARK / FORWARD MODAL – UPGRADED MODERN DESIGN
-        ============================================================ -->
+        <!-- Remark Modal -->
         <div id="remarkModal" class="modal">
             <div class="modal-content">
                 <button class="modal-close" id="remarkModalClose">&times;</button>
@@ -645,10 +707,8 @@
                         <p class="modal-subtitle" id="modalSubtitle">Enter your remarks below and proceed.</p>
                     </div>
                 </div>
-
                 <label for="remarkText">Remarks</label>
                 <textarea id="remarkText" rows="4" placeholder="Type your remarks here..."></textarea>
-
                 <div class="modal-actions">
                     <button class="btn btn-secondary" id="modalCancel">Cancel</button>
                     <button class="btn btn-primary" id="modalConfirm">Submit</button>
@@ -656,10 +716,9 @@
             </div>
         </div>
 
-        <!-- TOAST -->
+        <!-- Toast -->
         <div id="toast" class="toast"></div>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -711,8 +770,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- FIREBASE SDK (modular) via import map -->
-    <!-- ============================================================ -->
+    <!-- Firebase SDK -->
     <script type="importmap">
         {
             "imports": {
@@ -724,9 +782,15 @@
     </script>
 
     <script type="module">
+        // ----- All existing imports and logic remain exactly the same -----
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
         import { getDatabase, ref, get, update, onValue } from "firebase/database";
+
+        // ----- Import the certificate PDF generator from external file -----
+        // We'll load it dynamically since it's not a module.
+        // The certificate-pdf.js will be loaded as a regular script.
+        // We'll call its function from here.
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -736,12 +800,11 @@
             messagingSenderId: "684300836537",
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // DOM elements
+        // DOM elements (all existing)
         const loginSection = document.getElementById('loginSection');
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
@@ -751,8 +814,6 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const roleBadge = document.getElementById('roleBadge');
         const appListContainer = document.getElementById('appListContainer');
-
-        // Search/filter elements
         const searchInput = document.getElementById('searchInput');
         const dateFrom = document.getElementById('dateFrom');
         const dateTo = document.getElementById('dateTo');
@@ -760,11 +821,11 @@
         const clearFilterBtn = document.getElementById('clearFilterBtn');
         const resultCount = document.getElementById('resultCount');
 
-        // Modals
         const viewModal = document.getElementById('viewModal');
         const viewContent = document.getElementById('viewContent');
         const certificateModal = document.getElementById('certificateModal');
         const certificateContent = document.getElementById('certificateContent');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const remarkModal = document.getElementById('remarkModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalSubtitle = document.getElementById('modalSubtitle');
@@ -772,17 +833,11 @@
         const modalConfirm = document.getElementById('modalConfirm');
         const modalCancel = document.getElementById('modalCancel');
         const remarkModalClose = document.getElementById('remarkModalClose');
-
         const toast = document.getElementById('toast');
 
-        let currentUser = null,
-            currentRole = null,
-            currentAppKey = null,
-            currentAction = null;
-
-        // Store the full list of applications (role-filtered) for client-side filtering
+        let currentUser = null, currentRole = null, currentAppKey = null, currentAction = null;
         let roleFilteredApps = [];
-        let allAppsData = {}; // full snapshot for key lookup
+        let allAppsData = {};
 
         function showToast(msg) {
             toast.textContent = msg;
@@ -794,46 +849,35 @@
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
-        // ----- FILTERING LOGIC -----
+        // ----- All existing filter, render, load, login, auth, modal functions remain exactly the same -----
+        // (We keep them unchanged; only the certificate preview function is updated)
+
         function filterApplications() {
             const searchTerm = searchInput.value.trim().toLowerCase();
             const fromDate = dateFrom.value;
             const toDate = dateTo.value;
-
             let filtered = roleFilteredApps.filter(app => {
-                // Search by name or ref number
                 if (searchTerm) {
                     const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
                     const ref = (app.refNumber || '').toLowerCase();
-                    if (!name.includes(searchTerm) && !ref.includes(searchTerm)) {
-                        return false;
-                    }
+                    if (!name.includes(searchTerm) && !ref.includes(searchTerm)) return false;
                 }
-
-                // Date range filter
                 if (fromDate || toDate) {
-                    const appDate = app.timestamp ? app.timestamp.split(' ')[0] : ''; // YYYY-MM-DD
+                    const appDate = app.timestamp ? app.timestamp.split(' ')[0] : '';
                     if (fromDate && appDate < fromDate) return false;
                     if (toDate && appDate > toDate) return false;
                 }
-
                 return true;
             });
-
-            // Update result count
             resultCount.textContent = `${filtered.length} application${filtered.length !== 1 ? 's' : ''} found`;
-
-            // Render the filtered table
             renderTable(filtered);
         }
 
-        // ----- RENDER TABLE -----
         function renderTable(applications) {
             if (!applications || applications.length === 0) {
                 appListContainer.innerHTML = '<div class="admin-empty">No applications match your filters.</div>';
                 return;
             }
-
             let html = `<div class="table-wrapper"><table class="admin-table">
                 <thead><tr>
                     <th>Ref No</th>
@@ -842,33 +886,26 @@
                     <th>Date</th>
                     <th>Actions</th>
                 </tr></thead><tbody>`;
-
             applications.forEach(app => {
                 const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
                 const refNum = app.refNumber || 'N/A';
                 const date = app.timestamp || 'N/A';
                 const status = app.status || 'Submitted';
-
-                let actionsHTML = `
-                    <button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>
-                `;
+                let actionsHTML = `<button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>`;
                 if (currentRole === 'DA') {
                     actionsHTML += `
                         <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>
-                    `;
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
                 } else if (currentRole === 'President') {
                     actionsHTML += `
                         <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>
-                    `;
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
                 } else if (currentRole === 'AA') {
                     actionsHTML += `
                         <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
                         <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
                         <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
-                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>
-                    `;
+                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
                 }
                 html += `
                     <tr>
@@ -877,24 +914,20 @@
                         <td>${status}</td>
                         <td>${date}</td>
                         <td><div class="actions">${actionsHTML}</div></td>
-                    </tr>
-                `;
+                    </tr>`;
             });
             html += '</tbody></table></div>';
             appListContainer.innerHTML = html;
 
-            // Re-attach event listeners
             document.querySelectorAll('[data-action]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const action = btn.dataset.action;
                     const key = btn.dataset.key;
                     currentAppKey = key;
-                    const appData = allAppsData[key]; // get full data from the snapshot
-                    if (action === 'view') {
-                        openViewModal(appData);
-                    } else if (action === 'previewcert') {
-                        openCertificatePreview(appData);
-                    } else if (action === 'remark') {
+                    const appData = allAppsData[key];
+                    if (action === 'view') openViewModal(appData);
+                    else if (action === 'previewcert') openCertificatePreview(appData);
+                    else if (action === 'remark') {
                         modalTitle.textContent = 'Add Remarks';
                         modalSubtitle.textContent = 'Enter your remarks below and proceed.';
                         remarkText.value = '';
@@ -907,19 +940,14 @@
                         currentAction = 'forward';
                         remarkModal.classList.add('visible');
                     } else if (action === 'approve') {
-                        if (confirm('Approve this application?')) {
-                            updateApplicationStatus(key, 'Approved', 'AA', 'Application approved.');
-                        }
+                        if (confirm('Approve this application?')) updateApplicationStatus(key, 'Approved', 'AA', 'Application approved.');
                     } else if (action === 'reject') {
-                        if (confirm('Reject this application?')) {
-                            updateApplicationStatus(key, 'Rejected', 'AA', 'Application rejected.');
-                        }
+                        if (confirm('Reject this application?')) updateApplicationStatus(key, 'Rejected', 'AA', 'Application rejected.');
                     }
                 });
             });
         }
 
-        // ----- LOAD APPLICATIONS (role-based) -----
         function loadApplications(role) {
             const appsRef = ref(db, 'applications');
             onValue(appsRef, (snapshot) => {
@@ -929,8 +957,6 @@
                 }
                 allAppsData = snapshot.val();
                 const appKeys = Object.keys(allAppsData);
-
-                // Role-based filtering
                 let filtered = [];
                 if (role === 'DA') {
                     filtered = appKeys.filter(key => {
@@ -948,16 +974,11 @@
                         return app.currentStage === 'AA';
                     });
                 }
-
-                // Map to array with _key
                 roleFilteredApps = filtered.map(key => ({ ...allAppsData[key], _key: key }));
-
-                // Apply search/filter (if any) and render
                 filterApplications();
             });
         }
 
-        // ----- FILTER EVENT LISTENERS -----
         applyFilterBtn.addEventListener('click', filterApplications);
         clearFilterBtn.addEventListener('click', () => {
             searchInput.value = '';
@@ -965,17 +986,10 @@
             dateTo.value = '';
             filterApplications();
         });
-
-        // Also filter on Enter key in search input
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') filterApplications();
-        });
-
-        // Also filter when date inputs change (optional)
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') filterApplications(); });
         dateFrom.addEventListener('change', filterApplications);
         dateTo.addEventListener('change', filterApplications);
 
-        // ----- LOGIN -----
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
@@ -989,7 +1003,6 @@
             }
         });
 
-        // ----- AUTH STATE -----
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -1017,11 +1030,8 @@
             }
         });
 
-        logoutBtn.addEventListener('click', async () => {
-            await signOut(auth);
-        });
+        logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
-        // ----- OPEN VIEW MODAL -----
         function openViewModal(app) {
             const fields = [
                 'refNumber', 'firstName', 'secondName', 'dob', 'email', 'phone', 'altPhone',
@@ -1050,72 +1060,112 @@
             viewModal.classList.add('visible');
         }
 
-        // ----- OPEN CERTIFICATE PREVIEW -----
+        // ----- UPDATED CERTIFICATE PREVIEW (new layout, dynamic data) -----
         function openCertificatePreview(app) {
-            const photoHtml = app.photoURL ? `<img src="${app.photoURL}" alt="Applicant photo" />` : '<p>No photo uploaded.</p>';
+            // Build full address from available fields
+            const addressParts = [];
+            if (app.village) addressParts.push(app.village);
+            if (app.postOffice) addressParts.push(app.postOffice);
+            if (app.ps) addressParts.push(app.ps);
+            if (app.district) addressParts.push(app.district);
+            if (app.pin) addressParts.push(`PIN: ${app.pin}`);
+            const fullAddress = addressParts.join(', ') || 'N/A';
+
+            // Parent/Guardian – use secondName as fallback, or leave as placeholder
+            const parentGuardian = app.secondName || 'N/A';
+
+            const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+            const certNumber = app.refNumber || 'N/A';
+            const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
+            const membershipType = app.membershipType || 'General';
+
+            const photoHtml = app.photoURL
+                ? `<img src="${app.photoURL}" alt="Applicant photo" />`
+                : '<p style="color:#999;">No photo uploaded</p>';
+
+            // Build certificate HTML with new layout
             certificateContent.innerHTML = `
-                <div class="certificate-preview" id="certificatePrintArea">
+                <div class="certificate-wrapper" id="certificatePrintArea">
                     <div class="header">
-                        <div class="emblem">&#9670;</div>
-                        <h2>Assam Limbu Mahasabha</h2>
-                        <p>Karbi Anglong &amp; Dima Hasao District Committee</p>
-                        <hr style="border-color: #1a3a5c; margin: 5px 0;" />
-                        <h3 style="margin: 5px 0;">Membership Certificate</h3>
+                        <span class="emblem">&#9670;</span>
+                        <h1>ASSAM LIMBU MAHASABHA</h1>
+                        <h2>WEST KARBI ANGLONG &amp; DIMA HASAO DISTRICT COMMITTEE</h2>
+                        <div class="sub">(Regd. under Societies Registration Act, 1860)</div>
                     </div>
+                    <div class="title">MEMBERSHIP CERTIFICATE</div>
                     <div class="body">
-                        <div class="text">
-                            <p><strong>This is to certify that</strong></p>
-                            <p style="font-size:1.2rem; font-weight:bold;">${app.firstName} ${app.secondName}</p>
-                            <p>is a registered member of the Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee.</p>
-                            <p><strong>Membership Type:</strong> ${app.membershipType}</p>
-                            <p><strong>Date of Birth:</strong> ${app.dob}</p>
-                            <p><strong>District:</strong> ${app.district}</p>
-                            <p><strong>Reference No:</strong> ${app.refNumber}</p>
-                            <p><strong>Date of Issue:</strong> ${now()}</p>
-                            <p style="margin-top:20px;"><strong>President</strong></p>
-                            <p style="margin-top:5px;">_______________________<br />Signature</p>
+                        <p>
+                            <strong>This is to certify that</strong>
+                            <span class="member-name">${memberName}</span>,
+                            son/daughter of <strong>${parentGuardian}</strong>,
+                            resident of <strong>${fullAddress}</strong>,
+                            is a registered member of the <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>.
+                        </p>
+                        <p>
+                            This certificate is issued in recognition of the above-mentioned membership and serves as official proof of membership in the
+                            <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>,
+                            subject to the rules and regulations of the organization.
+                        </p>
+                        <div style="margin-top:8px; display:flex; gap:20px; flex-wrap:wrap; font-size:0.95rem; color:#1e293b;">
+                            <span><strong>Membership Type:</strong> ${membershipType}</span>
+                            <span><strong>Certificate No:</strong> ${certNumber}</span>
+                            <span><strong>Date of Issue:</strong> ${issueDate}</span>
+                            <span><strong>Membership ID:</strong> ALM-${certNumber.split('-')[1] || '2026'}-${certNumber.split('-')[2] || '0000'}</span>
                         </div>
-                        <div class="photo">${photoHtml}</div>
+                        <div class="signature-area">
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">Dealing Assistant</div>
+                            </div>
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">President</div>
+                            </div>
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">Approving Authority</div>
+                            </div>
+                        </div>
+                        <div class="photo-bottom">
+                            ${photoHtml}
+                        </div>
                     </div>
-                </div>
-                <div style="margin-top:var(--spacing-md); display:flex; gap:var(--spacing-md); justify-content:center;">
-                    <button class="btn btn-primary" onclick="window.print()">Print Certificate</button>
-                    <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
                 </div>
             `;
+
+            // Show modal
             certificateModal.classList.add('visible');
+
+            // Attach PDF download handler (external function)
+            downloadPdfBtn.onclick = function() {
+                // Call the global function from certificate-pdf.js
+                if (typeof generateCertificatePDF === 'function') {
+                    generateCertificatePDF('certificatePrintArea');
+                } else {
+                    alert('PDF generation library not loaded. Please refresh and try again.');
+                }
+            };
         }
 
-        // ----- CLOSE MODALS -----
+        // ----- Close modals (unchanged) -----
         document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.dataset.modal;
                 document.getElementById(modalId).classList.remove('visible');
             });
         });
-
-        // Close on backdrop click
         [viewModal, certificateModal, remarkModal].forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.classList.remove('visible');
             });
         });
 
-        // Remark modal close buttons
-        remarkModalClose.addEventListener('click', () => {
-            remarkModal.classList.remove('visible');
-        });
-        modalCancel.addEventListener('click', () => {
-            remarkModal.classList.remove('visible');
-        });
+        remarkModalClose.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
+        modalCancel.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
 
-        // ----- REMARK / FORWARD CONFIRM -----
         modalConfirm.addEventListener('click', async () => {
             const remark = remarkText.value.trim();
-            if (!remark) {
-                alert('Please enter a remark.');
-                return;
-            }
+            if (!remark) { alert('Please enter a remark.'); return; }
             remarkModal.classList.remove('visible');
             if (currentAction === 'remark') {
                 await addRemark(currentAppKey, remark, currentRole);
@@ -1126,7 +1176,7 @@
             }
         });
 
-        // ----- DATABASE FUNCTIONS -----
+        // ----- Firebase functions (unchanged) -----
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -1142,11 +1192,10 @@
             const snapshot = await get(appRef);
             if (!snapshot.exists()) return;
             const app = snapshot.val();
-            let nextStage = '',
-                statusMsg = '';
-            if (role === 'DA') { nextStage = 'President';
-                statusMsg = 'Forwarded to President'; } else if (role === 'President') { nextStage = 'AA';
-                statusMsg = 'Forwarded to Approving Authority'; } else { alert('Invalid role for forwarding.'); return; }
+            let nextStage = '', statusMsg = '';
+            if (role === 'DA') { nextStage = 'President'; statusMsg = 'Forwarded to President'; }
+            else if (role === 'President') { nextStage = 'AA'; statusMsg = 'Forwarded to Approving Authority'; }
+            else { alert('Invalid role for forwarding.'); return; }
             const remarks = app.remarks || [];
             if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
             const history = app.history || [];
@@ -1175,8 +1224,11 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal with search & filter loaded.');
+        console.log('Admin portal with new certificate preview loaded.');
     </script>
+
+    <!-- Load the external certificate PDF generator -->
+    <script src="certificate-pdf.js"></script>
 
 </body>
 </html>
