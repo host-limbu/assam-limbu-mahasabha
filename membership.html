@@ -55,6 +55,40 @@
             width: auto;
             margin: 0;
         }
+        .photo-preview {
+            margin-top: var(--spacing-sm);
+            max-width: 120px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            padding: 4px;
+            background: var(--color-surface);
+        }
+        .photo-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--radius);
+        }
+        .upload-status {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-xs);
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         .form-actions {
             grid-column: 1 / -1;
             display: flex;
@@ -63,51 +97,6 @@
             align-items: center;
             justify-content: space-between;
             margin-top: var(--spacing-md);
-        }
-        .receipt {
-            display: none;
-            background: var(--color-surface);
-            border: 2px solid var(--color-primary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .receipt.visible {
-            display: block;
-        }
-        .receipt h3 {
-            color: var(--color-primary);
-            text-align: center;
-            border-bottom: 2px solid var(--color-primary);
-            padding-bottom: var(--spacing-sm);
-        }
-        .receipt .ref-number {
-            font-size: 1.5rem;
-            font-weight: var(--font-bold);
-            color: var(--color-primary);
-            text-align: center;
-            margin: var(--spacing-md) 0;
-        }
-        .receipt .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.3rem 0;
-            border-bottom: 1px solid var(--color-border);
-            font-size: 0.95rem;
-        }
-        .receipt .detail-row .label {
-            font-weight: var(--font-medium);
-            color: var(--color-text-muted);
-        }
-        .receipt .detail-row .value {
-            color: var(--color-text);
-        }
-        .receipt .print-btn {
-            display: block;
-            margin: var(--spacing-md) auto 0;
         }
         @media (max-width: 768px) {
             .membership-form-grid {
@@ -123,7 +112,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (no language button) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -190,7 +179,6 @@
         <!-- MAIN -->
         <main class="site-main" role="main">
 
-            <!-- HERO -->
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
@@ -349,22 +337,45 @@
                             <input type="number" id="totalFamily" name="totalFamily" min="1" required />
                         </div>
 
-                        <!-- Type of House -->
+                        <!-- Type of House (Dropdown) -->
                         <div class="form-group full-width">
                             <label for="houseType">Type of House *</label>
-                            <input type="text" id="houseType" name="houseType" required />
+                            <select id="houseType" name="houseType" required>
+                                <option value="">Please Select</option>
+                                <option value="Kutcha House">Kutcha House</option>
+                                <option value="Semi-Pucca House">Semi-Pucca House</option>
+                                <option value="Pucca House">Pucca House</option>
+                                <option value="RCC House">RCC House</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
-                        <!-- Land Ownership -->
+                        <!-- Land Ownership Status (Dropdown) -->
                         <div class="form-group full-width">
                             <label for="landOwnership">Land Ownership Status *</label>
-                            <input type="text" id="landOwnership" name="landOwnership" required />
+                            <select id="landOwnership" name="landOwnership" required>
+                                <option value="">Please Select</option>
+                                <option value="Own Land">Own Land</option>
+                                <option value="Leased Land">Leased Land</option>
+                                <option value="Government Land">Government Land</option>
+                                <option value="No Land">No Land</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
-                        <!-- Vehicle Owned -->
+                        <!-- Vehicle Owned (Dropdown) -->
                         <div class="form-group full-width">
                             <label for="vehicle">Vehicle Owned</label>
-                            <input type="text" id="vehicle" name="vehicle" />
+                            <select id="vehicle" name="vehicle">
+                                <option value="">Please Select</option>
+                                <option value="None">None</option>
+                                <option value="Bicycle">Bicycle</option>
+                                <option value="Motorcycle / Scooter">Motorcycle / Scooter</option>
+                                <option value="Car">Car</option>
+                                <option value="Auto-Rickshaw">Auto-Rickshaw</option>
+                                <option value="Tractor">Tractor</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
                         <!-- Under Belt & Block -->
@@ -399,8 +410,16 @@
                             <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
                         </div>
 
-                        <!-- Passport Photo Upload - REMOVED (only database, no storage) -->
-                        <!-- Photo upload removed; we only store data in Realtime Database -->
+                        <!-- Passport Photo Upload with Cloudinary -->
+                        <div class="form-group full-width">
+                            <label for="photo">Passport Photo Upload * (Max 0.5 MB, JPG/PNG)</label>
+                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required />
+                            <div id="photoPreviewContainer" class="photo-preview" style="display:none;">
+                                <img id="photoPreview" src="#" alt="Passport preview" />
+                            </div>
+                            <div id="uploadStatus" class="upload-status"></div>
+                            <input type="hidden" id="photoURL" name="photoURL" />
+                        </div>
 
                         <!-- Terms and Conditions -->
                         <div class="form-group full-width">
@@ -426,31 +445,17 @@
 
                     </form>
 
-                    <!-- Receipt (hidden initially) -->
-                    <div id="receipt" class="receipt">
-                        <h3>&#9670; Acknowledgement Receipt</h3>
-                        <div class="ref-number" id="refNumber">ALM-2026-XXXXX</div>
-                        <p style="text-align: center; color: var(--color-text-muted);">Thank you for applying. Please save this reference number for tracking your application status.</p>
-                        <div id="receiptDetails"></div>
-                        <button class="btn btn-secondary print-btn" onclick="window.print()">Print Receipt</button>
-                    </div>
-
                 </div>
             </section>
 
-            <!-- CHECK STATUS SECTION -->
+            <!-- CHECK STATUS LINK -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-                <div class="section-content">
-                    <div class="section-label">Track Your Application</div>
-                    <h2>Check Application Status</h2>
-                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
-                        Enter your unique reference number to check the current status.
+                <div class="section-content" style="text-align: center;">
+                    <h2>Already Applied? Check Your Status</h2>
+                    <p style="color: var(--color-text-muted); max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        Click the button below to check the current status of your application.
                     </p>
-                    <form id="statusForm" style="max-width: 500px; display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
-                        <input type="text" id="statusRef" placeholder="Enter Reference Number (e.g., ALM-2026-00001)" style="flex:1; padding: 0.7rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 1rem; font-family: inherit;" required />
-                        <button type="submit" class="btn btn-secondary">Check Status</button>
-                    </form>
-                    <div id="statusResult" style="margin-top: var(--spacing-lg);"></div>
+                    <a href="check-status.html" class="btn btn-secondary">Check Status</a>
                 </div>
             </section>
 
@@ -514,7 +519,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- FIREBASE SDK (Database only — no Storage) -->
+    <!-- FIREBASE SDK + Cloudinary Upload -->
     <!-- ============================================================ -->
     <script type="importmap">
         {
@@ -526,9 +531,8 @@
     </script>
 
     <script type="module">
-        // Import Firebase modules (Database only)
         import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, push, set, get, update } from "firebase/database";
+        import { getDatabase, ref, push, set } from "firebase/database";
 
         // Firebase config
         const firebaseConfig = {
@@ -540,38 +544,97 @@
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Helper: generate unique reference number
+        // Cloudinary config
+        const CLOUD_NAME = 'nhxuht4e';
+        const UPLOAD_PRESET = 'membership_upload';
+        const MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 0.5 MB
+
+        // DOM elements
+        const form = document.getElementById('membershipForm');
+        const photoInput = document.getElementById('photo');
+        const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+        const photoPreview = document.getElementById('photoPreview');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const photoURLInput = document.getElementById('photoURL');
+        const submitBtn = document.getElementById('submitBtn');
+
+        let uploadedPhotoURL = '';
+
+        // Helper: generate reference number
         function generateRefNumber() {
             const year = new Date().getFullYear();
             const random = String(Math.floor(10000 + Math.random() * 90000));
             return `ALM-${year}-${random}`;
         }
 
-        // Helper: get current date/time string
+        // Helper: get current date/time
         function getCurrentDateTime() {
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
-        // DOM elements
-        const form = document.getElementById('membershipForm');
-        const receiptDiv = document.getElementById('receipt');
-        const refNumberSpan = document.getElementById('refNumber');
-        const receiptDetails = document.getElementById('receiptDetails');
-
-        // Show/hide "Other Education" based on selection
-        const educationSelect = document.getElementById('education');
-        const otherEducationGroup = document.getElementById('otherEducationGroup');
-        educationSelect.addEventListener('change', () => {
-            if (educationSelect.value === 'Other') {
-                otherEducationGroup.style.display = 'block';
+        // Show/hide Other Education
+        document.getElementById('education').addEventListener('change', function() {
+            const otherGroup = document.getElementById('otherEducationGroup');
+            if (this.value === 'Other') {
+                otherGroup.style.display = 'block';
                 document.getElementById('otherEducation').required = true;
             } else {
-                otherEducationGroup.style.display = 'none';
+                otherGroup.style.display = 'none';
                 document.getElementById('otherEducation').required = false;
+            }
+        });
+
+        // Photo upload to Cloudinary
+        photoInput.addEventListener('change', async function(e) {
+            const file = this.files[0];
+            if (!file) return;
+
+            // Validate size
+            if (file.size > MAX_FILE_SIZE) {
+                alert('File size exceeds 0.5 MB. Please compress or choose a smaller image.');
+                this.value = '';
+                photoPreviewContainer.style.display = 'none';
+                uploadStatus.textContent = '';
+                return;
+            }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                photoPreview.src = ev.target.result;
+                photoPreviewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            uploadStatus.textContent = 'Uploading to Cloudinary...';
+            uploadStatus.style.color = 'var(--color-text-muted)';
+
+            // Upload to Cloudinary
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', UPLOAD_PRESET);
+
+            try {
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) throw new Error('Upload failed');
+                const data = await response.json();
+                uploadedPhotoURL = data.secure_url;
+                photoURLInput.value = uploadedPhotoURL;
+                uploadStatus.textContent = 'Upload successful ✅';
+                uploadStatus.style.color = 'green';
+            } catch (err) {
+                console.error(err);
+                uploadStatus.textContent = 'Upload failed. Please try again.';
+                uploadStatus.style.color = 'red';
+                photoPreviewContainer.style.display = 'none';
+                photoURLInput.value = '';
+                uploadedPhotoURL = '';
             }
         });
 
@@ -589,15 +652,20 @@
                 return;
             }
 
+            // Ensure photo is uploaded
+            if (!uploadedPhotoURL) {
+                alert('Please upload a passport photo and wait for successful upload.');
+                return;
+            }
+
             // Collect form data
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+            data.photoURL = uploadedPhotoURL; // Ensure the URL is included
 
-            // Generate reference number
             const refNumber = generateRefNumber();
             const timestamp = getCurrentDateTime();
 
-            // Prepare data object for Firebase
             const applicationData = {
                 ...data,
                 refNumber,
@@ -614,145 +682,31 @@
                 finalDecision: null
             };
 
-            // Remove undefined/empty fields
+            // Clean empty fields
             Object.keys(applicationData).forEach(key => {
                 if (applicationData[key] === '' || applicationData[key] === null || applicationData[key] === undefined) {
                     delete applicationData[key];
                 }
             });
 
-            // Save to Firebase Realtime Database under 'applications'
+            // Show loading spinner on button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+
             try {
                 const newAppRef = push(ref(db, 'applications'));
                 await set(newAppRef, applicationData);
-
-                // Show receipt
-                receiptDiv.classList.add('visible');
-                refNumberSpan.textContent = refNumber;
-
-                // Build receipt details
-                let detailsHTML = `
-                    <div class="detail-row"><span class="label">Name</span><span class="value">${data.firstName} ${data.secondName}</span></div>
-                    <div class="detail-row"><span class="label">Email</span><span class="value">${data.email}</span></div>
-                    <div class="detail-row"><span class="label">Phone</span><span class="value">${data.phone}</span></div>
-                    <div class="detail-row"><span class="label">Membership Type</span><span class="value">${data.membershipType}</span></div>
-                    <div class="detail-row"><span class="label">District</span><span class="value">${data.district}</span></div>
-                    <div class="detail-row"><span class="label">Application Date</span><span class="value">${timestamp}</span></div>
-                `;
-                receiptDetails.innerHTML = detailsHTML;
-
-                // Scroll to receipt
-                receiptDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // Reset form (optional)
-                // form.reset();
-
+                // Redirect to acknowledgement page with ref number
+                window.location.href = `acknowledgement.html?ref=${refNumber}`;
             } catch (error) {
                 console.error('Error saving application:', error);
                 alert('There was an error submitting your application. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
             }
         });
 
-        // ---------- Status Tracking ----------
-        const statusForm = document.getElementById('statusForm');
-        const statusResult = document.getElementById('statusResult');
-
-        statusForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const refNumber = document.getElementById('statusRef').value.trim();
-            if (!refNumber) {
-                statusResult.innerHTML = '<p style="color: var(--color-primary);">Please enter a reference number.</p>';
-                return;
-            }
-
-            // Query Firebase to find application with matching refNumber
-            const dbRef = ref(db, 'applications');
-            try {
-                const snapshot = await get(dbRef);
-                if (snapshot.exists()) {
-                    const allApps = snapshot.val();
-                    let found = null;
-                    let appKey = null;
-                    for (const key in allApps) {
-                        if (allApps[key].refNumber === refNumber) {
-                            found = allApps[key];
-                            appKey = key;
-                            break;
-                        }
-                    }
-                    if (found) {
-                        // Build status display
-                        let statusText = found.status || 'Submitted';
-                        let statusColor = 'var(--color-primary)';
-                        if (statusText === 'Approved') statusColor = 'green';
-                        else if (statusText === 'Rejected') statusColor = 'red';
-
-                        let historyHTML = '';
-                        if (found.history && found.history.length > 0) {
-                            historyHTML = '<ul style="list-style: none; padding: 0;">';
-                            found.history.forEach(entry => {
-                                historyHTML += `<li style="padding: 0.3rem 0; border-bottom: 1px solid var(--color-border);">${entry.action} — ${entry.timestamp}</li>`;
-                            });
-                            historyHTML += '</ul>';
-                        }
-
-                        let remarksHTML = '';
-                        if (found.remarks && found.remarks.length > 0) {
-                            remarksHTML = '<h4>Remarks</h4><ul style="list-style: none; padding: 0;">';
-                            found.remarks.forEach(r => {
-                                remarksHTML += `<li style="padding: 0.2rem 0;">${r.by}: ${r.text} (${r.timestamp})</li>`;
-                            });
-                            remarksHTML += '</ul>';
-                        }
-
-                        let certificateHTML = '';
-                        if (found.status === 'Approved') {
-                            certificateHTML = `
-                                <p style="margin-top: var(--spacing-md);">
-                                    <a href="#" id="downloadCertBtn" class="btn btn-primary" style="display: inline-block;">Download Membership Certificate</a>
-                                </p>
-                            `;
-                        }
-
-                        statusResult.innerHTML = `
-                            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); max-width: 700px; margin: 0 auto;">
-                                <h3 style="color: var(--color-primary);">Application Status</h3>
-                                <p><strong>Reference Number:</strong> ${found.refNumber}</p>
-                                <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
-                                <p><strong>Applicant:</strong> ${found.firstName} ${found.secondName}</p>
-                                <p><strong>Submitted on:</strong> ${found.timestamp}</p>
-                                <hr style="border-color: var(--color-border); margin: var(--spacing-md) 0;">
-                                <h4>Timeline</h4>
-                                ${historyHTML}
-                                ${remarksHTML}
-                                ${certificateHTML}
-                                <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
-                                    For further assistance, please contact the committee office.
-                                </p>
-                            </div>
-                        `;
-
-                        // Handle certificate download (if approved)
-                        if (found.status === 'Approved') {
-                            document.getElementById('downloadCertBtn').addEventListener('click', (e) => {
-                                e.preventDefault();
-                                alert('Certificate generation feature will be available soon. In production, this will download a professionally formatted PDF.');
-                            });
-                        }
-
-                    } else {
-                        statusResult.innerHTML = `<p style="color: red;">No application found with reference number: ${refNumber}</p>`;
-                    }
-                } else {
-                    statusResult.innerHTML = '<p style="color: red;">No applications found.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching status:', error);
-                statusResult.innerHTML = '<p style="color: red;">Error retrieving status. Please try again later.</p>';
-            }
-        });
-
-        // Admin portal link (hidden in main site, but accessible for demo)
+        // Admin link in footer
         const footerBottom = document.querySelector('.footer-bottom');
         if (footerBottom) {
             const adminLink = document.createElement('p');
@@ -761,7 +715,7 @@
             footerBottom.appendChild(adminLink);
         }
 
-        console.log('Membership form with Firebase Database integration loaded.');
+        console.log('Membership form with Cloudinary integration loaded.');
     </script>
 
 </body>
