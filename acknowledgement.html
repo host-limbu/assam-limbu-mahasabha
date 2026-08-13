@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Acknowledgement — Assam Limbu Mahasabha</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        .receipt-container {
+            max-width: 900px;
+            margin: var(--spacing-lg) auto;
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .receipt-header .logo-emblem {
+            font-size: 3rem;
+            color: var(--color-primary);
+        }
+        .receipt-header h1 {
+            font-size: 1.6rem;
+            margin: 0;
+        }
+        .receipt-header .sub {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+        .ref-number {
+            font-size: 1.3rem;
+            font-weight: var(--font-bold);
+            color: var(--color-primary);
+            text-align: center;
+            margin: var(--spacing-md) 0;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+        }
+        .detail-item {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .detail-item .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            display: inline-block;
+            width: 40%;
+        }
+        .detail-item .value {
+            color: var(--color-text);
+            display: inline-block;
+            width: 58%;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+        .history-table th,
+        .history-table td {
+            border: 1px solid var(--color-border);
+            padding: 0.5rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .history-table th {
+            background: var(--color-surface-alt);
+            font-weight: var(--font-medium);
+        }
+        .print-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-lg);
+        }
+        @media print {
+            .print-actions { display: none; }
+            .receipt-container { border: none; box-shadow: none; }
+            body { background: #fff; }
+        }
+        @media (max-width: 768px) {
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+            <section class="full-width">
+                <div class="section-content">
+                    <div id="receiptContent" class="receipt-container">
+                        <!-- Will be populated by JavaScript -->
+                        <p style="text-align:center; color: var(--color-text-muted);">Loading receipt...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                        </span>
+                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, get } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const refNumber = urlParams.get('ref');
+
+        const container = document.getElementById('receiptContent');
+
+        if (!refNumber) {
+            container.innerHTML = '<p style="color:red;">No reference number provided.</p>';
+            return;
+        }
+
+        async function loadReceipt() {
+            const snapshot = await get(ref(db, 'applications'));
+            if (!snapshot.exists()) {
+                container.innerHTML = '<p style="color:red;">No applications found.</p>';
+                return;
+            }
+            const allApps = snapshot.val();
+            let app = null;
+            for (const key in allApps) {
+                if (allApps[key].refNumber === refNumber) {
+                    app = allApps[key];
+                    break;
+                }
+            }
+            if (!app) {
+                container.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
+                return;
+            }
+
+            // Build receipt HTML
+            let historyRows = '';
+            if (app.history && app.history.length) {
+                app.history.forEach(entry => {
+                    historyRows += `<tr><td>${entry.timestamp}</td><td>${entry.action}</td><td>${entry.by || ''}</td></tr>`;
+                });
+            }
+
+            container.innerHTML = `
+                <div class="receipt-header">
+                    <div class="logo-emblem">&#9670;</div>
+                    <h1>Assam Limbu Mahasabha</h1>
+                    <p class="sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                    <p class="sub"><strong>Application Acknowledgement Receipt</strong></p>
+                </div>
+                <div class="ref-number">Reference No: ${app.refNumber}</div>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Applicant Name</span><span class="value">${app.firstName} ${app.secondName}</span></div>
+                    <div class="detail-item"><span class="label">Date of Birth</span><span class="value">${app.dob}</span></div>
+                    <div class="detail-item"><span class="label">Email</span><span class="value">${app.email}</span></div>
+                    <div class="detail-item"><span class="label">Phone</span><span class="value">${app.phone}</span></div>
+                    <div class="detail-item"><span class="label">Membership Type</span><span class="value">${app.membershipType}</span></div>
+                    <div class="detail-item"><span class="label">District</span><span class="value">${app.district}</span></div>
+                    <div class="detail-item"><span class="label">Submission Date</span><span class="value">${app.timestamp}</span></div>
+                    <div class="detail-item"><span class="label">Current Status</span><span class="value" style="font-weight:bold;">${app.status}</span></div>
+                </div>
+                <h3>Application Processing History</h3>
+                <table class="history-table">
+                    <thead><tr><th>Date & Time</th><th>Action</th><th>By</th></tr></thead>
+                    <tbody>${historyRows || '<tr><td colspan="3">No history available.</td></tr>'}</tbody>
+                </table>
+                <div class="print-actions">
+                    <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+                    <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
+                </div>
+            `;
+        }
+
+        loadReceipt();
+    </script>
+
+</body>
+</html>
