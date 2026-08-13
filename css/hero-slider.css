@@ -1,27 +1,38 @@
-/* Hero Slider */
+/* ============================================================
+   HERO SLIDER — FULL WIDTH, 5 IMAGES AUTO SLIDE
+   ============================================================ */
+
 .hero-section {
     position: relative;
+    width: 100%;
     min-height: 75vh;
     overflow: hidden;
     background: var(--color-primary-dark);
+    display: flex;
+    align-items: center;
 }
 
+/* --- Slider Background --- */
 .hero-slider {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     overflow: hidden;
+    z-index: 0;
 }
 
 .hero-slider-track {
     display: flex;
-    width: 500%;
+    width: 500%; /* 5 images × 100% */
     height: 100%;
     animation: slideHorizontal 15s ease-in-out infinite;
     will-change: transform;
 }
 
 .hero-slide {
-    width: 20%;
+    width: 20%; /* 100% / 5 */
     height: 100%;
     flex-shrink: 0;
 }
@@ -29,34 +40,37 @@
 .hero-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* ← THIS FILLS WITHOUT DISTORTION */
     display: block;
 }
 
-/* 5 images × 3 seconds each = 15 seconds total */
+/* --- Slide Animation (5 images × 3 seconds = 15s total) --- */
 @keyframes slideHorizontal {
-    0%, 16% { transform: translateX(0%); }
-    20%, 36% { transform: translateX(-20%); }
-    40%, 56% { transform: translateX(-40%); }
-    60%, 76% { transform: translateX(-60%); }
-    80%, 96% { transform: translateX(-80%); }
-    100% { transform: translateX(-100%); }
+    0%, 16%   { transform: translateX(0%); }
+    20%, 36%  { transform: translateX(-20%); }
+    40%, 56%  { transform: translateX(-40%); }
+    60%, 76%  { transform: translateX(-60%); }
+    80%, 96%  { transform: translateX(-80%); }
+    100%      { transform: translateX(-100%); }
 }
 
-/* Text overlay on top of slider */
-.hero-text-overlay {
+/* --- Text Overlay (your original text, now above the slider) --- */
+.hero-content {
     position: relative;
     z-index: 2;
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     padding: var(--spacing-xl) var(--spacing-lg);
-    background: rgba(15, 38, 59, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(15, 38, 59, 0.5); /* semi-transparent overlay for readability */
 }
 
-.hero-text-overlay .hero-tag {
+.hero-text {
+    max-width: 650px;
+}
+
+.hero-tag {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -65,14 +79,14 @@
     margin-bottom: var(--spacing-sm);
 }
 
-.hero-text-overlay h1 {
+.hero-text h1 {
     font-size: 3.4rem;
     color: #fff;
     line-height: 1.1;
     margin-bottom: var(--spacing-md);
 }
 
-.hero-text-overlay .hero-description {
+.hero-description {
     font-size: 1.15rem;
     color: rgba(255, 255, 255, 0.75);
     max-width: 500px;
@@ -86,6 +100,7 @@
     flex-wrap: wrap;
 }
 
+/* --- Scroll Indicator --- */
 .hero-scroll-indicator {
     position: absolute;
     bottom: var(--spacing-lg);
@@ -111,33 +126,39 @@
     50% { transform: translateX(-50%) translateY(8px); }
 }
 
-/* Responsive */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
 @media (max-width: 1024px) {
-    .hero-text-overlay h1 {
+    .hero-text h1 {
         font-size: 2.6rem;
+    }
+    .hero-content {
+        padding: var(--spacing-lg) var(--spacing-md);
     }
 }
 
 @media (max-width: 768px) {
-    .hero-text-overlay {
-        padding: var(--spacing-lg) var(--spacing-md);
-    }
-    .hero-text-overlay h1 {
+    .hero-text h1 {
         font-size: 2rem;
     }
-    .hero-text-overlay .hero-description {
+    .hero-description {
         font-size: 1rem;
+        max-width: 100%;
     }
     .hero-actions .btn {
         width: 100%;
         justify-content: center;
     }
-}
-
-@media (max-width: 480px) {
-    .hero-text-overlay h1 {
-        font-size: 1.6rem;
+    .hero-content {
+        padding: var(--spacing-lg) var(--spacing-md);
+        background: rgba(15, 38, 59, 0.65);
     }
 }
 
-/* Remove the old .hero-image style if it exists */
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 1.6rem;
+    }
+}
