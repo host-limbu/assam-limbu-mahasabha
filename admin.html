@@ -10,14 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* Same layout as check-status.html */
+        /* Login form – centered but no grey border/card appearance */
         .admin-login-form {
             max-width: 400px;
             margin: 0 auto;
             padding: var(--spacing-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
+            /* No border, no background, no card */
         }
         .admin-login-form input {
             width: 100%;
@@ -88,14 +86,19 @@
             font-weight: var(--font-medium);
             background: var(--color-surface-alt);
         }
+
+        /* Action buttons – horizontal, side by side */
         .admin-table .actions {
             display: flex;
-            gap: var(--spacing-xs);
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            gap: 0.25rem;
+            align-items: center;
         }
         .admin-table .actions .btn {
-            padding: 0.2rem 0.6rem;
-            font-size: 0.8rem;
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .admin-empty {
             text-align: center;
@@ -252,6 +255,10 @@
             .admin-table th, .admin-table td { padding: 0.3rem 0.5rem; }
             .detail-grid { grid-template-columns: 1fr; }
             .certificate-preview .body { flex-direction: column; align-items: center; }
+            .admin-table .actions .btn {
+                font-size: 0.65rem;
+                padding: 0.1rem 0.3rem;
+            }
         }
     </style>
 </head>
@@ -316,7 +323,7 @@
                         Secure admin panel for Dealing Assistant, President, and Approving Authority.
                     </p>
 
-                    <!-- Login Section -->
+                    <!-- Login Section – no grey border/card -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
@@ -344,7 +351,7 @@
             </section>
         </main>
 
-        <!-- MODALS (same as before) -->
+        <!-- MODALS -->
         <div id="viewModal" class="modal">
             <div class="modal-content">
                 <button class="close" data-modal="viewModal">&times;</button>
@@ -534,7 +541,7 @@
             await signOut(auth);
         });
 
-        // LOAD APPLICATIONS (with table, scroll wrapper)
+        // LOAD APPLICATIONS
         function loadApplications(role) {
             const appsRef = ref(db, 'applications');
             onValue(appsRef, (snapshot) => {
