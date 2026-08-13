@@ -83,28 +83,6 @@
         <main class="site-main" role="main">
 
             <section class="hero-section full-width">
-    <!-- Slider Background -->
-    <div class="hero-slider">
-        <div class="hero-slider-track">
-            <div class="hero-slide">
-                <img src="images/hero/image1.jpg" alt="Limbu community celebration" />
-            </div>
-            <div class="hero-slide">
-                <img src="images/hero/image2.jpg" alt="Cultural festival" />
-            </div>
-            <div class="hero-slide">
-                <img src="images/hero/image3.jpg" alt="Community gathering" />
-            </div>
-            <div class="hero-slide">
-                <img src="images/hero/image4.jpg" alt="Traditional dance" />
-            </div>
-            <div class="hero-slide">
-                <img src="images/hero/image5.jpg" alt="Limbu heritage" />
-            </div>
-        </div>
-    </div>
-
-    <!-- Your Original Text (unchanged) -->
     <div class="hero-content">
         <div class="hero-text">
             <p class="hero-tag">Assam Limbu Mahasabha</p>
@@ -118,9 +96,16 @@
                 <a href="membership.html" class="btn btn-outline">Join Us</a>
             </div>
         </div>
+        <div class="hero-image" aria-hidden="true">
+            <div class="hero-slider">
+                <div class="hero-slide" style="background-image: url('images/hero/image1.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('images/hero/image2.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('images/hero/image3.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('images/hero/image4.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('images/hero/image5.jpg');"></div>
+            </div>
+        </div>
     </div>
-
-    <!-- Scroll Indicator -->
     <div class="hero-scroll-indicator">
         <span>Scroll</span>
         <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -407,6 +392,7 @@
     </div>
 
     <script src="script.js"></script>
+<script src="slider.js"></script>
 
 </body>
 </html>
