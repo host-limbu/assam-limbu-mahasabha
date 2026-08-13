@@ -4,8 +4,7 @@
 .hero-image {
     position: relative;
     overflow: hidden;
-    height: 320px;                 /* ← reduced from 400px */
-    min-height: 280px;
+    min-height: 400px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     background-color: var(--color-primary-light);
@@ -15,19 +14,17 @@
     display: flex;
     width: 100%;
     height: 100%;
-    min-height: inherit;
+    min-height: 400px;
     transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
 }
 
 .hero-slide {
     flex: 0 0 100%;
-    height: 100%;
-    min-height: inherit;
-    background-size: contain;      /* ← shows full image, no cropping */
+    min-height: 400px;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: var(--color-primary-light);
 }
 
 /* Pause indicator (optional) */
@@ -39,54 +36,4 @@
 /* If JS fails, show first image */
 .hero-slider {
     transform: translateX(0%);
-}
-
-/* ---- Responsive Heights ----- */
-@media (max-width: 1024px) {
-    .hero-image {
-        height: 250px;
-        min-height: 220px;
-    }
-}
-@media (max-width: 768px) {
-    .hero-image {
-        height: 200px;
-        min-height: 180px;
-    }
-}
-@media (max-width: 480px) {
-    .hero-image {
-        height: 150px;
-        min-height: 130px;
-    }
-}
-
-/* ============================================================
-   HERO SCROLL INDICATOR — untouched
-   ============================================================ */
-.hero-scroll-indicator {
-    position: absolute;
-    bottom: var(--spacing-lg);
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    animation: bounce 2s infinite;
-}
-.hero-scroll-indicator svg {
-    margin-top: 4px;
-}
-@keyframes bounce {
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-    50% {
-        transform: translateX(-50%) translateY(8px);
-    }
 }
