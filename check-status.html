@@ -95,16 +95,6 @@
             margin-top: var(--spacing-md);
             text-align: center;
         }
-        .status-detail {
-            margin-top: var(--spacing-md);
-        }
-        .status-detail .label {
-            font-weight: var(--font-medium);
-            color: var(--color-text-muted);
-        }
-        .status-detail .value {
-            color: var(--color-text);
-        }
         @media (max-width: 768px) {
             .status-container { padding: var(--spacing-md); }
             .status-table, .history-table { font-size: 0.8rem; }
@@ -163,9 +153,10 @@
             </div>
         </header>
 
+        <!-- ==================== CHECK STATUS SECTION (UPDATED STRUCTURE) ==================== -->
         <main class="site-main" role="main">
-            <section class="full-width">
-                <div class="section-content">
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content" style="text-align: left;">
                     <div class="status-container">
                         <h2>Check Application Status</h2>
                         <p style="color: var(--color-text-muted);">Enter your reference number below to view the current status.</p>
@@ -303,7 +294,7 @@
                 `;
             }
 
-            // Build the result HTML with tables inside scrollable wrappers
+            // Build the result HTML (Email, Phone, Membership Type, District removed)
             resultContainer.innerHTML = `
                 <h3>Application Status</h3>
                 <div class="table-wrapper">
@@ -325,13 +316,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <div class="status-detail">
-                    <p><span class="label">Email:</span> <span class="value">${app.email || 'N/A'}</span></p>
-                    <p><span class="label">Phone:</span> <span class="value">${app.phone || 'N/A'}</span></p>
-                    <p><span class="label">Membership Type:</span> <span class="value">${app.membershipType || 'N/A'}</span></p>
-                    <p><span class="label">District:</span> <span class="value">${app.district || 'N/A'}</span></p>
                 </div>
 
                 <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
