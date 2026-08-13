@@ -85,6 +85,24 @@
             justify-content: center;
             margin-top: var(--spacing-lg);
         }
+        .loading-spinner {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-text-muted);
+        }
+        .loading-spinner .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-border);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         @media print {
             .print-actions { display: none; }
             .receipt-container { border: none; box-shadow: none; }
@@ -150,8 +168,10 @@
             <section class="full-width">
                 <div class="section-content">
                     <div id="receiptContent" class="receipt-container">
-                        <!-- Will be populated by JavaScript -->
-                        <p style="text-align:center; color: var(--color-text-muted);">Loading receipt...</p>
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading receipt...</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -232,73 +252,92 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const refNumber = urlParams.get('ref');
-
         const container = document.getElementById('receiptContent');
 
-        if (!refNumber) {
-            container.innerHTML = '<p style="color:red;">No reference number provided.</p>';
-            return;
-        }
-
         async function loadReceipt() {
-            const snapshot = await get(ref(db, 'applications'));
-            if (!snapshot.exists()) {
-                container.innerHTML = '<p style="color:red;">No applications found.</p>';
+            const urlParams = new URLSearchParams(window.location.search);
+            const refNumber = urlParams.get('ref');
+
+            if (!refNumber) {
+                container.innerHTML = '<p style="color:red;">No reference number provided.</p>';
                 return;
             }
-            const allApps = snapshot.val();
-            let app = null;
-            for (const key in allApps) {
-                if (allApps[key].refNumber === refNumber) {
-                    app = allApps[key];
-                    break;
+
+            try {
+                const snapshot = await get(ref(db, 'applications'));
+                if (!snapshot.exists()) {
+                    container.innerHTML = '<p style="color:red;">No applications found.</p>';
+                    return;
                 }
-            }
-            if (!app) {
-                container.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
-                return;
-            }
 
-            // Build receipt HTML
-            let historyRows = '';
-            if (app.history && app.history.length) {
-                app.history.forEach(entry => {
-                    historyRows += `<tr><td>${entry.timestamp}</td><td>${entry.action}</td><td>${entry.by || ''}</td></tr>`;
-                });
-            }
+                const allApps = snapshot.val();
+                let app = null;
+                for (const key in allApps) {
+                    if (allApps[key].refNumber === refNumber) {
+                        app = allApps[key];
+                        break;
+                    }
+                }
 
-            container.innerHTML = `
-                <div class="receipt-header">
-                    <div class="logo-emblem">&#9670;</div>
-                    <h1>Assam Limbu Mahasabha</h1>
-                    <p class="sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
-                    <p class="sub"><strong>Application Acknowledgement Receipt</strong></p>
-                </div>
-                <div class="ref-number">Reference No: ${app.refNumber}</div>
-                <div class="detail-grid">
-                    <div class="detail-item"><span class="label">Applicant Name</span><span class="value">${app.firstName} ${app.secondName}</span></div>
-                    <div class="detail-item"><span class="label">Date of Birth</span><span class="value">${app.dob}</span></div>
-                    <div class="detail-item"><span class="label">Email</span><span class="value">${app.email}</span></div>
-                    <div class="detail-item"><span class="label">Phone</span><span class="value">${app.phone}</span></div>
-                    <div class="detail-item"><span class="label">Membership Type</span><span class="value">${app.membershipType}</span></div>
-                    <div class="detail-item"><span class="label">District</span><span class="value">${app.district}</span></div>
-                    <div class="detail-item"><span class="label">Submission Date</span><span class="value">${app.timestamp}</span></div>
-                    <div class="detail-item"><span class="label">Current Status</span><span class="value" style="font-weight:bold;">${app.status}</span></div>
-                </div>
-                <h3>Application Processing History</h3>
-                <table class="history-table">
-                    <thead><tr><th>Date & Time</th><th>Action</th><th>By</th></tr></thead>
-                    <tbody>${historyRows || '<tr><td colspan="3">No history available.</td></tr>'}</tbody>
-                </table>
-                <div class="print-actions">
-                    <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
-                    <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
-                </div>
-            `;
+                if (!app) {
+                    container.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
+                    return;
+                }
+
+                // Build receipt HTML
+                let historyRows = '';
+                if (app.history && app.history.length) {
+                    app.history.forEach(entry => {
+                        historyRows += `<tr><td>${entry.timestamp}</td><td>${entry.action}</td><td>${entry.by || ''}</td></tr>`;
+                    });
+                } else {
+                    historyRows = '<tr><td colspan="3">No history available.</td></tr>';
+                }
+
+                // Photo preview if available
+                let photoHtml = '';
+                if (app.photoURL) {
+                    photoHtml = `<div style="margin-top:var(--spacing-md); text-align:center;">
+                        <img src="${app.photoURL}" alt="Passport photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" />
+                    </div>`;
+                }
+
+                container.innerHTML = `
+                    <div class="receipt-header">
+                        <div class="logo-emblem">&#9670;</div>
+                        <h1>Assam Limbu Mahasabha</h1>
+                        <p class="sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
+                        <p class="sub"><strong>Application Acknowledgement Receipt</strong></p>
+                    </div>
+                    <div class="ref-number">Reference No: ${app.refNumber}</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><span class="label">Applicant Name</span><span class="value">${app.firstName || ''} ${app.secondName || ''}</span></div>
+                        <div class="detail-item"><span class="label">Date of Birth</span><span class="value">${app.dob || ''}</span></div>
+                        <div class="detail-item"><span class="label">Email</span><span class="value">${app.email || ''}</span></div>
+                        <div class="detail-item"><span class="label">Phone</span><span class="value">${app.phone || ''}</span></div>
+                        <div class="detail-item"><span class="label">Membership Type</span><span class="value">${app.membershipType || ''}</span></div>
+                        <div class="detail-item"><span class="label">District</span><span class="value">${app.district || ''}</span></div>
+                        <div class="detail-item"><span class="label">Submission Date</span><span class="value">${app.timestamp || ''}</span></div>
+                        <div class="detail-item"><span class="label">Current Status</span><span class="value" style="font-weight:bold;">${app.status || 'Submitted'}</span></div>
+                    </div>
+                    ${photoHtml}
+                    <h3 style="margin-top:var(--spacing-lg);">Application Processing History</h3>
+                    <table class="history-table">
+                        <thead><tr><th>Date & Time</th><th>Action</th><th>By</th></tr></thead>
+                        <tbody>${historyRows}</tbody>
+                    </table>
+                    <div class="print-actions">
+                        <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+                        <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading receipt:', error);
+                container.innerHTML = '<p style="color:red;">Error loading receipt. Please try again.</p>';
+            }
         }
 
+        // Execute
         loadReceipt();
     </script>
 
