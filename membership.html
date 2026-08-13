@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* Additional form styles */
         .membership-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -46,15 +45,6 @@
         }
         .membership-form-grid .form-group {
             margin-bottom: var(--spacing-sm);
-        }
-        .membership-form-grid .inline-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-            align-items: center;
-        }
-        .membership-form-grid .inline-group label {
-            margin-bottom: 0;
         }
         .membership-form-grid .checkbox-group {
             display: flex;
@@ -133,7 +123,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as all pages, no language button) -->
+        <!-- HEADER (no language button) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -409,12 +399,8 @@
                             <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
                         </div>
 
-                        <!-- Passport Photo Upload -->
-                        <div class="form-group full-width">
-                            <label for="photo">Passport Photo Upload *</label>
-                            <input type="file" id="photo" name="photo" accept="image/*" required />
-                            <small style="color: var(--color-text-muted);">Upload a recent passport-size photo (JPG, PNG)</small>
-                        </div>
+                        <!-- Passport Photo Upload - REMOVED (only database, no storage) -->
+                        <!-- Photo upload removed; we only store data in Realtime Database -->
 
                         <!-- Terms and Conditions -->
                         <div class="form-group full-width">
@@ -528,23 +514,21 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- FIREBASE SDK (modular) via import map -->
+    <!-- FIREBASE SDK (Database only — no Storage) -->
     <!-- ============================================================ -->
     <script type="importmap">
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
-                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js",
-                "firebase/storage": "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js"
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
             }
         }
     </script>
 
     <script type="module">
-        // Import Firebase modules
+        // Import Firebase modules (Database only)
         import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, push, set, get, child, update } from "firebase/database";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+        import { getDatabase, ref, push, set, get, update } from "firebase/database";
 
         // Firebase config
         const firebaseConfig = {
@@ -559,7 +543,6 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const storage = getStorage(app);
 
         // Helper: generate unique reference number
         function generateRefNumber() {
@@ -610,25 +593,6 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
-            // Handle photo upload
-            const photoFile = document.getElementById('photo').files[0];
-            let photoURL = '';
-            if (photoFile) {
-                // Upload to Firebase Storage
-                const storageRefPath = storageRef(storage, `membership_photos/${data.firstName}_${data.secondName}_${Date.now()}.jpg`);
-                try {
-                    const snapshot = await uploadBytes(storageRefPath, photoFile);
-                    photoURL = await getDownloadURL(snapshot.ref);
-                } catch (error) {
-                    console.error('Photo upload failed:', error);
-                    alert('Photo upload failed. Please try again.');
-                    return;
-                }
-            } else {
-                alert('Please upload a passport photo.');
-                return;
-            }
-
             // Generate reference number
             const refNumber = generateRefNumber();
             const timestamp = getCurrentDateTime();
@@ -636,20 +600,15 @@
             // Prepare data object for Firebase
             const applicationData = {
                 ...data,
-                photoURL,
                 refNumber,
                 timestamp,
                 status: 'Submitted',
+                currentStage: 'DA',
                 history: [
                     { action: 'Application submitted', timestamp, by: 'Applicant' }
                 ],
                 remarks: [],
                 recommendations: [],
-                // Additional fields for workflow
-                currentStage: 'DA', // DA, President, AA, Approved, Rejected
-                daRemarks: '',
-                presidentRemarks: '',
-                aaRemarks: '',
                 approved: false,
                 rejected: false,
                 finalDecision: null
@@ -685,7 +644,7 @@
                 // Scroll to receipt
                 receiptDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                // Reset form? We can keep it for now.
+                // Reset form (optional)
                 // form.reset();
 
             } catch (error) {
@@ -777,8 +736,6 @@
                         if (found.status === 'Approved') {
                             document.getElementById('downloadCertBtn').addEventListener('click', (e) => {
                                 e.preventDefault();
-                                // In a real implementation, generate a PDF certificate with all details.
-                                // For now, we'll just show a message.
                                 alert('Certificate generation feature will be available soon. In production, this will download a professionally formatted PDF.');
                             });
                         }
@@ -796,7 +753,6 @@
         });
 
         // Admin portal link (hidden in main site, but accessible for demo)
-        // We'll add a small admin link at the bottom of the page for testing.
         const footerBottom = document.querySelector('.footer-bottom');
         if (footerBottom) {
             const adminLink = document.createElement('p');
@@ -805,8 +761,8 @@
             footerBottom.appendChild(adminLink);
         }
 
-        console.log('Membership form with Firebase integration loaded.');
+        console.log('Membership form with Firebase Database integration loaded.');
     </script>
-    <script src="script.js"></script>
+
 </body>
 </html>
