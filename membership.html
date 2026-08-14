@@ -222,6 +222,12 @@
                             <input type="text" id="secondName" name="secondName" required />
                         </div>
 
+                        <!-- Father / Guardian Name - NEW FIELD -->
+                        <div class="form-group">
+                            <label for="fatherGuardianName">Father / Guardian Name *</label>
+                            <input type="text" id="fatherGuardianName" name="fatherGuardianName" required />
+                        </div>
+
                         <!-- DOB -->
                         <div class="form-group">
                             <label for="dob">Date of Birth *</label>
@@ -410,7 +416,7 @@
                             <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
                         </div>
 
-                        <!-- Passport Photo Upload with Cloudinary -->
+                        <!-- Passport Photo Upload -->
                         <div class="form-group full-width">
                             <label for="photo">Passport Photo Upload * (Max 0.5 MB, JPG/PNG)</label>
                             <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required />
@@ -592,7 +598,6 @@
             const file = this.files[0];
             if (!file) return;
 
-            // Validate size
             if (file.size > MAX_FILE_SIZE) {
                 alert('File size exceeds 0.5 MB. Please compress or choose a smaller image.');
                 this.value = '';
@@ -601,7 +606,6 @@
                 return;
             }
 
-            // Show preview
             const reader = new FileReader();
             reader.onload = function(ev) {
                 photoPreview.src = ev.target.result;
@@ -612,7 +616,6 @@
             uploadStatus.textContent = 'Uploading to Cloudinary...';
             uploadStatus.style.color = 'var(--color-text-muted)';
 
-            // Upload to Cloudinary
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
@@ -642,7 +645,6 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Validate checkboxes
             if (!document.getElementById('terms').checked) {
                 alert('Please accept the Terms and Conditions.');
                 return;
@@ -652,16 +654,14 @@
                 return;
             }
 
-            // Ensure photo is uploaded
             if (!uploadedPhotoURL) {
                 alert('Please upload a passport photo and wait for successful upload.');
                 return;
             }
 
-            // Collect form data
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            data.photoURL = uploadedPhotoURL; // Ensure the URL is included
+            data.photoURL = uploadedPhotoURL;
 
             const refNumber = generateRefNumber();
             const timestamp = getCurrentDateTime();
@@ -682,21 +682,18 @@
                 finalDecision: null
             };
 
-            // Clean empty fields
             Object.keys(applicationData).forEach(key => {
                 if (applicationData[key] === '' || applicationData[key] === null || applicationData[key] === undefined) {
                     delete applicationData[key];
                 }
             });
 
-            // Show loading spinner on button
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
 
             try {
                 const newAppRef = push(ref(db, 'applications'));
                 await set(newAppRef, applicationData);
-                // Redirect to acknowledgement page with ref number
                 window.location.href = `acknowledgement.html?ref=${refNumber}`;
             } catch (error) {
                 console.error('Error saving application:', error);
@@ -715,9 +712,8 @@
             footerBottom.appendChild(adminLink);
         }
 
-        console.log('Membership form with Cloudinary integration loaded.');
+        console.log('Membership form with Father/Guardian Name field added.');
     </script>
-    <script src="script.js"></script>
 
 </body>
 </html>
