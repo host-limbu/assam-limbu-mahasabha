@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <!-- html2pdf library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         /* ===== Admin styles (unchanged) ===== */
@@ -556,7 +555,7 @@
     <div class="site-shell">
 
         <header class="site-header" role="banner">
-            <!-- Same header as before, unchanged -->
+            <!-- Same header as before -->
             <div class="header-inner">
                 <div class="header-logo">
                     <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
@@ -677,7 +676,7 @@
             </div>
         </div>
 
-        <!-- Certificate Preview Modal (updated layout) -->
+        <!-- Certificate Preview Modal -->
         <div id="certificateModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="certificateModal">&times;</button>
@@ -685,9 +684,7 @@
                     <span style="font-size:1.5rem;">&#9670;</span>
                     <h3 style="margin:0;">Certificate Preview</h3>
                 </div>
-                <div id="certificateContent">
-                    <!-- Certificate preview will be injected here by JavaScript -->
-                </div>
+                <div id="certificateContent"></div>
                 <div class="modal-actions no-print">
                     <button class="btn btn-secondary" data-modal="certificateModal">Close</button>
                     <button class="btn btn-primary" id="downloadPdfBtn">Download PDF</button>
@@ -782,15 +779,9 @@
     </script>
 
     <script type="module">
-        // ----- All existing imports and logic remain exactly the same -----
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
         import { getDatabase, ref, get, update, onValue } from "firebase/database";
-
-        // ----- Import the certificate PDF generator from external file -----
-        // We'll load it dynamically since it's not a module.
-        // The certificate-pdf.js will be loaded as a regular script.
-        // We'll call its function from here.
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -1032,9 +1023,10 @@
 
         logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
+        // ----- UPDATED VIEW MODAL with fatherGuardianName -----
         function openViewModal(app) {
             const fields = [
-                'refNumber', 'firstName', 'secondName', 'dob', 'email', 'phone', 'altPhone',
+                'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
                 'education', 'bloodGroup', 'district', 'lac', 'village', 'postOffice', 'ps', 'pin',
                 'familyStatus', 'totalFamily', 'houseType', 'landOwnership', 'vehicle', 'beltBlock',
                 'autonomousCouncil', 'govtScheme', 'govtEmployees', 'membershipType', 'status', 'timestamp'
@@ -1060,7 +1052,7 @@
             viewModal.classList.add('visible');
         }
 
-        // ----- UPDATED CERTIFICATE PREVIEW (new layout, dynamic data) -----
+        // ----- UPDATED CERTIFICATE PREVIEW with fatherGuardianName -----
         function openCertificatePreview(app) {
             // Build full address from available fields
             const addressParts = [];
@@ -1071,8 +1063,8 @@
             if (app.pin) addressParts.push(`PIN: ${app.pin}`);
             const fullAddress = addressParts.join(', ') || 'N/A';
 
-            // Parent/Guardian – use secondName as fallback, or leave as placeholder
-            const parentGuardian = app.secondName || 'N/A';
+            // Use fatherGuardianName from database
+            const parentGuardian = app.fatherGuardianName || 'N/A';
 
             const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
             const certNumber = app.refNumber || 'N/A';
@@ -1083,7 +1075,7 @@
                 ? `<img src="${app.photoURL}" alt="Applicant photo" />`
                 : '<p style="color:#999;">No photo uploaded</p>';
 
-            // Build certificate HTML with new layout
+            // Build certificate HTML
             certificateContent.innerHTML = `
                 <div class="certificate-wrapper" id="certificatePrintArea">
                     <div class="header">
@@ -1133,12 +1125,8 @@
                 </div>
             `;
 
-            // Show modal
             certificateModal.classList.add('visible');
-
-            // Attach PDF download handler (external function)
             downloadPdfBtn.onclick = function() {
-                // Call the global function from certificate-pdf.js
                 if (typeof generateCertificatePDF === 'function') {
                     generateCertificatePDF('certificatePrintArea');
                 } else {
@@ -1224,7 +1212,7 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal with new certificate preview loaded.');
+        console.log('Admin portal with Father/Guardian Name field added.');
     </script>
 
     <!-- Load the external certificate PDF generator -->
