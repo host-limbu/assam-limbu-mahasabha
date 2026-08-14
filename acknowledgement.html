@@ -284,7 +284,7 @@
                     return;
                 }
 
-                // Build receipt HTML
+                // Build history rows
                 let historyRows = '';
                 if (app.history && app.history.length) {
                     app.history.forEach(entry => {
@@ -302,6 +302,7 @@
                     </div>`;
                 }
 
+                // Build receipt HTML with fatherGuardianName
                 container.innerHTML = `
                     <div class="receipt-header">
                         <div class="logo-emblem">&#9670;</div>
@@ -312,6 +313,7 @@
                     <div class="ref-number">Reference No: ${app.refNumber}</div>
                     <div class="detail-grid">
                         <div class="detail-item"><span class="label">Applicant Name</span><span class="value">${app.firstName || ''} ${app.secondName || ''}</span></div>
+                        <div class="detail-item"><span class="label">Father / Guardian Name</span><span class="value">${app.fatherGuardianName || ''}</span></div>
                         <div class="detail-item"><span class="label">Date of Birth</span><span class="value">${app.dob || ''}</span></div>
                         <div class="detail-item"><span class="label">Email</span><span class="value">${app.email || ''}</span></div>
                         <div class="detail-item"><span class="label">Phone</span><span class="value">${app.phone || ''}</span></div>
@@ -337,7 +339,6 @@
             }
         }
 
-        // Execute
         loadReceipt();
     </script>
 
