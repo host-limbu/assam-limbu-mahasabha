@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* Same default background and colors as the website */
         .status-container {
             max-width: 900px;
             margin: 0 auto;
@@ -40,7 +39,6 @@
             outline: none;
             border-color: var(--color-primary);
         }
-        /* Table wrappers with horizontal scroll */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -65,7 +63,6 @@
             font-weight: var(--font-medium);
             background: var(--color-surface-alt);
         }
-        /* History table */
         .history-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -97,16 +94,6 @@
         .certificate-download {
             margin-top: var(--spacing-md);
             text-align: center;
-        }
-        .status-detail {
-            margin-top: var(--spacing-md);
-        }
-        .status-detail .label {
-            font-weight: var(--font-medium);
-            color: var(--color-text-muted);
-        }
-        .status-detail .value {
-            color: var(--color-text);
         }
         @media (max-width: 768px) {
             .status-container { padding: var(--spacing-md); }
@@ -166,7 +153,6 @@
             </div>
         </header>
 
-        <!-- ==================== CHECK STATUS SECTION (FULL-WIDTH WHITE) ==================== -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
@@ -178,7 +164,7 @@
                         <input type="text" id="refInput" placeholder="e.g., ALM-2026-00001" />
                         <button class="btn btn-primary" id="checkBtn">Check Status</button>
                     </div>
-                    <div id="resultContainer" class="result-content"></div>
+                    <div id="resultContainer"></div>
                 </div>
             </section>
         </main>
@@ -307,7 +293,7 @@
                 `;
             }
 
-            // Build the result HTML with fatherGuardianName
+            // Build the result HTML – only Reference No., Name, Submission Date, Status
             resultContainer.innerHTML = `
                 <h3>Application Status</h3>
                 <div class="table-wrapper">
@@ -316,7 +302,6 @@
                             <tr>
                                 <th>Reference No.</th>
                                 <th>Name</th>
-                                <th>Father / Guardian</th>
                                 <th>Submission Date</th>
                                 <th>Status</th>
                             </tr>
@@ -325,19 +310,11 @@
                             <tr>
                                 <td>${app.refNumber}</td>
                                 <td>${app.firstName || ''} ${app.secondName || ''}</td>
-                                <td>${app.fatherGuardianName || 'N/A'}</td>
                                 <td>${app.timestamp || ''}</td>
                                 <td style="font-weight:bold; color:${app.status === 'Approved' ? 'green' : app.status === 'Rejected' ? 'red' : 'var(--color-primary)'}">${app.status || 'Submitted'}</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <div class="status-detail">
-                    <p><span class="label">Email:</span> <span class="value">${app.email || 'N/A'}</span></p>
-                    <p><span class="label">Phone:</span> <span class="value">${app.phone || 'N/A'}</span></p>
-                    <p><span class="label">Membership Type:</span> <span class="value">${app.membershipType || 'N/A'}</span></p>
-                    <p><span class="label">District:</span> <span class="value">${app.district || 'N/A'}</span></p>
                 </div>
 
                 <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
@@ -377,7 +354,7 @@
             if (e.key === 'Enter') checkBtn.click();
         });
 
-        // Auto-check if ref is in URL (for direct link)
+        // Auto-check if ref is in URL
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
         if (refParam) {
