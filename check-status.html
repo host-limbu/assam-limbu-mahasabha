@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         .status-container {
             max-width: 900px;
@@ -95,10 +97,119 @@
             margin-top: var(--spacing-md);
             text-align: center;
         }
+
+        /* Certificate styles (same as admin.html) */
+        .certificate-wrapper {
+            background: #fff;
+            padding: 40px 35px;
+            margin-top: var(--spacing-md);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e5e7eb;
+        }
+        .certificate-wrapper .header {
+            text-align: center;
+            border-bottom: 3px double #1a3a5c;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .certificate-wrapper .header .emblem {
+            font-size: 3rem;
+            color: #1a3a5c;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .certificate-wrapper .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+            color: #1a3a5c;
+        }
+        .certificate-wrapper .header h2 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 2px 0 0;
+            color: #2b5a7a;
+            letter-spacing: 0.5px;
+        }
+        .certificate-wrapper .header .sub {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 2px;
+        }
+        .certificate-wrapper .title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a3a5c;
+            margin: 10px 0 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .certificate-wrapper .body {
+            padding: 0 10px;
+        }
+        .certificate-wrapper .body p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            text-align: justify;
+            margin: 0 0 12px 0;
+            color: #1e293b;
+        }
+        .certificate-wrapper .body .member-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .certificate-wrapper .body .signature-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            padding-top: 12px;
+            border-top: 1px solid #dce0e5;
+        }
+        .certificate-wrapper .body .signature-area .sig-item {
+            text-align: center;
+            flex: 1;
+        }
+        .certificate-wrapper .body .signature-area .sig-item .line {
+            width: 160px;
+            border-bottom: 1px solid #1a3a5c;
+            margin: 6px auto 4px;
+        }
+        .certificate-wrapper .body .signature-area .sig-item .label {
+            font-size: 0.75rem;
+            color: #475569;
+        }
+        .certificate-wrapper .body .photo-bottom {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .certificate-wrapper .body .photo-bottom img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #dce0e5;
+        }
+
         @media (max-width: 768px) {
             .status-container { padding: var(--spacing-md); }
             .status-table, .history-table { font-size: 0.8rem; }
             .status-table th, .status-table td { padding: 0.3rem 0.5rem; }
+            .certificate-wrapper {
+                padding: 20px 15px;
+            }
+            .certificate-wrapper .header h1 {
+                font-size: 1.2rem;
+            }
+            .certificate-wrapper .body p {
+                font-size: 0.95rem;
+            }
+            .certificate-wrapper .body .signature-area {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
     </style>
 </head>
@@ -165,6 +276,8 @@
                         <button class="btn btn-primary" id="checkBtn">Check Status</button>
                     </div>
                     <div id="resultContainer"></div>
+                    <!-- Hidden certificate container for PDF generation -->
+                    <div id="certificateContainer" style="display:none;"></div>
                 </div>
             </section>
         </main>
@@ -247,7 +360,130 @@
         const refInput = document.getElementById('refInput');
         const checkBtn = document.getElementById('checkBtn');
         const resultContainer = document.getElementById('resultContainer');
+        const certContainer = document.getElementById('certificateContainer');
 
+        function getCurrentDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        async function generateCertificatePDF(appData) {
+            // Build full address
+            const addressParts = [];
+            if (appData.village) addressParts.push(appData.village);
+            if (appData.postOffice) addressParts.push(appData.postOffice);
+            if (appData.ps) addressParts.push(appData.ps);
+            if (appData.district) addressParts.push(appData.district);
+            if (appData.pin) addressParts.push(`PIN: ${appData.pin}`);
+            const fullAddress = addressParts.join(', ') || 'N/A';
+
+            const parentGuardian = appData.fatherGuardianName || 'N/A';
+            const memberName = `${appData.firstName || ''} ${appData.secondName || ''}`.trim() || 'N/A';
+            const certNumber = appData.refNumber || 'N/A';
+            const issueDate = appData.timestamp ? appData.timestamp.split(' ')[0] : getCurrentDate();
+            const membershipType = appData.membershipType || 'General';
+
+            const photoHtml = appData.photoURL
+                ? `<img src="${appData.photoURL}" alt="Applicant photo" />`
+                : '<p style="color:#999;">No photo uploaded</p>';
+
+            // Build certificate HTML
+            certContainer.innerHTML = `
+                <div class="certificate-wrapper" id="certificatePrintArea">
+                    <div class="header">
+                        <span class="emblem">&#9670;</span>
+                        <h1>ASSAM LIMBU MAHASABHA</h1>
+                        <h2>WEST KARBI ANGLONG &amp; DIMA HASAO DISTRICT COMMITTEE</h2>
+                        <div class="sub">(Regd. under Societies Registration Act, 1860)</div>
+                    </div>
+                    <div class="title">MEMBERSHIP CERTIFICATE</div>
+                    <div class="body">
+                        <p>
+                            <strong>This is to certify that</strong>
+                            <span class="member-name">${memberName}</span>,
+                            son/daughter of <strong>${parentGuardian}</strong>,
+                            resident of <strong>${fullAddress}</strong>,
+                            is a registered member of the <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>.
+                        </p>
+                        <p>
+                            This certificate is issued in recognition of the above-mentioned membership and serves as official proof of membership in the
+                            <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>,
+                            subject to the rules and regulations of the organization.
+                        </p>
+                        <div style="margin-top:8px; display:flex; gap:20px; flex-wrap:wrap; font-size:0.95rem; color:#1e293b;">
+                            <span><strong>Membership Type:</strong> ${membershipType}</span>
+                            <span><strong>Certificate No:</strong> ${certNumber}</span>
+                            <span><strong>Date of Issue:</strong> ${issueDate}</span>
+                            <span><strong>Membership ID:</strong> ALM-${certNumber.split('-')[1] || '2026'}-${certNumber.split('-')[2] || '0000'}</span>
+                        </div>
+                        <div class="signature-area">
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">Dealing Assistant</div>
+                            </div>
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">President</div>
+                            </div>
+                            <div class="sig-item">
+                                <div class="line"></div>
+                                <div class="label">Approving Authority</div>
+                            </div>
+                        </div>
+                        <div class="photo-bottom">
+                            ${photoHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Wait for images to load, then generate PDF
+            const element = document.getElementById('certificatePrintArea');
+            const images = element.querySelectorAll('img');
+            let loadedCount = 0;
+            const totalImages = images.length;
+
+            if (totalImages === 0) {
+                generatePDF(element);
+                return;
+            }
+
+            images.forEach(img => {
+                if (img.complete) {
+                    loadedCount++;
+                    if (loadedCount === totalImages) generatePDF(element);
+                } else {
+                    img.addEventListener('load', () => {
+                        loadedCount++;
+                        if (loadedCount === totalImages) generatePDF(element);
+                    });
+                    img.addEventListener('error', () => {
+                        loadedCount++;
+                        if (loadedCount === totalImages) generatePDF(element);
+                    });
+                }
+            });
+        }
+
+        function generatePDF(element) {
+            const opt = {
+                margin:        [15, 12, 15, 12],
+                filename:     'Membership_Certificate.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save()
+                .catch((err) => {
+                    console.error('PDF generation error:', err);
+                    alert('Failed to generate PDF. Please try again.');
+                });
+        }
+
+        // ---------- Status Check ----------
         async function checkStatus(refNumber) {
             if (!refNumber) {
                 resultContainer.innerHTML = '<p style="color:red;">Please enter a reference number.</p>';
@@ -283,17 +519,17 @@
                 historyRows = '<tr><td colspan="3">No history available.</td></tr>';
             }
 
-            // Certificate download button (if approved)
+            // Certificate download button (if approved) with real function
             let certificateSection = '';
             if (app.status === 'Approved') {
                 certificateSection = `
                     <div class="certificate-download">
-                        <a href="#" id="downloadCertBtn" class="btn btn-primary">Download Membership Certificate</a>
+                        <button id="downloadCertBtn" class="btn btn-primary">Download Membership Certificate</button>
                     </div>
                 `;
             }
 
-            // Build the result HTML – only Reference No., Name, Submission Date, Status
+            // Build the result HTML
             resultContainer.innerHTML = `
                 <h3>Application Status</h3>
                 <div class="table-wrapper">
@@ -333,13 +569,21 @@
                 ${certificateSection}
             `;
 
-            // Attach certificate download listener
+            // Attach certificate download listener - REAL PDF GENERATION
             if (app.status === 'Approved') {
                 const certBtn = document.getElementById('downloadCertBtn');
                 if (certBtn) {
-                    certBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        alert('Certificate generation will be available soon.');
+                    certBtn.addEventListener('click', () => {
+                        // Show loading state
+                        const originalText = certBtn.textContent;
+                        certBtn.textContent = 'Generating PDF...';
+                        certBtn.disabled = true;
+
+                        // Generate the certificate PDF using the app data
+                        generateCertificatePDF(app).finally(() => {
+                            certBtn.textContent = originalText;
+                            certBtn.disabled = false;
+                        });
                     });
                 }
             }
