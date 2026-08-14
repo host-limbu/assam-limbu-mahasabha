@@ -1,5 +1,5 @@
 // ============================================================
-// HERO SLIDER — 5 images with auto-play, pause, swipe
+// HERO SLIDER — smooth, touch‑friendly, 2s interval
 // ============================================================
 
 (function() {
@@ -10,171 +10,160 @@
         if (!slider) return;
 
         const slides = slider.querySelectorAll('.hero-slide');
-        const totalSlides = slides.length;
-        if (totalSlides <= 1) return;
+        const total = slides.length;
+        if (total <= 1) return;
 
-        let currentIndex = 0;
+        let current = 0;
         let isAnimating = false;
         let isPaused = false;
-        const slideInterval = 3000; // 3 seconds
-        let animationId = null;
-        let autoPlayInterval = null;
+        let autoTimer = null;
+        let timeoutId = null;
 
-        // Touch state
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let isSwiping = false;
-
-        // ---- Easing: slow start → fast middle → slow end ----
-        function easeInOutCubic(t) {
-            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        // ---- Go to a specific slide ----
-        function goToSlide(index) {
-            if (isAnimating || index === currentIndex) return;
+        // ---- Smooth goTo ----
+        function goTo(index) {
+            if (isAnimating || index === current) return;
             isAnimating = true;
-            const targetIndex = index;
-            const startIndex = currentIndex;
-            const targetOffset = -targetIndex * 100;
-            const duration = 800; // ms
-            const startTime = performance.now();
-            const startTransform = -startIndex * 100;
+            const target = -index * 100;
+            slider.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            slider.style.transform = 'translateX(' + target + '%)';
 
-            function animateSlide(time) {
-                const elapsed = time - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = easeInOutCubic(progress);
-                const currentOffset = startTransform + (targetOffset - startTransform) * eased;
-                slider.style.transform = `translateX(${currentOffset}%)`;
-
-                if (progress < 1) {
-                    animationId = requestAnimationFrame(animateSlide);
-                } else {
-                    slider.style.transform = `translateX(${targetOffset}%)`;
-                    currentIndex = targetIndex;
-                    isAnimating = false;
-                    animationId = null;
-                }
-            }
-
-            animationId = requestAnimationFrame(animateSlide);
+            const onEnd = function() {
+                slider.removeEventListener('transitionend', onEnd);
+                current = index;
+                isAnimating = false;
+            };
+            slider.addEventListener('transitionend', onEnd);
         }
 
-        // ---- Next/Prev ----
-        function nextSlide() {
-            if (isAnimating) return;
-            const nextIndex = (currentIndex + 1) % totalSlides;
-            goToSlide(nextIndex);
-        }
-
-        function prevSlide() {
-            if (isAnimating) return;
-            const prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-            goToSlide(prevIndex);
-        }
-
-        // ---- Auto-play controls ----
-        function startAutoPlay() {
-            if (autoPlayInterval) clearInterval(autoPlayInterval);
+        function next() {
             if (isPaused) return;
-            autoPlayInterval = setInterval(() => {
-                if (!isPaused && !isAnimating) {
-                    nextSlide();
-                }
-            }, slideInterval);
+            const nextIndex = (current + 1) % total;
+            goTo(nextIndex);
         }
 
-        function stopAutoPlay() {
-            if (autoPlayInterval) {
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-            }
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-            }
-            isAnimating = false;
+        // ---- Auto-play ----
+        function startAuto() {
+            stopAuto();
+            if (isPaused) return;
+            autoTimer = setInterval(next, 2000); // 2 seconds
         }
 
-        // ---- Toggle pause on click ----
-        function togglePause(e) {
-            if (isSwiping) return;
+        function stopAuto() {
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+            }
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+        }
+
+        function resumeAfter(delay) {
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+                if (!isPaused) startAuto();
+            }, delay || 3000);
+        }
+
+        // ---- Pause toggle ----
+        function togglePause() {
             isPaused = !isPaused;
-            slider.classList.toggle('paused');
             if (isPaused) {
-                stopAutoPlay();
+                stopAuto();
             } else {
-                startAutoPlay();
+                startAuto();
             }
         }
 
-        // ---- Touch / Swipe ----
-        function handleTouchStart(e) {
-            touchStartX = e.changedTouches[0].screenX;
-            isSwiping = false;
-            if (!isPaused) {
-                stopAutoPlay();
-            }
+        // ---- Touch / Swipe (smooth) ----
+        let startX = 0, startY = 0, currentX = 0;
+        let isDragging = false;
+        let dragOffset = 0;
+
+        function onTouchStart(e) {
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            isDragging = true;
+            dragOffset = 0;
+            stopAuto();
+            slider.style.transition = 'none';
         }
 
-        function handleTouchMove(e) {
-            const deltaX = e.changedTouches[0].screenX - touchStartX;
-            if (Math.abs(deltaX) > 10) {
-                e.preventDefault();
-                isSwiping = true;
-            }
+        function onTouchMove(e) {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+
+            // Only horizontal swipe
+            if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) return;
+            if (Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+            e.preventDefault();
+            dragOffset = deltaX;
+            const base = -current * 100;
+            const move = base + (deltaX / slider.parentElement.offsetWidth) * 100;
+            slider.style.transform = 'translateX(' + move + '%)';
         }
 
-        function handleTouchEnd(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            const deltaX = touchEndX - touchStartX;
+        function onTouchEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
             const threshold = 50;
 
-            if (Math.abs(deltaX) > threshold) {
-                isSwiping = true;
-                if (deltaX < 0) {
-                    nextSlide();
+            if (Math.abs(dragOffset) > threshold) {
+                if (dragOffset < 0) {
+                    const nextIndex = (current + 1) % total;
+                    goTo(nextIndex);
                 } else {
-                    prevSlide();
+                    const prevIndex = (current - 1 + total) % total;
+                    goTo(prevIndex);
                 }
             } else {
-                // It was a tap → toggle pause
-                togglePause(e);
+                // Snap back
+                goTo(current);
             }
 
-            // Resume auto-play after 2 seconds if not paused
-            setTimeout(() => {
-                if (!isPaused) {
-                    startAutoPlay();
-                }
-            }, 2000);
+            // Resume auto after 4s
+            if (!isPaused) {
+                resumeAfter(4000);
+            }
         }
 
-        // ---- Mouse hover ----
-        slider.addEventListener('mouseenter', () => {
-            if (!isPaused) stopAutoPlay();
+        // ---- Mouse hover pause ----
+        const container = slider.closest('.hero-image') || slider.parentElement;
+        container.addEventListener('mouseenter', function() {
+            if (!isPaused) stopAuto();
         });
-        slider.addEventListener('mouseleave', () => {
-            if (!isPaused) startAutoPlay();
+        container.addEventListener('mouseleave', function() {
+            if (!isPaused) {
+                stopAuto();
+                startAuto();
+            }
         });
 
         // ---- Click toggles pause ----
-        slider.addEventListener('click', togglePause);
+        container.addEventListener('click', togglePause);
 
         // ---- Touch events ----
-        slider.addEventListener('touchstart', handleTouchStart, { passive: true });
-        slider.addEventListener('touchmove', handleTouchMove, { passive: false });
-        slider.addEventListener('touchend', handleTouchEnd, { passive: true });
+        slider.addEventListener('touchstart', onTouchStart, { passive: true });
+        slider.addEventListener('touchmove', onTouchMove, { passive: false });
+        slider.addEventListener('touchend', onTouchEnd, { passive: true });
 
         // ---- Start ----
-        startAutoPlay();
+        startAuto();
 
         // ---- Cleanup ----
-        window.addEventListener('beforeunload', stopAutoPlay);
+        window.addEventListener('beforeunload', function() {
+            stopAuto();
+            slider.removeEventListener('touchstart', onTouchStart);
+            slider.removeEventListener('touchmove', onTouchMove);
+            slider.removeEventListener('touchend', onTouchEnd);
+        });
     }
 
-    // Run on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initHeroSlider);
     } else {
