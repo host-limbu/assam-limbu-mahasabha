@@ -1,39 +1,28 @@
-/* ============================================================
-   HERO SLIDER
-   ============================================================ */
 .hero-image {
-    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
-    min-height: 400px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     background-color: var(--color-primary-light);
+    position: relative;
 }
-
 .hero-slider {
-    display: flex;
     width: 100%;
     height: 100%;
-    min-height: 400px;
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-    will-change: transform;
+    position: relative;
 }
-
-.hero-slide {
-    flex: 0 0 100%;
-    min-height: 400px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.hero-slider .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
 }
-
-/* Pause indicator (optional) */
-.hero-slider.paused {
-    opacity: 0.95;
-    transition: opacity 0.3s ease;
-}
-
-/* If JS fails, show first image */
-.hero-slider {
-    transform: translateX(0%);
+.hero-slider .slide.active {
+    opacity: 1;
 }
