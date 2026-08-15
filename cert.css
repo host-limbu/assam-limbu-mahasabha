@@ -74,19 +74,19 @@
             color: var(--primary-color);
         }
         .organization-name {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.4px;
             color: var(--primary-color);
         }
         .committee-name {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 700;
             margin-top: 2px;
             color: var(--primary-color);
         }
         .certificate-subtitle {
-            font-size: 11px;
+            font-size: 12px;
             margin-top: 4px;
             color: var(--primary-color);
         }
@@ -124,7 +124,7 @@
             color: var(--primary-color);
         }
         .certificate-heading h1 {
-            font-size: 19px;
+            font-size: 18px;
             text-decoration: underline;
             margin-top: 1mm;
             color: var(--primary-color);
