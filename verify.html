@@ -57,6 +57,10 @@
         }
         .verification-details .detail-item .value {
             color: var(--color-text);
+            font-weight: var(--font-medium);
+        }
+        .verification-details .detail-item.full-width {
+            grid-column: 1 / -1;
         }
         .verification-loading {
             padding: var(--spacing-xl);
@@ -66,6 +70,21 @@
             margin-top: var(--spacing-lg);
             color: var(--color-text-muted);
             font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--spacing-md);
+        }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-border);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         @media (max-width: 768px) {
             .verification-details {
@@ -78,6 +97,7 @@
 
     <div class="site-shell">
 
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -130,7 +150,7 @@
                 <div class="section-content">
                     <div class="verification-container" id="verificationContainer">
                         <div class="verification-loading" id="loadingState">
-                            <div style="display:inline-block; width:40px; height:40px; border:4px solid var(--color-border); border-top:4px solid var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+                            <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
                         </div>
                         <div id="resultState" style="display:none;">
@@ -198,7 +218,6 @@
 
     </div>
 
-    <!-- ============================================================ -->
     <!-- Firebase SDK -->
     <script type="importmap">
         {
@@ -233,7 +252,6 @@
         const detailsContainer = document.getElementById('detailsContainer');
         const verifyTimestamp = document.getElementById('verifyTimestamp');
 
-        // Get verification ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
 
@@ -248,7 +266,6 @@
             return;
         }
 
-        // Query Firebase for application with this verificationId
         async function verifyCertificate() {
             try {
                 const snapshot = await get(ref(db, 'applications'));
@@ -284,8 +301,17 @@
                 statusText.textContent = 'Valid Certificate';
                 statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
 
+                // Generate membership number and certificate number from refNumber
+                const refNum = foundApp.refNumber || 'N/A';
+                const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
+                    ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
+                    : refNum;
+                const certificateNumber = `CERT-${refNum}`;
+
                 // Build details
                 const fields = [
+                    { label: 'Membership Number', value: membershipNumber },
+                    { label: 'Certificate Number', value: certificateNumber },
                     { label: 'Name', value: `${foundApp.firstName || ''} ${foundApp.secondName || ''}` },
                     { label: 'Father / Guardian', value: foundApp.fatherGuardianName || 'N/A' },
                     { label: 'Membership Type', value: foundApp.membershipType || 'General' },
