@@ -63,6 +63,11 @@
             font-size: 2.2rem; /* matches website emblem size */
             color: var(--primary-color);
         }
+.logo-emblem {
+    font-size: 3.5rem;
+    color: var(--color-primary);
+    line-height: 3;
+}
         .header-title {
             text-align: center;
             padding: 0 3mm;
