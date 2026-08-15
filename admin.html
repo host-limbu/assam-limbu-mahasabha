@@ -694,8 +694,6 @@
         }
 
         // ----- All existing filter, render, load, login, auth, modal functions remain exactly the same -----
-        // (We keep them unchanged)
-
         function filterApplications() {
             const searchTerm = searchInput.value.trim().toLowerCase();
             const fromDate = dateFrom.value;
@@ -772,7 +770,6 @@
                     if (action === 'view') {
                         openViewModal(appData);
                     } else if (action === 'previewcert') {
-                        // ***** NEW: Open certificate.html in a new tab *****
                         if (appData && appData.refNumber) {
                             window.open(`certificate.html?ref=${appData.refNumber}`, '_blank');
                         } else {
@@ -941,7 +938,7 @@
             }
         });
 
-        // ----- Firebase functions (unchanged) -----
+        // ----- Firebase functions (UPDATED: add verificationId on approve) -----
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -973,11 +970,21 @@
             const snapshot = await get(appRef);
             if (!snapshot.exists()) return;
             const app = snapshot.val();
+
+            // Generate verificationId only when approved
+            let verificationId = null;
+            if (finalStatus === 'Approved') {
+                const refNum = app.refNumber || 'UNKNOWN';
+                const random = Math.floor(100000 + Math.random() * 900000);
+                verificationId = `VER-${refNum}-${random}`;
+            }
+
             const remarks = app.remarks || [];
             if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
             const history = app.history || [];
             history.push({ action: `${finalStatus} by ${role}`, timestamp: now(), by: role });
-            await update(appRef, {
+
+            const updateData = {
                 status: finalStatus,
                 currentStage: finalStatus,
                 approved: finalStatus === 'Approved',
@@ -985,11 +992,17 @@
                 finalDecision: finalStatus,
                 remarks,
                 history
-            });
+            };
+            if (verificationId) {
+                updateData.verificationId = verificationId;
+            }
+
+            await update(appRef, updateData);
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal (certificate preview removed) loaded.');
+        console.log('Admin portal with verificationId on approval loaded.');
     </script>
+
 </body>
 </html>
