@@ -43,10 +43,10 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// Helper: build verification URL for QR code
-function getVerificationUrl(verificationId) {
+// Helper: build verification URL for QR code (uses ref number)
+function getVerificationUrl(refNum) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
-    return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
+    return `${baseUrl}verify.html?ref=${encodeURIComponent(refNum)}`;
 }
 
 // Main function
@@ -86,16 +86,14 @@ async function loadCertificate() {
 
         const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
         const certificateId = `CERT-${refNum}`;
-        const verificationId = `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
         const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
         const fullAddress = addressParts.join(', ') || 'N/A';
 
-        // --- Generate QR code ---
-        const verificationUrl = getVerificationUrl(verificationId);
+        // --- Generate QR code with verification URL ---
+        const verificationUrl = getVerificationUrl(refNum);
         let qrDataUrl = '';
         try {
-            // Use the global function from qrcode.js
             if (typeof window.generateQRCodeDataURL === 'function') {
                 qrDataUrl = window.generateQRCodeDataURL(verificationUrl, 150);
             } else {
@@ -136,7 +134,8 @@ async function loadCertificate() {
         document.getElementById('formalType').textContent = membershipType;
 
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
-        document.getElementById('verificationId').textContent = verificationId;
+        // Use ref number as verification ID
+        document.getElementById('verificationId').textContent = refNum;
 
         const qrImg = document.getElementById('qrCode');
         if (qrImg) {
