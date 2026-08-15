@@ -136,9 +136,9 @@ async function loadCertificate() {
             qrImg.alt = 'Verification QR Code';
         }
 
-        document.getElementById('daName').textContent = app.dealingAssistantName || '_________';
-        document.getElementById('presidentName').textContent = app.presidentName || '_________';
-        document.getElementById('aaName').textContent = app.approvingAuthorityName || '_________';
+        document.getElementById('daName').textContent = app.dealingAssistantName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
+        document.getElementById('presidentName').textContent = app.presidentName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
+        document.getElementById('aaName').textContent = app.approvingAuthorityName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
 
         document.getElementById('certificateId').textContent = certificateId;
 
