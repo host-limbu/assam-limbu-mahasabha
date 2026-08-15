@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Check Application Status — Assam Limbu Mahasabha</title>
+    <title>Application Status — Yadav Subba</title>
+    <meta name="description" content="Check the status of your application or inquiry with Yadav Subba, AI Assisted Web Developer & Producer." />
     <link rel="stylesheet" href="style.css" />
     <style>
         .status-container {
@@ -106,11 +107,11 @@
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
-                    <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
+                    <a href="index.html" aria-label="Yadav Subba Home">
                         <span class="logo-emblem">&#9670;</span>
                         <span class="logo-text">
-                            <span class="logo-main">Assam Limbu Mahasabha</span>
-                            <span class="logo-sub">Karbi Anglong &amp; Dima Hasao District Committee</span>
+                            <span class="logo-main">Yadav Subba</span>
+                            <span class="logo-sub">AI Assisted Web Developer &amp; Producer</span>
                         </span>
                     </a>
                 </div>
@@ -118,12 +119,12 @@
                     <ul class="nav-list">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="committee.html">Committee</a></li>
-                        <li><a href="updates.html">Updates</a></li>
-                        <li><a href="events.html">Events</a></li>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html">Membership</a></li>
-                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="committee.html">Work</a></li>
+                        <li><a href="updates.html">Insights</a></li>
+                        <li><a href="events.html">Projects</a></li>
+                        <li><a href="gallery.html">Showcase</a></li>
+                        <li><a href="membership.html">Connect</a></li>
+                        <li><a href="documents.html">Resources</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </nav>
@@ -153,9 +154,9 @@
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <h2 style="text-align: center;">Check Application Status</h2>
+                    <h2 style="text-align: center;">Application Status Check</h2>
                     <p style="color: var(--color-text-muted); text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg);">
-                        Enter your reference number below to view the current status.
+                        Enter your reference number below to view the current status of your application or inquiry.
                     </p>
                     <div class="search-box">
                         <input type="text" id="refInput" placeholder="e.g., ALM-2026-00001" />
@@ -172,27 +173,27 @@
                     <div class="footer-brand">
                         <span class="footer-logo">
                             <span class="logo-emblem">&#9670;</span>
-                            <span class="logo-main">Assam Limbu Mahasabha</span>
+                            <span class="logo-main">Yadav Subba</span>
                         </span>
-                        <p class="footer-sub">Karbi Anglong &amp; Dima Hasao District Committee</p>
-                        <p class="footer-address">Diphu, Karbi Anglong, Assam — 782460</p>
+                        <p class="footer-sub">AI Assisted Web Developer &amp; Producer</p>
+                        <p class="footer-address">Building digital solutions, worldwide.</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="committee.html">Committee</a></li>
-                                <li><a href="events.html">Events</a></li>
-                                <li><a href="updates.html">Updates</a></li>
+                                <li><a href="about.html">About Me</a></li>
+                                <li><a href="committee.html">Work</a></li>
+                                <li><a href="events.html">Projects</a></li>
+                                <li><a href="updates.html">Insights</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
                             <h4>Resources</h4>
                             <ul>
-                                <li><a href="documents.html">Documents</a></li>
-                                <li><a href="membership.html">Membership</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="documents.html">Resources</a></li>
+                                <li><a href="membership.html">Connect</a></li>
+                                <li><a href="gallery.html">Showcase</a></li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div>
@@ -208,8 +209,8 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>&copy; 2026 Assam Limbu Mahasabha — Karbi Anglong &amp; Dima Hasao District Committee. All rights reserved.</p>
-                    <p class="footer-credit">Designed with care for the Limbu community.</p>
+                    <p>&copy; 2026 Yadav Subba — AI Assisted Web Developer &amp; Producer. All rights reserved.</p>
+                    <p class="footer-credit">Designed with passion, built with purpose.</p>
                 </div>
             </div>
         </footer>
@@ -280,12 +281,12 @@
                 historyRows = '<tr><td colspan="3">No history available.</td></tr>';
             }
 
-            // Certificate download button (if approved) – now opens certificate.html
+            // Certificate download button (if approved)
             let certificateSection = '';
             if (app.status === 'Approved') {
                 certificateSection = `
                     <div class="certificate-download">
-                        <a href="#" id="downloadCertBtn" class="btn btn-primary">Download Membership Certificate</a>
+                        <a href="#" id="downloadCertBtn" class="btn btn-primary">Download Certificate</a>
                     </div>
                 `;
             }
@@ -313,7 +314,7 @@
                     </table>
                 </div>
 
-                <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
+                <h4 style="margin-top: var(--spacing-lg);">Processing History</h4>
                 <div class="history-wrapper">
                     <table class="history-table">
                         <thead>
@@ -329,7 +330,7 @@
                 ${certificateSection}
             `;
 
-            // Attach certificate download listener – opens certificate.html in new tab
+            // Attach certificate download listener
             if (app.status === 'Approved') {
                 const certBtn = document.getElementById('downloadCertBtn');
                 if (certBtn) {
