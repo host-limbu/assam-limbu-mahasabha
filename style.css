@@ -217,9 +217,9 @@ img {
     color: var(--color-text);
 }
 .logo-emblem {
-    font-size: 1.8rem;
+    font-size: 3.5rem;
     color: var(--color-primary);
-    line-height: 1;
+    line-height: 3;
 }
 .logo-text {
     display: flex;
