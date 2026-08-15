@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Work With Me — Yadav Subba | AI Assisted Web Developer & Producer</title>
-    <meta name="description" content="Submit a project inquiry to Yadav Subba, AI Assisted Web Developer & Producer. Let's build something amazing together." />
+    <title>Membership Application — Yadav Subba</title>
+    <meta name="description" content="Demo membership application form for an organization. Built by Yadav Subba, AI Assisted Web Developer & Producer." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -98,6 +98,18 @@
             justify-content: space-between;
             margin-top: var(--spacing-md);
         }
+        .demo-badge {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.5rem;
+        }
         @media (max-width: 768px) {
             .membership-form-grid {
                 grid-template-columns: 1fr;
@@ -182,56 +194,60 @@
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
                 <div class="hero-content" style="grid-template-columns: 1fr;">
                     <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
-                        <p class="hero-tag">Let's Work Together</p>
-                        <h1 style="font-size: 2.8rem;">Project Inquiry</h1>
+                        <p class="hero-tag">Membership Application <span class="demo-badge">Demo</span></p>
+                        <h1 style="font-size: 2.8rem;">Membership Application Form</h1>
                         <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
-                            Fill in the details below and I'll get back to you within 24 hours.
-                            All fields are required unless marked optional.
+                            This is a demonstration of a complete membership application system. Submit the form to see
+                            the full workflow — from application to certificate generation.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- PROJECT INQUIRY FORM -->
+            <!-- APPLICATION FORM -->
             <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="section-label">Start Your Project</div>
-                    <h2>Tell Me About Your Idea</h2>
+                    <div class="section-label">Apply Now</div>
+                    <h2>Membership Application <span class="demo-badge">Demo</span></h2>
+                    <p style="color: var(--color-text-muted); max-width: 700px; margin-bottom: var(--spacing-lg);">
+                        This form demonstrates a real membership application flow. All fields are required unless marked optional.
+                        The submitted data will be stored in Firebase and can be approved via the Admin Panel.
+                    </p>
 
                     <form id="membershipForm" class="membership-form-grid" novalidate>
 
-                        <!-- Project Type -->
+                        <!-- Membership Type -->
                         <div class="form-group full-width">
-                            <label for="membershipType">Service Interested In *</label>
+                            <label for="membershipType">Membership Type *</label>
                             <select id="membershipType" name="membershipType" required>
                                 <option value="">Select</option>
-                                <option value="General">Web Development</option>
-                                <option value="Advisory">AI Integration</option>
-                                <option value="Well Wisher">Digital Production</option>
+                                <option value="General">General</option>
+                                <option value="Advisory">Advisory</option>
+                                <option value="Well Wisher">Well Wisher</option>
                             </select>
                         </div>
 
-                        <!-- Your Name (First) -->
+                        <!-- First Name -->
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
                             <input type="text" id="firstName" name="firstName" required />
                         </div>
 
-                        <!-- Last Name (Second) -->
+                        <!-- Second Name -->
                         <div class="form-group">
-                            <label for="secondName">Last Name *</label>
+                            <label for="secondName">Second Name *</label>
                             <input type="text" id="secondName" name="secondName" required />
                         </div>
 
-                        <!-- Organization / Company -->
+                        <!-- Father / Guardian Name -->
                         <div class="form-group">
-                            <label for="fatherGuardianName">Organization / Company *</label>
+                            <label for="fatherGuardianName">Father / Guardian Name *</label>
                             <input type="text" id="fatherGuardianName" name="fatherGuardianName" required />
                         </div>
 
-                        <!-- Preferred Start Date -->
+                        <!-- DOB -->
                         <div class="form-group">
-                            <label for="dob">Preferred Start Date *</label>
+                            <label for="dob">Date of Birth *</label>
                             <input type="date" id="dob" name="dob" required />
                         </div>
 
@@ -253,146 +269,147 @@
                             <input type="tel" id="altPhone" name="altPhone" />
                         </div>
 
-                        <!-- Project Scope -->
+                        <!-- Educational Qualification -->
                         <div class="form-group full-width">
-                            <label for="education">Project Scope *</label>
+                            <label for="education">Educational Qualification *</label>
                             <select id="education" name="education" required>
                                 <option value="">Select</option>
-                                <option value="Undergraduate">Small (1-2 weeks)</option>
-                                <option value="Postgraduate">Medium (2-4 weeks)</option>
-                                <option value="Matriculate">Large (1-2 months)</option>
-                                <option value="Graduate">Enterprise (3+ months)</option>
+                                <option value="Undergraduate">Undergraduate</option>
+                                <option value="Postgraduate">Postgraduate</option>
+                                <option value="Matriculate">Matriculate</option>
+                                <option value="Graduate">Graduate</option>
                                 <option value="Other">Other</option>
                             </select>
                             <div id="otherEducationGroup" style="display:none; margin-top: var(--spacing-sm);">
-                                <label for="otherEducation">Please specify *</label>
+                                <label for="otherEducation">Other Education *</label>
                                 <input type="text" id="otherEducation" name="otherEducation" />
                             </div>
                         </div>
 
-                        <!-- Budget Range -->
+                        <!-- Blood Group -->
                         <div class="form-group">
-                            <label for="bloodGroup">Budget Range *</label>
+                            <label for="bloodGroup">Blood Group *</label>
                             <select id="bloodGroup" name="bloodGroup" required>
                                 <option value="">Select</option>
-                                <option value="A+">Under $500</option>
-                                <option value="A-">$500 – $1,000</option>
-                                <option value="B+">$1,000 – $2,500</option>
-                                <option value="B-">$2,500 – $5,000</option>
-                                <option value="AB+">$5,000 – $10,000</option>
-                                <option value="AB-">$10,000+</option>
-                                <option value="O+">Not Known</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Not Known">Not Known</option>
                             </select>
                         </div>
 
-                        <!-- Country -->
+                        <!-- District -->
                         <div class="form-group">
-                            <label for="district">Country *</label>
+                            <label for="district">District *</label>
                             <select id="district" name="district" required>
                                 <option value="">Select</option>
-                                <option value="East Karbi Anglong">India</option>
-                                <option value="West Karbi Anglong">United States</option>
-                                <option value="Dima Hasao">United Kingdom</option>
-                                <option value="Other">Other</option>
+                                <option value="East Karbi Anglong">East Karbi Anglong</option>
+                                <option value="West Karbi Anglong">West Karbi Anglong</option>
+                                <option value="Dima Hasao">Dima Hasao</option>
                             </select>
                         </div>
 
-                        <!-- Region/State -->
+                        <!-- LAC -->
                         <div class="form-group">
-                            <label for="lac">State / Region *</label>
+                            <label for="lac">LAC *</label>
                             <input type="text" id="lac" name="lac" required />
                         </div>
 
-                        <!-- City -->
+                        <!-- Village -->
                         <div class="form-group">
-                            <label for="village">City *</label>
+                            <label for="village">Village *</label>
                             <input type="text" id="village" name="village" required />
                         </div>
 
                         <!-- Post Office -->
                         <div class="form-group">
-                            <label for="postOffice">Post Office / Area *</label>
+                            <label for="postOffice">Post Office *</label>
                             <input type="text" id="postOffice" name="postOffice" required />
                         </div>
 
-                        <!-- Police Station (or similar) -->
+                        <!-- Police Station -->
                         <div class="form-group">
-                            <label for="ps">Nearest Landmark *</label>
+                            <label for="ps">Police Station (PS) *</label>
                             <input type="text" id="ps" name="ps" required />
                         </div>
 
                         <!-- PIN -->
                         <div class="form-group">
-                            <label for="pin">PIN / Postal Code *</label>
+                            <label for="pin">PIN *</label>
                             <input type="text" id="pin" name="pin" required pattern="[0-9]{6}" title="6-digit PIN" />
                         </div>
 
-                        <!-- Family Status (keep for demo) -->
+                        <!-- Family Status -->
                         <div class="form-group">
-                            <label for="familyStatus">Contact Preference *</label>
+                            <label for="familyStatus">Family Status *</label>
                             <select id="familyStatus" name="familyStatus" required>
                                 <option value="">Select</option>
-                                <option value="Male">Email</option>
-                                <option value="Female">Phone</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
                         </div>
 
-                        <!-- Total Family Members (keep for demo) -->
+                        <!-- Total Family Members -->
                         <div class="form-group">
-                            <label for="totalFamily">Team Size (approx.) *</label>
+                            <label for="totalFamily">Total Family Members *</label>
                             <input type="number" id="totalFamily" name="totalFamily" min="1" required />
                         </div>
 
-                        <!-- Type of House (keep as is) -->
+                        <!-- Type of House -->
                         <div class="form-group full-width">
-                            <label for="houseType">Project Complexity *</label>
+                            <label for="houseType">Type of House *</label>
                             <select id="houseType" name="houseType" required>
                                 <option value="">Please Select</option>
-                                <option value="Kutcha House">Basic</option>
-                                <option value="Semi-Pucca House">Intermediate</option>
-                                <option value="Pucca House">Advanced</option>
-                                <option value="RCC House">Expert</option>
+                                <option value="Kutcha House">Kutcha House</option>
+                                <option value="Semi-Pucca House">Semi-Pucca House</option>
+                                <option value="Pucca House">Pucca House</option>
+                                <option value="RCC House">RCC House</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
 
-                        <!-- Land Ownership Status (keep) -->
+                        <!-- Land Ownership Status -->
                         <div class="form-group full-width">
-                            <label for="landOwnership">Project Timeline Flexibility *</label>
+                            <label for="landOwnership">Land Ownership Status *</label>
                             <select id="landOwnership" name="landOwnership" required>
                                 <option value="">Please Select</option>
-                                <option value="Own Land">Flexible</option>
-                                <option value="Leased Land">Moderate</option>
-                                <option value="Government Land">Strict</option>
-                                <option value="No Land">Not Sure</option>
+                                <option value="Own Land">Own Land</option>
+                                <option value="Leased Land">Leased Land</option>
+                                <option value="Government Land">Government Land</option>
+                                <option value="No Land">No Land</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
 
-                        <!-- Vehicle Owned (keep) -->
+                        <!-- Vehicle Owned -->
                         <div class="form-group full-width">
-                            <label for="vehicle">How did you hear about me?</label>
+                            <label for="vehicle">Vehicle Owned</label>
                             <select id="vehicle" name="vehicle">
                                 <option value="">Please Select</option>
-                                <option value="None">Search Engine</option>
-                                <option value="Bicycle">Social Media</option>
-                                <option value="Motorcycle / Scooter">Referral</option>
-                                <option value="Car">Fiverr</option>
-                                <option value="Auto-Rickshaw">LinkedIn</option>
-                                <option value="Tractor">Other</option>
+                                <option value="None">None</option>
+                                <option value="Bicycle">Bicycle</option>
+                                <option value="Motorcycle / Scooter">Motorcycle / Scooter</option>
+                                <option value="Car">Car</option>
+                                <option value="Auto-Rickshaw">Auto-Rickshaw</option>
+                                <option value="Tractor">Tractor</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
 
-                        <!-- Under Belt & Block (keep) -->
+                        <!-- Under Belt & Block -->
                         <div class="form-group full-width">
-                            <label for="beltBlock">Any specific technologies? *</label>
+                            <label for="beltBlock">Under Belt &amp; Block *</label>
                             <input type="text" id="beltBlock" name="beltBlock" required />
                         </div>
 
-                        <!-- Autonomous Council? (keep) -->
+                        <!-- Autonomous Council -->
                         <div class="form-group full-width">
-                            <label for="autonomousCouncil">Do you have existing design/brand guidelines? *</label>
+                            <label for="autonomousCouncil">Autonomous Council? *</label>
                             <select id="autonomousCouncil" name="autonomousCouncil" required>
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
@@ -400,28 +417,28 @@
                             </select>
                         </div>
 
-                        <!-- Government Scheme Beneficiary (keep) -->
+                        <!-- Government Scheme Beneficiary -->
                         <div class="form-group full-width">
-                            <label for="govtScheme">Is this a commercial or non‑profit project? *</label>
+                            <label for="govtScheme">Are you a beneficiary of any Government Scheme? *</label>
                             <select id="govtScheme" name="govtScheme" required>
                                 <option value="">Select</option>
-                                <option value="Yes">Commercial</option>
-                                <option value="No">Non‑Profit</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select>
                         </div>
 
-                        <!-- Government Employees in Family (keep) -->
+                        <!-- Government Employees in Family -->
                         <div class="form-group full-width">
-                            <label for="govtEmployees">Number of stakeholders involved *</label>
+                            <label for="govtEmployees">Number of Family Members Who Are Government Employees *</label>
                             <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
                         </div>
 
-                        <!-- Passport Photo Upload (keep as "Upload Reference Image") -->
+                        <!-- Passport Photo Upload -->
                         <div class="form-group full-width">
-                            <label for="photo">Upload Reference Image (optional, max 0.5 MB, JPG/PNG)</label>
-                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" />
+                            <label for="photo">Passport Photo Upload * (Max 0.5 MB, JPG/PNG)</label>
+                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required />
                             <div id="photoPreviewContainer" class="photo-preview" style="display:none;">
-                                <img id="photoPreview" src="#" alt="Image preview" />
+                                <img id="photoPreview" src="#" alt="Passport preview" />
                             </div>
                             <div id="uploadStatus" class="upload-status"></div>
                             <input type="hidden" id="photoURL" name="photoURL" />
@@ -434,8 +451,6 @@
                                 <label for="terms">
                                     I agree to the
                                     <a href="#" style="color: #1a3a5c; text-decoration: underline; font-weight: 500;">Terms and Conditions</a>
-                                    and
-                                    <a href="#" style="color: #1a3a5c; text-decoration: underline; font-weight: 500;">Privacy Policy</a>
                                     *
                                 </label>
                             </div>
@@ -445,13 +460,13 @@
                         <div class="form-group full-width">
                             <div class="checkbox-group">
                                 <input type="checkbox" id="selfDeclaration" name="selfDeclaration" required />
-                                <label for="selfDeclaration">I confirm that the information provided is accurate and I understand this is a project inquiry. *</label>
+                                <label for="selfDeclaration">I hereby declare that all information provided is true and correct to the best of my knowledge. *</label>
                             </div>
                         </div>
 
                         <!-- Submit -->
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit Inquiry</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
                             <span style="font-size: 0.85rem; color: var(--color-text-muted);">All fields marked * are required.</span>
                         </div>
 
@@ -463,9 +478,9 @@
             <!-- CHECK STATUS LINK -->
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content" style="text-align: center;">
-                    <h2>Already Submitted?</h2>
+                    <h2>Already Applied? Check Your Status</h2>
                     <p style="color: var(--color-text-muted); max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Enter your reference number to check the status of your inquiry.
+                        Enter your reference number to check the status of your application.
                     </p>
                     <a href="check-status.html" class="btn btn-secondary">Check Status</a>
                 </div>
@@ -531,7 +546,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- FIREBASE SDK + Cloudinary Upload (unchanged) -->
+    <!-- FIREBASE SDK + Cloudinary Upload -->
     <!-- ============================================================ -->
     <script type="importmap">
         {
@@ -543,7 +558,6 @@
     </script>
 
     <script type="module">
-        // All JavaScript remains exactly the same – no changes.
         import { initializeApp } from "firebase/app";
         import { getDatabase, ref, push, set } from "firebase/database";
 
@@ -653,15 +667,14 @@
                 return;
             }
 
-            // Photo is optional in this demo, but we'll keep the logic
-            // if (!uploadedPhotoURL) {
-            //     alert('Please upload a reference image and wait for successful upload.');
-            //     return;
-            // }
+            if (!uploadedPhotoURL) {
+                alert('Please upload a passport photo and wait for successful upload.');
+                return;
+            }
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            data.photoURL = uploadedPhotoURL || '';
+            data.photoURL = uploadedPhotoURL;
 
             const refNumber = generateRefNumber();
             const timestamp = getCurrentDateTime();
@@ -673,7 +686,7 @@
                 status: 'Submitted',
                 currentStage: 'DA',
                 history: [
-                    { action: 'Project inquiry submitted', timestamp, by: 'Applicant' }
+                    { action: 'Application submitted', timestamp, by: 'Applicant' }
                 ],
                 remarks: [],
                 recommendations: [],
@@ -696,10 +709,10 @@
                 await set(newAppRef, applicationData);
                 window.location.href = `acknowledgement.html?ref=${refNumber}`;
             } catch (error) {
-                console.error('Error saving inquiry:', error);
-                alert('There was an error submitting your inquiry. Please try again.');
+                console.error('Error saving application:', error);
+                alert('There was an error submitting your application. Please try again.');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Inquiry';
+                submitBtn.textContent = 'Submit Application';
             }
         });
 
@@ -711,7 +724,7 @@
             footerBottom.appendChild(adminLink);
         }
 
-        console.log('Project inquiry form ready.');
+        console.log('Membership application form loaded.');
     </script>
 
 </body>
