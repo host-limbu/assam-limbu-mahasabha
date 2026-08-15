@@ -1,7 +1,7 @@
 /**
  * certificate.js – Central data-fetching and placeholder population.
- * It reads the reference number from URL (ref parameter), fetches data,
- * populates placeholders, generates QR code, then reveals the certificate.
+ * Reads reference number from URL, fetches data, populates placeholders,
+ * generates QR code using stored verificationId, then reveals certificate.
  */
 
 import { initializeApp } from "firebase/app";
@@ -43,10 +43,10 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// Helper: build verification URL for QR code (uses ref number)
-function getVerificationUrl(refNum) {
+// Helper: build verification URL for QR code
+function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
-    return `${baseUrl}verify.html?ref=${encodeURIComponent(refNum)}`;
+    return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
 }
 
 // Main function
@@ -86,12 +86,14 @@ async function loadCertificate() {
 
         const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
         const certificateId = `CERT-${refNum}`;
+        // Use stored verificationId from database, or generate a fallback
+        const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
         const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
         const fullAddress = addressParts.join(', ') || 'N/A';
 
-        // --- Generate QR code with verification URL ---
-        const verificationUrl = getVerificationUrl(refNum);
+        // --- Generate QR code using the verificationId ---
+        const verificationUrl = getVerificationUrl(verificationId);
         let qrDataUrl = '';
         try {
             if (typeof window.generateQRCodeDataURL === 'function') {
@@ -134,8 +136,7 @@ async function loadCertificate() {
         document.getElementById('formalType').textContent = membershipType;
 
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
-        // Use ref number as verification ID
-        document.getElementById('verificationId').textContent = refNum;
+        document.getElementById('verificationId').textContent = verificationId;
 
         const qrImg = document.getElementById('qrCode');
         if (qrImg) {
