@@ -1,134 +1,141 @@
-/* ============================================================
-   CERTIFICATE — Assam Limbu Mahasabha
-   Load and display membership certificate
-   ============================================================ */
+/**
+ * certificate.js – Central data-fetching and placeholder population for certificate.html
+ * It reads the reference number from URL (ref parameter) and populates all placeholders.
+ */
 
-(function() {
-    'use strict';
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get } from "firebase/database";
 
-    // ============================================================
-    // DOM REFERENCES
-    // ============================================================
-    const loadingState = document.getElementById('loading-state');
-    const errorState = document.getElementById('error-state');
-    const certContainer = document.getElementById('certificate-container');
+// Firebase config (must match your project)
+const firebaseConfig = {
+    apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+    authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+    projectId: "assam-limbu-mahasabha-257ee",
+    storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+    messagingSenderId: "684300836537",
+    appId: "1:684300836537:web:f1080b30569f9b79634568"
+};
 
-    const certMemberName = document.getElementById('cert-member-name');
-    const certMembershipType = document.getElementById('cert-membership-type');
-    const certRefNumber = document.getElementById('cert-ref-number');
-    const certIssueDate = document.getElementById('cert-issue-date');
-    const certFooterDate = document.getElementById('cert-footer-date');
-    const certPhoto = document.getElementById('cert-photo');
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-    // ============================================================
-    // GET REFERENCE NUMBER FROM URL
-    // ============================================================
-    function getReferenceFromUrl() {
-        var params = new URLSearchParams(window.location.search);
-        return params.get('ref');
-    }
+// Get reference number from URL
+const urlParams = new URLSearchParams(window.location.search);
+const refNumber = urlParams.get('ref');
 
-    // ============================================================
-    // LOAD CERTIFICATE DATA
-    // ============================================================
-    function loadCertificate(refNumber) {
-        if (!refNumber) {
-            showError('No reference number provided.');
+if (!refNumber) {
+    document.body.innerHTML = '<p style="color:red; text-align:center; margin-top:50px;">No reference number provided.</p>';
+    throw new Error('Missing ref parameter');
+}
+
+// Helper: format date
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    // If it's already a formatted string, return as is
+    if (dateStr.includes('-') || dateStr.includes('/')) return dateStr;
+    // Otherwise try to parse
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+// Main function to load data and populate certificate
+async function loadCertificate() {
+    try {
+        const snapshot = await get(ref(db, 'applications'));
+        if (!snapshot.exists()) {
+            document.body.innerHTML = '<p style="color:red; text-align:center; margin-top:50px;">No applications found.</p>';
+            return;
+        }
+        const allApps = snapshot.val();
+        let app = null;
+        for (const key in allApps) {
+            if (allApps[key].refNumber === refNumber) {
+                app = allApps[key];
+                break;
+            }
+        }
+        if (!app) {
+            document.body.innerHTML = `<p style="color:red; text-align:center; margin-top:50px;">Application with reference ${refNumber} not found.</p>`;
             return;
         }
 
-        loadingState.style.display = 'block';
-        errorState.style.display = 'none';
-        certContainer.style.display = 'none';
+        // --- Populate placeholders ---
+        const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+        const fatherName = app.fatherGuardianName || 'N/A';
+        const membershipType = app.membershipType || 'General';
+        const dob = app.dob || 'N/A';
+        const district = app.district || 'N/A';
+        const village = app.village || 'N/A';
+        const postOffice = app.postOffice || 'N/A';
+        const policeStation = app.ps || 'N/A';
+        const pin = app.pin || 'N/A';
+        const refNum = app.refNumber || 'N/A';
+        const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
+        const photoURL = app.photoURL || '';
 
-        var appRef = firebase.database().ref('assam-limbu-mahasabha/applications/' + refNumber);
+        // Membership Number (combine year and random part from ref)
+        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
 
-        appRef.once('value').then(function(snapshot) {
-            var data = snapshot.val();
-            if (!data) {
-                showError('Certificate not found for reference: ' + refNumber);
-                return;
-            }
+        // Certificate ID (similar)
+        const certificateId = `CERT-${refNum}`;
 
-            // Check if application is approved
-            if (data.status !== 'Approved') {
-                showError('This application has not been approved yet. Certificate is not available.');
-                return;
-            }
+        // Verification ID (some hash)
+        const verificationId = `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
-            // Render certificate
-            renderCertificate(data, refNumber);
-            loadingState.style.display = 'none';
-            certContainer.style.display = 'block';
+        // Address for formal text
+        const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
+        const fullAddress = addressParts.join(', ') || 'N/A';
 
-        }).catch(function(error) {
-            console.error('Error loading certificate:', error);
-            showError('Error loading certificate. Please try again later.');
-        });
-    }
+        // ----- DOM updates -----
+        document.getElementById('membershipNumber').textContent = membershipNumber;
+        document.getElementById('applicationNumber').textContent = refNum;
+        document.getElementById('issueDate').textContent = formatDate(issueDate);
 
-    // ============================================================
-    // RENDER CERTIFICATE
-    // ============================================================
-    function renderCertificate(data, refNumber) {
-        var applicant = data.applicant || {};
-
-        // Name
-        var fullName = (applicant.firstName || '') + ' ' + (applicant.secondName || '');
-        certMemberName.textContent = fullName.trim() || 'Member Name';
-
-        // Membership Type
-        certMembershipType.textContent = applicant.membershipType || 'General Member';
-
-        // Reference Number
-        certRefNumber.textContent = refNumber;
-
-        // Issue Date (use approval timestamp or current date)
-        var issueDate = data.updatedAt || data.submittedAt || Date.now();
-        var formattedDate = AdminCommon.formatDate(issueDate);
-        certIssueDate.textContent = formattedDate;
-        certFooterDate.textContent = formattedDate;
+        document.getElementById('memberName').textContent = memberName;
+        document.getElementById('fatherName').textContent = fatherName;
+        document.getElementById('membershipType').textContent = membershipType;
+        document.getElementById('dateOfBirth').textContent = formatDate(dob);
+        document.getElementById('district').textContent = district;
+        document.getElementById('village').textContent = village;
+        document.getElementById('postOffice').textContent = postOffice;
+        document.getElementById('policeStation').textContent = policeStation;
+        document.getElementById('pin').textContent = pin;
 
         // Photo
-        if (applicant.photoURL) {
-            certPhoto.src = applicant.photoURL;
-            certPhoto.alt = 'Passport photo of ' + fullName;
-            certPhoto.style.display = 'block';
+        const photoImg = document.getElementById('memberPhoto');
+        if (photoURL) {
+            photoImg.src = photoURL;
+            photoImg.alt = `${memberName} photograph`;
         } else {
-            certPhoto.style.display = 'none';
+            photoImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23eee"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" font-size="12" fill="%23999" font-family="sans-serif"%3ENo Photo%3C/text%3E%3C/svg%3E';
         }
+
+        // Formal text
+        document.getElementById('formalName').textContent = memberName;
+        document.getElementById('formalFather').textContent = fatherName;
+        document.getElementById('formalAddress').textContent = fullAddress;
+        document.getElementById('formalType').textContent = membershipType;
+
+        // Verification
+        document.getElementById('certStatus').textContent = app.status || 'APPROVED';
+        document.getElementById('verificationId').textContent = verificationId;
+
+        // Signatures – if we have admin names stored, we could populate; otherwise leave placeholder
+        // For now, we'll put placeholder names
+        document.getElementById('daName').textContent = app.dealingAssistantName || '_________';
+        document.getElementById('presidentName').textContent = app.presidentName || '_________';
+        document.getElementById('aaName').textContent = app.approvingAuthorityName || '_________';
+
+        // Certificate ID footer
+        document.getElementById('certificateId').textContent = certificateId;
+
+        // Remove loading state if any
+    } catch (error) {
+        console.error('Error loading certificate:', error);
+        document.body.innerHTML = `<p style="color:red; text-align:center; margin-top:50px;">Error loading certificate: ${error.message}</p>`;
     }
+}
 
-    // ============================================================
-    // SHOW ERROR
-    // ============================================================
-    function showError(message) {
-        loadingState.style.display = 'none';
-        errorState.style.display = 'block';
-        certContainer.style.display = 'none';
-        // Optionally set error message
-        var errorMsg = errorState.querySelector('p');
-        if (errorMsg) {
-            errorMsg.textContent = message || 'Certificate not found. Please check the reference number.';
-        }
-        // Show back link
-        var backLink = errorState.querySelector('a');
-        if (backLink) {
-            backLink.href = 'check-status.html';
-        }
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        var ref = getReferenceFromUrl();
-        if (ref) {
-            loadCertificate(ref);
-        } else {
-            showError('No reference number provided. Please use the link from your application status page.');
-        }
-    });
-
-    console.log('certificate.js loaded successfully.');
-})();
+// Execute
+loadCertificate();
