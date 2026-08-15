@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Portal — Assam Limbu Mahasabha</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         /* ===== Admin styles (unchanged) ===== */
         .admin-login-form {
@@ -195,7 +191,7 @@
             padding: var(--spacing-lg);
         }
 
-        /* ===== MODALS ===== */
+        /* ===== MODALS (only view and remark remain) ===== */
         .modal {
             display: none;
             position: fixed;
@@ -359,115 +355,6 @@
             width: 58%;
         }
 
-        /* ===== CERTIFICATE PREVIEW ===== */
-        .certificate-wrapper {
-            background: #fff;
-            padding: 40px 35px;
-            margin-top: var(--spacing-md);
-            border-radius: var(--radius);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            border: 1px solid #e5e7eb;
-        }
-        .certificate-wrapper .header {
-            text-align: center;
-            border-bottom: 3px double #1a3a5c;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-        }
-        .certificate-wrapper .header .emblem {
-            font-size: 3rem;
-            color: #1a3a5c;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .certificate-wrapper .header h1 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 1px;
-            color: #1a3a5c;
-        }
-        .certificate-wrapper .header h2 {
-            font-size: 1rem;
-            font-weight: 500;
-            margin: 2px 0 0;
-            color: #2b5a7a;
-            letter-spacing: 0.5px;
-        }
-        .certificate-wrapper .header .sub {
-            font-size: 0.85rem;
-            color: #475569;
-            margin-top: 2px;
-        }
-        .certificate-wrapper .title {
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #1a3a5c;
-            margin: 10px 0 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .certificate-wrapper .body {
-            padding: 0 10px;
-        }
-        .certificate-wrapper .body p {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            text-align: justify;
-            margin: 0 0 12px 0;
-            color: #1e293b;
-        }
-        .certificate-wrapper .body .member-name {
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        .certificate-wrapper .body .signature-area {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 28px;
-            padding-top: 12px;
-            border-top: 1px solid #dce0e5;
-        }
-        .certificate-wrapper .body .signature-area .sig-item {
-            text-align: center;
-            flex: 1;
-        }
-        .certificate-wrapper .body .signature-area .sig-item .line {
-            width: 160px;
-            border-bottom: 1px solid #1a3a5c;
-            margin: 6px auto 4px;
-        }
-        .certificate-wrapper .body .signature-area .sig-item .label {
-            font-size: 0.75rem;
-            color: #475569;
-        }
-        .certificate-wrapper .body .photo-bottom {
-            text-align: center;
-            margin-top: 16px;
-        }
-        .certificate-wrapper .body .photo-bottom img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #dce0e5;
-        }
-
-        /* Print & PDF styles */
-        @media print {
-            .certificate-wrapper {
-                border: none;
-                box-shadow: none;
-                padding: 40px 35px;
-                margin: 0;
-                border-radius: 0;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
-
         .toast {
             position: fixed;
             bottom: var(--spacing-lg);
@@ -534,19 +421,6 @@
                 min-width: 100px;
                 justify-content: center;
             }
-            .certificate-wrapper {
-                padding: 20px 15px;
-            }
-            .certificate-wrapper .header h1 {
-                font-size: 1.2rem;
-            }
-            .certificate-wrapper .body p {
-                font-size: 0.95rem;
-            }
-            .certificate-wrapper .body .signature-area {
-                flex-direction: column;
-                gap: 16px;
-            }
         }
     </style>
 </head>
@@ -555,7 +429,6 @@
     <div class="site-shell">
 
         <header class="site-header" role="banner">
-            <!-- Same header as before -->
             <div class="header-inner">
                 <div class="header-logo">
                     <a href="index.html" aria-label="Assam Limbu Mahasabha Home">
@@ -660,7 +533,7 @@
             </section>
         </main>
 
-        <!-- ===== MODALS ===== -->
+        <!-- ===== MODALS (only view and remark remain) ===== -->
         <!-- View Modal -->
         <div id="viewModal" class="modal">
             <div class="modal-content large">
@@ -672,23 +545,6 @@
                 <div id="viewContent"></div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" data-modal="viewModal">Close</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certificate Preview Modal -->
-        <div id="certificateModal" class="modal">
-            <div class="modal-content large">
-                <button class="modal-close" data-modal="certificateModal">&times;</button>
-                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
-                    <span style="font-size:1.5rem;">&#9670;</span>
-                    <h3 style="margin:0;">Certificate Preview</h3>
-                </div>
-                <div id="certificateContent"></div>
-                <div class="modal-actions no-print">
-                    <button class="btn btn-secondary" data-modal="certificateModal">Close</button>
-                    <button class="btn btn-primary" id="downloadPdfBtn">Download PDF</button>
-                    <button class="btn btn-secondary" onclick="window.print()">Print</button>
                 </div>
             </div>
         </div>
@@ -814,9 +670,6 @@
 
         const viewModal = document.getElementById('viewModal');
         const viewContent = document.getElementById('viewContent');
-        const certificateModal = document.getElementById('certificateModal');
-        const certificateContent = document.getElementById('certificateContent');
-        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const remarkModal = document.getElementById('remarkModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalSubtitle = document.getElementById('modalSubtitle');
@@ -841,7 +694,7 @@
         }
 
         // ----- All existing filter, render, load, login, auth, modal functions remain exactly the same -----
-        // (We keep them unchanged; only the certificate preview function is updated)
+        // (We keep them unchanged)
 
         function filterApplications() {
             const searchTerm = searchInput.value.trim().toLowerCase();
@@ -916,9 +769,16 @@
                     const key = btn.dataset.key;
                     currentAppKey = key;
                     const appData = allAppsData[key];
-                    if (action === 'view') openViewModal(appData);
-                    else if (action === 'previewcert') openCertificatePreview(appData);
-                    else if (action === 'remark') {
+                    if (action === 'view') {
+                        openViewModal(appData);
+                    } else if (action === 'previewcert') {
+                        // ***** NEW: Open certificate.html in a new tab *****
+                        if (appData && appData.refNumber) {
+                            window.open(`certificate.html?ref=${appData.refNumber}`, '_blank');
+                        } else {
+                            alert('Reference number not available for this application.');
+                        }
+                    } else if (action === 'remark') {
                         modalTitle.textContent = 'Add Remarks';
                         modalSubtitle.textContent = 'Enter your remarks below and proceed.';
                         remarkText.value = '';
@@ -1023,7 +883,7 @@
 
         logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
-        // ----- UPDATED VIEW MODAL with fatherGuardianName -----
+        // ----- VIEW MODAL (unchanged) -----
         function openViewModal(app) {
             const fields = [
                 'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
@@ -1052,89 +912,6 @@
             viewModal.classList.add('visible');
         }
 
-        // ----- UPDATED CERTIFICATE PREVIEW with fatherGuardianName -----
-        function openCertificatePreview(app) {
-            // Build full address from available fields
-            const addressParts = [];
-            if (app.village) addressParts.push(app.village);
-            if (app.postOffice) addressParts.push(app.postOffice);
-            if (app.ps) addressParts.push(app.ps);
-            if (app.district) addressParts.push(app.district);
-            if (app.pin) addressParts.push(`PIN: ${app.pin}`);
-            const fullAddress = addressParts.join(', ') || 'N/A';
-
-            // Use fatherGuardianName from database
-            const parentGuardian = app.fatherGuardianName || 'N/A';
-
-            const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-            const certNumber = app.refNumber || 'N/A';
-            const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
-            const membershipType = app.membershipType || 'General';
-
-            const photoHtml = app.photoURL
-                ? `<img src="${app.photoURL}" alt="Applicant photo" />`
-                : '<p style="color:#999;">No photo uploaded</p>';
-
-            // Build certificate HTML
-            certificateContent.innerHTML = `
-                <div class="certificate-wrapper" id="certificatePrintArea">
-                    <div class="header">
-                        <span class="emblem">&#9670;</span>
-                        <h1>ASSAM LIMBU MAHASABHA</h1>
-                        <h2>WEST KARBI ANGLONG &amp; DIMA HASAO DISTRICT COMMITTEE</h2>
-                        <div class="sub">(Regd. under Societies Registration Act, 1860)</div>
-                    </div>
-                    <div class="title">MEMBERSHIP CERTIFICATE</div>
-                    <div class="body">
-                        <p>
-                            <strong>This is to certify that</strong>
-                            <span class="member-name">${memberName}</span>,
-                            son/daughter of <strong>${parentGuardian}</strong>,
-                            resident of <strong>${fullAddress}</strong>,
-                            is a registered member of the <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>.
-                        </p>
-                        <p>
-                            This certificate is issued in recognition of the above-mentioned membership and serves as official proof of membership in the
-                            <strong>Assam Limbu Mahasabha, West Karbi Anglong &amp; Dima Hasao District Committee</strong>,
-                            subject to the rules and regulations of the organization.
-                        </p>
-                        <div style="margin-top:8px; display:flex; gap:20px; flex-wrap:wrap; font-size:0.95rem; color:#1e293b;">
-                            <span><strong>Membership Type:</strong> ${membershipType}</span>
-                            <span><strong>Certificate No:</strong> ${certNumber}</span>
-                            <span><strong>Date of Issue:</strong> ${issueDate}</span>
-                            <span><strong>Membership ID:</strong> ALM-${certNumber.split('-')[1] || '2026'}-${certNumber.split('-')[2] || '0000'}</span>
-                        </div>
-                        <div class="signature-area">
-                            <div class="sig-item">
-                                <div class="line"></div>
-                                <div class="label">Dealing Assistant</div>
-                            </div>
-                            <div class="sig-item">
-                                <div class="line"></div>
-                                <div class="label">President</div>
-                            </div>
-                            <div class="sig-item">
-                                <div class="line"></div>
-                                <div class="label">Approving Authority</div>
-                            </div>
-                        </div>
-                        <div class="photo-bottom">
-                            ${photoHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            certificateModal.classList.add('visible');
-            downloadPdfBtn.onclick = function() {
-                if (typeof generateCertificatePDF === 'function') {
-                    generateCertificatePDF('certificatePrintArea');
-                } else {
-                    alert('PDF generation library not loaded. Please refresh and try again.');
-                }
-            };
-        }
-
         // ----- Close modals (unchanged) -----
         document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1142,7 +919,7 @@
                 document.getElementById(modalId).classList.remove('visible');
             });
         });
-        [viewModal, certificateModal, remarkModal].forEach(modal => {
+        [viewModal, remarkModal].forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.classList.remove('visible');
             });
@@ -1212,11 +989,7 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal with Father/Guardian Name field added.');
+        console.log('Admin portal (certificate preview removed) loaded.');
     </script>
-
-    <!-- Load the external certificate PDF generator -->
-    <script src="certificate-pdf.js"></script>
-
 </body>
 </html>
