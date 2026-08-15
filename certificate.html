@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Membership Certificate</title>
-    <!-- Use website's main style.css for global styles (logo emblem, colors, etc.) -->
     <link rel="stylesheet" href="cert.css" />
 </head>
 <body>
 
-    <!-- Loading Spinner (visible until data is injected) -->
+    <!-- Loading Spinner -->
     <div id="loadingContainer" class="loading-container">
         <div class="spinner"></div>
         <p>Loading certificate...</p>
@@ -17,9 +16,7 @@
 
     <!-- Certificate (hidden initially) -->
     <main class="certificate-page" id="certificatePage" style="display:none;">
-        <!-- Outer Certificate Border -->
         <div class="certificate" id="certificateContainer">
-
             <!-- Header -->
             <header class="certificate-header">
                 <div class="header-logo left-logo">
@@ -180,23 +177,17 @@
                     Certificate ID: <strong id="certificateId">[Certificate ID]</strong>
                 </div>
             </footer>
-
         </div>
     </main>
 
-    <!-- Print & Download buttons (visible only on screen) -->
+    <!-- Print & Download buttons -->
     <div style="position:fixed; bottom:20px; right:20px; z-index:999; display:flex; gap:10px;" class="no-print" id="actionButtons" style="display:none;">
         <button onclick="window.print()" style="padding:10px 20px; background:#1a3a5c; color:white; border:none; border-radius:5px; cursor:pointer;">Print / PDF</button>
         <button onclick="window.close()" style="padding:10px 20px; background:#ccc; color:#222; border:none; border-radius:5px; cursor:pointer;">Close</button>
     </div>
 
-    <!-- QR Code library (generates QR code data URLs) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <!-- Custom QR generator (uses the library) -->
     <script src="qrcode.js"></script>
-
-    <!-- Firebase SDK + certificate.js (data injection) -->
     <script type="importmap">
         {
             "imports": {
