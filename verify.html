@@ -91,13 +91,23 @@
                 grid-template-columns: 1fr;
             }
         }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.95rem;
+            margin-top: var(--spacing-md);
+        }
+        .debug-info {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-sm);
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -152,6 +162,7 @@
                         <div class="verification-loading" id="loadingState">
                             <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
+                            <div id="debugInfo" class="debug-info"></div>
                         </div>
                         <div id="resultState" style="display:none;">
                             <div class="verification-icon" id="statusIcon">&#9670;</div>
@@ -218,7 +229,8 @@
 
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- ============================================================ -->
+    <!-- Firebase SDK (same as other pages) -->
     <script type="importmap">
         {
             "imports": {
@@ -229,9 +241,11 @@
     </script>
 
     <script type="module">
+        // ----- IMPORT FIREBASE -----
         import { initializeApp } from "firebase/app";
         import { getDatabase, ref, get } from "firebase/database";
 
+        // ----- FIREBASE CONFIG -----
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
             authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -241,9 +255,18 @@
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        // ----- INIT FIREBASE -----
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            console.log('Firebase initialized successfully.');
+        } catch (err) {
+            console.error('Firebase init error:', err);
+            document.getElementById('debugInfo').textContent = 'Firebase init error: ' + err.message;
+        }
 
+        // ----- DOM ELEMENTS -----
         const loadingState = document.getElementById('loadingState');
         const resultState = document.getElementById('resultState');
         const statusIcon = document.getElementById('statusIcon');
@@ -251,27 +274,37 @@
         const statusMessage = document.getElementById('statusMessage');
         const detailsContainer = document.getElementById('detailsContainer');
         const verifyTimestamp = document.getElementById('verifyTimestamp');
+        const debugInfo = document.getElementById('debugInfo');
 
+        // ----- GET VERIFICATION ID FROM URL -----
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
+        debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
+        console.log('Verification ID:', verificationId);
 
-        if (!verificationId) {
-            loadingState.style.display = 'none';
-            resultState.style.display = 'block';
-            statusIcon.className = 'verification-icon invalid';
-            statusIcon.textContent = '✗';
-            statusText.className = 'verification-result invalid';
-            statusText.textContent = 'Invalid Verification ID';
-            statusMessage.textContent = 'No verification ID provided.';
-            return;
-        }
-
+        // ----- MAIN VERIFICATION FUNCTION -----
         async function verifyCertificate() {
             try {
-                const snapshot = await get(ref(db, 'applications'));
-                if (!snapshot.exists()) {
-                    throw new Error('No applications found.');
+                // 1. Check if Firebase is ready
+                if (!db) {
+                    throw new Error('Firebase database not initialized.');
                 }
+
+                // 2. Validate verificationId
+                if (!verificationId) {
+                    throw new Error('No verification ID provided.');
+                }
+
+                // 3. Fetch all applications
+                console.log('Fetching applications...');
+                const snapshot = await get(ref(db, 'applications'));
+                console.log('Fetched data:', snapshot.exists());
+
+                if (!snapshot.exists()) {
+                    throw new Error('No applications found in database.');
+                }
+
+                // 4. Search for matching verificationId
                 const allApps = snapshot.val();
                 let foundApp = null;
                 for (const key in allApps) {
@@ -281,6 +314,9 @@
                     }
                 }
 
+                console.log('Found app:', foundApp);
+
+                // 5. Handle not found
                 if (!foundApp) {
                     loadingState.style.display = 'none';
                     resultState.style.display = 'block';
@@ -292,23 +328,14 @@
                     return;
                 }
 
-                // Valid certificate found
-                loadingState.style.display = 'none';
-                resultState.style.display = 'block';
-                statusIcon.className = 'verification-icon valid';
-                statusIcon.textContent = '✓';
-                statusText.className = 'verification-result valid';
-                statusText.textContent = 'Valid Certificate';
-                statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
-
-                // Generate membership number and certificate number from refNumber
+                // 6. Build membership & certificate numbers
                 const refNum = foundApp.refNumber || 'N/A';
                 const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
                     ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
                     : refNum;
                 const certificateNumber = `CERT-${refNum}`;
 
-                // Build details
+                // 7. Build details
                 const fields = [
                     { label: 'Membership Number', value: membershipNumber },
                     { label: 'Certificate Number', value: certificateNumber },
@@ -337,6 +364,14 @@
                 });
                 detailsContainer.innerHTML = detailsHTML;
 
+                // 8. Show success
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                statusIcon.className = 'verification-icon valid';
+                statusIcon.textContent = '✓';
+                statusText.className = 'verification-result valid';
+                statusText.textContent = 'Valid Certificate';
+                statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
                 verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
             } catch (error) {
@@ -347,10 +382,12 @@
                 statusIcon.textContent = '✗';
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Verification Error';
-                statusMessage.textContent = `An error occurred: ${error.message}`;
+                statusMessage.textContent = `Error: ${error.message}`;
+                debugInfo.textContent += `\nError: ${error.message}`;
             }
         }
 
+        // ----- START VERIFICATION -----
         verifyCertificate();
     </script>
 
