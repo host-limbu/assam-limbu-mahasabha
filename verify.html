@@ -4,105 +4,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificate Verification — Assam Limbu Mahasabha</title>
-    <meta name="description" content="Verify the authenticity of a membership certificate." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        .verify-container {
-            max-width: 900px;
-            margin: var(--spacing-lg) auto;
-            background: var(--color-surface);
+        .verification-container {
+            max-width: 800px;
+            margin: var(--spacing-xl) auto;
             padding: var(--spacing-lg);
+            background: var(--color-surface);
             border-radius: var(--radius-lg);
             border: 1px solid var(--color-border);
             box-shadow: var(--shadow-sm);
-        }
-        .verify-header {
             text-align: center;
-            border-bottom: 2px solid var(--color-primary);
-            padding-bottom: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
         }
-        .verify-header .logo-emblem {
-            font-size: 3rem;
-            color: var(--color-primary);
+        .verification-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-md);
         }
-        .verify-header h1 {
-            font-size: 1.6rem;
-            margin: 0;
+        .verification-icon.valid {
+            color: #22c55e;
         }
-        .verify-header .sub {
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
+        .verification-icon.invalid {
+            color: #ef4444;
         }
-        .verify-result {
-            margin-top: var(--spacing-lg);
-        }
-        .verify-result .status-badge {
-            display: inline-block;
-            padding: 0.3rem 1.2rem;
-            border-radius: 20px;
+        .verification-result {
+            font-size: 1.8rem;
             font-weight: var(--font-bold);
-            font-size: 1.1rem;
+            margin-bottom: var(--spacing-sm);
         }
-        .verify-result .status-badge.valid {
-            background: #d4edda;
-            color: #155724;
+        .verification-result.valid {
+            color: #22c55e;
         }
-        .verify-result .status-badge.invalid {
-            background: #f8d7da;
-            color: #721c24;
+        .verification-result.invalid {
+            color: #ef4444;
         }
-        .verify-details {
-            margin-top: var(--spacing-md);
+        .verification-details {
+            margin-top: var(--spacing-lg);
+            text-align: left;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-sm);
+            gap: var(--spacing-md);
         }
-        .verify-details .detail-item {
+        .verification-details .detail-item {
             padding: 0.3rem 0;
             border-bottom: 1px solid var(--color-border);
         }
-        .verify-details .detail-item .label {
+        .verification-details .detail-item .label {
             font-weight: var(--font-medium);
             color: var(--color-text-muted);
-            display: inline-block;
-            width: 40%;
         }
-        .verify-details .detail-item .value {
+        .verification-details .detail-item .value {
             color: var(--color-text);
-            display: inline-block;
-            width: 58%;
         }
-        .verify-details .photo {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-top: var(--spacing-sm);
-        }
-        .verify-details .photo img {
-            max-width: 150px;
-            border-radius: var(--radius);
-            border: 1px solid var(--color-border);
-        }
-        .loading-spinner {
-            text-align: center;
+        .verification-loading {
             padding: var(--spacing-xl);
             color: var(--color-text-muted);
         }
-        .loading-spinner .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--color-border);
-            border-top: 4px solid var(--color-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .verification-footer {
+            margin-top: var(--spacing-lg);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
         }
         @media (max-width: 768px) {
-            .verify-details {
+            .verification-details {
                 grid-template-columns: 1fr;
             }
         }
@@ -112,7 +78,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as main site) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -160,20 +125,22 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
-            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="verify-container">
-                        <div class="verify-header">
-                            <div class="logo-emblem">&#9670;</div>
-                            <h1>Certificate Verification</h1>
-                            <p class="sub">Verify the authenticity of a membership certificate</p>
+                    <div class="verification-container" id="verificationContainer">
+                        <div class="verification-loading" id="loadingState">
+                            <div style="display:inline-block; width:40px; height:40px; border:4px solid var(--color-border); border-top:4px solid var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+                            <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
                         </div>
-                        <div id="verifyContent">
-                            <div class="loading-spinner">
-                                <div class="spinner"></div>
-                                <p>Verifying certificate...</p>
+                        <div id="resultState" style="display:none;">
+                            <div class="verification-icon" id="statusIcon">&#9670;</div>
+                            <div class="verification-result" id="statusText">Valid</div>
+                            <p id="statusMessage" style="color: var(--color-text-muted);"></p>
+                            <div class="verification-details" id="detailsContainer"></div>
+                            <div class="verification-footer">
+                                <p>This certificate is issued by Assam Limbu Mahasabha, Karbi Anglong &amp; Dima Hasao District Committee.</p>
+                                <p style="font-size:0.8rem; margin-top:var(--spacing-xs);">Verification timestamp: <span id="verifyTimestamp"></span></p>
                             </div>
                         </div>
                     </div>
@@ -181,7 +148,6 @@
             </section>
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -232,6 +198,8 @@
 
     </div>
 
+    <!-- ============================================================ -->
+    <!-- Firebase SDK -->
     <script type="importmap">
         {
             "imports": {
@@ -257,85 +225,103 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const container = document.getElementById('verifyContent');
+        const loadingState = document.getElementById('loadingState');
+        const resultState = document.getElementById('resultState');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const statusMessage = document.getElementById('statusMessage');
+        const detailsContainer = document.getElementById('detailsContainer');
+        const verifyTimestamp = document.getElementById('verifyTimestamp');
 
+        // Get verification ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const refNumber = urlParams.get('ref');
+        const verificationId = urlParams.get('id');
 
-        if (!refNumber) {
-            container.innerHTML = `
-                <div style="text-align:center; padding: var(--spacing-lg);">
-                    <p style="color:red;">No reference number provided.</p>
-                    <p>Please scan a valid QR code or use a valid verification link.</p>
-                </div>
-            `;
-            throw new Error('Missing ref');
+        if (!verificationId) {
+            loadingState.style.display = 'none';
+            resultState.style.display = 'block';
+            statusIcon.className = 'verification-icon invalid';
+            statusIcon.textContent = '✗';
+            statusText.className = 'verification-result invalid';
+            statusText.textContent = 'Invalid Verification ID';
+            statusMessage.textContent = 'No verification ID provided.';
+            return;
         }
 
+        // Query Firebase for application with this verificationId
         async function verifyCertificate() {
             try {
                 const snapshot = await get(ref(db, 'applications'));
                 if (!snapshot.exists()) {
-                    container.innerHTML = `<p style="color:red;">No applications found.</p>`;
-                    return;
+                    throw new Error('No applications found.');
                 }
                 const allApps = snapshot.val();
-                let app = null;
+                let foundApp = null;
                 for (const key in allApps) {
-                    if (allApps[key].refNumber === refNumber) {
-                        app = allApps[key];
+                    if (allApps[key].verificationId === verificationId) {
+                        foundApp = { ...allApps[key], _key: key };
                         break;
                     }
                 }
-                if (!app) {
-                    container.innerHTML = `
-                        <div style="text-align:center; padding: var(--spacing-lg);">
-                            <span class="status-badge invalid" style="font-size:1.2rem;">INVALID</span>
-                            <h3>Certificate Not Found</h3>
-                            <p>No certificate exists with the provided reference number.</p>
-                        </div>
-                    `;
+
+                if (!foundApp) {
+                    loadingState.style.display = 'none';
+                    resultState.style.display = 'block';
+                    statusIcon.className = 'verification-icon invalid';
+                    statusIcon.textContent = '✗';
+                    statusText.className = 'verification-result invalid';
+                    statusText.textContent = 'Invalid Certificate';
+                    statusMessage.textContent = 'No valid certificate found with this verification ID.';
                     return;
                 }
 
-                // Determine validity (only Approved status is valid)
-                const isValid = app.status === 'Approved';
-                const statusBadge = isValid ? 'valid' : 'invalid';
-                const statusText = isValid ? 'VALID' : 'INVALID / NOT APPROVED';
+                // Valid certificate found
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                statusIcon.className = 'verification-icon valid';
+                statusIcon.textContent = '✓';
+                statusText.className = 'verification-result valid';
+                statusText.textContent = 'Valid Certificate';
+                statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
 
-                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-                const father = app.fatherGuardianName || 'N/A';
-                const membershipType = app.membershipType || 'General';
-                const district = app.district || 'N/A';
-                const village = app.village || 'N/A';
-                const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : 'N/A';
-                const photoHtml = app.photoURL ? `<img src="${app.photoURL}" alt="Member photo" />` : '';
+                // Build details
+                const fields = [
+                    { label: 'Name', value: `${foundApp.firstName || ''} ${foundApp.secondName || ''}` },
+                    { label: 'Father / Guardian', value: foundApp.fatherGuardianName || 'N/A' },
+                    { label: 'Membership Type', value: foundApp.membershipType || 'General' },
+                    { label: 'Reference No.', value: foundApp.refNumber || 'N/A' },
+                    { label: 'Date of Birth', value: foundApp.dob || 'N/A' },
+                    { label: 'District', value: foundApp.district || 'N/A' },
+                    { label: 'Village', value: foundApp.village || 'N/A' },
+                    { label: 'Post Office', value: foundApp.postOffice || 'N/A' },
+                    { label: 'Police Station', value: foundApp.ps || 'N/A' },
+                    { label: 'PIN', value: foundApp.pin || 'N/A' },
+                    { label: 'Issue Date', value: foundApp.timestamp ? foundApp.timestamp.split(' ')[0] : 'N/A' },
+                    { label: 'Status', value: foundApp.status || 'Approved' },
+                ];
 
-                container.innerHTML = `
-                    <div class="verify-result">
-                        <div style="text-align:center; margin-bottom:var(--spacing-md);">
-                            <span class="status-badge ${statusBadge}">${statusText}</span>
+                let detailsHTML = '';
+                fields.forEach(f => {
+                    detailsHTML += `
+                        <div class="detail-item">
+                            <span class="label">${f.label}</span>
+                            <span class="value">${f.value}</span>
                         </div>
-                        <h3 style="text-align:center;">Certificate Details</h3>
-                        <div class="verify-details">
-                            <div class="detail-item"><span class="label">Reference Number</span><span class="value">${app.refNumber}</span></div>
-                            <div class="detail-item"><span class="label">Member Name</span><span class="value">${name}</span></div>
-                            <div class="detail-item"><span class="label">Father / Guardian</span><span class="value">${father}</span></div>
-                            <div class="detail-item"><span class="label">Membership Type</span><span class="value">${membershipType}</span></div>
-                            <div class="detail-item"><span class="label">District</span><span class="value">${district}</span></div>
-                            <div class="detail-item"><span class="label">Village</span><span class="value">${village}</span></div>
-                            <div class="detail-item"><span class="label">Date of Issue</span><span class="value">${issueDate}</span></div>
-                            <div class="detail-item"><span class="label">Status</span><span class="value">${app.status || 'Submitted'}</span></div>
-                            ${photoHtml ? `<div class="photo">${photoHtml}</div>` : ''}
-                        </div>
-                        <p style="text-align:center; margin-top:var(--spacing-lg); color:var(--color-text-muted);">
-                            This certificate is digitally signed and issued by the Assam Limbu Mahasabha.
-                        </p>
-                    </div>
-                `;
+                    `;
+                });
+                detailsContainer.innerHTML = detailsHTML;
+
+                verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
             } catch (error) {
                 console.error('Verification error:', error);
-                container.innerHTML = `<p style="color:red;">Error verifying certificate: ${error.message}</p>`;
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                statusIcon.className = 'verification-icon invalid';
+                statusIcon.textContent = '✗';
+                statusText.className = 'verification-result invalid';
+                statusText.textContent = 'Verification Error';
+                statusMessage.textContent = `An error occurred: ${error.message}`;
             }
         }
 
