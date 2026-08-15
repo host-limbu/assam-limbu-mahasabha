@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* same styles as before */
         .inquiry-login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -71,7 +70,7 @@
             width: 100%;
             border-collapse: collapse;
             white-space: nowrap;
-            min-width: 800px;
+            min-width: 900px;
         }
         .inquiry-table th,
         .inquiry-table td {
@@ -146,23 +145,104 @@
             animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        /* View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            overflow-y: auto;
+        }
+        .modal.visible {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--color-surface);
+            max-width: 600px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .modal-content .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color var(--transition);
+        }
+        .modal-content .modal-close:hover {
+            color: var(--color-text);
+        }
+        .modal-content h3 {
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+        .modal-content .detail-row {
+            display: flex;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .modal-content .detail-row .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            width: 100px;
+            flex-shrink: 0;
+        }
+        .modal-content .detail-row .value {
+            color: var(--color-text);
+            word-break: break-word;
+            white-space: normal;
+        }
+        .modal-content .message-full {
+            margin-top: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: var(--color-surface-alt);
+            border-radius: var(--radius);
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        .modal-actions .btn {
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 768px) {
             .inquiry-table {
                 font-size: 0.8rem;
-                min-width: 600px;
+                min-width: 700px;
             }
             .inquiry-table th,
             .inquiry-table td {
                 padding: 0.3rem 0.5rem;
+            }
+            .modal-content {
+                padding: var(--spacing-md);
+                margin: var(--spacing-sm);
             }
         }
     </style>
@@ -254,6 +334,25 @@
             </section>
         </main>
 
+        <!-- View Message Modal -->
+        <div id="viewModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" id="viewModalClose">&times;</button>
+                <h3>Message Details</h3>
+                <div id="viewModalContent">
+                    <div class="detail-row"><span class="label">Name</span><span class="value" id="viewName"></span></div>
+                    <div class="detail-row"><span class="label">Email</span><span class="value" id="viewEmail"></span></div>
+                    <div class="detail-row"><span class="label">Subject</span><span class="value" id="viewSubject"></span></div>
+                    <div class="detail-row"><span class="label">Date</span><span class="value" id="viewDate"></span></div>
+                    <div class="detail-row" style="border-bottom: none;"><span class="label">Message</span></div>
+                    <div class="message-full" id="viewMessage"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="viewModalCloseBtn">Close</button>
+                </div>
+            </div>
+        </div>
+
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -334,7 +433,6 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // **** ALLOWED USER UID (only this user can access) ****
         const ALLOWED_UID = 'VphanModTwd4lQaPmwKA8EUvL3A3';
 
         // DOM elements
@@ -347,6 +445,16 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const inboxCount = document.getElementById('inboxCount');
         const inquiryListContainer = document.getElementById('inquiryListContainer');
+
+        // Modal elements
+        const viewModal = document.getElementById('viewModal');
+        const viewModalClose = document.getElementById('viewModalClose');
+        const viewModalCloseBtn = document.getElementById('viewModalCloseBtn');
+        const viewName = document.getElementById('viewName');
+        const viewEmail = document.getElementById('viewEmail');
+        const viewSubject = document.getElementById('viewSubject');
+        const viewDate = document.getElementById('viewDate');
+        const viewMessage = document.getElementById('viewMessage');
 
         let currentUser = null;
 
@@ -376,14 +484,12 @@
         // Auth state with UID check
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Check if UID matches the allowed one
                 if (user.uid === ALLOWED_UID) {
                     currentUser = user;
                     loginSection.style.display = 'none';
                     dashboard.classList.add('visible');
                     loadInquiries();
                 } else {
-                    // Unauthorized – sign out and show error
                     await signOut(auth);
                     loginError.textContent = 'Access denied. You are not authorized to view this page.';
                     loginError.classList.add('visible');
@@ -436,8 +542,8 @@
                         ? '<span class="status-badge unread">Unread</span>'
                         : '<span class="status-badge read">Read</span>';
 
-                    const msgShort = inquiry.message && inquiry.message.length > 60
-                        ? inquiry.message.substring(0, 60) + '…'
+                    const msgShort = inquiry.message && inquiry.message.length > 40
+                        ? inquiry.message.substring(0, 40) + '…'
                         : inquiry.message || '';
 
                     html += `
@@ -450,6 +556,7 @@
                             <td>${statusBadge}</td>
                             <td>
                                 <div class="actions">
+                                    <button class="btn btn-secondary" data-action="view" data-key="${key}">View</button>
                                     ${status === 'unread' ? `<button class="btn btn-primary" data-action="mark-read" data-key="${key}">Mark Read</button>` : ''}
                                     <button class="btn btn-danger" data-action="delete" data-key="${key}">Delete</button>
                                 </div>
@@ -467,7 +574,9 @@
                     btn.addEventListener('click', (e) => {
                         const action = btn.dataset.action;
                         const key = btn.dataset.key;
-                        if (action === 'mark-read') {
+                        if (action === 'view') {
+                            openViewModal(key);
+                        } else if (action === 'mark-read') {
                             markAsRead(key);
                         } else if (action === 'delete') {
                             if (confirm('Delete this inquiry?')) {
@@ -478,6 +587,38 @@
                 });
             });
         }
+
+        // Open View Modal
+        function openViewModal(key) {
+            const contactsRef = ref(db, `contacts/${key}`);
+            get(contactsRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    viewName.textContent = data.name || 'N/A';
+                    viewEmail.textContent = data.email || 'N/A';
+                    viewSubject.textContent = data.subject || 'N/A';
+                    viewDate.textContent = data.timestamp || 'N/A';
+                    viewMessage.textContent = data.message || 'No message content.';
+                    viewModal.classList.add('visible');
+                } else {
+                    showToast('Inquiry not found.');
+                }
+            }).catch((error) => {
+                console.error('Error fetching inquiry:', error);
+                showToast('Error loading message.');
+            });
+        }
+
+        // Close modal
+        function closeViewModal() {
+            viewModal.classList.remove('visible');
+        }
+
+        viewModalClose.addEventListener('click', closeViewModal);
+        viewModalCloseBtn.addEventListener('click', closeViewModal);
+        viewModal.addEventListener('click', (e) => {
+            if (e.target === viewModal) closeViewModal();
+        });
 
         // Mark as read
         async function markAsRead(key) {
@@ -503,7 +644,7 @@
             }
         }
 
-        console.log('Inquiry panel loaded with UID restriction.');
+        console.log('Inquiry panel loaded with View button.');
     </script>
 
 </body>
