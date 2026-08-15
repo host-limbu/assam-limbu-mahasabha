@@ -39,6 +39,12 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+// Helper: generate QR code image URL using an external API
+function generateQRCodeUrl(data) {
+    const encoded = encodeURIComponent(data);
+    return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encoded}`;
+}
+
 // Main function to load data and populate certificate
 async function loadCertificate() {
     try {
@@ -87,6 +93,11 @@ async function loadCertificate() {
         const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
         const fullAddress = addressParts.join(', ') || 'N/A';
 
+        // Build verification URL (for QR code)
+        const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
+        const verificationUrl = `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
+        const qrImageSrc = generateQRCodeUrl(verificationUrl);
+
         // ----- DOM updates -----
         document.getElementById('membershipNumber').textContent = membershipNumber;
         document.getElementById('applicationNumber').textContent = refNum;
@@ -121,11 +132,17 @@ async function loadCertificate() {
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
         document.getElementById('verificationId').textContent = verificationId;
 
+        // QR code
+        const qrImg = document.getElementById('qrCode');
+        if (qrImg) {
+            qrImg.src = qrImageSrc;
+            qrImg.alt = 'Verification QR Code';
+        }
+
         // Signatures – if we have admin names stored, we could populate; otherwise leave placeholder
-        // For now, we'll put placeholder names
-        document.getElementById('daName').textContent = app.dealingAssistantName || '_________';
-        document.getElementById('presidentName').textContent = app.presidentName || '_________';
-        document.getElementById('aaName').textContent = app.approvingAuthorityName || '_________';
+        document.getElementById('daName').textContent = app.dealingAssistantName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
+        document.getElementById('presidentName').textContent = app.presidentName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
+        document.getElementById('aaName').textContent = app.approvingAuthorityName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
 
         // Certificate ID footer
         document.getElementById('certificateId').textContent = certificateId;
