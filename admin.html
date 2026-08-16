@@ -6,7 +6,422 @@
     <title>Admin Portal — [Your Organization]</title>
     <meta name="description" content="Admin portal for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="admin.css"/>
+    <style>
+        .admin-login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+        .admin-login-form input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            background: var(--color-surface);
+        }
+        .admin-login-form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .admin-login-form .btn {
+            width: 100%;
+        }
+        .admin-dashboard {
+            display: none;
+        }
+        .admin-dashboard.visible {
+            display: block;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .admin-header h2 {
+            margin: 0;
+        }
+        .admin-role-badge {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: var(--font-medium);
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            align-items: flex-end;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-surface-alt);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+        .filter-bar .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            flex: 1 1 180px;
+            min-width: 150px;
+        }
+        .filter-bar .filter-group label {
+            font-size: 0.75rem;
+            font-weight: var(--font-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+        }
+        .filter-bar .filter-group input,
+        .filter-bar .filter-group select {
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .filter-bar .filter-group input:focus,
+        .filter-bar .filter-group select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .filter-bar .filter-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+            flex: 0 0 auto;
+            padding-top: 0.5rem;
+        }
+        .filter-bar .filter-actions .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        .filter-bar .filter-actions .btn-clear {
+            background: transparent;
+            color: var(--color-text-muted);
+            border: 1px solid var(--color-border);
+        }
+        .filter-bar .filter-actions .btn-clear:hover {
+            background: var(--color-border);
+        }
+        .filter-bar .filter-actions .btn-apply {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .filter-bar .filter-actions .btn-apply:hover {
+            background: var(--color-primary-light);
+        }
+        .filter-bar .filter-result-info {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-left: auto;
+            align-self: center;
+        }
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar .filter-group {
+                flex: 1 1 auto;
+                min-width: unset;
+            }
+            .filter-bar .filter-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            .filter-bar .filter-result-info {
+                margin-left: 0;
+                text-align: left;
+                padding-top: var(--spacing-xs);
+            }
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: var(--spacing-md);
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            min-width: 700px;
+        }
+        .admin-table th,
+        .admin-table td {
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 0.8rem;
+            text-align: left;
+            font-size: 0.9rem;
+            background: var(--color-surface);
+            color: var(--color-text);
+        }
+        .admin-table th {
+            font-weight: var(--font-medium);
+            background: var(--color-surface-alt);
+        }
+        .admin-table .actions {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.25rem;
+            align-items: center;
+        }
+        .admin-table .actions .btn {
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .admin-empty {
+            text-align: center;
+            color: var(--color-text-muted);
+            padding: var(--spacing-lg);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            overflow-y: auto;
+        }
+        .modal.visible {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--color-surface);
+            max-width: 560px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: modalFadeIn 0.25s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-content .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color var(--transition);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius);
+        }
+        .modal-content .modal-close:hover {
+            color: var(--color-text);
+            background: var(--color-surface-alt);
+        }
+        .modal-content .modal-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+        .modal-content h3 {
+            font-size: 1.3rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+        .modal-content .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+        .modal-content label {
+            display: block;
+            font-weight: var(--font-medium);
+            font-size: 0.9rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-xs);
+        }
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+        }
+        .modal-content textarea::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.6;
+        }
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        .modal-actions .btn {
+            padding: 0.6rem 1.6rem;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            font-weight: var(--font-medium);
+            transition: all var(--transition);
+        }
+        .modal-actions .btn-secondary {
+            background: var(--color-surface-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        .modal-actions .btn-secondary:hover {
+            background: var(--color-border);
+        }
+        .modal-actions .btn-primary {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .modal-actions .btn-primary:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary-light);
+        }
+
+        .modal-content.large {
+            max-width: 800px;
+        }
+        .modal-content.large .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+        }
+        .modal-content.large .detail-item {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .modal-content.large .detail-item .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            display: inline-block;
+            width: 40%;
+        }
+        .modal-content.large .detail-item .value {
+            color: var(--color-text);
+            display: inline-block;
+            width: 58%;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            display: none;
+            max-width: 400px;
+        }
+        .toast.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .admin-table {
+                font-size: 0.8rem;
+                min-width: 500px;
+            }
+            .admin-table th,
+            .admin-table td {
+                padding: 0.3rem 0.5rem;
+            }
+            .modal-content {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-sm);
+            }
+            .modal-content.large .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-table .actions .btn {
+                font-size: 0.65rem;
+                padding: 0.1rem 0.3rem;
+            }
+            .modal-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .modal-actions .btn {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -67,7 +482,6 @@
                         Secure admin panel for [Verifying Officer], [Reviewing Officer], and [Approving Officer].
                     </p>
 
-                    <!-- Login -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
@@ -80,7 +494,6 @@
                         </div>
                     </div>
 
-                    <!-- Dashboard -->
                     <div id="dashboard" class="admin-dashboard">
                         <div class="admin-header">
                             <div>
@@ -90,7 +503,6 @@
                             <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
 
-                        <!-- Filter Bar -->
                         <div class="filter-bar" id="filterBar">
                             <div class="filter-group">
                                 <label for="searchInput">Search</label>
@@ -118,7 +530,6 @@
         </main>
 
         <!-- ===== MODALS ===== -->
-        <!-- View Modal -->
         <div id="viewModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="viewModal">&times;</button>
@@ -133,7 +544,6 @@
             </div>
         </div>
 
-        <!-- Remark Modal -->
         <div id="remarkModal" class="modal">
             <div class="modal-content">
                 <button class="modal-close" id="remarkModalClose">&times;</button>
@@ -153,7 +563,6 @@
             </div>
         </div>
 
-        <!-- Toast -->
         <div id="toast" class="toast"></div>
 
         <footer class="site-footer" role="contentinfo">
@@ -235,7 +644,6 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // DOM elements
         const loginSection = document.getElementById('loginSection');
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
@@ -495,7 +903,6 @@
             viewModal.classList.add('visible');
         }
 
-        // Close modals
         document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.dataset.modal;
@@ -524,7 +931,6 @@
             }
         });
 
-        // Database functions (with verificationId on approve)
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
