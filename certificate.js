@@ -37,9 +37,7 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// ============================================================
-// FIX: Removed encodeURIComponent to keep square brackets intact
-// ============================================================
+// ✅ FIXED: No encoding – keep square brackets as-is
 function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
     return `${baseUrl}verify.html?id=${verificationId}`;
@@ -81,7 +79,7 @@ async function loadCertificate() {
 
         const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
         const certificateId = `CERT-${refNum}`;
-        // Use stored verificationId
+        // Use stored verificationId – ensure it matches the database
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
         console.log('Using verificationId:', verificationId);
 
