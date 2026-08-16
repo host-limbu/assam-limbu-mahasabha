@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Records — [Your Organization]</title>
+    <meta name="description" content="View membership application records." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .records-header h2 {
+            margin: 0;
+        }
+        .records-header .btn {
+            font-size: 0.85rem;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-xs);
+        }
+        .tabs .tab-btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .tabs .tab-btn:hover {
+            color: var(--color-primary);
+            background: var(--color-surface-alt);
+        }
+        .tabs .tab-btn.active {
+            color: #fff;
+            background: var(--color-primary);
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-xl);
+            gap: var(--spacing-md);
+            color: var(--color-text-muted);
+        }
+        .loading-spinner .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-lg);
+            color: var(--color-text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="[Your Organization] Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="records-header">
+                        <div>
+                            <h2>Certificate Records</h2>
+                            <span id="roleBadge" style="font-size:0.8rem; color:var(--color-text-muted);">Administrator</span>
+                        </div>
+                        <div style="display:flex; gap:var(--spacing-sm);">
+                            <a href="records.html" class="btn btn-secondary" style="font-size:0.85rem;">Switch Role</a>
+                            <button id="logoutBtn" class="btn btn-secondary" style="font-size:0.85rem;">Logout</button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs" id="tabs">
+                        <button class="tab-btn active" data-tab="submitted">1 Submitted</button>
+                        <button class="tab-btn" data-tab="ongoing">2 Ongoing</button>
+                        <button class="tab-btn" data-tab="approved">3 Approved</button>
+                        <button class="tab-btn" data-tab="rejected">4 Rejected</button>
+                    </div>
+
+                    <!-- Table with spinner -->
+                    <div id="tableContainer">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <span>Loading records...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <!-- Same footer -->
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+        import { getDatabase, ref, onValue } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const tabsContainer = document.getElementById('tabs');
+        const tableContainer = document.getElementById('tableContainer');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        let currentTab = 'submitted';
+        let allData = [];
+
+        // Check authentication and role
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'records.html';
+                return;
+            }
+            const role = localStorage.getItem('recordsRole');
+            if (role !== 'administrator') {
+                localStorage.removeItem('recordsRole');
+                window.location.href = 'records.html';
+                return;
+            }
+            // User is authorized
+            loadData();
+        });
+
+        // Tabs
+        tabsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.tab-btn');
+            if (!btn) return;
+            tabsContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTab = btn.dataset.tab;
+            renderTable();
+        });
+
+        // Load data
+        function loadData() {
+            const appsRef = ref(db, 'applications');
+            onValue(appsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    allData = Object.keys(data).map(key => ({ ...data[key], _key: key }));
+                } else {
+                    allData = [];
+                }
+                renderTable();
+            });
+        }
+
+        function renderTable() {
+            // Show spinner
+            tableContainer.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <span>Loading records...</span>
+                </div>
+            `;
+
+            // Simulate loading delay (optional)
+            setTimeout(() => {
+                let filtered = [];
+                if (currentTab === 'submitted') {
+                    filtered = allData.filter(app => app.status === 'Submitted' || app.currentStage === '[Verifying Officer]');
+                } else if (currentTab === 'ongoing') {
+                    filtered = allData.filter(app => app.status === 'Forwarded to [Reviewing Officer]' || app.status === 'Forwarded to [Approving Officer]' || app.currentStage === '[Reviewing Officer]' || app.currentStage === '[Approving Officer]');
+                } else if (currentTab === 'approved') {
+                    filtered = allData.filter(app => app.status === 'Approved');
+                } else if (currentTab === 'rejected') {
+                    filtered = allData.filter(app => app.status === 'Rejected');
+                }
+
+                // Sort by timestamp descending
+                filtered.sort((a, b) => {
+                    const da = a.timestamp ? new Date(a.timestamp) : new Date(0);
+                    const db = b.timestamp ? new Date(b.timestamp) : new Date(0);
+                    return db - da;
+                });
+
+                if (filtered.length === 0) {
+                    tableContainer.innerHTML = `<div class="empty-state">No records found for this status.</div>`;
+                    return;
+                }
+
+                let html = `<div class="table-wrapper"><table class="admin-table">
+                    <thead><tr>
+                        <th>SI No.</th>
+                        <th>Name</th>
+                        <th>Membership Type</th>
+                        <th>Date</th>
+                    </tr></thead><tbody>`;
+
+                filtered.forEach((app, index) => {
+                    const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                    const type = app.membershipType || 'N/A';
+                    const date = app.timestamp ? app.timestamp.split(' ')[0] : 'N/A';
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${name}</td>
+                            <td>${type}</td>
+                            <td>${date}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+                tableContainer.innerHTML = html;
+            }, 300); // small delay to show spinner
+        }
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            localStorage.removeItem('recordsRole');
+            await signOut(auth);
+            window.location.href = 'records.html';
+        });
+    </script>
+
+</body>
+</html>
