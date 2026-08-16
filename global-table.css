@@ -1,62 +1,20 @@
-/* Inquiry Table */
+/* ============================================================
+   GLOBAL TABLE STYLES — Shared between admin & inquiries
+   ============================================================ */
+
+/* ------------------------------------------------------------------
+   TABLE WRAPPER (shared)
+   ------------------------------------------------------------------ */
 .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     margin-top: var(--spacing-md);
 }
-.inquiry-table {
-    width: 100%;
-    border-collapse: collapse;
-    white-space: nowrap;
-    min-width: 900px;
-}
-.inquiry-table th,
-.inquiry-table td {
-    border: 1px solid var(--color-border);
-    padding: 0.5rem 0.8rem;
-    text-align: left;
-    font-size: 0.9rem;
-    background: var(--color-surface);
-    color: var(--color-text);
-}
-.inquiry-table th {
-    font-weight: var(--font-medium);
-    background: var(--color-surface-alt);
-}
-.inquiry-table .status-badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: var(--font-medium);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-.status-badge.unread {
-    background: #dc3545;
-    color: #fff;
-}
-.status-badge.read {
-    background: #28a745;
-    color: #fff;
-}
-.inquiry-table .actions {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.25rem;
-    align-items: center;
-}
-.inquiry-table .actions .btn {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.7rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-/* Admin Table */
-.table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-top: var(--spacing-md);
-}
+
+/* ============================================================
+   ADMIN TABLE
+   ============================================================ */
+
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -76,6 +34,7 @@
     font-weight: var(--font-medium);
     background: var(--color-surface-alt);
 }
+
 .admin-table .actions {
     display: flex;
     flex-wrap: nowrap;
@@ -87,4 +46,99 @@
     font-size: 0.7rem;
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+.admin-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--spacing-lg);
+}
+
+/* ============================================================
+   INQUIRY TABLE
+   ============================================================ */
+
+.inquiry-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    min-width: 900px;
+}
+.inquiry-table th,
+.inquiry-table td {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-size: 0.9rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+.inquiry-table th {
+    font-weight: var(--font-medium);
+    background: var(--color-surface-alt);
+}
+
+/* ---- Status Badges (Inquiry only) ---- */
+.inquiry-table .status-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: var(--font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.status-badge.unread {
+    background: #dc3545;
+    color: #fff;
+}
+.status-badge.read {
+    background: #28a745;
+    color: #fff;
+}
+
+.inquiry-table .actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+.inquiry-table .actions .btn {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.inquiry-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--spacing-lg);
+}
+
+/* ============================================================
+   RESPONSIVE TABLES
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .admin-table {
+        font-size: 0.8rem;
+        min-width: 500px;
+    }
+    .admin-table th,
+    .admin-table td {
+        padding: 0.3rem 0.5rem;
+    }
+    .admin-table .actions .btn {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.3rem;
+    }
+
+    .inquiry-table {
+        font-size: 0.8rem;
+        min-width: 700px;
+    }
+    .inquiry-table th,
+    .inquiry-table td {
+        padding: 0.3rem 0.5rem;
+    }
 }
