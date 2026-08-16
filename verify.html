@@ -22,6 +22,7 @@
         .verification-icon {
             font-size: 4rem;
             margin-bottom: var(--spacing-md);
+            line-height: 1;
         }
         .verification-icon.valid {
             color: #22c55e;
@@ -58,6 +59,9 @@
         .verification-details .detail-item .value {
             color: var(--color-text);
             font-weight: var(--font-medium);
+        }
+        .verification-details .detail-item.full-width {
+            grid-column: 1 / -1;
         }
         .verification-loading {
             padding: var(--spacing-xl);
@@ -105,6 +109,7 @@
 
     <div class="site-shell">
 
+        <!-- HEADER (matches index.html – no search icon) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -137,15 +142,19 @@
             </div>
         </header>
 
+        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="verification-container" id="verificationContainer">
+                        <!-- Loading State -->
                         <div class="verification-loading" id="loadingState">
                             <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
                             <div id="debugInfo" class="debug-info"></div>
                         </div>
+
+                        <!-- Result State -->
                         <div id="resultState" style="display:none;">
                             <div class="verification-icon" id="statusIcon">&#9670;</div>
                             <div class="verification-result" id="statusText">Valid</div>
@@ -161,6 +170,7 @@
             </section>
         </main>
 
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -249,7 +259,6 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
-        console.log('Verification ID from URL:', verificationId);
         debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
 
         if (!verificationId) {
@@ -263,32 +272,13 @@
             return;
         }
 
-        // Add a timeout to stop spinner after 10 seconds (fallback)
-        const timeout = setTimeout(() => {
-            if (loadingState.style.display !== 'none') {
-                loadingState.style.display = 'none';
-                resultState.style.display = 'block';
-                statusIcon.className = 'verification-icon invalid';
-                statusIcon.textContent = '⚠';
-                statusText.className = 'verification-result invalid';
-                statusText.textContent = 'Verification Timeout';
-                statusMessage.textContent = 'The verification request took too long. Please try again.';
-                debugInfo.textContent += '\nTimeout reached. Check your internet connection or Firebase rules.';
-            }
-        }, 15000); // 15 seconds timeout
-
         async function verifyCertificate() {
             try {
-                console.log('Fetching applications...');
                 const snapshot = await get(ref(db, 'applications'));
-                clearTimeout(timeout);
-                console.log('Data fetched successfully.');
-
                 if (!snapshot.exists()) {
                     throw new Error('No applications found.');
                 }
                 const allApps = snapshot.val();
-                console.log('All applications keys:', Object.keys(allApps));
                 let foundApp = null;
                 for (const key in allApps) {
                     if (allApps[key].verificationId === verificationId) {
@@ -353,7 +343,6 @@
                 verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
             } catch (error) {
-                clearTimeout(timeout);
                 console.error('Verification error:', error);
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
