@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inquiry Records — [Your Organization]</title>
+    <meta name="description" content="View contact inquiry records." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .records-header h2 {
+            margin: 0;
+        }
+        .records-header .btn {
+            font-size: 0.85rem;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-xs);
+        }
+        .tabs .tab-btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .tabs .tab-btn:hover {
+            color: var(--color-primary);
+            background: var(--color-surface-alt);
+        }
+        .tabs .tab-btn.active {
+            color: #fff;
+            background: var(--color-primary);
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-xl);
+            gap: var(--spacing-md);
+            color: var(--color-text-muted);
+        }
+        .loading-spinner .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-lg);
+            color: var(--color-text-muted);
+        }
+
+        .inquiry-table .actions .btn {
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="[Your Organization] Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="records-header">
+                        <div>
+                            <h2>Inquiry Records</h2>
+                            <span id="roleBadge" style="font-size:0.8rem; color:var(--color-text-muted);">Inquiry Admin</span>
+                        </div>
+                        <div style="display:flex; gap:var(--spacing-sm);">
+                            <a href="records.html" class="btn btn-secondary" style="font-size:0.85rem;">Switch Role</a>
+                            <button id="logoutBtn" class="btn btn-secondary" style="font-size:0.85rem;">Logout</button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs" id="tabs">
+                        <button class="tab-btn active" data-tab="new">New</button>
+                        <button class="tab-btn" data-tab="read">Read</button>
+                    </div>
+
+                    <!-- Table with spinner -->
+                    <div id="tableContainer">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <span>Loading inquiries...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+        import { getDatabase, ref, onValue, update } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const tabsContainer = document.getElementById('tabs');
+        const tableContainer = document.getElementById('tableContainer');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        let currentTab = 'new';
+        let allData = [];
+
+        // Check authentication and role
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'records.html';
+                return;
+            }
+            const role = localStorage.getItem('recordsRole');
+            if (role !== 'inquiry') {
+                localStorage.removeItem('recordsRole');
+                window.location.href = 'records.html';
+                return;
+            }
+            loadData();
+        });
+
+        // Tabs
+        tabsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.tab-btn');
+            if (!btn) return;
+            tabsContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTab = btn.dataset.tab;
+            renderTable();
+        });
+
+        // Load data
+        function loadData() {
+            const contactsRef = ref(db, 'contacts');
+            onValue(contactsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    allData = Object.keys(data).map(key => ({ ...data[key], _key: key }));
+                } else {
+                    allData = [];
+                }
+                renderTable();
+            });
+        }
+
+        function renderTable() {
+            tableContainer.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <span>Loading inquiries...</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                let filtered = [];
+                if (currentTab === 'new') {
+                    filtered = allData.filter(inq => inq.status === 'unread' || !inq.status);
+                } else if (currentTab === 'read') {
+                    filtered = allData.filter(inq => inq.status === 'read');
+                }
+
+                filtered.sort((a, b) => {
+                    const da = a.timestamp ? new Date(a.timestamp) : new Date(0);
+                    const db = b.timestamp ? new Date(b.timestamp) : new Date(0);
+                    return db - da;
+                });
+
+                if (filtered.length === 0) {
+                    tableContainer.innerHTML = `<div class="empty-state">No inquiries found for this status.</div>`;
+                    return;
+                }
+
+                let html = `<div class="table-wrapper"><table class="inquiry-table">
+                    <thead><tr>
+                        <th>SI No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr></thead><tbody>`;
+
+                filtered.forEach((inquiry, index) => {
+                    const statusBadge = (inquiry.status === 'unread' || !inquiry.status)
+                        ? '<span class="status-badge unread">Unread</span>'
+                        : '<span class="status-badge read">Read</span>';
+
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${inquiry.name || 'N/A'}</td>
+                            <td>${inquiry.email || 'N/A'}</td>
+                            <td>${inquiry.subject || 'N/A'}</td>
+                            <td>${inquiry.timestamp || 'N/A'}</td>
+                            <td>${statusBadge}</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-secondary" data-action="reply" data-email="${inquiry.email || ''}" data-subject="${inquiry.subject || ''}">Reply</button>
+                                    ${ (inquiry.status === 'unread' || !inquiry.status) ? `<button class="btn btn-primary" data-action="mark-read" data-key="${inquiry._key}">Mark Read</button>` : '' }
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+                tableContainer.innerHTML = html;
+
+                // Attach event listeners
+                tableContainer.querySelectorAll('[data-action="reply"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const email = btn.dataset.email;
+                        const subject = btn.dataset.subject;
+                        if (email) {
+                            window.location.href = `mailto:${email}?subject=Re: ${encodeURIComponent(subject)}`;
+                        } else {
+                            alert('No email address available.');
+                        }
+                    });
+                });
+
+                tableContainer.querySelectorAll('[data-action="mark-read"]').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const key = btn.dataset.key;
+                        const ref = ref(db, `contacts/${key}`);
+                        try {
+                            await update(ref, { status: 'read' });
+                            // Toast or feedback
+                            const toast = document.createElement('div');
+                            toast.textContent = 'Marked as read.';
+                            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:10px 20px;border-radius:5px;z-index:9999;';
+                            document.body.appendChild(toast);
+                            setTimeout(() => toast.remove(), 2000);
+                        } catch (error) {
+                            console.error('Error marking as read:', error);
+                            alert('Failed to mark as read.');
+                        }
+                    });
+                });
+            }, 300);
+        }
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            localStorage.removeItem('recordsRole');
+            await signOut(auth);
+            window.location.href = 'records.html';
+        });
+    </script>
+
+</body>
+</html>
