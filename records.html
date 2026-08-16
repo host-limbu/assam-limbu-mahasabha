@@ -3,74 +3,77 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Certificate Records — [Your Organization]</title>
-    <meta name="description" content="View all membership applications and certificates." />
+    <title>Records Login — [Your Organization]</title>
+    <meta name="description" content="Login to access certificate and inquiry records." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        .records-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-        }
-        .records-header h2 {
-            margin: 0;
-        }
-        .records-header .btn {
-            padding: 0.4rem 1rem;
-            font-size: 0.9rem;
-        }
-        .search-box {
-            display: flex;
-            gap: var(--spacing-md);
-            flex-wrap: wrap;
-            margin-bottom: var(--spacing-lg);
-        }
-        .search-box input {
-            flex: 1;
-            min-width: 200px;
-            padding: 0.5rem 0.8rem;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            font-size: 0.95rem;
-            font-family: inherit;
-            background: var(--color-surface);
-        }
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-        .records-empty {
-            text-align: center;
-            color: var(--color-text-muted);
-            padding: var(--spacing-xl);
-        }
-        .toast {
-            position: fixed;
-            bottom: var(--spacing-lg);
-            right: var(--spacing-lg);
+        .records-login-container {
+            max-width: 420px;
+            margin: var(--spacing-xl) auto;
+            padding: var(--spacing-lg);
             background: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
-            padding: var(--spacing-md) var(--spacing-lg);
-            box-shadow: var(--shadow-lg);
-            z-index: 3000;
-            display: none;
-            max-width: 400px;
+            box-shadow: var(--shadow-sm);
         }
-        .toast.visible {
+        .records-login-container h2 {
+            text-align: center;
+            margin-bottom: var(--spacing-sm);
+        }
+        .records-login-container .sub-text {
+            text-align: center;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.9rem;
+        }
+        .records-login-container label {
             display: block;
-            animation: slideUp 0.3s ease;
+            font-weight: var(--font-medium);
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.9rem;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .records-login-container select,
+        .records-login-container input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            box-sizing: border-box;
+        }
+        .records-login-container select:focus,
+        .records-login-container input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .records-login-container .btn {
+            width: 100%;
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
+        }
+        .authorized-note {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-sm);
+            border-top: 1px solid var(--color-border);
+        }
+        .authorized-note strong {
+            color: var(--color-text);
         }
     </style>
 </head>
@@ -113,27 +116,35 @@
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="records-header">
-                        <div>
-                            <h2>Certificate Records</h2>
-                            <p style="color: var(--color-text-muted); margin: 0;">All membership applications and certificate data.</p>
-                        </div>
-                        <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
-                            <a href="records-login.html" class="btn btn-secondary" id="logoutBtn">Logout</a>
-                        </div>
-                    </div>
+                    <div class="records-login-container">
+                        <h2>Records Login</h2>
+                        <p class="sub-text">Select your role and sign in to access records.</p>
 
-                    <!-- Search Box -->
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Search by Name or Reference No..." />
-                        <button class="btn btn-secondary" id="clearSearchBtn">Clear</button>
-                    </div>
+                        <form id="loginForm">
+                            <label for="roleSelect">Role</label>
+                            <select id="roleSelect" required>
+                                <option value="">— Select Role —</option>
+                                <option value="administrator">Administrator</option>
+                                <option value="inquiry">Inquiry Admin</option>
+                            </select>
 
-                    <!-- Table -->
-                    <div id="recordsContainer">
-                        <div style="text-align: center; padding: var(--spacing-xl); color: var(--color-text-muted);">
-                            <div class="spinner"></div>
-                            <p style="margin-top: var(--spacing-md);">Loading records...</p>
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" placeholder="Email" required />
+
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Password" required />
+
+                            <div id="loginError" class="error-message">Invalid credentials.</div>
+
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </form>
+
+                        <!-- Authorized Credentials Hint -->
+                        <div class="authorized-note">
+                            <p><strong>Authorized Users:</strong><br />
+                            Administrator: <span style="color: var(--color-primary); font-weight:500;">yadavsubba2003@gmail.com</span><br />
+                            Inquiry Admin: <span style="color: var(--color-primary); font-weight:500;">haasnaama@gmail.com</span></p>
+                            <p style="font-size:0.7rem; margin-top:4px;">Only these accounts can access their respective roles.</p>
                         </div>
                     </div>
                 </div>
@@ -190,9 +201,6 @@
 
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast"></div>
-
     <!-- Firebase SDK -->
     <script type="importmap">
         {
@@ -206,8 +214,8 @@
 
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-        import { getDatabase, ref, get, onValue } from "firebase/database";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+        import { getDatabase, ref, get } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -222,123 +230,85 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        const ALLOWED_UID = 'l4GzCvIUW8RjUo188W3RGV7mQbe2'; // Administrator UID
+        const roleSelect = document.getElementById('roleSelect');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const loginForm = document.getElementById('loginForm');
 
-        const recordsContainer = document.getElementById('recordsContainer');
-        const searchInput = document.getElementById('searchInput');
-        const clearSearchBtn = document.getElementById('clearSearchBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const toast = document.getElementById('toast');
+        // Allowed UIDs per role
+        const ROLE_MAP = {
+            'administrator': 'l4GzCvIUW8RjUo188W3RGV7mQbe2', // yadavsubba2003@gmail.com
+            'inquiry': 'VphanModTwd4lQaPmwKA8EUvL3A3'          // haasnaama@gmail.com
+        };
 
-        let allAppsData = [];
-        let filteredApps = [];
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('visible');
-            setTimeout(() => toast.classList.remove('visible'), 3000);
-        }
+            const role = roleSelect.value;
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
 
-        function renderTable(applications) {
-            if (!applications || applications.length === 0) {
-                recordsContainer.innerHTML = '<div class="records-empty">No applications found.</div>';
+            if (!role) {
+                loginError.textContent = 'Please select a role.';
+                loginError.classList.add('visible');
                 return;
             }
 
-            let html = `<div class="table-wrapper"><table class="admin-table">
-                <thead><tr>
-                    <th>Reference No.</th>
-                    <th>Applicant Name</th>
-                    <th>Father / Guardian</th>
-                    <th>Membership Type</th>
-                    <th>Status</th>
-                    <th>Submission Date</th>
-                    <th>Actions</th>
-                </tr></thead><tbody>`;
+            loginError.classList.remove('visible');
 
-            applications.forEach(app => {
-                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-                const ref = app.refNumber || 'N/A';
-                const father = app.fatherGuardianName || 'N/A';
-                const type = app.membershipType || 'General';
-                const status = app.status || 'Submitted';
-                const date = app.timestamp || 'N/A';
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const uid = user.uid;
 
-                html += `
-                    <tr>
-                        <td>${ref}</td>
-                        <td>${name}</td>
-                        <td>${father}</td>
-                        <td>${type}</td>
-                        <td style="font-weight:bold; color:${status === 'Approved' ? 'green' : status === 'Rejected' ? 'red' : 'var(--color-primary)'}">${status}</td>
-                        <td>${date}</td>
-                        <td>
-                            <div class="actions">
-                                <a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table></div>';
-            recordsContainer.innerHTML = html;
-        }
-
-        function filterApplications() {
-            const term = searchInput.value.trim().toLowerCase();
-            if (!term) {
-                filteredApps = [...allAppsData];
-            } else {
-                filteredApps = allAppsData.filter(app => {
-                    const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
-                    const ref = (app.refNumber || '').toLowerCase();
-                    return name.includes(term) || ref.includes(term);
-                });
-            }
-            renderTable(filteredApps);
-        }
-
-        function loadRecords() {
-            const appsRef = ref(db, 'applications');
-            onValue(appsRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    recordsContainer.innerHTML = '<div class="records-empty">No applications found.</div>';
+                // Check if the UID matches the selected role
+                if (uid !== ROLE_MAP[role]) {
+                    await auth.signOut();
+                    loginError.textContent = `This email is not authorized for "${roleSelect.options[roleSelect.selectedIndex].text}". Please select the correct role.`;
+                    loginError.classList.add('visible');
                     return;
                 }
-                const data = snapshot.val();
-                allAppsData = Object.values(data);
-                filterApplications();
-            }, (error) => {
-                console.error('Error fetching records:', error);
-                recordsContainer.innerHTML = '<div class="records-empty">Error loading records. Please try again.</div>';
-            });
-        }
 
-        // Auth check
-        onAuthStateChanged(auth, async (user) => {
-            if (!user || user.uid !== ALLOWED_UID) {
-                window.location.href = 'records-login.html';
-                return;
+                // Optional: verify role from database (extra check)
+                const snapshot = await get(ref(db, `users/${uid}`));
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const dbRole = userData.role || '';
+                    const expectedRole = (role === 'administrator') ? '[Approving Officer]' : '[Contact Admin]';
+                    if (dbRole && dbRole !== expectedRole) {
+                        await auth.signOut();
+                        loginError.textContent = 'Role mismatch. Contact admin.';
+                        loginError.classList.add('visible');
+                        return;
+                    }
+                }
+
+                // Success – store role and redirect
+                localStorage.setItem('recordsRole', role);
+                if (role === 'administrator') {
+                    window.location.href = 'certificate-records.html';
+                } else {
+                    window.location.href = 'inquiry-records.html';
+                }
+
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.classList.add('visible');
             }
-            loadRecords();
         });
 
-        // Event listeners
-        searchInput.addEventListener('input', filterApplications);
-        clearSearchBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            filterApplications();
+        // If already logged in and on this page, redirect to appropriate page
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const role = localStorage.getItem('recordsRole');
+                if (role === 'administrator') {
+                    window.location.href = 'certificate-records.html';
+                } else if (role === 'inquiry') {
+                    window.location.href = 'inquiry-records.html';
+                }
+            }
         });
-
-        logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await signOut(auth);
-            localStorage.removeItem('recordsRole');
-            window.location.href = 'records-login.html';
-        });
-
-        console.log('Certificate records page loaded.');
     </script>
 
 </body>
