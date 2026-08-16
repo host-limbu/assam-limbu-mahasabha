@@ -37,9 +37,12 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+// ============================================================
+// FIX: Removed encodeURIComponent to keep square brackets intact
+// ============================================================
 function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
-    return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
+    return `${baseUrl}verify.html?id=${verificationId}`;
 }
 
 async function loadCertificate() {
