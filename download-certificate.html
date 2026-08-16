@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download Certificate — [Your Organization]</title>
+    <meta name="description" content="Download your membership certificate using your reference number." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        .download-container {
+            max-width: 500px;
+            margin: var(--spacing-xl) auto;
+            padding: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+        .download-container h2 {
+            margin-bottom: var(--spacing-sm);
+        }
+        .download-container p {
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+        .download-container .input-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .download-container .input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            transition: border-color var(--transition);
+        }
+        .download-container .input-group input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .download-container .input-group .btn {
+            flex-shrink: 0;
+        }
+        .download-container .message {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            display: none;
+        }
+        .download-container .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+        .download-container .message.success {
+            display: block;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .download-container .message.loading {
+            display: block;
+            background: var(--color-surface-alt);
+            color: var(--color-text-muted);
+            border: 1px solid var(--color-border);
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--color-border);
+            border-top: 2px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .download-container .note {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-md);
+        }
+        .download-container .note strong {
+            color: var(--color-primary);
+        }
+        @media (max-width: 480px) {
+            .download-container .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .download-container .input-group input {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="[Your Organization] Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="download-container">
+                        <h2>Download Membership Certificate</h2>
+                        <p>Enter your reference number to download your digital certificate.</p>
+
+                        <form id="downloadForm">
+                            <div class="input-group">
+                                <input type="text" id="refInput" placeholder="e.g., [Org]-2026-12345" required />
+                                <button type="submit" class="btn btn-primary">Get Certificate</button>
+                            </div>
+                            <div id="message" class="message"></div>
+                            <div class="note">
+                                <strong>Note:</strong> Your reference number was provided in the acknowledgement receipt after you submitted your membership application.
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, get } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const form = document.getElementById('downloadForm');
+        const refInput = document.getElementById('refInput');
+        const message = document.getElementById('message');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const refNumber = refInput.value.trim();
+            if (!refNumber) {
+                message.className = 'message error';
+                message.textContent = 'Please enter your reference number.';
+                return;
+            }
+
+            // Show loading
+            message.className = 'message loading';
+            message.innerHTML = '<span class="spinner"></span> Checking...';
+
+            try {
+                const snapshot = await get(ref(db, 'applications'));
+                if (!snapshot.exists()) {
+                    message.className = 'message error';
+                    message.textContent = 'No applications found. Please check your reference number.';
+                    return;
+                }
+
+                const allApps = snapshot.val();
+                let found = false;
+                for (const key in allApps) {
+                    if (allApps[key].refNumber === refNumber) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    message.className = 'message error';
+                    message.textContent = 'No application found with that reference number. Please check and try again.';
+                    return;
+                }
+
+                // Success – redirect to certificate page
+                message.className = 'message success';
+                message.textContent = 'Certificate found. Redirecting...';
+                // Open in new tab after a small delay
+                setTimeout(() => {
+                    window.open(`certificate.html?ref=${encodeURIComponent(refNumber)}`, '_blank');
+                    // Clear message and reset form
+                    message.className = 'message';
+                    message.textContent = '';
+                    refInput.value = '';
+                }, 800);
+
+            } catch (error) {
+                console.error('Error:', error);
+                message.className = 'message error';
+                message.textContent = 'An error occurred. Please try again later.';
+            }
+        });
+
+        // Enter key submits form
+        refInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') form.dispatchEvent(new Event('submit'));
+        });
+    </script>
+
+</body>
+</html>
