@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* (same styles as before) */
         .verification-container {
             max-width: 800px;
             margin: var(--spacing-xl) auto;
@@ -90,24 +89,6 @@
                 grid-template-columns: 1fr;
             }
         }
-        .error-message {
-            color: #dc2626;
-            font-size: 0.95rem;
-            margin-top: var(--spacing-md);
-        }
-        .debug-info {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            margin-top: var(--spacing-sm);
-            word-break: break-all;
-            background: var(--color-surface-alt);
-            padding: 0.5rem;
-            border-radius: var(--radius);
-            text-align: left;
-            max-height: 150px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
     </style>
 </head>
 <body>
@@ -150,11 +131,13 @@
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="verification-container" id="verificationContainer">
+                        <!-- Loading State -->
                         <div class="verification-loading" id="loadingState">
                             <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
-                            <div id="debugInfo" class="debug-info"></div>
                         </div>
+
+                        <!-- Result State -->
                         <div id="resultState" style="display:none;">
                             <div class="verification-icon" id="statusIcon">&#9670;</div>
                             <div class="verification-result" id="statusText">Valid</div>
@@ -254,22 +237,11 @@
         const statusMessage = document.getElementById('statusMessage');
         const detailsContainer = document.getElementById('detailsContainer');
         const verifyTimestamp = document.getElementById('verifyTimestamp');
-        const debugInfo = document.getElementById('debugInfo');
 
-        // Get verification ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
 
-        // Main verification function
         async function verifyCertificate() {
-            const logs = [];
-            function addLog(msg) {
-                logs.push(msg);
-                debugInfo.textContent = logs.join('\n');
-            }
-
-            addLog(`Verification ID: ${verificationId || 'NOT PROVIDED'}`);
-
             if (!verificationId) {
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
@@ -278,13 +250,11 @@
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Invalid Verification ID';
                 statusMessage.textContent = 'No verification ID provided.';
-                addLog('No ID in URL.');
                 return;
             }
 
-            // Set a timeout to stop spinner after 8 seconds
+            // Timeout fallback
             const timeoutId = setTimeout(() => {
-                addLog('⚠️ Timeout: Firebase did not respond within 8 seconds.');
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
                 statusIcon.className = 'verification-icon invalid';
@@ -295,12 +265,10 @@
             }, 8000);
 
             try {
-                addLog('Connecting to Firebase...');
                 const appsRef = ref(db, 'applications');
 
-                // Attempt 1: Query by index
+                // Try indexed query first
                 try {
-                    addLog('Querying with orderByChild("verificationId")...');
                     const q = query(appsRef, orderByChild('verificationId'), equalTo(verificationId));
                     const snapshot = await get(q);
                     clearTimeout(timeoutId);
@@ -309,31 +277,25 @@
                         const appData = snapshot.val();
                         const keys = Object.keys(appData);
                         const foundApp = appData[keys[0]];
-                        addLog('Found application via indexed query.');
                         displayResult(foundApp);
                         return;
-                    } else {
-                        addLog('No match found via indexed query.');
                     }
-                } catch (queryError) {
-                    addLog(`Indexed query failed: ${queryError.message}`);
-                    // If the query fails (likely due to missing index), fallback to full scan
+                } catch (e) {
+                    // Indexed query failed, fallback to full scan
                 }
 
-                // Fallback: fetch all applications and filter client-side
-                addLog('Falling back to full database scan...');
+                // Fallback: full database scan
                 const fullSnapshot = await get(appsRef);
                 clearTimeout(timeoutId);
 
                 if (!fullSnapshot.exists()) {
-                    addLog('No applications found.');
                     loadingState.style.display = 'none';
                     resultState.style.display = 'block';
                     statusIcon.className = 'verification-icon invalid';
                     statusIcon.textContent = '✗';
                     statusText.className = 'verification-result invalid';
                     statusText.textContent = 'No Data';
-                    statusMessage.textContent = 'No applications exist in the database.';
+                    statusMessage.textContent = 'No applications found in the database.';
                     return;
                 }
 
@@ -347,10 +309,8 @@
                 }
 
                 if (foundApp) {
-                    addLog('Found application via full scan.');
                     displayResult(foundApp);
                 } else {
-                    addLog('No application found with this verification ID.');
                     loadingState.style.display = 'none';
                     resultState.style.display = 'block';
                     statusIcon.className = 'verification-icon invalid';
@@ -362,7 +322,6 @@
 
             } catch (error) {
                 clearTimeout(timeoutId);
-                addLog(`Error: ${error.message}`);
                 console.error('Verification error:', error);
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
@@ -417,9 +376,6 @@
             statusText.textContent = 'Valid Certificate';
             statusMessage.textContent = `This certificate is valid and issued to ${app.firstName || ''} ${app.secondName || ''}.`;
             verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-            // Update debug info with success
-            const debugDiv = document.getElementById('debugInfo');
-            debugDiv.textContent += '\n✔ Certificate verified successfully.';
         }
 
         // Start verification
