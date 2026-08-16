@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* ===== Records specific styles (same as admin.html) ===== */
         .records-header {
             display: flex;
             justify-content: space-between;
@@ -28,7 +27,7 @@
             font-size: 0.9rem;
         }
 
-        /* Search & Filter bar — matches admin.html filter-bar */
+        /* ===== FILTER BAR – Fix Input & Select Same Size ===== */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -54,8 +53,9 @@
             letter-spacing: 0.05em;
             color: var(--color-text-muted);
         }
-        .filter-bar .filter-group input {
-            padding: 0.4rem 0.6rem;
+        .filter-bar .filter-group input,
+        .filter-bar .filter-group select {
+            padding: 0.5rem 0.8rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
             font-size: 0.9rem;
@@ -63,11 +63,29 @@
             background: var(--color-surface);
             width: 100%;
             box-sizing: border-box;
+            height: 42px; /* Same height for both */
+            transition: border-color var(--transition), box-shadow var(--transition);
+            color: var(--color-text);
         }
-        .filter-bar .filter-group input:focus {
+        .filter-bar .filter-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            padding-right: 2.2rem;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .filter-bar .filter-group input:focus,
+        .filter-bar .filter-group select:focus {
             outline: none;
             border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
         }
+        .filter-bar .filter-group select:hover {
+            border-color: var(--color-primary-light);
+        }
+
         .filter-bar .filter-actions {
             display: flex;
             gap: var(--spacing-sm);
@@ -78,6 +96,27 @@
         .filter-bar .filter-actions .btn {
             padding: 0.4rem 0.8rem;
             font-size: 0.85rem;
+            font-weight: var(--font-medium);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text);
+            line-height: 1.4;
+            font-family: inherit;
+            height: 42px; /* Match input height */
+            display: flex;
+            align-items: center;
+        }
+        .filter-bar .filter-actions .btn-apply {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+        .filter-bar .filter-actions .btn-apply:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary-light);
         }
         .filter-bar .filter-actions .btn-clear {
             background: transparent;
@@ -86,6 +125,7 @@
         }
         .filter-bar .filter-actions .btn-clear:hover {
             background: var(--color-border);
+            color: var(--color-text);
         }
         .filter-bar .filter-result-info {
             font-size: 0.85rem;
@@ -161,7 +201,7 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as admin.html) -->
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -194,12 +234,12 @@
             </div>
         </header>
 
-        <!-- MAIN SECTION — SAME AS admin.html -->
+        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
 
-                    <!-- Heading with "Demo" badge (same as admin.html) -->
+                    <!-- Heading with "Demo" badge -->
                     <h2 style="text-align: center;">
                         Certificate Records
                         <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span>
@@ -208,7 +248,7 @@
                         View all membership applications and their certificate status.
                     </p>
 
-                    <!-- Header with Logout (same as admin.html dashboard header) -->
+                    <!-- Header with Logout -->
                     <div class="records-header">
                         <div>
                             <span style="background: var(--color-primary); color: #fff; padding: 0.2rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: var(--font-medium);">
@@ -218,7 +258,7 @@
                         <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                     </div>
 
-                    <!-- Filter Bar (same as admin.html filter-bar) -->
+                    <!-- Filter Bar -->
                     <div class="filter-bar" id="filterBar">
                         <div class="filter-group">
                             <label for="searchInput">Search</label>
@@ -234,7 +274,7 @@
                             </select>
                         </div>
                         <div class="filter-actions">
-                            <button class="btn btn-apply" id="applyFilterBtn" style="background:var(--color-primary); color:#fff; border:1px solid var(--color-primary);">Apply Filters</button>
+                            <button class="btn btn-apply" id="applyFilterBtn">Apply Filters</button>
                             <button class="btn btn-clear" id="clearFilterBtn">Clear</button>
                             <span class="filter-result-info" id="resultCount"></span>
                         </div>
@@ -252,7 +292,7 @@
             </section>
         </main>
 
-        <!-- FOOTER (same as admin.html) -->
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -412,14 +452,12 @@
             const status = statusFilter.value;
 
             filteredApps = allAppsData.filter(app => {
-                // Search filter
                 let matchSearch = true;
                 if (term) {
                     const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
                     const ref = (app.refNumber || '').toLowerCase();
                     matchSearch = name.includes(term) || ref.includes(term);
                 }
-                // Status filter
                 let matchStatus = true;
                 if (status) {
                     matchStatus = (app.status || 'Submitted') === status;
