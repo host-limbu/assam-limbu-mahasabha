@@ -6,8 +6,8 @@
     <title>Admin Portal — [Your Organization]</title>
     <meta name="description" content="Admin portal for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="admin.css" />
     <link rel="stylesheet" href="global-table.css" />
+    <link rel="stylesheet" href="admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -17,6 +17,7 @@
 
     <div class="site-shell">
 
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -49,6 +50,7 @@
             </div>
         </header>
 
+        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
@@ -57,6 +59,7 @@
                         Secure admin panel for [Verifying Officer], [Reviewing Officer], and [Approving Officer].
                     </p>
 
+                    <!-- Login -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
@@ -69,6 +72,7 @@
                         </div>
                     </div>
 
+                    <!-- Dashboard -->
                     <div id="dashboard" class="admin-dashboard">
                         <div class="admin-header">
                             <div>
@@ -104,7 +108,7 @@
             </section>
         </main>
 
-        <!-- ===== MODALS ===== -->
+        <!-- MODALS -->
         <div id="viewModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="viewModal">&times;</button>
@@ -138,8 +142,10 @@
             </div>
         </div>
 
+        <!-- Toast -->
         <div id="toast" class="toast"></div>
 
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -215,6 +221,7 @@
             messagingSenderId: "684300836537",
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
@@ -401,7 +408,6 @@
                         return app.currentStage === '[Approving Officer]';
                     });
                 } else {
-                    // No valid role
                     appListContainer.innerHTML = '<div class="admin-empty">No role assigned. Contact admin.</div>';
                     return;
                 }
@@ -420,13 +426,14 @@
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the rest
             } catch (error) {
                 loginError.textContent = error.message;
                 loginError.classList.add('visible');
             }
         });
 
-        // ----- AUTH STATE -----
+        // ----- AUTH STATE WITH ROLE LOOKUP -----
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -440,7 +447,11 @@
                         const userData = snapshot.val();
                         const role = userData.role;
 
-                        if (role && (role === '[Verifying Officer]' || role === '[Reviewing Officer]' || role === '[Approving Officer]')) {
+                        console.log('User UID:', userUid);
+                        console.log('User data:', userData);
+                        console.log('Role found:', role);
+
+                        if (role === '[Verifying Officer]' || role === '[Reviewing Officer]' || role === '[Approving Officer]') {
                             currentRole = role;
                             loginSection.style.display = 'none';
                             dashboard.classList.add('visible');
