@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Records — [Your Organization]</title>
+    <meta name="description" content="Manage and view all membership applications and contact inquiries." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== LOGIN FORM ===== */
+        .records-login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+        .records-login-form input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            background: var(--color-surface);
+        }
+        .records-login-form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .records-login-form .btn {
+            width: 100%;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .records-dashboard {
+            display: none;
+        }
+        .records-dashboard.visible {
+            display: block;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .records-header h2 {
+            margin: 0;
+        }
+        .records-role-badge {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: var(--font-medium);
+        }
+
+        /* ===== TABS ===== */
+        .records-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-xs);
+        }
+        .records-tabs .tab-btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .records-tabs .tab-btn:hover {
+            color: var(--color-primary);
+            background: var(--color-surface-alt);
+        }
+        .records-tabs .tab-btn.active {
+            color: #fff;
+            background: var(--color-primary);
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .records-section-title {
+            font-size: 1.1rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 2px solid var(--color-primary);
+        }
+        .records-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .records-count {
+            font-size: 0.85rem;
+            font-weight: var(--font-regular);
+            color: var(--color-text-muted);
+            margin-left: var(--spacing-sm);
+        }
+
+        /* ===== INQUIRIES TABLE OVERRIDE ===== */
+        .inquiry-table {
+            min-width: 700px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .records-tabs {
+                gap: var(--spacing-xs);
+            }
+            .records-tabs .tab-btn {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="[Your Organization] Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <h2 style="text-align: center;">Records Management</h2>
+                    <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        View and manage all membership applications and contact inquiries.
+                    </p>
+
+                    <!-- Login Section -->
+                    <div id="loginSection" class="records-login-section">
+                        <div class="records-login-form">
+                            <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
+                            <form id="loginForm">
+                                <input type="email" id="loginEmail" placeholder="Email" required />
+                                <input type="password" id="loginPassword" placeholder="Password" required />
+                                <div id="loginError" class="error-message">Invalid credentials.</div>
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard -->
+                    <div id="dashboard" class="records-dashboard">
+                        <div class="records-header">
+                            <div>
+                                <h2>Records Dashboard</h2>
+                                <span id="roleBadge" class="records-role-badge">Role</span>
+                            </div>
+                            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                        </div>
+
+                        <!-- ===== MEMBERSHIP APPLICATIONS ===== -->
+                        <div class="records-section-title">
+                            Membership Applications
+                            <span class="records-count" id="appCount">0 records</span>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="records-tabs" id="appTabs">
+                            <button class="tab-btn active" data-tab="ongoing">Ongoing</button>
+                            <button class="tab-btn" data-tab="submitted">Submitted</button>
+                            <button class="tab-btn" data-tab="approved">Approved</button>
+                            <button class="tab-btn" data-tab="rejected">Rejected</button>
+                        </div>
+
+                        <!-- Applications Table -->
+                        <div class="table-wrapper">
+                            <table class="admin-table" id="appTable">
+                                <thead>
+                                    <tr>
+                                        <th>SI No.</th>
+                                        <th>Name</th>
+                                        <th>Membership Type</th>
+                                        <th>Approved Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appTableBody">
+                                    <tr><td colspan="6" class="admin-empty">Loading applications...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- ===== CONTACT INQUIRIES ===== -->
+                        <div class="records-section-title" style="margin-top: var(--spacing-xl);">
+                            Contact Inquiries
+                            <span class="records-count" id="inquiryCount">0 records</span>
+                        </div>
+
+                        <!-- Inquiries Table -->
+                        <div class="table-wrapper">
+                            <table class="inquiry-table" id="inquiryTable">
+                                <thead>
+                                    <tr>
+                                        <th>SI No.</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Subject</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inquiryTableBody">
+                                    <tr><td colspan="7" class="inquiry-empty">Loading inquiries...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== VIEW MODAL (shared) ===== -->
+        <div id="viewModal" class="modal">
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="viewModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;" id="modalTitle">Details</h3>
+                </div>
+                <div id="viewContent"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-modal="viewModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+        import { getDatabase, ref, get, onValue } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Allowed admin UIDs (Verifying Officer, Reviewing Officer, Approving Officer, Contact Admin)
+        const ALLOWED_UIDS = [
+            'qwxlkbPhesgJHJ0EartHi9UR1hD2',
+            'AFNryiOI7BTl3ZfyKXMudNRHqgm1',
+            'l4GzCvIUW8RjUo188W3RGV7mQbe2',
+            'VphanModTwd4lQaPmwKA8EUvL3A3'
+        ];
+
+        // DOM elements
+        const loginSection = document.getElementById('loginSection');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const roleBadge = document.getElementById('roleBadge');
+
+        const appTableBody = document.getElementById('appTableBody');
+        const inquiryTableBody = document.getElementById('inquiryTableBody');
+        const appCount = document.getElementById('appCount');
+        const inquiryCount = document.getElementById('inquiryCount');
+
+        const viewModal = document.getElementById('viewModal');
+        const viewContent = document.getElementById('viewContent');
+        const modalTitle = document.getElementById('modalTitle');
+
+        const toast = document.getElementById('toast');
+
+        let currentUser = null;
+        let currentRole = null;
+        let currentTab = 'ongoing';
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        // ----- LOGIN -----
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+            loginError.classList.remove('visible');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.classList.add('visible');
+            }
+        });
+
+        // ----- AUTH STATE -----
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (ALLOWED_UIDS.includes(user.uid)) {
+                    currentUser = user;
+                    const snapshot = await get(ref(db, `users/${user.uid}`));
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        currentRole = userData.role || 'Records Viewer';
+                        loginSection.style.display = 'none';
+                        dashboard.classList.add('visible');
+                        roleBadge.textContent = currentRole;
+                        loadData();
+                    } else {
+                        currentRole = 'Records Viewer';
+                        loginSection.style.display = 'none';
+                        dashboard.classList.add('visible');
+                        roleBadge.textContent = currentRole;
+                        loadData();
+                    }
+                } else {
+                    await signOut(auth);
+                    loginError.textContent = 'Access denied. You are not authorized.';
+                    loginError.classList.add('visible');
+                }
+            } else {
+                currentUser = null;
+                currentRole = null;
+                loginSection.style.display = 'block';
+                dashboard.classList.remove('visible');
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+        });
+
+        // ----- TABS -----
+        document.querySelectorAll('#appTabs .tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#appTabs .tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentTab = this.dataset.tab;
+                renderApplications(allAppsData);
+            });
+        });
+
+        // ----- DATA STORAGE -----
+        let allAppsData = [];
+        let allInquiriesData = [];
+
+        // ----- LOAD DATA -----
+        function loadData() {
+            // Load applications
+            const appsRef = ref(db, 'applications');
+            onValue(appsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    allAppsData = Object.keys(data).map(key => ({ ...data[key], _key: key }));
+                    renderApplications(allAppsData);
+                } else {
+                    allAppsData = [];
+                    renderApplications([]);
+                }
+            });
+
+            // Load inquiries
+            const inquiriesRef = ref(db, 'contacts');
+            onValue(inquiriesRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    allInquiriesData = Object.keys(data).map(key => ({ ...data[key], _key: key }));
+                    renderInquiries(allInquiriesData);
+                } else {
+                    allInquiriesData = [];
+                    renderInquiries([]);
+                }
+            });
+        }
+
+        // ----- RENDER APPLICATIONS -----
+        function renderApplications(data) {
+            // Filter by tab
+            let filtered = [];
+            if (currentTab === 'ongoing') {
+                filtered = data.filter(app => app.status === 'Submitted' || app.status === 'Forwarded to [Reviewing Officer]' || app.status === 'Forwarded to [Approving Officer]' || app.currentStage === '[Verifying Officer]' || app.currentStage === '[Reviewing Officer]' || app.currentStage === '[Approving Officer]');
+            } else if (currentTab === 'submitted') {
+                filtered = data.filter(app => app.status === 'Submitted' || app.currentStage === '[Verifying Officer]');
+            } else if (currentTab === 'approved') {
+                filtered = data.filter(app => app.status === 'Approved');
+            } else if (currentTab === 'rejected') {
+                filtered = data.filter(app => app.status === 'Rejected');
+            }
+
+            // Sort by timestamp (newest first)
+            filtered.sort((a, b) => {
+                const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
+                const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
+                return dateB - dateA;
+            });
+
+            appCount.textContent = `${filtered.length} record${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                appTableBody.innerHTML = `<tr><td colspan="6" class="admin-empty">No applications found for "${currentTab}" status.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((app, index) => {
+                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                const membershipType = app.membershipType || 'N/A';
+                const approvedDate = app.timestamp ? app.timestamp.split(' ')[0] : 'N/A';
+                const status = app.status || 'Submitted';
+
+                let statusColor = 'var(--color-primary)';
+                if (status === 'Approved') statusColor = '#22c55e';
+                else if (status === 'Rejected') statusColor = '#ef4444';
+                else if (status === 'Submitted') statusColor = '#f59e0b';
+
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${name}</td>
+                        <td>${membershipType}</td>
+                        <td>${approvedDate}</td>
+                        <td><span style="color:${statusColor}; font-weight:var(--font-medium);">${status}</span></td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-secondary" data-action="view-app" data-key="${app._key}">View</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            appTableBody.innerHTML = html;
+
+            // Attach event listeners
+            document.querySelectorAll('[data-action="view-app"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.key;
+                    const app = allAppsData.find(a => a._key === key);
+                    if (app) openAppViewModal(app);
+                });
+            });
+        }
+
+        // ----- RENDER INQUIRIES -----
+        function renderInquiries(data) {
+            // Sort by timestamp (newest first)
+            const sorted = [...data].sort((a, b) => {
+                const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
+                const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
+                return dateB - dateA;
+            });
+
+            inquiryCount.textContent = `${sorted.length} record${sorted.length !== 1 ? 's' : ''}`;
+
+            if (sorted.length === 0) {
+                inquiryTableBody.innerHTML = `<tr><td colspan="7" class="inquiry-empty">No inquiries found.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            sorted.forEach((inquiry, index) => {
+                const status = inquiry.status || 'unread';
+                const statusBadge = status === 'unread'
+                    ? '<span class="status-badge unread">Unread</span>'
+                    : '<span class="status-badge read">Read</span>';
+
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${inquiry.name || 'N/A'}</td>
+                        <td>${inquiry.email || 'N/A'}</td>
+                        <td>${inquiry.subject || 'N/A'}</td>
+                        <td>${inquiry.timestamp || 'N/A'}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-secondary" data-action="view-inquiry" data-key="${inquiry._key}">View</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            inquiryTableBody.innerHTML = html;
+
+            // Attach event listeners
+            document.querySelectorAll('[data-action="view-inquiry"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.key;
+                    const inquiry = allInquiriesData.find(i => i._key === key);
+                    if (inquiry) openInquiryViewModal(inquiry);
+                });
+            });
+        }
+
+        // ----- VIEW APPLICATION MODAL -----
+        function openAppViewModal(app) {
+            modalTitle.textContent = 'Application Details';
+
+            const fields = [
+                { label: 'Reference No.', value: app.refNumber || 'N/A' },
+                { label: 'Name', value: `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A' },
+                { label: 'Father / Guardian', value: app.fatherGuardianName || 'N/A' },
+                { label: 'Membership Type', value: app.membershipType || 'N/A' },
+                { label: 'Date of Birth', value: app.dob || 'N/A' },
+                { label: 'Email', value: app.email || 'N/A' },
+                { label: 'Phone', value: app.phone || 'N/A' },
+                { label: 'District', value: app.district || 'N/A' },
+                { label: 'Village', value: app.village || 'N/A' },
+                { label: 'Status', value: app.status || 'N/A' },
+                { label: 'Submitted Date', value: app.timestamp || 'N/A' },
+            ];
+
+            let html = '<div class="detail-grid">';
+            fields.forEach(f => {
+                html += `
+                    <div class="detail-item">
+                        <span class="label">${f.label}</span>
+                        <span class="value">${f.value}</span>
+                    </div>
+                `;
+            });
+            if (app.photoURL) {
+                html += `
+                    <div class="detail-item" style="grid-column:1/-1;">
+                        <span class="label">Photo</span>
+                        <span class="value"><img src="${app.photoURL}" alt="Applicant photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" /></span>
+                    </div>
+                `;
+            }
+            html += '</div>';
+
+            // History
+            if (app.history && app.history.length) {
+                html += `<div style="grid-column:1/-1; margin-top:var(--spacing-md);"><h4>Processing History</h4><ul style="list-style:none; padding:0;">`;
+                app.history.forEach(h => {
+                    html += `<li style="padding:0.3rem 0; border-bottom:1px solid var(--color-border);">${h.timestamp} — ${h.action} (by ${h.by || 'System'})</li>`;
+                });
+                html += `</ul></div>`;
+            }
+
+            viewContent.innerHTML = html;
+            viewModal.classList.add('visible');
+        }
+
+        // ----- VIEW INQUIRY MODAL -----
+        function openInquiryViewModal(inquiry) {
+            modalTitle.textContent = 'Message Details';
+
+            let html = `
+                <div class="detail-row"><span class="label">Name</span><span class="value">${inquiry.name || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Email</span><span class="value">${inquiry.email || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Subject</span><span class="value">${inquiry.subject || 'N/A'}</span></div>
+                <div class="detail-row"><span class="label">Date</span><span class="value">${inquiry.timestamp || 'N/A'}</span></div>
+                <div class="detail-row" style="border-bottom: none;"><span class="label">Message</span></div>
+                <div class="message-full">${inquiry.message || 'No message content.'}</div>
+            `;
+
+            viewContent.innerHTML = html;
+            viewModal.classList.add('visible');
+        }
+
+        // ----- CLOSE MODAL -----
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.dataset.modal;
+                document.getElementById(modalId).classList.remove('visible');
+            });
+        });
+        viewModal.addEventListener('click', (e) => {
+            if (e.target === viewModal) viewModal.classList.remove('visible');
+        });
+
+        console.log('Records management page loaded.');
+    </script>
+
+</body>
+</html>
