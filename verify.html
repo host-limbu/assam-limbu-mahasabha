@@ -59,6 +59,9 @@
             color: var(--color-text);
             font-weight: var(--font-medium);
         }
+        .verification-details .detail-item.full-width {
+            grid-column: 1 / -1;
+        }
         .verification-loading {
             padding: var(--spacing-xl);
             color: var(--color-text-muted);
@@ -88,19 +91,16 @@
                 grid-template-columns: 1fr;
             }
         }
-        .debug-box {
-            background: #f8f9fa;
-            border: 1px solid #dce0e5;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            text-align: left;
-            word-break: break-all;
-            color: #1e293b;
+        .error-message {
+            color: #dc2626;
+            font-size: 0.95rem;
+            margin-top: var(--spacing-md);
         }
-        .debug-box strong {
-            color: #1a3a5c;
+        .debug-info {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-sm);
+            word-break: break-all;
         }
     </style>
 </head>
@@ -138,15 +138,6 @@
                     </button>
                 </div>
             </div>
-            <div class="search-overlay" hidden>
-                <div class="search-overlay-inner">
-                    <form role="search" action="search.html" method="get">
-                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
-                        <button type="submit">Search</button>
-                    </form>
-                    <button class="search-close" aria-label="Close search">&times;</button>
-                </div>
-            </div>
         </header>
 
         <main class="site-main" role="main">
@@ -156,7 +147,7 @@
                         <div class="verification-loading" id="loadingState">
                             <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
-                            <div id="debugInfo" class="debug-box"><strong>Loading...</strong></div>
+                            <div id="debugInfo" class="debug-info"></div>
                         </div>
                         <div id="resultState" style="display:none;">
                             <div class="verification-icon" id="statusIcon">&#9670;</div>
@@ -224,13 +215,21 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- Firebase SDK (classic scripts – no modules) -->
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
 
-    <script>
-        // Firebase configuration
-        var firebaseConfig = {
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, get } from "firebase/database";
+
+        const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
             authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
             projectId: "assam-limbu-mahasabha-257ee",
@@ -239,26 +238,21 @@
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        var db = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        // DOM elements
-        var loadingState = document.getElementById('loadingState');
-        var resultState = document.getElementById('resultState');
-        var statusIcon = document.getElementById('statusIcon');
-        var statusText = document.getElementById('statusText');
-        var statusMessage = document.getElementById('statusMessage');
-        var detailsContainer = document.getElementById('detailsContainer');
-        var verifyTimestamp = document.getElementById('verifyTimestamp');
-        var debugInfo = document.getElementById('debugInfo');
+        const loadingState = document.getElementById('loadingState');
+        const resultState = document.getElementById('resultState');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const statusMessage = document.getElementById('statusMessage');
+        const detailsContainer = document.getElementById('detailsContainer');
+        const verifyTimestamp = document.getElementById('verifyTimestamp');
+        const debugInfo = document.getElementById('debugInfo');
 
-        // Get verification ID from URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var verificationId = urlParams.get('id');
-        debugInfo.innerHTML = '<strong>Verification ID:</strong> ' + (verificationId || 'NOT PROVIDED');
+        const urlParams = new URLSearchParams(window.location.search);
+        const verificationId = urlParams.get('id');
+        debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
 
         if (!verificationId) {
             loadingState.style.display = 'none';
@@ -268,23 +262,20 @@
             statusText.className = 'verification-result invalid';
             statusText.textContent = 'Invalid Verification ID';
             statusMessage.textContent = 'No verification ID provided.';
-            debugInfo.innerHTML += '<br><strong>Error:</strong> Missing ID parameter.';
             return;
         }
 
-        // Function to verify
-        function verifyCertificate() {
-            var appsRef = db.ref('applications');
-            appsRef.once('value').then(function(snapshot) {
+        async function verifyCertificate() {
+            try {
+                const snapshot = await get(ref(db, 'applications'));
                 if (!snapshot.exists()) {
-                    throw new Error('No applications found in database.');
+                    throw new Error('No applications found.');
                 }
-
-                var allApps = snapshot.val();
-                var foundApp = null;
-                for (var key in allApps) {
+                const allApps = snapshot.val();
+                let foundApp = null;
+                for (const key in allApps) {
                     if (allApps[key].verificationId === verificationId) {
-                        foundApp = allApps[key];
+                        foundApp = { ...allApps[key], _key: key };
                         break;
                     }
                 }
@@ -297,21 +288,20 @@
                     statusText.className = 'verification-result invalid';
                     statusText.textContent = 'Invalid Certificate';
                     statusMessage.textContent = 'No valid certificate found with this verification ID.';
-                    debugInfo.innerHTML += '<br><strong>Result:</strong> No match found.';
                     return;
                 }
 
-                // Valid certificate
-                var refNum = foundApp.refNumber || 'N/A';
-                var membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ?
-                    '[Org]-' + refNum.split('-')[1] + '-' + refNum.split('-')[2] :
-                    refNum;
-                var certificateNumber = 'CERT-' + refNum;
+                // Valid certificate found
+                const refNum = foundApp.refNumber || 'N/A';
+                const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
+                    ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
+                    : refNum;
+                const certificateNumber = `CERT-${refNum}`;
 
-                var fields = [
+                const fields = [
                     { label: 'Membership Number', value: membershipNumber },
                     { label: 'Certificate Number', value: certificateNumber },
-                    { label: 'Name', value: (foundApp.firstName || '') + ' ' + (foundApp.secondName || '') },
+                    { label: 'Name', value: `${foundApp.firstName || ''} ${foundApp.secondName || ''}` },
                     { label: 'Father / Guardian', value: foundApp.fatherGuardianName || 'N/A' },
                     { label: 'Membership Type', value: foundApp.membershipType || 'General' },
                     { label: 'Reference No.', value: foundApp.refNumber || 'N/A' },
@@ -322,12 +312,17 @@
                     { label: 'Police Station', value: foundApp.ps || 'N/A' },
                     { label: 'PIN', value: foundApp.pin || 'N/A' },
                     { label: 'Issue Date', value: foundApp.timestamp ? foundApp.timestamp.split(' ')[0] : 'N/A' },
-                    { label: 'Status', value: foundApp.status || 'Approved' }
+                    { label: 'Status', value: foundApp.status || 'Approved' },
                 ];
 
-                var detailsHTML = '';
-                fields.forEach(function(f) {
-                    detailsHTML += '<div class="detail-item"><span class="label">' + f.label + '</span><span class="value">' + f.value + '</span></div>';
+                let detailsHTML = '';
+                fields.forEach(f => {
+                    detailsHTML += `
+                        <div class="detail-item">
+                            <span class="label">${f.label}</span>
+                            <span class="value">${f.value}</span>
+                        </div>
+                    `;
                 });
                 detailsContainer.innerHTML = detailsHTML;
 
@@ -337,11 +332,10 @@
                 statusIcon.textContent = '✓';
                 statusText.className = 'verification-result valid';
                 statusText.textContent = 'Valid Certificate';
-                statusMessage.textContent = 'This certificate is valid and issued to ' + (foundApp.firstName || '') + ' ' + (foundApp.secondName || '') + '.';
+                statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
                 verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-                debugInfo.innerHTML += '<br><strong>Result:</strong> Match found! Certificate is valid.';
 
-            }).catch(function(error) {
+            } catch (error) {
                 console.error('Verification error:', error);
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
@@ -349,12 +343,11 @@
                 statusIcon.textContent = '✗';
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Verification Error';
-                statusMessage.textContent = 'Error: ' + error.message;
-                debugInfo.innerHTML += '<br><strong>Error:</strong> ' + error.message;
-            });
+                statusMessage.textContent = `Error: ${error.message}`;
+                debugInfo.textContent += `\nError: ${error.message}`;
+            }
         }
 
-        // Start verification
         verifyCertificate();
     </script>
 
