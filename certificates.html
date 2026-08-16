@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Approved Members — Yadav Subba</title>
+    <meta name="description" content="List of all approved membership certificates issued by Yadav Subba, AI Assisted Web Developer & Producer." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        .members-container {
+            max-width: 1100px;
+            margin: var(--spacing-lg) auto;
+            padding: var(--spacing-lg);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+        .members-container h2 {
+            margin-top: 0;
+        }
+        .members-container .subtitle {
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .members-table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            min-width: 600px;
+        }
+        .members-table th,
+        .members-table td {
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 0.8rem;
+            text-align: left;
+            font-size: 0.9rem;
+            background: var(--color-surface);
+            color: var(--color-text);
+        }
+        .members-table th {
+            font-weight: var(--font-medium);
+            background: var(--color-surface-alt);
+        }
+        .members-table tr:hover td {
+            background: var(--color-surface-alt);
+        }
+        .no-data {
+            text-align: center;
+            color: var(--color-text-muted);
+            padding: var(--spacing-lg);
+        }
+        .loading-spinner {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-text-muted);
+        }
+        .loading-spinner .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-border);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .members-container { padding: var(--spacing-md); }
+            .members-table { font-size: 0.8rem; min-width: 500px; }
+            .members-table th,
+            .members-table td { padding: 0.3rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="Yadav Subba Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">Yadav Subba</span>
+                            <span class="logo-sub">AI Assisted Web Developer &amp; Producer</span>
+                        </span>
+                    </a>
+                </div>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="committee.html">Work</a></li>
+                        <li><a href="updates.html">Insights</a></li>
+                        <li><a href="events.html">Projects</a></li>
+                        <li><a href="gallery.html">Showcase</a></li>
+                        <li><a href="membership.html">Connect</a></li>
+                        <li><a href="documents.html">Resources</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main" role="main">
+
+            <section class="hero-section full-width" style="min-height: 35vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">Membership Directory</p>
+                        <h1 style="font-size: 2.8rem;">Approved Members</h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            A list of all members whose membership has been approved and certificates issued.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="members-container">
+                        <h2>Approved Members</h2>
+                        <p class="subtitle">List of all approved membership certificates.</p>
+
+                        <div id="membersList">
+                            <div class="loading-spinner">
+                                <div class="spinner"></div>
+                                <p>Loading members...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">Yadav Subba</span>
+                        </span>
+                        <p class="footer-sub">AI Assisted Web Developer &amp; Producer</p>
+                        <p class="footer-address">Building digital solutions, worldwide.</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Me</a></li>
+                                <li><a href="committee.html">Work</a></li>
+                                <li><a href="events.html">Projects</a></li>
+                                <li><a href="updates.html">Insights</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Resources</a></li>
+                                <li><a href="membership.html">Connect</a></li>
+                                <li><a href="gallery.html">Showcase</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Yadav Subba — AI Assisted Web Developer &amp; Producer. All rights reserved.</p>
+                    <p class="footer-credit">Designed with passion, built with purpose.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, get } from "firebase/database";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
+            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
+            projectId: "assam-limbu-mahasabha-257ee",
+            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
+            messagingSenderId: "684300836537",
+            appId: "1:684300836537:web:f1080b30569f9b79634568"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const membersList = document.getElementById('membersList');
+
+        async function loadApprovedMembers() {
+            try {
+                const snapshot = await get(ref(db, 'applications'));
+                if (!snapshot.exists()) {
+                    membersList.innerHTML = '<p class="no-data">No approved members yet.</p>';
+                    return;
+                }
+
+                const allApps = snapshot.val();
+                const approved = [];
+
+                for (const key in allApps) {
+                    const app = allApps[key];
+                    if (app.status === 'Approved') {
+                        approved.push({
+                            ...app,
+                            _key: key
+                        });
+                    }
+                }
+
+                if (approved.length === 0) {
+                    membersList.innerHTML = '<p class="no-data">No approved members yet.</p>';
+                    return;
+                }
+
+                // Sort by timestamp (newest first)
+                approved.sort((a, b) => (a.timestamp || '').localeCompare(b.timestamp || '') * -1);
+
+                let html = `<div class="table-wrapper"><table class="members-table">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Name</th>
+                            <th>District</th>
+                            <th>Membership Type</th>
+                            <th>Date of Issue</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                approved.forEach((app, index) => {
+                    const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                    const district = app.district || 'N/A';
+                    const membershipType = app.membershipType || 'General';
+                    const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : 'N/A';
+
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${name}</td>
+                            <td>${district}</td>
+                            <td>${membershipType}</td>
+                            <td>${issueDate}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+                membersList.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading approved members:', error);
+                membersList.innerHTML = '<p class="no-data">Error loading data. Please try again later.</p>';
+            }
+        }
+
+        loadApprovedMembers();
+    </script>
+
+</body>
+</html>
