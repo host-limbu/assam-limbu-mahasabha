@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
+        /* ===== Records specific styles (matches admin.html) ===== */
         .records-header {
             display: flex;
             justify-content: space-between;
@@ -23,9 +24,20 @@
             margin: 0;
         }
         .records-header .btn {
-            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
         }
 
+        .admin-role-badge {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: var(--font-medium);
+        }
+
+        /* Tabs — styled to match the admin design */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -82,9 +94,56 @@
             color: var(--color-text-muted);
         }
 
+        /* Action buttons inside the table — consistent with admin-table actions */
         .inquiry-table .actions .btn {
             padding: 0.15rem 0.4rem;
             font-size: 0.7rem;
+        }
+        .inquiry-table .actions .btn.btn-secondary {
+            background: var(--color-surface-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        .inquiry-table .actions .btn.btn-secondary:hover {
+            background: var(--color-border);
+        }
+        .inquiry-table .actions .btn.btn-primary {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .inquiry-table .actions .btn.btn-primary:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary-light);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            display: none;
+            max-width: 400px;
+        }
+        .toast.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .records-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -92,6 +151,7 @@
 
     <div class="site-shell">
 
+        <!-- HEADER (same as admin.html) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -124,37 +184,50 @@
             </div>
         </header>
 
+        <!-- MAIN SECTION — SAME AS admin.html -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
+
+                    <!-- Heading with "Demo" badge (same as admin.html) -->
+                    <h2 style="text-align: center;">
+                        Inquiry Records
+                        <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span>
+                    </h2>
+                    <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        View and manage all contact form inquiries submitted via the website.
+                    </p>
+
+                    <!-- Header with Role Badge and Logout (same as admin.html dashboard header) -->
                     <div class="records-header">
                         <div>
-                            <h2>Inquiry Records</h2>
-                            <span id="roleBadge" style="font-size:0.8rem; color:var(--color-text-muted);">Inquiry Admin</span>
+                            <span class="admin-role-badge">Inquiry Admin</span>
                         </div>
-                        <div style="display:flex; gap:var(--spacing-sm);">
-                            <a href="records.html" class="btn btn-secondary" style="font-size:0.85rem;">Switch Role</a>
-                            <button id="logoutBtn" class="btn btn-secondary" style="font-size:0.85rem;">Logout</button>
+                        <div style="display:flex; gap:var(--spacing-sm); flex-wrap:wrap;">
+                            <a href="records-login.html" class="btn btn-secondary">Switch Role</a>
+                            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
                     </div>
 
-                    <!-- Tabs -->
+                    <!-- Tabs (New / Read) — styled to fit the admin design -->
                     <div class="tabs" id="tabs">
                         <button class="tab-btn active" data-tab="new">New</button>
                         <button class="tab-btn" data-tab="read">Read</button>
                     </div>
 
-                    <!-- Table with spinner -->
+                    <!-- Table Container -->
                     <div id="tableContainer">
                         <div class="loading-spinner">
                             <div class="spinner"></div>
                             <span>Loading inquiries...</span>
                         </div>
                     </div>
+
                 </div>
             </section>
         </main>
 
+        <!-- FOOTER (same as admin.html) -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -205,6 +278,9 @@
 
     </div>
 
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
     <!-- Firebase SDK -->
     <script type="importmap">
         {
@@ -237,20 +313,29 @@
         const tabsContainer = document.getElementById('tabs');
         const tableContainer = document.getElementById('tableContainer');
         const logoutBtn = document.getElementById('logoutBtn');
+        const toast = document.getElementById('toast');
 
         let currentTab = 'new';
         let allData = [];
 
+        function showToast(msg, isSuccess = true) {
+            toast.textContent = msg;
+            toast.style.background = isSuccess ? '#22c55e' : '#ef4444';
+            toast.style.color = '#fff';
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
         // Check authentication and role
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.href = 'records.html';
+                window.location.href = 'records-login.html';
                 return;
             }
             const role = localStorage.getItem('recordsRole');
             if (role !== 'inquiry') {
                 localStorage.removeItem('recordsRole');
-                window.location.href = 'records.html';
+                window.location.href = 'records-login.html';
                 return;
             }
             loadData();
@@ -352,7 +437,7 @@
                         if (email) {
                             window.location.href = `mailto:${email}?subject=Re: ${encodeURIComponent(subject)}`;
                         } else {
-                            alert('No email address available.');
+                            showToast('No email address available.', false);
                         }
                     });
                 });
@@ -363,15 +448,12 @@
                         const ref = ref(db, `contacts/${key}`);
                         try {
                             await update(ref, { status: 'read' });
-                            // Toast or feedback
-                            const toast = document.createElement('div');
-                            toast.textContent = 'Marked as read.';
-                            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:10px 20px;border-radius:5px;z-index:9999;';
-                            document.body.appendChild(toast);
-                            setTimeout(() => toast.remove(), 2000);
+                            showToast('Marked as read.', true);
+                            // Reload data to refresh the list
+                            loadData();
                         } catch (error) {
                             console.error('Error marking as read:', error);
-                            alert('Failed to mark as read.');
+                            showToast('Failed to mark as read.', false);
                         }
                     });
                 });
@@ -382,7 +464,7 @@
         logoutBtn.addEventListener('click', async () => {
             localStorage.removeItem('recordsRole');
             await signOut(auth);
-            window.location.href = 'records.html';
+            window.location.href = 'records-login.html';
         });
     </script>
 
