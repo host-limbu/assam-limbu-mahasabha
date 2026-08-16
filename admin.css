@@ -1,4 +1,4 @@
-/* ===== Admin styles (unchanged) ===== */
+/* ===== Admin styles ===== */
         .admin-login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -183,7 +183,7 @@
             padding: var(--spacing-lg);
         }
 
-        /* ===== MODALS (only view and remark remain) ===== */
+        /* ===== MODALS ===== */
         .modal {
             display: none;
             position: fixed;
