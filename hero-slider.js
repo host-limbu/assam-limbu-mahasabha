@@ -1,5 +1,5 @@
 // ============================================================
-// HERO SLIDER — smooth, touch‑friendly, 2s interval
+// HERO SLIDER — smooth, touch‑friendly, 2s interval, no click pause
 // ============================================================
 
 (function() {
@@ -15,7 +15,6 @@
 
         let current = 0;
         let isAnimating = false;
-        let isPaused = false;
         let autoTimer = null;
         let timeoutId = null;
 
@@ -24,19 +23,19 @@
             if (isAnimating || index === current) return;
             isAnimating = true;
             const target = -index * 100;
-            slider.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            slider.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             slider.style.transform = 'translateX(' + target + '%)';
 
             const onEnd = function() {
                 slider.removeEventListener('transitionend', onEnd);
                 current = index;
                 isAnimating = false;
+                updateDots();
             };
             slider.addEventListener('transitionend', onEnd);
         }
 
         function next() {
-            if (isPaused) return;
             const nextIndex = (current + 1) % total;
             goTo(nextIndex);
         }
@@ -44,7 +43,6 @@
         // ---- Auto-play ----
         function startAuto() {
             stopAuto();
-            if (isPaused) return;
             autoTimer = setInterval(next, 2000); // 2 seconds
         }
 
@@ -62,22 +60,40 @@
         function resumeAfter(delay) {
             if (timeoutId) clearTimeout(timeoutId);
             timeoutId = setTimeout(function() {
-                if (!isPaused) startAuto();
+                startAuto();
             }, delay || 3000);
         }
 
-        // ---- Pause toggle ----
-        function togglePause() {
-            isPaused = !isPaused;
-            if (isPaused) {
-                stopAuto();
-            } else {
-                startAuto();
+        // ---- Dots ----
+        function createDots() {
+            const dotsContainer = document.getElementById('heroDots');
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('data-index', i);
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'), 10);
+                    if (index !== current) {
+                        stopAuto();
+                        goTo(index);
+                        resumeAfter(4000);
+                    }
+                });
+                dotsContainer.appendChild(dot);
             }
         }
 
-        // ---- Touch / Swipe (smooth) ----
-        let startX = 0, startY = 0, currentX = 0;
+        function updateDots() {
+            const dots = document.querySelectorAll('.hero-dots .dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === current);
+            });
+        }
+
+        // ---- Touch / Swipe ----
+        let startX = 0, startY = 0;
         let isDragging = false;
         let dragOffset = 0;
 
@@ -97,7 +113,6 @@
             const deltaX = touch.clientX - startX;
             const deltaY = touch.clientY - startY;
 
-            // Only horizontal swipe
             if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) return;
             if (Math.abs(deltaX) < Math.abs(deltaY)) return;
 
@@ -122,12 +137,10 @@
                     goTo(prevIndex);
                 }
             } else {
-                // Snap back
                 goTo(current);
             }
 
-            // Resume auto after 4s
-            if (!isPaused) {
+            if (!isAnimating) {
                 resumeAfter(4000);
             }
         }
@@ -135,24 +148,19 @@
         // ---- Mouse hover pause ----
         const container = slider.closest('.hero-image') || slider.parentElement;
         container.addEventListener('mouseenter', function() {
-            if (!isPaused) stopAuto();
+            stopAuto();
         });
         container.addEventListener('mouseleave', function() {
-            if (!isPaused) {
-                stopAuto();
-                startAuto();
-            }
+            startAuto();
         });
-
-        // ---- Click toggles pause ----
-        container.addEventListener('click', togglePause);
 
         // ---- Touch events ----
         slider.addEventListener('touchstart', onTouchStart, { passive: true });
         slider.addEventListener('touchmove', onTouchMove, { passive: false });
         slider.addEventListener('touchend', onTouchEnd, { passive: true });
 
-        // ---- Start ----
+        // ---- Init ----
+        createDots();
         startAuto();
 
         // ---- Cleanup ----
