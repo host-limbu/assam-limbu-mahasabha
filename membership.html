@@ -112,7 +112,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -176,7 +175,6 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
 
             <section class="hero-section full-width" style="min-height: 40vh; background: var(--color-primary-dark);">
@@ -353,7 +351,7 @@
                             <input type="number" id="totalFamily" name="totalFamily" min="1" required />
                         </div>
 
-                        <!-- Type of House (Dropdown) -->
+                        <!-- Type of House -->
                         <div class="form-group full-width">
                             <label for="houseType">Type of House *</label>
                             <select id="houseType" name="houseType" required>
@@ -366,7 +364,7 @@
                             </select>
                         </div>
 
-                        <!-- Land Ownership Status (Dropdown) -->
+                        <!-- Land Ownership Status -->
                         <div class="form-group full-width">
                             <label for="landOwnership">Land Ownership Status *</label>
                             <select id="landOwnership" name="landOwnership" required>
@@ -379,7 +377,7 @@
                             </select>
                         </div>
 
-                        <!-- Vehicle Owned (Dropdown) -->
+                        <!-- Vehicle Owned -->
                         <div class="form-group full-width">
                             <label for="vehicle">Vehicle Owned</label>
                             <select id="vehicle" name="vehicle">
@@ -426,7 +424,7 @@
                             <input type="number" id="govtEmployees" name="govtEmployees" min="0" required />
                         </div>
 
-                        <!-- Passport Photo Upload with Cloudinary -->
+                        <!-- Passport Photo Upload -->
                         <div class="form-group full-width">
                             <label for="photo">Passport Photo Upload * (Max 0.5 MB, JPG/PNG)</label>
                             <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required />
@@ -546,7 +544,6 @@
         import { initializeApp } from "firebase/app";
         import { getDatabase, ref, push, set } from "firebase/database";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
             authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -559,12 +556,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Cloudinary config
         const CLOUD_NAME = 'nhxuht4e';
         const UPLOAD_PRESET = 'membership_upload';
-        const MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 0.5 MB
+        const MAX_FILE_SIZE = 0.5 * 1024 * 1024;
 
-        // DOM elements
         const form = document.getElementById('membershipForm');
         const photoInput = document.getElementById('photo');
         const photoPreviewContainer = document.getElementById('photoPreviewContainer');
@@ -575,19 +570,16 @@
 
         let uploadedPhotoURL = '';
 
-        // Helper: generate reference number
         function generateRefNumber() {
             const year = new Date().getFullYear();
             const random = String(Math.floor(10000 + Math.random() * 90000));
-            return `ALM-${year}-${random}`;
+            return `[Org]-${year}-${random}`;
         }
 
-        // Helper: get current date/time
         function getCurrentDateTime() {
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
-        // Show/hide Other Education
         document.getElementById('education').addEventListener('change', function() {
             const otherGroup = document.getElementById('otherEducationGroup');
             if (this.value === 'Other') {
@@ -599,7 +591,6 @@
             }
         });
 
-        // District → State mapping
         const districtStateMap = {
             '[District 1]': '[State 1]',
             '[District 2]': '[State 2]'
@@ -610,7 +601,6 @@
             stateInput.value = districtStateMap[selectedDistrict] || '';
         });
 
-        // Photo upload to Cloudinary
         photoInput.addEventListener('change', async function(e) {
             const file = this.files[0];
             if (!file) return;
@@ -646,7 +636,7 @@
                 const data = await response.json();
                 uploadedPhotoURL = data.secure_url;
                 photoURLInput.value = uploadedPhotoURL;
-                uploadStatus.textContent = 'Upload successful ✅';
+                uploadStatus.textContent = 'Upload successful';
                 uploadStatus.style.color = 'green';
             } catch (err) {
                 console.error(err);
@@ -658,7 +648,6 @@
             }
         });
 
-        // Form submission
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -688,7 +677,7 @@
                 refNumber,
                 timestamp,
                 status: 'Submitted',
-                currentStage: 'DA',
+                currentStage: '[Verifying Officer]',
                 history: [
                     { action: 'Application submitted', timestamp, by: 'Applicant' }
                 ],
@@ -720,7 +709,6 @@
             }
         });
 
-        // Admin link in footer
         const footerBottom = document.querySelector('.footer-bottom');
         if (footerBottom) {
             const adminLink = document.createElement('p');
