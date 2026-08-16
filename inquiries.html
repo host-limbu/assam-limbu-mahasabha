@@ -6,17 +6,16 @@
     <title>Contact Inquiries — [Your Organization]</title>
     <meta name="description" content="Admin panel to manage contact form inquiries submitted via the website." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
+        /* ===== LOGIN FORM (same as admin.html) ===== */
         .inquiry-login-form {
             max-width: 400px;
             margin: 0 auto;
             padding: var(--spacing-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
         }
         .inquiry-login-form input {
             width: 100%;
@@ -36,12 +35,15 @@
         .inquiry-login-form .btn {
             width: 100%;
         }
+
+        /* ===== DASHBOARD ===== */
         .inquiry-dashboard {
             display: none;
         }
         .inquiry-dashboard.visible {
             display: block;
         }
+
         .inquiry-header {
             display: flex;
             justify-content: space-between;
@@ -61,101 +63,15 @@
             font-size: 0.8rem;
             font-weight: var(--font-medium);
         }
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: var(--spacing-md);
-        }
-        .inquiry-table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
-            min-width: 900px;
-        }
-        .inquiry-table th,
-        .inquiry-table td {
-            border: 1px solid var(--color-border);
-            padding: 0.5rem 0.8rem;
-            text-align: left;
-            font-size: 0.9rem;
-            background: var(--color-surface);
-            color: var(--color-text);
-        }
-        .inquiry-table th {
-            font-weight: var(--font-medium);
-            background: var(--color-surface-alt);
-        }
-        .inquiry-table .status-badge {
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: var(--font-medium);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .status-badge.unread {
-            background: #dc3545;
-            color: #fff;
-        }
-        .status-badge.read {
-            background: #28a745;
-            color: #fff;
-        }
-        .inquiry-table .actions {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 0.25rem;
-            align-items: center;
-        }
-        .inquiry-table .actions .btn {
-            padding: 0.15rem 0.4rem;
-            font-size: 0.7rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .inquiry-empty {
-            text-align: center;
-            color: var(--color-text-muted);
-            padding: var(--spacing-lg);
-        }
-        .error-message {
-            color: #dc2626;
-            font-size: 0.9rem;
-            margin-top: var(--spacing-sm);
-            display: none;
-        }
-        .error-message.visible {
-            display: block;
-        }
-        .toast {
-            position: fixed;
-            bottom: var(--spacing-lg);
-            right: var(--spacing-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-md) var(--spacing-lg);
-            box-shadow: var(--shadow-lg);
-            z-index: 3000;
-            display: none;
-            max-width: 400px;
-        }
-        .toast.visible {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
-        /* View Modal */
+        /* ===== MODAL ===== */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -170,9 +86,20 @@
             max-width: 600px;
             width: 100%;
             border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             position: relative;
+            animation: modalFadeIn 0.25s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         .modal-content .modal-close {
             position: absolute;
@@ -185,12 +112,18 @@
             cursor: pointer;
             color: var(--color-text-muted);
             transition: color var(--transition);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius);
         }
         .modal-content .modal-close:hover {
             color: var(--color-text);
+            background: var(--color-surface-alt);
         }
         .modal-content h3 {
             margin: 0 0 var(--spacing-xs) 0;
+            font-size: 1.3rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
         }
         .modal-content .detail-row {
             display: flex;
@@ -231,18 +164,59 @@
             font-size: 0.85rem;
         }
 
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            display: none;
+            max-width: 400px;
+        }
+        .toast.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
+        }
+
+        /* ===== RESPONSIVE (non-table) ===== */
         @media (max-width: 768px) {
-            .inquiry-table {
-                font-size: 0.8rem;
-                min-width: 700px;
-            }
-            .inquiry-table th,
-            .inquiry-table td {
-                padding: 0.3rem 0.5rem;
-            }
             .modal-content {
-                padding: var(--spacing-md);
+                padding: var(--spacing-lg);
                 margin: var(--spacing-sm);
+            }
+            .modal-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .modal-actions .btn {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
             }
         }
     </style>
