@@ -1,13 +1,13 @@
 /**
- * certificate.js – Central data-fetching and placeholder population.
- * Reads reference number from URL, fetches data, populates placeholders,
- * generates QR code using stored verificationId, then reveals certificate.
+ * certificate.js – Central data-fetching and placeholder population for certificate.html
+ * Reads reference number from URL, fetches application from Firebase,
+ * populates placeholders, generates QR code using stored verificationId.
  */
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
 
-// Firebase config
+// Firebase config (must match your project)
 const firebaseConfig = {
     apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
     authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -88,6 +88,7 @@ async function loadCertificate() {
         const certificateId = `CERT-${refNum}`;
         // Use stored verificationId from database, or generate a fallback
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
+        console.log('Using verificationId:', verificationId);
 
         const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
         const fullAddress = addressParts.join(', ') || 'N/A';
@@ -144,6 +145,7 @@ async function loadCertificate() {
             qrImg.alt = 'Verification QR Code';
         }
 
+        // Signature names – use generic officer placeholders
         document.getElementById('daName').textContent = '[Verifying Officer]';
         document.getElementById('presidentName').textContent = '[Reviewing Officer]';
         document.getElementById('aaName').textContent = '[Approving Officer]';
