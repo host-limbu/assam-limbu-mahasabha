@@ -3,84 +3,175 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Application Acknowledgement — Yadav Subba</title>
-    <meta name="description" content="Application acknowledgement receipt from Yadav Subba, AI Assisted Web Developer & Producer." />
+    <title>Application Acknowledgement — [Your Organization]</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        .receipt-container {
-            max-width: 900px;
-            margin: var(--spacing-lg) auto;
-            background: var(--color-surface);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-sm);
-        }
-        .receipt-header {
-            text-align: center;
-            border-bottom: 2px solid var(--color-primary);
-            padding-bottom: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-        }
-        .receipt-header .logo-emblem {
-            font-size: 3rem;
-            color: var(--color-primary);
-        }
-        .receipt-header h1 {
-            font-size: 1.6rem;
+        /* ===== A4 PAGE LAYOUT (matches certificate) ===== */
+        @page {
+            size: A4;
             margin: 0;
         }
-        .receipt-header .sub {
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        .ref-number {
-            font-size: 1.3rem;
-            font-weight: var(--font-bold);
-            color: var(--color-primary);
-            text-align: center;
-            margin: var(--spacing-md) 0;
+
+        :root {
+            --primary-color: #1a3a5c;
+            --border-color: #dce0e5;
+            --text-muted: #475569;
+            --text-color: #1e293b;
+            --paper: #ffffff;
         }
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-sm);
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            background: #eee;
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-        .detail-item {
-            padding: 0.3rem 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .detail-item .label {
-            font-weight: var(--font-medium);
-            color: var(--color-text-muted);
-            display: inline-block;
-            width: 40%;
-        }
-        .detail-item .value {
-            color: var(--color-text);
-            display: inline-block;
-            width: 58%;
-        }
-        .print-actions {
+
+        body {
             display: flex;
-            gap: var(--spacing-md);
             justify-content: center;
-            margin-top: var(--spacing-lg);
+            align-items: flex-start;
+            padding: 12px;
         }
+
+        /* ===== A4 PAGE ===== */
+        .receipt-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--paper);
+            padding: 0;
+        }
+
+        /* ===== RECEIPT OUTER BORDER ===== */
+        .receipt {
+            width: 100%;
+            min-height: 297mm;
+            border: 1px solid var(--border-color);
+            padding: 8mm 10mm;
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
+        }
+
+        /* ===== HEADER ===== */
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 6mm;
+            margin-bottom: 8mm;
+        }
+        .receipt-header .logo-emblem {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            display: block;
+        }
+        .receipt-header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .receipt-header .sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== CONTENT ===== */
+        .receipt-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4mm 0;
+        }
+
+        .receipt-body .greeting {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 6mm;
+        }
+
+        .receipt-body .greeting strong {
+            color: var(--primary-color);
+        }
+
+        .receipt-body .message {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-color);
+            margin-bottom: 6mm;
+            max-width: 90%;
+        }
+
+        .receipt-body .message .highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .receipt-body .ref-number {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 3mm 6mm;
+            background: #f0f4f8;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 2mm 0 4mm 0;
+            letter-spacing: 0.5px;
+        }
+
+        .receipt-body .thanks {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-top: 4mm;
+            padding-top: 4mm;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .receipt-body .thanks strong {
+            color: var(--primary-color);
+        }
+
+        /* ===== FOOTER ===== */
+        .receipt-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 3mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .receipt-footer .org-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* ===== LOADING ===== */
         .loading-spinner {
             text-align: center;
             padding: var(--spacing-xl);
-            color: var(--color-text-muted);
+            color: var(--text-muted);
         }
         .loading-spinner .spinner {
             display: inline-block;
             width: 40px;
             height: 40px;
-            border: 4px solid var(--color-border);
-            border-top: 4px solid var(--color-primary);
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -88,138 +179,94 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .acknowledgement-note {
-            text-align: center;
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
-            margin-top: var(--spacing-lg);
-            padding-top: var(--spacing-md);
-            border-top: 1px solid var(--color-border);
-        }
+
+        /* ===== PRINT STYLES (matches certificate) ===== */
         @media print {
-            .print-actions { display: none; }
-            .receipt-container { border: none; box-shadow: none; }
-            body { background: #fff; }
+            html,
+            body {
+                width: 210mm;
+                height: 297mm;
+                background: #fff;
+                padding: 0;
+                margin: 0;
+            }
+            .receipt-page {
+                width: 210mm;
+                height: 297mm;
+                min-height: 297mm;
+                margin: 0;
+            }
+            .receipt {
+                width: 210mm;
+                height: 297mm;
+                min-height: 297mm;
+                page-break-inside: avoid;
+                border: 1px solid #555;
+            }
+            .no-print {
+                display: none !important;
+            }
         }
-        @media (max-width: 768px) {
-            .detail-grid { grid-template-columns: 1fr; }
+
+        /* ===== RESPONSIVE PREVIEW ===== */
+        @media screen and (max-width: 800px) {
+            body {
+                padding: 0;
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+            .receipt-page {
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="site-shell">
-
-        <header class="site-header" role="banner">
-            <div class="header-inner">
-                <div class="header-logo">
-                    <a href="index.html" aria-label="Yadav Subba Home">
-                        <span class="logo-emblem">&#9670;</span>
-                        <span class="logo-text">
-                            <span class="logo-main">Yadav Subba</span>
-                            <span class="logo-sub">AI Assisted Web Developer &amp; Producer</span>
-                        </span>
-                    </a>
-                </div>
-                <nav class="header-nav" aria-label="Main navigation">
-                    <ul class="nav-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="committee.html">Work</a></li>
-                        <li><a href="updates.html">Insights</a></li>
-                        <li><a href="events.html">Projects</a></li>
-                        <li><a href="gallery.html">Showcase</a></li>
-                        <li><a href="membership.html">Connect</a></li>
-                        <li><a href="documents.html">Resources</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="header-actions">
-                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                    </button>
-                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
-                        <span></span><span></span><span></span>
-                    </button>
-                </div>
-            </div>
-            <div class="search-overlay" hidden>
-                <div class="search-overlay-inner">
-                    <form role="search" action="search.html" method="get">
-                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
-                        <button type="submit">Search</button>
-                    </form>
-                    <button class="search-close" aria-label="Close search">&times;</button>
-                </div>
-            </div>
-        </header>
-
-        <main class="site-main" role="main">
-            <section class="full-width">
-                <div class="section-content">
-                    <div id="receiptContent" class="receipt-container">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <p>Loading acknowledgement...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="site-footer" role="contentinfo">
-            <div class="footer-inner">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <span class="footer-logo">
-                            <span class="logo-emblem">&#9670;</span>
-                            <span class="logo-main">Yadav Subba</span>
-                        </span>
-                        <p class="footer-sub">AI Assisted Web Developer &amp; Producer</p>
-                        <p class="footer-address">Building digital solutions, worldwide.</p>
-                    </div>
-                    <div class="footer-links">
-                        <div class="footer-links-col">
-                            <h4>Quick Links</h4>
-                            <ul>
-                                <li><a href="about.html">About Me</a></li>
-                                <li><a href="committee.html">Work</a></li>
-                                <li><a href="events.html">Projects</a></li>
-                                <li><a href="updates.html">Insights</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Resources</h4>
-                            <ul>
-                                <li><a href="documents.html">Resources</a></li>
-                                <li><a href="membership.html">Connect</a></li>
-                                <li><a href="gallery.html">Showcase</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Connect</h4>
-                            <ul class="footer-social">
-                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
-                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
-                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
-                                <li><a href="#" aria-label="Email">Email</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2026 Yadav Subba — AI Assisted Web Developer &amp; Producer. All rights reserved.</p>
-                    <p class="footer-credit">Designed with passion, built with purpose.</p>
-                </div>
-            </div>
-        </footer>
-
+    <!-- Loading State -->
+    <div id="loadingContainer" class="loading-spinner" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh;">
+        <div class="spinner"></div>
+        <p style="margin-top:var(--spacing-md);">Loading receipt...</p>
     </div>
 
+    <!-- Receipt (hidden initially) -->
+    <main class="receipt-page" id="receiptPage" style="display:none;">
+        <div class="receipt" id="receiptContainer">
+
+            <!-- HEADER -->
+            <header class="receipt-header">
+                <span class="logo-emblem">&#9670;</span>
+                <h1>[Your Organization]</h1>
+                <p class="sub">[Your District Committee]</p>
+            </header>
+
+            <!-- BODY -->
+            <div class="receipt-body" id="receiptBody">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="receipt-footer">
+                <div>
+                    <span class="org-name">[Your Organization]</span> — [Your District Committee]
+                </div>
+                <div>
+                    <span id="generatedDate"></span>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- Print/Download Buttons (visible only on screen) -->
+    <div style="position:fixed; bottom:20px; right:20px; z-index:999; display:flex; gap:10px;" class="no-print" id="actionButtons" style="display:none;">
+        <button onclick="window.print()" style="padding:10px 20px; background:#1a3a5c; color:white; border:none; border-radius:5px; cursor:pointer;">Print / PDF</button>
+        <button onclick="window.close()" style="padding:10px 20px; background:#ccc; color:#222; border:none; border-radius:5px; cursor:pointer;">Close</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Firebase SDK -->
+    <!-- ============================================================ -->
     <script type="importmap">
         {
             "imports": {
@@ -245,21 +292,38 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const container = document.getElementById('receiptContent');
+        const loadingContainer = document.getElementById('loadingContainer');
+        const receiptPage = document.getElementById('receiptPage');
+        const receiptBody = document.getElementById('receiptBody');
+        const actionButtons = document.getElementById('actionButtons');
+        const generatedDate = document.getElementById('generatedDate');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const refNumber = urlParams.get('ref');
+
+        if (!refNumber) {
+            loadingContainer.innerHTML = '<p style="color:red;">No reference number provided.</p>';
+            throw new Error('Missing ref parameter');
+        }
+
+        // Helper: format date
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr);
+            if (isNaN(d)) return dateStr;
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        // Helper: get current date for footer
+        function getToday() {
+            return new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
 
         async function loadReceipt() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const refNumber = urlParams.get('ref');
-
-            if (!refNumber) {
-                container.innerHTML = '<p style="color:red;">No reference number provided.</p>';
-                return;
-            }
-
             try {
                 const snapshot = await get(ref(db, 'applications'));
                 if (!snapshot.exists()) {
-                    container.innerHTML = '<p style="color:red;">No applications found.</p>';
+                    loadingContainer.innerHTML = '<p style="color:red;">No applications found.</p>';
                     return;
                 }
 
@@ -273,42 +337,46 @@
                 }
 
                 if (!app) {
-                    container.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
+                    loadingContainer.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
                     return;
                 }
 
-                // Build receipt HTML without history and photo
-                container.innerHTML = `
-                    <div class="receipt-header">
-                        <div class="logo-emblem">&#9670;</div>
-                        <h1>Yadav Subba</h1>
-                        <p class="sub">AI Assisted Web Developer &amp; Producer</p>
-                        <p class="sub"><strong>Application Acknowledgement Receipt</strong></p>
+                // Extract data
+                const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'Applicant';
+                const membershipType = app.membershipType || 'General';
+                const processingTime = '[Processing Timeframe]'; // e.g., "5-7 working days"
+
+                // Build receipt body content
+                receiptBody.innerHTML = `
+                    <div class="greeting">
+                        Dear <strong>${applicantName}</strong>,
                     </div>
-                    <div class="ref-number">Reference No: ${app.refNumber}</div>
-                    <div class="detail-grid">
-                        <div class="detail-item"><span class="label">Applicant Name</span><span class="value">${app.firstName || ''} ${app.secondName || ''}</span></div>
-                        <div class="detail-item"><span class="label">Father / Guardian Name</span><span class="value">${app.fatherGuardianName || ''}</span></div>
-                        <div class="detail-item"><span class="label">Date of Birth</span><span class="value">${app.dob || ''}</span></div>
-                        <div class="detail-item"><span class="label">Email</span><span class="value">${app.email || ''}</span></div>
-                        <div class="detail-item"><span class="label">Phone</span><span class="value">${app.phone || ''}</span></div>
-                        <div class="detail-item"><span class="label">Membership Type</span><span class="value">${app.membershipType || ''}</span></div>
-                        <div class="detail-item"><span class="label">District</span><span class="value">${app.district || ''}</span></div>
-                        <div class="detail-item"><span class="label">Submission Date</span><span class="value">${app.timestamp || ''}</span></div>
-                        <div class="detail-item"><span class="label">Current Status</span><span class="value" style="font-weight:bold;">${app.status || 'Submitted'}</span></div>
+                    <div class="message">
+                        Your application for <span class="highlight">${membershipType}</span> membership
+                        has been successfully submitted with reference number:
                     </div>
-                    <div class="acknowledgement-note">
-                        <p>This is a digitally generated acknowledgement receipt.</p>
-                        <p style="font-size:0.8rem; margin-top:var(--spacing-xs);">For any queries, please contact the admin.</p>
+                    <div class="ref-number">${app.refNumber}</div>
+                    <div class="message">
+                        Your application will be processed within <span class="highlight">${processingTime}</span>.
+                        You will be notified once the process is complete.
                     </div>
-                    <div class="print-actions">
-                        <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
-                        <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
+                    <div class="thanks">
+                        Thank you for your trust in <strong>[Your Organization]</strong>.<br />
+                        <span style="font-size:0.9rem; color:var(--text-muted);">— [Your Organization] Team</span>
                     </div>
                 `;
+
+                // Set footer date
+                generatedDate.textContent = getToday();
+
+                // Show receipt, hide loading
+                loadingContainer.style.display = 'none';
+                receiptPage.style.display = 'block';
+                actionButtons.style.display = 'flex';
+
             } catch (error) {
                 console.error('Error loading receipt:', error);
-                container.innerHTML = '<p style="color:red;">Error loading receipt. Please try again.</p>';
+                loadingContainer.innerHTML = `<p style="color:red;">Error loading receipt: ${error.message}</p>`;
             }
         }
 
