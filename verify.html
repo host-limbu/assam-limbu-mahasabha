@@ -60,9 +60,6 @@
             color: var(--color-text);
             font-weight: var(--font-medium);
         }
-        .verification-details .detail-item.full-width {
-            grid-column: 1 / -1;
-        }
         .verification-loading {
             padding: var(--spacing-xl);
             color: var(--color-text-muted);
@@ -102,6 +99,12 @@
             color: var(--color-text-muted);
             margin-top: var(--spacing-sm);
             word-break: break-all;
+            background: var(--color-surface-alt);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -109,7 +112,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (matches index.html – no search icon) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -142,19 +144,15 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
                     <div class="verification-container" id="verificationContainer">
-                        <!-- Loading State -->
                         <div class="verification-loading" id="loadingState">
                             <div class="spinner"></div>
                             <p style="margin-top:var(--spacing-md);">Verifying certificate...</p>
                             <div id="debugInfo" class="debug-info"></div>
                         </div>
-
-                        <!-- Result State -->
                         <div id="resultState" style="display:none;">
                             <div class="verification-icon" id="statusIcon">&#9670;</div>
                             <div class="verification-result" id="statusText">Valid</div>
@@ -170,7 +168,6 @@
             </section>
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -234,7 +231,7 @@
 
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, get } from "firebase/database";
+        import { getDatabase, ref, query, orderByChild, equalTo, get } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -257,6 +254,7 @@
         const verifyTimestamp = document.getElementById('verifyTimestamp');
         const debugInfo = document.getElementById('debugInfo');
 
+        // Get verification ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
         debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
@@ -269,25 +267,37 @@
             statusText.className = 'verification-result invalid';
             statusText.textContent = 'Invalid Verification ID';
             statusMessage.textContent = 'No verification ID provided.';
+            debugInfo.textContent += '\nNo ID in URL.';
             return;
         }
 
+        // Timeout fallback: if Firebase doesn't respond in 10 seconds, show error
+        const timeoutId = setTimeout(() => {
+            loadingState.style.display = 'none';
+            resultState.style.display = 'block';
+            statusIcon.className = 'verification-icon invalid';
+            statusIcon.textContent = '✗';
+            statusText.className = 'verification-result invalid';
+            statusText.textContent = 'Verification Timeout';
+            statusMessage.textContent = 'The verification request timed out. Please check your network and try again.';
+            debugInfo.textContent += '\nTimeout: Firebase did not respond within 10 seconds.';
+        }, 10000);
+
         async function verifyCertificate() {
             try {
-                const snapshot = await get(ref(db, 'applications'));
-                if (!snapshot.exists()) {
-                    throw new Error('No applications found.');
-                }
-                const allApps = snapshot.val();
-                let foundApp = null;
-                for (const key in allApps) {
-                    if (allApps[key].verificationId === verificationId) {
-                        foundApp = { ...allApps[key], _key: key };
-                        break;
-                    }
-                }
+                console.log('Verification started for ID:', verificationId);
 
-                if (!foundApp) {
+                // Use a query to find the application with matching verificationId
+                const appsRef = ref(db, 'applications');
+                const q = query(appsRef, orderByChild('verificationId'), equalTo(verificationId));
+
+                console.log('Querying Firebase...');
+                const snapshot = await get(q);
+                console.log('Query completed.');
+
+                clearTimeout(timeoutId); // Clear timeout since we got a response
+
+                if (!snapshot.exists()) {
                     loadingState.style.display = 'none';
                     resultState.style.display = 'block';
                     statusIcon.className = 'verification-icon invalid';
@@ -295,10 +305,18 @@
                     statusText.className = 'verification-result invalid';
                     statusText.textContent = 'Invalid Certificate';
                     statusMessage.textContent = 'No valid certificate found with this verification ID.';
+                    debugInfo.textContent += '\nNo application found with verificationId: ' + verificationId;
                     return;
                 }
 
-                // Valid certificate found
+                // Get the first matching application
+                const appData = snapshot.val();
+                const keys = Object.keys(appData);
+                const foundApp = appData[keys[0]];
+
+                console.log('Found application:', foundApp);
+
+                // Build membership and certificate numbers
                 const refNum = foundApp.refNumber || 'N/A';
                 const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
                     ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
@@ -341,8 +359,10 @@
                 statusText.textContent = 'Valid Certificate';
                 statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
                 verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+                debugInfo.textContent += '\nCertificate verified successfully.';
 
             } catch (error) {
+                clearTimeout(timeoutId);
                 console.error('Verification error:', error);
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
