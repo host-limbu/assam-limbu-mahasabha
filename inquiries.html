@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Inquiries — Yadav Subba</title>
-    <meta name="description" content="Admin panel to manage contact form inquiries submitted via the portfolio." />
+    <title>Contact Inquiries — [Your Organization]</title>
+    <meta name="description" content="Admin panel to manage contact form inquiries submitted via the website." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -254,11 +254,11 @@
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
-                    <a href="index.html" aria-label="Yadav Subba Home">
+                    <a href="index.html" aria-label="[Your Organization] Home">
                         <span class="logo-emblem">&#9670;</span>
                         <span class="logo-text">
-                            <span class="logo-main">Yadav Subba</span>
-                            <span class="logo-sub">AI Assisted Web Developer &amp; Producer</span>
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
                         </span>
                     </a>
                 </div>
@@ -266,34 +266,19 @@
                     <ul class="nav-list">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="committee.html">Work</a></li>
-                        <li><a href="updates.html">Insights</a></li>
-                        <li><a href="events.html">Projects</a></li>
-                        <li><a href="gallery.html">Showcase</a></li>
-                        <li><a href="membership.html">Connect</a></li>
-                        <li><a href="documents.html">Resources</a></li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
-                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                    </button>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
-                </div>
-            </div>
-            <div class="search-overlay" hidden>
-                <div class="search-overlay-inner">
-                    <form role="search" action="search.html" method="get">
-                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
-                        <button type="submit">Search</button>
-                    </form>
-                    <button class="search-close" aria-label="Close search">&times;</button>
                 </div>
             </div>
         </header>
@@ -303,7 +288,7 @@
                 <div class="section-content">
                     <h2 style="text-align: center;">Contact Inquiries</h2>
                     <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Manage all contact form submissions from your portfolio visitors.
+                        Manage all contact form submissions from your website visitors.
                     </p>
 
                     <!-- Login Section -->
@@ -359,27 +344,27 @@
                     <div class="footer-brand">
                         <span class="footer-logo">
                             <span class="logo-emblem">&#9670;</span>
-                            <span class="logo-main">Yadav Subba</span>
+                            <span class="logo-main">[Your Organization]</span>
                         </span>
-                        <p class="footer-sub">AI Assisted Web Developer &amp; Producer</p>
-                        <p class="footer-address">Building digital solutions, worldwide.</p>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
                     </div>
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="about.html">About Me</a></li>
-                                <li><a href="committee.html">Work</a></li>
-                                <li><a href="events.html">Projects</a></li>
-                                <li><a href="updates.html">Insights</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
                             </ul>
                         </div>
                         <div class="footer-links-col">
                             <h4>Resources</h4>
                             <ul>
-                                <li><a href="documents.html">Resources</a></li>
-                                <li><a href="membership.html">Connect</a></li>
-                                <li><a href="gallery.html">Showcase</a></li>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div>
@@ -395,8 +380,8 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>&copy; 2026 Yadav Subba — AI Assisted Web Developer &amp; Producer. All rights reserved.</p>
-                    <p class="footer-credit">Designed with passion, built with purpose.</p>
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
                 </div>
             </div>
         </footer>
@@ -433,7 +418,8 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        const ALLOWED_UID = 'VphanModTwd4lQaPmwKA8EUvL3A3';
+        // Restrict to a specific UID for security
+        const ALLOWED_UID = '[Admin UID]';
 
         // DOM elements
         const loginSection = document.getElementById('loginSection');
@@ -644,7 +630,7 @@
             }
         }
 
-        console.log('Inquiry panel loaded with View button.');
+        console.log('Contact inquiries panel loaded.');
     </script>
 
 </body>
