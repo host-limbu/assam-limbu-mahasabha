@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yadav Subba — AI Assisted Web Developer &amp; Producer</title>
-    <meta name="description" content="Yadav Subba is an AI Assisted Web Developer & Producer. Explore my portfolio, services, and projects — from web development to AI integration and digital production." />
+    <title>[Your Organization] — [Your District Committee]</title>
+    <meta name="description" content="Official website of [Your Organization], [Your District Committee]." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="css/hero-slider.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -14,15 +13,16 @@
 <body>
 
     <div class="site-shell">
-        <!-- HEADER -->
+
+        <!-- HEADER (No language button, no search icon) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
-                    <a href="index.html" aria-label="Yadav Subba Home">
+                    <a href="index.html" aria-label="[Your Organization] Home">
                         <span class="logo-emblem">&#9670;</span>
                         <span class="logo-text">
-                            <span class="logo-main">Yadav Subba</span>
-                            <span class="logo-sub">AI Assisted Web Developer &amp; Producer</span>
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
                         </span>
                     </a>
                 </div>
@@ -33,340 +33,350 @@
                         <li class="nav-dropdown">
                             <a href="about.html">About</a>
                             <ul class="dropdown-menu">
-                                <li><a href="about.html">About Me</a></li>
-                                <li><a href="history.html">My Journey</a></li>
-                                <li><a href="vision.html">Mission &amp; Values</a></li>
-                                <li><a href="inquiries.html">View Contact Inquiries</a></li>
-                                <li><a href="admin.html">Admin Demo</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html">Vision &amp; Mission</a></li>
                             </ul>
                         </li>
-                        <li><a href="committee.html">Work</a></li>
+                        <li><a href="committee.html">Committee</a></li>
                         <li class="nav-dropdown">
-                            <a href="updates.html">Insights</a>
+                            <a href="updates.html">Updates</a>
                             <ul class="dropdown-menu">
-                                <li><a href="updates.html">Latest Insights</a></li>
+                                <li><a href="updates.html">Latest Updates</a></li>
                                 <li><a href="archive.html">Archive</a></li>
                             </ul>
                         </li>
-                        <li><a href="events.html">Projects</a></li>
-                        <li><a href="membership.html">Connect</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </nav>
 
                 <div class="header-actions">
-                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                    </button>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
                 </div>
             </div>
+
+            <!-- Search overlay removed -->
         </header>
 
-        <!-- HERO -->
-        <section class="hero-section full-width">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <p class="hero-tag">Yadav Subba</p>
-                    <h1>AI Assisted Web Developer<br />&amp; Producer</h1>
-                    <p class="hero-description">
-                        Building intelligent, user-focused digital solutions — from web applications
-                        to AI integration and full‑stack systems.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="about.html" class="btn btn-primary">Learn More</a>
-                        <a href="membership.html" class="btn btn-outline">Connect</a>
-                    </div>
-                </div>
-                <div class="hero-image" aria-hidden="true">
-                    <div class="hero-slider" id="heroSlider">
-                        <img src="images/hero/image1.jpg" alt="Hero 1" class="hero-slide" />
-                        <img src="images/hero/image2.jpg" alt="Hero 2" class="hero-slide" />
-                        <img src="images/hero/image3.jpg" alt="Hero 3" class="hero-slide" />
-                        <img src="images/hero/image4.jpg" alt="Hero 4" class="hero-slide" />
-                        <img src="images/hero/image5.jpg" alt="Hero 5" class="hero-slide" />
-                    </div>
-                    <div class="hero-dots" id="heroDots"></div>
-                </div>
-            </div>
-            <div class="hero-scroll-indicator">
-                <span>Scroll</span>
-                <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M8 1v14M4 11l4 4 4-4" />
-                </svg>
-            </div>
-        </section>
+        <!-- MAIN -->
+        <main class="site-main" role="main">
 
-        <!-- ABOUT PREVIEW -->
-        <section class="about-preview full-width" id="about">
-            <div class="section-content">
-                <div class="section-label">Who I Am</div>
-                <h2>Building Digital Solutions with Purpose</h2>
-                <div class="about-grid">
-                    <div class="about-text">
-                        <p>
-                            I'm Yadav Subba, an AI Assisted Web Developer &amp; Producer dedicated to creating
-                            intelligent, user-focused digital experiences. I specialise in custom web development,
-                            AI integration, and full‑stack solutions.
+            <!-- HERO -->
+            <section class="hero-section full-width">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <p class="hero-tag">[Your Organization]</p>
+                        <h1>[Your District Committee]</h1>
+                        <p class="hero-description">
+                            [Organization Description — e.g., Preserving our heritage, culture and community values
+                            across the region since [Year Established].]
                         </p>
-                        <p>
-                            From membership platforms and certificate systems to AI‑powered tools and admin dashboards,
-                            I build scalable, secure, and beautifully designed applications that solve real problems.
+                        <div class="hero-actions">
+                            <a href="about.html" class="btn btn-primary">Learn More</a>
+                            <a href="membership.html" class="btn btn-outline">Join Us</a>
+                        </div>
+                    </div>
+                    <div class="hero-image" aria-hidden="true"></div>
+                </div>
+                <div class="hero-scroll-indicator">
+                    <span>Scroll</span>
+                    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 1v14M4 11l4 4 4-4" />
+                    </svg>
+                </div>
+            </section>
+
+            <!-- ABOUT PREVIEW -->
+            <section class="about-preview full-width" id="about">
+                <div class="section-content">
+                    <div class="section-label">About Us</div>
+                    <h2>Strengthening Our Community</h2>
+                    <div class="about-grid">
+                        <div class="about-text">
+                            <p>
+                                [Your Organization], [Your District Committee],
+                                is dedicated to the social, cultural and educational upliftment of the
+                                community in the [District Name] region.
+                            </p>
+                            <p>
+                                We work to preserve our rich heritage, promote our language and culture,
+                                and foster unity among community members across the region.
+                            </p>
+                            <a href="about.html" class="btn btn-secondary">Read More</a>
+                        </div>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="[Number]">0</span>
+                                <span class="stat-label">Years of Service</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="[Number]">0</span>
+                                <span class="stat-label">Villages Connected</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="[Number]">0</span>
+                                <span class="stat-label">Community Members</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EVENTS -->
+            <section class="events-section full-width" id="events">
+                <div class="section-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-label">Events</div>
+                            <h2>Upcoming &amp; Recent Events</h2>
+                        </div>
+                        <a href="events.html" class="btn btn-secondary">View All Events</a>
+                    </div>
+
+                    <div class="events-grid" id="events-grid">
+                        <article class="event-card" data-category="upcoming">
+                            <div class="event-card-image">
+                                <img src="images/events/event1.jpg" alt="[Event Title]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Event Image]</div>';" />
+                                <span class="event-badge">Upcoming</span>
+                            </div>
+                            <div class="event-card-body">
+                                <div class="event-meta">
+                                    <time datetime="[Event Date]">[Event Date]</time>
+                                    <span class="event-location">[Event Venue]</span>
+                                </div>
+                                <h3>[Event Title]</h3>
+                                <p>[Event Description]</p>
+                                <a href="event-1.html" class="btn-link">Learn More</a>
+                            </div>
+                        </article>
+
+                        <article class="event-card" data-category="upcoming">
+                            <div class="event-card-image">
+                                <img src="images/events/event2.jpg" alt="[Event Title]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Event Image]</div>';" />
+                                <span class="event-badge">Upcoming</span>
+                            </div>
+                            <div class="event-card-body">
+                                <div class="event-meta">
+                                    <time datetime="[Event Date]">[Event Date]</time>
+                                    <span class="event-location">[Event Venue]</span>
+                                </div>
+                                <h3>[Event Title]</h3>
+                                <p>[Event Description]</p>
+                                <a href="event-2.html" class="btn-link">Learn More</a>
+                            </div>
+                        </article>
+
+                        <article class="event-card" data-category="past">
+                            <div class="event-card-image">
+                                <img src="images/events/event3.jpg" alt="[Event Title]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Event Image]</div>';" />
+                                <span class="event-badge">Past</span>
+                            </div>
+                            <div class="event-card-body">
+                                <div class="event-meta">
+                                    <time datetime="[Event Date]">[Event Date]</time>
+                                    <span class="event-location">[Event Venue]</span>
+                                </div>
+                                <h3>[Event Title]</h3>
+                                <p>[Event Description]</p>
+                                <a href="event-3.html" class="btn-link">Learn More</a>
+                            </div>
+                        </article>
+
+                        <article class="event-card" data-category="past">
+                            <div class="event-card-image">
+                                <img src="images/events/event4.jpg" alt="[Event Title]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Event Image]</div>';" />
+                                <span class="event-badge">Past</span>
+                            </div>
+                            <div class="event-card-body">
+                                <div class="event-meta">
+                                    <time datetime="[Event Date]">[Event Date]</time>
+                                    <span class="event-location">[Event Venue]</span>
+                                </div>
+                                <h3>[Event Title]</h3>
+                                <p>[Event Description]</p>
+                                <a href="event-4.html" class="btn-link">Learn More</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <nav class="pagination" aria-label="Events pagination">
+                        <ul class="pagination-list" id="events-pagination"></ul>
+                    </nav>
+                </div>
+            </section>
+
+            <!-- UPDATES -->
+            <section class="updates-section full-width" id="updates">
+                <div class="section-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-label">Updates</div>
+                            <h2>Latest News &amp; Announcements</h2>
+                        </div>
+                        <a href="updates.html" class="btn btn-secondary">View All Updates</a>
+                    </div>
+
+                    <div class="updates-grid" id="updates-grid">
+                        <article class="update-card">
+                            <div class="update-card-body">
+                                <div class="update-meta">
+                                    <time datetime="[Update Date]">[Update Date]</time>
+                                    <span class="update-category">[Category]</span>
+                                </div>
+                                <h3>[Update Title]</h3>
+                                <p>[Update Description]</p>
+                                <a href="update-1.html" class="btn-link">Read More</a>
+                            </div>
+                        </article>
+
+                        <article class="update-card">
+                            <div class="update-card-body">
+                                <div class="update-meta">
+                                    <time datetime="[Update Date]">[Update Date]</time>
+                                    <span class="update-category">[Category]</span>
+                                </div>
+                                <h3>[Update Title]</h3>
+                                <p>[Update Description]</p>
+                                <a href="update-2.html" class="btn-link">Read More</a>
+                            </div>
+                        </article>
+
+                        <article class="update-card">
+                            <div class="update-card-body">
+                                <div class="update-meta">
+                                    <time datetime="[Update Date]">[Update Date]</time>
+                                    <span class="update-category">[Category]</span>
+                                </div>
+                                <h3>[Update Title]</h3>
+                                <p>[Update Description]</p>
+                                <a href="update-3.html" class="btn-link">Read More</a>
+                            </div>
+                        </article>
+
+                        <article class="update-card">
+                            <div class="update-card-body">
+                                <div class="update-meta">
+                                    <time datetime="[Update Date]">[Update Date]</time>
+                                    <span class="update-category">[Category]</span>
+                                </div>
+                                <h3>[Update Title]</h3>
+                                <p>[Update Description]</p>
+                                <a href="update-4.html" class="btn-link">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <nav class="pagination" aria-label="Updates pagination">
+                        <ul class="pagination-list" id="updates-pagination"></ul>
+                    </nav>
+                </div>
+            </section>
+
+            <!-- GALLERY PREVIEW — ONLY 2 IMAGES, NO PAGINATION -->
+            <section class="gallery-preview full-width" id="gallery">
+                <div class="section-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-label">Gallery</div>
+                            <h2>Moments from Our Community</h2>
+                        </div>
+                        <a href="gallery.html" class="btn btn-secondary">View Full Gallery</a>
+                    </div>
+
+                    <div class="gallery-grid" id="gallery-grid">
+                        <figure class="gallery-item">
+                            <img src="images/gallery/image1.jpg" alt="[Gallery Image Description]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Image]</div>';" />
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="images/gallery/image2.jpg" alt="[Gallery Image Description]" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--color-surface-alt);color:var(--color-text-muted);font-size:0.8rem;\'>[Image]</div>';" />
+                        </figure>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MEMBERSHIP CTA -->
+            <section class="membership-cta full-width">
+                <div class="section-content">
+                    <div class="cta-box">
+                        <div class="cta-text">
+                            <h2>Become a Member</h2>
+                            <p>
+                                Join [Your Organization] and contribute to the
+                                growth and welfare of the community in [District Name]
+                                and [Region Name].
+                            </p>
+                        </div>
+                        <a href="membership.html" class="btn btn-primary">Apply Now</a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">
+                            [Your District Committee]
                         </p>
-                        <a href="about.html" class="btn btn-secondary">Read More</a>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="5">0</span>
-                            <span class="stat-label">Years of Experience</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="48">0</span>
-                            <span class="stat-label">Projects Delivered</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="20">0</span>
-                            <span class="stat-label">Countries Reached</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECTS / WORK SAMPLES -->
-        <section class="events-section full-width" id="events">
-            <div class="section-content">
-                <div class="section-header">
-                    <div>
-                        <div class="section-label">My Work</div>
-                        <h2>Featured Projects</h2>
-                    </div>
-                    <a href="events.html" class="btn btn-secondary">View All Projects</a>
-                </div>
-
-                <div class="events-grid" id="events-grid">
-                    <article class="event-card" data-category="upcoming">
-                        <div class="event-card-image">
-                            <img src="images/events/event1.jpg" alt="Demo Project 1 — Web Application" loading="lazy" />
-                            <span class="event-badge">Demo</span>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-meta">
-                                <time datetime="2026-09-15">Demo Project</time>
-                                <span class="event-location">Web App</span>
-                            </div>
-                            <h3>Full‑Stack Web Application</h3>
-                            <p>A complete web application with authentication, dashboard, and dynamic features.</p>
-                            <a href="event-1.html" class="btn-link">View Details</a>
-                        </div>
-                    </article>
-
-                    <article class="event-card" data-category="upcoming">
-                        <div class="event-card-image">
-                            <img src="images/events/event2.jpg" alt="Demo Project 2 — AI Tool" loading="lazy" />
-                            <span class="event-badge">Demo</span>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-meta">
-                                <time datetime="2026-10-05">Demo Project</time>
-                                <span class="event-location">AI Tool</span>
-                            </div>
-                            <h3>AI‑Powered Automation Tool</h3>
-                            <p>An AI‑assisted tool that automates workflows and provides intelligent insights.</p>
-                            <a href="event-2.html" class="btn-link">View Details</a>
-                        </div>
-                    </article>
-
-                    <article class="event-card" data-category="past">
-                        <div class="event-card-image">
-                            <img src="images/events/event3.jpg" alt="Demo Project 3 — Digital Production" loading="lazy" />
-                            <span class="event-badge">Demo</span>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-meta">
-                                <time datetime="2026-07-20">Demo Project</time>
-                                <span class="event-location">Production</span>
-                            </div>
-                            <h3>Digital Production Suite</h3>
-                            <p>A comprehensive digital production platform for content creators and producers.</p>
-                            <a href="event-3.html" class="btn-link">View Details</a>
-                        </div>
-                    </article>
-
-                    <article class="event-card" data-category="past">
-                        <div class="event-card-image">
-                            <img src="images/events/event4.jpg" alt="Demo Project 4 — Membership Platform" loading="lazy" />
-                            <span class="event-badge">Demo</span>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-meta">
-                                <time datetime="2026-06-10">Demo Project</time>
-                                <span class="event-location">Platform</span>
-                            </div>
-                            <h3>Membership &amp; Certificate Platform</h3>
-                            <p>A full‑featured membership platform with certificate generation and QR verification.</p>
-                            <a href="event-4.html" class="btn-link">View Details</a>
-                        </div>
-                    </article>
-                </div>
-
-                <nav class="pagination" aria-label="Projects pagination">
-                    <ul class="pagination-list" id="events-pagination"></ul>
-                </nav>
-            </div>
-        </section>
-
-        <!-- INSIGHTS -->
-        <section class="updates-section full-width" id="updates">
-            <div class="section-content">
-                <div class="section-header">
-                    <div>
-                        <div class="section-label">Insights</div>
-                        <h2>Latest Articles &amp; Updates</h2>
-                    </div>
-                    <a href="updates.html" class="btn btn-secondary">View All Insights</a>
-                </div>
-
-                <div class="updates-grid" id="updates-grid">
-                    <article class="update-card">
-                        <div class="update-card-body">
-                            <div class="update-meta">
-                                <time datetime="2026-08-10">10 August 2026</time>
-                                <span class="update-category">Announcement</span>
-                            </div>
-                            <h3>New Portfolio Website Launched</h3>
-                            <p>I've launched my new portfolio website showcasing my work and services.</p>
-                            <a href="update-1.html" class="btn-link">Read More</a>
-                        </div>
-                    </article>
-
-                    <article class="update-card">
-                        <div class="update-card-body">
-                            <div class="update-meta">
-                                <time datetime="2026-07-28">28 July 2026</time>
-                                <span class="update-category">Event</span>
-                            </div>
-                            <h3>AI Integration in Web Development</h3>
-                            <p>How AI is transforming the way we build web applications.</p>
-                            <a href="update-2.html" class="btn-link">Read More</a>
-                        </div>
-                    </article>
-
-                    <article class="update-card">
-                        <div class="update-card-body">
-                            <div class="update-meta">
-                                <time datetime="2026-07-15">15 July 2026</time>
-                                <span class="update-category">Community</span>
-                            </div>
-                            <h3>Why Firebase is a Game‑Changer</h3>
-                            <p>Exploring the benefits of Firebase Realtime Database for building scalable apps.</p>
-                            <a href="update-3.html" class="btn-link">Read More</a>
-                        </div>
-                    </article>
-
-                    <article class="update-card">
-                        <div class="update-card-body">
-                            <div class="update-meta">
-                                <time datetime="2026-06-30">30 June 2026</time>
-                                <span class="update-category">Announcement</span>
-                            </div>
-                            <h3>Now Offering Digital Production Services</h3>
-                            <p>I've expanded my services to include end‑to‑end digital production.</p>
-                            <a href="update-4.html" class="btn-link">Read More</a>
-                        </div>
-                    </article>
-                </div>
-
-                <nav class="pagination" aria-label="Updates pagination">
-                    <ul class="pagination-list" id="updates-pagination"></ul>
-                </nav>
-            </div>
-        </section>
-
-        <!-- CONNECT / CTA -->
-        <section class="membership-cta full-width">
-            <div class="section-content">
-                <div class="cta-box">
-                    <div class="cta-text">
-                        <h2>Let's Work Together</h2>
-                        <p>
-                            Have a project in mind? Whether it's a web application, AI integration, or a full digital product,
-                            I'm here to bring your vision to life.
+                        <p class="footer-address">
+                            [Official Organization Address]
                         </p>
                     </div>
-                    <a href="membership.html" class="btn btn-primary">Get Started</a>
-                </div>
-            </div>
-        </section>
 
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="site-footer" role="contentinfo">
-        <div class="footer-inner">
-            <div class="footer-main">
-                <div class="footer-brand">
-                    <span class="footer-logo">
-                        <span class="logo-emblem">&#9670;</span>
-                        <span class="logo-main">Yadav Subba</span>
-                    </span>
-                    <p class="footer-sub">
-                        AI Assisted Web Developer &amp; Producer
-                    </p>
-                    <p class="footer-address">
-                        Building digital solutions, worldwide.
-                    </p>
-                </div>
-
-                <div class="footer-links">
-                    <div class="footer-links-col">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="about.html">About Me</a></li>
-                            <li><a href="committee.html">Work</a></li>
-                            <li><a href="events.html">Projects</a></li>
-                            <li><a href="updates.html">Insights</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-links-col">
-                        <h4>Resources</h4>
-                        <ul>
-                            <li><a href="documents.html">Resources</a></li>
-                            <li><a href="membership.html">Connect</a></li>
-                            <li><a href="gallery.html">Showcase</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><a href="disclaimer.html">Disclaimer</a></li>
-                            <li><a href="certificates.html">Approved Members</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-links-col">
-                        <h4>Connect</h4>
-                        <ul class="footer-social">
-                            <li><a href="#" aria-label="Facebook">Facebook</a></li>
-                            <li><a href="#" aria-label="YouTube">YouTube</a></li>
-                            <li><a href="#" aria-label="Instagram">Instagram</a></li>
-                            <li><a href="#" aria-label="Email">Email</a></li>
-                        </ul>
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
             </div>
+        </footer>
 
-            <div class="footer-bottom">
-                <p>&copy; 2026 Yadav Subba — AI Assisted Web Developer &amp; Producer. All rights reserved.</p>
-                <p class="footer-credit">Designed with passion, built with purpose.</p>
-            </div>
-        </div>
-    </footer>
+    </div>
 
-</div>
-
-<script src="script.js"></script>
-<script src="hero-carousel.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
