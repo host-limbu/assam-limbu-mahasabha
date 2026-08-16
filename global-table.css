@@ -1,35 +1,34 @@
 /* ============================================================
-   GLOBAL TABLE STYLES — Shared between admin & inquiries
+   GLOBAL TABLE STYLES
+   Consolidated from admin, status, and inquiry tables
+   Padding increased and made consistent across all tables
    ============================================================ */
 
-/* ------------------------------------------------------------------
-   TABLE WRAPPER (shared)
-   ------------------------------------------------------------------ */
+/* --- Table Wrapper (shared) --- */
 .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-lg); /* increased from md to lg for more spacing */
 }
 
-/* ============================================================
-   ADMIN TABLE
-   ============================================================ */
-
+/* --- Admin Table --- */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
     white-space: nowrap;
-    min-width: 700px;
+    min-width: 750px; /* slightly larger */
+    font-size: 0.95rem; /* consistent larger size */
 }
+
 .admin-table th,
 .admin-table td {
     border: 1px solid var(--color-border);
-    padding: 0.5rem 0.8rem;
+    padding: 0.75rem 1rem; /* increased and consistent */
     text-align: left;
-    font-size: 0.9rem;
     background: var(--color-surface);
     color: var(--color-text);
 }
+
 .admin-table th {
     font-weight: var(--font-medium);
     background: var(--color-surface-alt);
@@ -38,12 +37,13 @@
 .admin-table .actions {
     display: flex;
     flex-wrap: nowrap;
-    gap: 0.25rem;
+    gap: 0.35rem; /* slightly larger gap */
     align-items: center;
 }
+
 .admin-table .actions .btn {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem; /* slightly larger */
+    font-size: 0.75rem; /* slightly larger */
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -54,43 +54,94 @@
     padding: var(--spacing-lg);
 }
 
-/* ============================================================
-   INQUIRY TABLE
-   ============================================================ */
+/* --- Status Table --- */
+.status-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    min-width: 650px;
+    font-size: 0.95rem;
+}
 
+.status-table th,
+.status-table td {
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.status-table th {
+    font-weight: var(--font-medium);
+    background: var(--color-surface-alt);
+}
+
+.history-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: var(--spacing-lg);
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    min-width: 550px;
+    font-size: 0.95rem;
+}
+
+.history-table th,
+.history-table td {
+    border: 1px solid var(--color-border);
+    padding: 0.6rem 0.9rem; /* slightly smaller than main tables */
+    text-align: left;
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.history-table th {
+    font-weight: var(--font-medium);
+    background: var(--color-surface-alt);
+}
+
+/* --- Inquiry Table --- */
 .inquiry-table {
     width: 100%;
     border-collapse: collapse;
     white-space: nowrap;
-    min-width: 900px;
+    min-width: 950px;
+    font-size: 0.95rem;
 }
+
 .inquiry-table th,
 .inquiry-table td {
     border: 1px solid var(--color-border);
-    padding: 0.5rem 0.8rem;
+    padding: 0.75rem 1rem;
     text-align: left;
-    font-size: 0.9rem;
     background: var(--color-surface);
     color: var(--color-text);
 }
+
 .inquiry-table th {
     font-weight: var(--font-medium);
     background: var(--color-surface-alt);
 }
 
-/* ---- Status Badges (Inquiry only) ---- */
 .inquiry-table .status-badge {
-    padding: 0.2rem 0.6rem;
+    padding: 0.3rem 0.7rem;
     border-radius: 20px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: var(--font-medium);
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
+
 .status-badge.unread {
     background: #dc3545;
     color: #fff;
 }
+
 .status-badge.read {
     background: #28a745;
     color: #fff;
@@ -99,12 +150,13 @@
 .inquiry-table .actions {
     display: flex;
     flex-wrap: nowrap;
-    gap: 0.25rem;
+    gap: 0.35rem;
     align-items: center;
 }
+
 .inquiry-table .actions .btn {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -115,30 +167,39 @@
     padding: var(--spacing-lg);
 }
 
-/* ============================================================
-   RESPONSIVE TABLES
-   ============================================================ */
-
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-    .admin-table {
-        font-size: 0.8rem;
-        min-width: 500px;
+    .admin-table,
+    .status-table,
+    .history-table,
+    .inquiry-table {
+        font-size: 0.85rem;
     }
     .admin-table th,
-    .admin-table td {
-        padding: 0.3rem 0.5rem;
-    }
-    .admin-table .actions .btn {
-        font-size: 0.65rem;
-        padding: 0.1rem 0.3rem;
-    }
-
-    .inquiry-table {
-        font-size: 0.8rem;
-        min-width: 700px;
-    }
+    .admin-table td,
+    .status-table th,
+    .status-table td,
+    .history-table th,
+    .history-table td,
     .inquiry-table th,
     .inquiry-table td {
-        padding: 0.3rem 0.5rem;
+        padding: 0.5rem 0.6rem;
+    }
+    .admin-table {
+        min-width: 550px;
+    }
+    .status-table {
+        min-width: 500px;
+    }
+    .history-table {
+        min-width: 450px;
+    }
+    .inquiry-table {
+        min-width: 700px;
+    }
+    .admin-table .actions .btn,
+    .inquiry-table .actions .btn {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.3rem;
     }
 }
