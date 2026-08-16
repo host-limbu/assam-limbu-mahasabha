@@ -1,10 +1,13 @@
 /**
- * certificate.js – Fetches application, populates certificate, generates QR using stored verificationId.
+ * certificate.js – Central data-fetching and placeholder population.
+ * Reads reference number from URL, fetches data, populates placeholders,
+ * generates QR code using stored verificationId, then reveals certificate.
  */
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
 
+// Firebase config
 const firebaseConfig = {
     apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
     authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -17,10 +20,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// DOM elements
 const loadingContainer = document.getElementById('loadingContainer');
 const certificatePage = document.getElementById('certificatePage');
 const actionButtons = document.getElementById('actionButtons');
 
+// Get reference number from URL
 const urlParams = new URLSearchParams(window.location.search);
 const refNumber = urlParams.get('ref');
 
@@ -29,6 +34,7 @@ if (!refNumber) {
     throw new Error('Missing ref parameter');
 }
 
+// Helper: format date
 function formatDate(dateStr) {
     if (!dateStr) return 'N/A';
     if (dateStr.includes('-') || dateStr.includes('/')) return dateStr;
@@ -37,12 +43,13 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// ✅ FIXED: No encoding – keep square brackets as-is
+// Helper: build verification URL for QR code
 function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
-    return `${baseUrl}verify.html?id=${verificationId}`;
+    return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
 }
 
+// Main function
 async function loadCertificate() {
     try {
         const snapshot = await get(ref(db, 'applications'));
@@ -77,22 +84,22 @@ async function loadCertificate() {
         const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
         const photoURL = app.photoURL || '';
 
-        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `ALM-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
+        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
         const certificateId = `CERT-${refNum}`;
-        // Use stored verificationId – ensure it matches the database
+        // Use stored verificationId from database, or generate a fallback
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
-        console.log('Using verificationId:', verificationId);
 
         const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
         const fullAddress = addressParts.join(', ') || 'N/A';
 
+        // --- Generate QR code using the verificationId ---
         const verificationUrl = getVerificationUrl(verificationId);
         let qrDataUrl = '';
         try {
             if (typeof window.generateQRCodeDataURL === 'function') {
                 qrDataUrl = window.generateQRCodeDataURL(verificationUrl, 150);
             } else {
-                console.warn('QRCode generator not available.');
+                console.warn('QRCode generator not available. Using fallback placeholder.');
                 qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
             }
         } catch (err) {
@@ -100,7 +107,7 @@ async function loadCertificate() {
             qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
         }
 
-        // Populate placeholders
+        // --- Populate DOM placeholders ---
         document.getElementById('membershipNumber').textContent = membershipNumber;
         document.getElementById('applicationNumber').textContent = refNum;
         document.getElementById('issueDate').textContent = formatDate(issueDate);
@@ -137,12 +144,13 @@ async function loadCertificate() {
             qrImg.alt = 'Verification QR Code';
         }
 
-        document.getElementById('daName').textContent = app.dealingAssistantName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
-        document.getElementById('presidentName').textContent = app.presidentName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
-        document.getElementById('aaName').textContent = app.approvingAuthorityName || '𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫';
+        document.getElementById('daName').textContent = '[Verifying Officer]';
+        document.getElementById('presidentName').textContent = '[Reviewing Officer]';
+        document.getElementById('aaName').textContent = '[Approving Officer]';
 
         document.getElementById('certificateId').textContent = certificateId;
 
+        // --- All data injected. Show certificate and hide spinner ---
         loadingContainer.style.display = 'none';
         certificatePage.style.display = 'block';
         actionButtons.style.display = 'flex';
@@ -153,4 +161,5 @@ async function loadCertificate() {
     }
 }
 
+// Execute
 loadCertificate();
