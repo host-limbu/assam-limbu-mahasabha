@@ -257,33 +257,37 @@
         // Get verification ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const verificationId = urlParams.get('id');
-        debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
 
-        if (!verificationId) {
-            loadingState.style.display = 'none';
-            resultState.style.display = 'block';
-            statusIcon.className = 'verification-icon invalid';
-            statusIcon.textContent = '✗';
-            statusText.className = 'verification-result invalid';
-            statusText.textContent = 'Invalid Verification ID';
-            statusMessage.textContent = 'No verification ID provided.';
-            debugInfo.textContent += '\nNo ID in URL.';
-            return;
-        }
-
-        // Timeout fallback: if Firebase doesn't respond in 10 seconds, show error
-        const timeoutId = setTimeout(() => {
-            loadingState.style.display = 'none';
-            resultState.style.display = 'block';
-            statusIcon.className = 'verification-icon invalid';
-            statusIcon.textContent = '✗';
-            statusText.className = 'verification-result invalid';
-            statusText.textContent = 'Verification Timeout';
-            statusMessage.textContent = 'The verification request timed out. Please check your network and try again.';
-            debugInfo.textContent += '\nTimeout: Firebase did not respond within 10 seconds.';
-        }, 10000);
-
+        // Main verification function
         async function verifyCertificate() {
+            // Update debug info
+            debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
+
+            // Check if verification ID exists
+            if (!verificationId) {
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                statusIcon.className = 'verification-icon invalid';
+                statusIcon.textContent = '✗';
+                statusText.className = 'verification-result invalid';
+                statusText.textContent = 'Invalid Verification ID';
+                statusMessage.textContent = 'No verification ID provided.';
+                debugInfo.textContent += '\nNo ID in URL.';
+                return;
+            }
+
+            // Timeout fallback: if Firebase doesn't respond in 10 seconds, show error
+            const timeoutId = setTimeout(() => {
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                statusIcon.className = 'verification-icon invalid';
+                statusIcon.textContent = '✗';
+                statusText.className = 'verification-result invalid';
+                statusText.textContent = 'Verification Timeout';
+                statusMessage.textContent = 'The verification request timed out. Please check your network and try again.';
+                debugInfo.textContent += '\nTimeout: Firebase did not respond within 10 seconds.';
+            }, 10000);
+
             try {
                 console.log('Verification started for ID:', verificationId);
 
@@ -375,6 +379,7 @@
             }
         }
 
+        // Execute verification
         verifyCertificate();
     </script>
 
