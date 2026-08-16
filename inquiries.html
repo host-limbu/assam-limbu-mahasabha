@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* ===== LOGIN FORM (same as admin.html) ===== */
+        /* ===== LOGIN FORM ===== */
         .inquiry-login-form {
             max-width: 400px;
             margin: 0 auto;
@@ -392,7 +392,7 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // Restrict to a specific UID for security
+        // Restrict to contact admin UID
         const ALLOWED_UID = 'VphanModTwd4lQaPmwKA8EUvL3A3';
 
         // DOM elements
