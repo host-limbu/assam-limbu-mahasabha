@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* ===== Records specific styles (matches admin.html) ===== */
         .records-header {
             display: flex;
             justify-content: space-between;
@@ -37,7 +36,7 @@
             font-weight: var(--font-medium);
         }
 
-        /* Tabs — styled to match the admin design */
+        /* Tabs */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -94,7 +93,6 @@
             color: var(--color-text-muted);
         }
 
-        /* Action buttons inside the table — consistent with admin-table actions */
         .inquiry-table .actions .btn {
             padding: 0.15rem 0.4rem;
             font-size: 0.7rem;
@@ -139,10 +137,96 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            overflow-y: auto;
+        }
+        .modal.visible {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--color-surface);
+            max-width: 600px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .modal-content .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color var(--transition);
+        }
+        .modal-content .modal-close:hover {
+            color: var(--color-text);
+        }
+        .modal-content h3 {
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+        .modal-content .detail-row {
+            display: flex;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .modal-content .detail-row .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            width: 100px;
+            flex-shrink: 0;
+        }
+        .modal-content .detail-row .value {
+            color: var(--color-text);
+            word-break: break-word;
+            white-space: normal;
+        }
+        .modal-content .message-full {
+            margin-top: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: var(--color-surface-alt);
+            border-radius: var(--radius);
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        .modal-actions .btn {
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 768px) {
             .records-header {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            .modal-content {
+                padding: var(--spacing-md);
+                margin: var(--spacing-sm);
             }
         }
     </style>
@@ -151,7 +235,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER (same as admin.html) -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -184,12 +267,11 @@
             </div>
         </header>
 
-        <!-- MAIN SECTION — SAME AS admin.html -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
 
-                    <!-- Heading with "Demo" badge (same as admin.html) -->
+                    <!-- Heading with Demo badge -->
                     <h2 style="text-align: center;">
                         Inquiry Records
                         <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span>
@@ -198,7 +280,7 @@
                         View and manage all contact form inquiries submitted via the website.
                     </p>
 
-                    <!-- Header with Role Badge and Logout (same as admin.html dashboard header) -->
+                    <!-- Header with Role Badge and Logout -->
                     <div class="records-header">
                         <div>
                             <span class="admin-role-badge">Inquiry Admin</span>
@@ -209,7 +291,7 @@
                         </div>
                     </div>
 
-                    <!-- Tabs (New / Read) — styled to fit the admin design -->
+                    <!-- Tabs -->
                     <div class="tabs" id="tabs">
                         <button class="tab-btn active" data-tab="new">New</button>
                         <button class="tab-btn" data-tab="read">Read</button>
@@ -227,7 +309,26 @@
             </section>
         </main>
 
-        <!-- FOOTER (same as admin.html) -->
+        <!-- View Modal -->
+        <div id="viewModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" id="viewModalClose">&times;</button>
+                <h3>Message Details</h3>
+                <div id="viewModalContent">
+                    <div class="detail-row"><span class="label">Name</span><span class="value" id="viewName"></span></div>
+                    <div class="detail-row"><span class="label">Email</span><span class="value" id="viewEmail"></span></div>
+                    <div class="detail-row"><span class="label">Phone</span><span class="value" id="viewPhone"></span></div>
+                    <div class="detail-row"><span class="label">Subject</span><span class="value" id="viewSubject"></span></div>
+                    <div class="detail-row"><span class="label">Date</span><span class="value" id="viewDate"></span></div>
+                    <div class="detail-row" style="border-bottom: none;"><span class="label">Message</span></div>
+                    <div class="message-full" id="viewMessage"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="viewModalCloseBtn">Close</button>
+                </div>
+            </div>
+        </div>
+
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -314,6 +415,17 @@
         const tableContainer = document.getElementById('tableContainer');
         const logoutBtn = document.getElementById('logoutBtn');
         const toast = document.getElementById('toast');
+
+        // Modal elements
+        const viewModal = document.getElementById('viewModal');
+        const viewModalClose = document.getElementById('viewModalClose');
+        const viewModalCloseBtn = document.getElementById('viewModalCloseBtn');
+        const viewName = document.getElementById('viewName');
+        const viewEmail = document.getElementById('viewEmail');
+        const viewPhone = document.getElementById('viewPhone');
+        const viewSubject = document.getElementById('viewSubject');
+        const viewDate = document.getElementById('viewDate');
+        const viewMessage = document.getElementById('viewMessage');
 
         let currentTab = 'new';
         let allData = [];
@@ -418,6 +530,7 @@
                             <td>${statusBadge}</td>
                             <td>
                                 <div class="actions">
+                                    <button class="btn btn-secondary" data-action="view" data-key="${inquiry._key}">View</button>
                                     <button class="btn btn-secondary" data-action="reply" data-email="${inquiry.email || ''}" data-subject="${inquiry.subject || ''}">Reply</button>
                                     ${ (inquiry.status === 'unread' || !inquiry.status) ? `<button class="btn btn-primary" data-action="mark-read" data-key="${inquiry._key}">Mark Read</button>` : '' }
                                 </div>
@@ -430,6 +543,16 @@
                 tableContainer.innerHTML = html;
 
                 // Attach event listeners
+                tableContainer.querySelectorAll('[data-action="view"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const key = btn.dataset.key;
+                        const inquiry = allData.find(item => item._key === key);
+                        if (inquiry) {
+                            openViewModal(inquiry);
+                        }
+                    });
+                });
+
                 tableContainer.querySelectorAll('[data-action="reply"]').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const email = btn.dataset.email;
@@ -449,7 +572,7 @@
                         try {
                             await update(ref, { status: 'read' });
                             showToast('Marked as read.', true);
-                            // Reload data to refresh the list
+                            // Refresh the data and re-render
                             loadData();
                         } catch (error) {
                             console.error('Error marking as read:', error);
@@ -459,6 +582,27 @@
                 });
             }, 300);
         }
+
+        // View Modal functions
+        function openViewModal(inquiry) {
+            viewName.textContent = inquiry.name || 'N/A';
+            viewEmail.textContent = inquiry.email || 'N/A';
+            viewPhone.textContent = inquiry.phone || 'N/A';
+            viewSubject.textContent = inquiry.subject || 'N/A';
+            viewDate.textContent = inquiry.timestamp || 'N/A';
+            viewMessage.textContent = inquiry.message || 'No message content.';
+            viewModal.classList.add('visible');
+        }
+
+        function closeViewModal() {
+            viewModal.classList.remove('visible');
+        }
+
+        viewModalClose.addEventListener('click', closeViewModal);
+        viewModalCloseBtn.addEventListener('click', closeViewModal);
+        viewModal.addEventListener('click', (e) => {
+            if (e.target === viewModal) closeViewModal();
+        });
 
         // Logout
         logoutBtn.addEventListener('click', async () => {
