@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
+        /* (same styles as before) */
         .verification-container {
             max-width: 800px;
             margin: var(--spacing-xl) auto;
@@ -105,6 +106,7 @@
             text-align: left;
             max-height: 150px;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -260,10 +262,14 @@
 
         // Main verification function
         async function verifyCertificate() {
-            // Update debug info
-            debugInfo.textContent = `Verification ID: ${verificationId || 'NOT PROVIDED'}`;
+            const logs = [];
+            function addLog(msg) {
+                logs.push(msg);
+                debugInfo.textContent = logs.join('\n');
+            }
 
-            // Check if verification ID exists
+            addLog(`Verification ID: ${verificationId || 'NOT PROVIDED'}`);
+
             if (!verificationId) {
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
@@ -272,12 +278,13 @@
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Invalid Verification ID';
                 statusMessage.textContent = 'No verification ID provided.';
-                debugInfo.textContent += '\nNo ID in URL.';
+                addLog('No ID in URL.');
                 return;
             }
 
-            // Timeout fallback: if Firebase doesn't respond in 10 seconds, show error
+            // Set a timeout to stop spinner after 8 seconds
             const timeoutId = setTimeout(() => {
+                addLog('⚠️ Timeout: Firebase did not respond within 8 seconds.');
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
                 statusIcon.className = 'verification-icon invalid';
@@ -285,23 +292,65 @@
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Verification Timeout';
                 statusMessage.textContent = 'The verification request timed out. Please check your network and try again.';
-                debugInfo.textContent += '\nTimeout: Firebase did not respond within 10 seconds.';
-            }, 10000);
+            }, 8000);
 
             try {
-                console.log('Verification started for ID:', verificationId);
-
-                // Use a query to find the application with matching verificationId
+                addLog('Connecting to Firebase...');
                 const appsRef = ref(db, 'applications');
-                const q = query(appsRef, orderByChild('verificationId'), equalTo(verificationId));
 
-                console.log('Querying Firebase...');
-                const snapshot = await get(q);
-                console.log('Query completed.');
+                // Attempt 1: Query by index
+                try {
+                    addLog('Querying with orderByChild("verificationId")...');
+                    const q = query(appsRef, orderByChild('verificationId'), equalTo(verificationId));
+                    const snapshot = await get(q);
+                    clearTimeout(timeoutId);
 
-                clearTimeout(timeoutId); // Clear timeout since we got a response
+                    if (snapshot.exists()) {
+                        const appData = snapshot.val();
+                        const keys = Object.keys(appData);
+                        const foundApp = appData[keys[0]];
+                        addLog('Found application via indexed query.');
+                        displayResult(foundApp);
+                        return;
+                    } else {
+                        addLog('No match found via indexed query.');
+                    }
+                } catch (queryError) {
+                    addLog(`Indexed query failed: ${queryError.message}`);
+                    // If the query fails (likely due to missing index), fallback to full scan
+                }
 
-                if (!snapshot.exists()) {
+                // Fallback: fetch all applications and filter client-side
+                addLog('Falling back to full database scan...');
+                const fullSnapshot = await get(appsRef);
+                clearTimeout(timeoutId);
+
+                if (!fullSnapshot.exists()) {
+                    addLog('No applications found.');
+                    loadingState.style.display = 'none';
+                    resultState.style.display = 'block';
+                    statusIcon.className = 'verification-icon invalid';
+                    statusIcon.textContent = '✗';
+                    statusText.className = 'verification-result invalid';
+                    statusText.textContent = 'No Data';
+                    statusMessage.textContent = 'No applications exist in the database.';
+                    return;
+                }
+
+                const allApps = fullSnapshot.val();
+                let foundApp = null;
+                for (const key in allApps) {
+                    if (allApps[key].verificationId === verificationId) {
+                        foundApp = allApps[key];
+                        break;
+                    }
+                }
+
+                if (foundApp) {
+                    addLog('Found application via full scan.');
+                    displayResult(foundApp);
+                } else {
+                    addLog('No application found with this verification ID.');
                     loadingState.style.display = 'none';
                     resultState.style.display = 'block';
                     statusIcon.className = 'verification-icon invalid';
@@ -309,64 +358,11 @@
                     statusText.className = 'verification-result invalid';
                     statusText.textContent = 'Invalid Certificate';
                     statusMessage.textContent = 'No valid certificate found with this verification ID.';
-                    debugInfo.textContent += '\nNo application found with verificationId: ' + verificationId;
-                    return;
                 }
-
-                // Get the first matching application
-                const appData = snapshot.val();
-                const keys = Object.keys(appData);
-                const foundApp = appData[keys[0]];
-
-                console.log('Found application:', foundApp);
-
-                // Build membership and certificate numbers
-                const refNum = foundApp.refNumber || 'N/A';
-                const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
-                    ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
-                    : refNum;
-                const certificateNumber = `CERT-${refNum}`;
-
-                const fields = [
-                    { label: 'Membership Number', value: membershipNumber },
-                    { label: 'Certificate Number', value: certificateNumber },
-                    { label: 'Name', value: `${foundApp.firstName || ''} ${foundApp.secondName || ''}` },
-                    { label: 'Father / Guardian', value: foundApp.fatherGuardianName || 'N/A' },
-                    { label: 'Membership Type', value: foundApp.membershipType || 'General' },
-                    { label: 'Reference No.', value: foundApp.refNumber || 'N/A' },
-                    { label: 'Date of Birth', value: foundApp.dob || 'N/A' },
-                    { label: 'District', value: foundApp.district || 'N/A' },
-                    { label: 'Village', value: foundApp.village || 'N/A' },
-                    { label: 'Post Office', value: foundApp.postOffice || 'N/A' },
-                    { label: 'Police Station', value: foundApp.ps || 'N/A' },
-                    { label: 'PIN', value: foundApp.pin || 'N/A' },
-                    { label: 'Issue Date', value: foundApp.timestamp ? foundApp.timestamp.split(' ')[0] : 'N/A' },
-                    { label: 'Status', value: foundApp.status || 'Approved' },
-                ];
-
-                let detailsHTML = '';
-                fields.forEach(f => {
-                    detailsHTML += `
-                        <div class="detail-item">
-                            <span class="label">${f.label}</span>
-                            <span class="value">${f.value}</span>
-                        </div>
-                    `;
-                });
-                detailsContainer.innerHTML = detailsHTML;
-
-                loadingState.style.display = 'none';
-                resultState.style.display = 'block';
-                statusIcon.className = 'verification-icon valid';
-                statusIcon.textContent = '✓';
-                statusText.className = 'verification-result valid';
-                statusText.textContent = 'Valid Certificate';
-                statusMessage.textContent = `This certificate is valid and issued to ${foundApp.firstName || ''} ${foundApp.secondName || ''}.`;
-                verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-                debugInfo.textContent += '\nCertificate verified successfully.';
 
             } catch (error) {
                 clearTimeout(timeoutId);
+                addLog(`Error: ${error.message}`);
                 console.error('Verification error:', error);
                 loadingState.style.display = 'none';
                 resultState.style.display = 'block';
@@ -374,12 +370,59 @@
                 statusIcon.textContent = '✗';
                 statusText.className = 'verification-result invalid';
                 statusText.textContent = 'Verification Error';
-                statusMessage.textContent = `Error: ${error.message}`;
-                debugInfo.textContent += `\nError: ${error.message}`;
+                statusMessage.textContent = `Error: ${error.message}. Please try again or contact support.`;
             }
         }
 
-        // Execute verification
+        function displayResult(app) {
+            const refNum = app.refNumber || 'N/A';
+            const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
+                ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
+                : refNum;
+            const certificateNumber = `CERT-${refNum}`;
+
+            const fields = [
+                { label: 'Membership Number', value: membershipNumber },
+                { label: 'Certificate Number', value: certificateNumber },
+                { label: 'Name', value: `${app.firstName || ''} ${app.secondName || ''}` },
+                { label: 'Father / Guardian', value: app.fatherGuardianName || 'N/A' },
+                { label: 'Membership Type', value: app.membershipType || 'General' },
+                { label: 'Reference No.', value: app.refNumber || 'N/A' },
+                { label: 'Date of Birth', value: app.dob || 'N/A' },
+                { label: 'District', value: app.district || 'N/A' },
+                { label: 'Village', value: app.village || 'N/A' },
+                { label: 'Post Office', value: app.postOffice || 'N/A' },
+                { label: 'Police Station', value: app.ps || 'N/A' },
+                { label: 'PIN', value: app.pin || 'N/A' },
+                { label: 'Issue Date', value: app.timestamp ? app.timestamp.split(' ')[0] : 'N/A' },
+                { label: 'Status', value: app.status || 'Approved' },
+            ];
+
+            let detailsHTML = '';
+            fields.forEach(f => {
+                detailsHTML += `
+                    <div class="detail-item">
+                        <span class="label">${f.label}</span>
+                        <span class="value">${f.value}</span>
+                    </div>
+                `;
+            });
+            detailsContainer.innerHTML = detailsHTML;
+
+            loadingState.style.display = 'none';
+            resultState.style.display = 'block';
+            statusIcon.className = 'verification-icon valid';
+            statusIcon.textContent = '✓';
+            statusText.className = 'verification-result valid';
+            statusText.textContent = 'Valid Certificate';
+            statusMessage.textContent = `This certificate is valid and issued to ${app.firstName || ''} ${app.secondName || ''}.`;
+            verifyTimestamp.textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+            // Update debug info with success
+            const debugDiv = document.getElementById('debugInfo');
+            debugDiv.textContent += '\n✔ Certificate verified successfully.';
+        }
+
+        // Start verification
         verifyCertificate();
     </script>
 
