@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Check Application Status — [Your Organization]</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -39,53 +40,6 @@
             outline: none;
             border-color: var(--color-primary);
         }
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: var(--spacing-md);
-        }
-        .status-table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
-            min-width: 600px;
-        }
-        .status-table th,
-        .status-table td {
-            border: 1px solid var(--color-border);
-            padding: 0.5rem 0.8rem;
-            text-align: left;
-            font-size: 0.9rem;
-            background: var(--color-surface);
-            color: var(--color-text);
-        }
-        .status-table th {
-            font-weight: var(--font-medium);
-            background: var(--color-surface-alt);
-        }
-        .history-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: var(--spacing-md);
-        }
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
-            min-width: 500px;
-        }
-        .history-table th,
-        .history-table td {
-            border: 1px solid var(--color-border);
-            padding: 0.4rem 0.7rem;
-            font-size: 0.85rem;
-            background: var(--color-surface);
-            color: var(--color-text);
-        }
-        .history-table th {
-            font-weight: var(--font-medium);
-            background: var(--color-surface-alt);
-        }
         .no-result {
             text-align: center;
             color: var(--color-text-muted);
@@ -96,13 +50,14 @@
             text-align: center;
         }
         @media (max-width: 768px) {
-            .status-container { padding: var(--spacing-md); }
-            .status-table, .history-table { font-size: 0.8rem; }
-            .status-table th, .status-table td { padding: 0.3rem 0.5rem; }
+            .status-container {
+                padding: var(--spacing-md);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- rest of check-status.html remains unchanged -->
 
     <div class="site-shell">
 
