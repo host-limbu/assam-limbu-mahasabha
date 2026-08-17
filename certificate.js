@@ -1,11 +1,13 @@
 /**
- * certificate.js – Fetches data, populates certificate, generates QR,
- * then automatically generates PDF and redirects back.
+ * certificate.js – Fetches application by reference number,
+ * populates all certificate placeholders with real data,
+ * generates QR code dynamically, and reveals certificate.
  */
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
 
+// Firebase config
 const firebaseConfig = {
     apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
     authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -18,22 +20,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const loadingText = document.getElementById('loadingText');
-const statusMessage = document.getElementById('statusMessage');
+// DOM elements
+const loadingContainer = document.getElementById('loadingContainer');
+const certificatePage = document.getElementById('certificatePage');
+const actionButtons = document.getElementById('actionButtons');
 
+// Get reference number from URL
 const urlParams = new URLSearchParams(window.location.search);
 const refNumber = urlParams.get('ref');
 
-// Redirect target (where to go after PDF is generated)
-const redirectUrl = urlParams.get('redirect') || document.referrer || 'certificate-records.html';
-
 if (!refNumber) {
-    statusMessage.textContent = 'No reference number provided.';
-    statusMessage.style.color = 'red';
-    setTimeout(() => { window.location.href = redirectUrl; }, 3000);
+    loadingContainer.innerHTML = '<p style="color:red; text-align:center;">No reference number provided.</p>';
     throw new Error('Missing ref parameter');
 }
 
+// Helper: format date
 function formatDate(dateStr) {
     if (!dateStr) return 'N/A';
     if (dateStr.includes('-') || dateStr.includes('/')) return dateStr;
@@ -42,23 +43,20 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+// Helper: build verification URL for QR code
 function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
     return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
 }
 
+// Main function
 async function loadCertificate() {
     try {
-        statusMessage.textContent = 'Fetching application data...';
-
         const snapshot = await get(ref(db, 'applications'));
         if (!snapshot.exists()) {
-            statusMessage.textContent = 'No applications found.';
-            statusMessage.style.color = 'red';
-            setTimeout(() => { window.location.href = redirectUrl; }, 3000);
+            loadingContainer.innerHTML = '<p style="color:red; text-align:center;">No applications found.</p>';
             return;
         }
-
         const allApps = snapshot.val();
         let app = null;
         for (const key in allApps) {
@@ -67,41 +65,42 @@ async function loadCertificate() {
                 break;
             }
         }
-
         if (!app) {
-            statusMessage.textContent = `Application ${refNumber} not found.`;
-            statusMessage.style.color = 'red';
-            setTimeout(() => { window.location.href = redirectUrl; }, 3000);
+            loadingContainer.innerHTML = `<p style="color:red; text-align:center;">Application with reference ${refNumber} not found.</p>`;
             return;
         }
 
         // --- Extract data ---
-        const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-        const fatherName = app.fatherGuardianName || 'N/A';
-        const membershipType = app.membershipType || 'General';
-        const dob = app.dob || 'N/A';
-        const district = app.district || 'N/A';
-        const village = app.village || 'N/A';
-        const postOffice = app.postOffice || 'N/A';
-        const policeStation = app.ps || 'N/A';
-        const pin = app.pin || 'N/A';
-        const refNum = app.refNumber || 'N/A';
+        const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || '[Name]';
+        const fatherName = app.fatherGuardianName || '[Father / Guardian]';
+        const membershipType = app.membershipType || '[Membership Type]';
+        const dob = app.dob || '[Date of Birth]';
+        const district = app.district || '[District]';
+        const village = app.village || '[Village]';
+        const postOffice = app.postOffice || '[Post Office]';
+        const policeStation = app.ps || '[Police Station]';
+        const pin = app.pin || '[PIN]';
+        const refNum = app.refNumber || refNumber;
         const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
         const photoURL = app.photoURL || '';
 
-        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
-            ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
-            : refNum;
+        // Generate derived IDs
+        const membershipNumber = `ALM-${refNum.split('-')[1] || '2026'}-${refNum.split('-')[2] || '00000'}`;
         const certificateId = `CERT-${refNum}`;
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
+        // Build full address for formal text
+        const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
+        const fullAddress = addressParts.join(', ') || '[Address]';
+
         // --- Generate QR code ---
-        statusMessage.textContent = 'Generating QR code...';
         const verificationUrl = getVerificationUrl(verificationId);
         let qrDataUrl = '';
         try {
             if (typeof window.generateQRCodeDataURL === 'function') {
                 qrDataUrl = window.generateQRCodeDataURL(verificationUrl, 150);
+            } else {
+                qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
             }
         } catch (err) {
             console.warn('QR generation failed:', err);
@@ -109,9 +108,8 @@ async function loadCertificate() {
         }
 
         // --- Populate DOM placeholders ---
-        document.getElementById('membershipNumber').textContent = membershipNumber;
-        document.getElementById('issueDate').textContent = formatDate(issueDate);
-
+        document.getElementById('membershipNumber').textContent = `Membership ID : ${membershipNumber}`;
+        document.getElementById('issueDate').textContent = `Date : ${formatDate(issueDate)}`;
         document.getElementById('memberName').textContent = memberName;
         document.getElementById('fatherName').textContent = fatherName;
         document.getElementById('membershipType').textContent = membershipType;
@@ -122,6 +120,7 @@ async function loadCertificate() {
         document.getElementById('policeStation').textContent = policeStation;
         document.getElementById('pin').textContent = pin;
 
+        // Member photo
         const photoImg = document.getElementById('memberPhoto');
         if (photoURL) {
             photoImg.src = photoURL;
@@ -130,62 +129,43 @@ async function loadCertificate() {
             photoImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23eee"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" font-size="12" fill="%23999" font-family="sans-serif"%3ENo Photo%3C/text%3E%3C/svg%3E';
         }
 
+        // Formal text with dynamic data
+        document.getElementById('formalText').textContent =
+            `This certificate is issued to ${memberName} (${fatherName}) confirming their membership in the ` +
+            `[Your Organization], [Your District Committee]. The member is entitled to participate in ` +
+            `the activities, programmes and community initiatives of the organization, subject to its ` +
+            `rules and regulations.`;
+
+        // Verification section
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
         document.getElementById('verificationId').textContent = verificationId;
 
+        // QR code
         const qrImg = document.getElementById('qrCode');
         if (qrImg) {
             qrImg.src = qrDataUrl;
             qrImg.alt = 'Verification QR Code';
         }
 
-        document.getElementById('daName').textContent = '[Verifying Officer]';
-        document.getElementById('presidentName').textContent = '[Reviewing Officer]';
-        document.getElementById('aaName').textContent = '[Approving Officer]';
+        // Signatures (placeholder names)
+        document.getElementById('daName').textContent = app.dealingAssistantName || '[Verifying Officer]';
+        document.getElementById('presidentName').textContent = app.presidentName || '[Reviewing Officer]';
+        document.getElementById('aaName').textContent = app.approvingAuthorityName || '[Approving Officer]';
+
+        // Certificate ID
         document.getElementById('certificateId').textContent = certificateId;
 
-        // --- Generate PDF ---
-        statusMessage.textContent = 'Generating PDF...';
-        loadingText.textContent = 'Generating PDF...';
+        // Local heading (can be customized per organization)
+        document.getElementById('localHeading').textContent = '[Your Organization] প্রমাণ পত্ৰ';
 
-        const element = document.getElementById('certificatePage');
-
-        const opt = {
-            margin: [15, 12, 15, 12],
-            filename: `Membership_Certificate_${refNum}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        // Generate PDF
-        html2pdf()
-            .set(opt)
-            .from(element)
-            .save()
-            .then(() => {
-                statusMessage.textContent = 'PDF downloaded successfully! Redirecting...';
-                statusMessage.style.color = 'green';
-                setTimeout(() => {
-                    window.location.href = redirectUrl;
-                }, 1500);
-            })
-            .catch((err) => {
-                console.error('PDF generation error:', err);
-                statusMessage.textContent = 'PDF generation failed. Redirecting...';
-                statusMessage.style.color = 'red';
-                setTimeout(() => {
-                    window.location.href = redirectUrl;
-                }, 3000);
-            });
+        // --- All data injected. Show certificate ---
+        loadingContainer.style.display = 'none';
+        certificatePage.style.display = 'block';
+        actionButtons.style.display = 'flex';
 
     } catch (error) {
         console.error('Error loading certificate:', error);
-        statusMessage.textContent = `Error: ${error.message}. Redirecting...`;
-        statusMessage.style.color = 'red';
-        setTimeout(() => {
-            window.location.href = redirectUrl;
-        }, 3000);
+        loadingContainer.innerHTML = `<p style="color:red; text-align:center;">Error loading certificate: ${error.message}</p>`;
     }
 }
 
