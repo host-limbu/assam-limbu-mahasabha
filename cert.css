@@ -1,5 +1,4 @@
-<style>
-        /* ===== Certificate-specific styles ===== */
+/* ===== Certificate-specific styles ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -153,7 +152,7 @@
             align-items: start;
             padding: 3mm 0 5mm;
             flex: 1 1 auto;
-            min-height: 75mm; /* reduced slightly */
+            min-height: 75mm;
         }
 
         .member-details {
@@ -391,7 +390,9 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== PRINT ===== */
+        /* ============================================================
+           PRINT – FINAL FIXES
+           ============================================================ */
         @page {
             size: A4;
             margin: 5mm;
@@ -420,20 +421,34 @@
                 height: 100%;
                 min-height: 100%;
                 max-height: 100%;
-                padding: 6mm 10mm; /* reduced padding for print */
+                padding: 6mm 10mm;
                 border: 1px solid var(--border);
                 page-break-inside: avoid;
-                overflow: hidden; /* prevent overflow */
+                overflow: hidden;
             }
 
             .no-print {
                 display: none !important;
             }
 
-            /* Ensure all text fits within the page */
+            /* ===== FIX 1: INCREASED GAP BETWEEN PIN AND PARAGRAPH ===== */
             .member-identity {
-                min-height: 60mm;
+                padding-bottom: 8mm;   /* was 5mm → increased to 8mm */
+                min-height: 55mm;
             }
+
+            /* ===== FIX 2: REDUCED GAP ABOVE FOOTER ===== */
+            .certificate-notes {
+                padding-bottom: 0.5mm;  /* was 1mm → reduced to 0.5mm */
+            }
+
+            .certificate-footer {
+                margin-top: 0;          /* was 1mm → removed completely */
+                padding-top: 1.5mm;     /* was 2mm → slightly reduced */
+                min-height: 10mm;
+            }
+
+            /* ===== ENSURE OTHER SECTIONS DON'T BREAK ===== */
             .formal-content {
                 min-height: 15mm;
             }
@@ -443,12 +458,11 @@
             .signature-section {
                 min-height: 20mm;
             }
-            .certificate-footer {
-                min-height: 10mm;
-            }
         }
 
-        /* ===== SCREEN PREVIEW ===== */
+        /* ============================================================
+           SCREEN PREVIEW
+           ============================================================ */
         @media screen and (max-width: 800px) {
             body {
                 justify-content: flex-start;
@@ -483,4 +497,3 @@
             background: #ccc;
             color: #222;
         }
-    </style>
