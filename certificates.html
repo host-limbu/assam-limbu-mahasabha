@@ -60,17 +60,35 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
-Generating   0% { transform: rotate(0deg); }
+            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
         .status-message {
             font-size: 1.1rem;
-            color: var(--text-muted);
+            color: var(--color-text-muted);
             margin-top: var(--spacing-sm);
         }
 
-        /* ===== A4 PAGE ===== */
+        .fallback-button {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: sans-serif;
+        }
+        .fallback-button:hover {
+            background: var(--color-primary-light);
+        }
+        .fallback-button.hidden {
+            display: none;
+        }
+
+        /* ===== A4 PAGE (hidden off-screen) ===== */
         .certificate-page {
             width: var(--page-width);
             min-height: var(--page-height);
@@ -307,7 +325,7 @@ Generating   0% { transform: rotate(0deg); }
             line-height: 1.4;
         }
 
-        /* ===== NOTES ===== */
+        /* ===== NOTES (3 items) ===== */
         .certificate-notes {
             padding: 3mm 0 2mm;
         }
@@ -427,18 +445,19 @@ Generating   0% { transform: rotate(0deg); }
 </head>
 <body>
 
-    <!-- Loading Spinner (visible while generating PDF) -->
+    <!-- Loading Spinner -->
     <div id="loadingContainer" class="loading-container">
         <div class="spinner"></div>
-        <p id="loadingText"GLoadngg certificate...</p>
+        <p id="loadingText">Generating certificate...</p>
         <p id="statusMessage" class="status-message"></p>
+        <button id="manualDownloadBtn" class="fallback-button hidden" onclick="downloadPDF()">Download PDF</button>
     </div>
 
     <!-- Certificate (hidden, used for PDF generation) -->
     <main class="certificate-page" id="certificatePage">
         <div class="certificate" id="certificateContainer">
-
-            <!-- HEADER -->
+            <!-- header, info, heading, member, content, verification, signatures, notes, footer -->
+            <!-- same as before with placeholders -->
             <header class="certificate-header">
                 <div class="header-logo">&#9670;</div>
                 <div class="header-title">
@@ -449,7 +468,6 @@ Generating   0% { transform: rotate(0deg); }
                 <div class="header-logo">&#9670;</div>
             </header>
 
-            <!-- INFORMATION -->
             <section class="certificate-info">
                 <div class="info-column">
                     <div class="info-value" id="membershipNumber">[Membership Number]</div>
@@ -459,13 +477,11 @@ Generating   0% { transform: rotate(0deg); }
                 </div>
             </section>
 
-            <!-- HEADING -->
             <section class="certificate-heading">
                 <div class="heading-local">[Organization] প্রমাণ পত্ৰ</div>
                 <h1>MEMBERSHIP CERTIFICATE</h1>
             </section>
 
-            <!-- MEMBER IDENTITY -->
             <section class="member-identity">
                 <div class="member-details">
                     <p>
@@ -473,40 +489,30 @@ Generating   0% { transform: rotate(0deg); }
                         is a registered member of
                         <strong>[Your Organization], [Your District Committee]</strong>.
                     </p>
-
                     <div class="identity-grid">
                         <div class="identity-label">Father / Guardian</div>
                         <div class="identity-value" id="fatherName">[Father / Guardian Name]</div>
-
                         <div class="identity-label">Membership Type</div>
                         <div class="identity-value" id="membershipType">[Membership Type]</div>
-
                         <div class="identity-label">Date of Birth</div>
                         <div class="identity-value" id="dateOfBirth">[Date of Birth]</div>
-
                         <div class="identity-label">District</div>
                         <div class="identity-value" id="district">[District]</div>
-
                         <div class="identity-label">Village</div>
                         <div class="identity-value" id="village">[Village]</div>
-
                         <div class="identity-label">Post Office</div>
                         <div class="identity-value" id="postOffice">[Post Office]</div>
-
                         <div class="identity-label">Police Station</div>
                         <div class="identity-value" id="policeStation">[Police Station]</div>
-
                         <div class="identity-label">PIN</div>
                         <div class="identity-value" id="pin">[PIN]</div>
                     </div>
                 </div>
-
                 <div class="member-photo">
                     <img id="memberPhoto" src="[Member Photo URL]" alt="Member Photograph" />
                 </div>
             </section>
 
-            <!-- FORMAL CONTENT -->
             <section class="formal-content">
                 <p>
                     This certificate is issued to the above-named member confirming their membership in the
@@ -516,16 +522,13 @@ Generating   0% { transform: rotate(0deg); }
                 </p>
             </section>
 
-            <!-- VERIFICATION -->
             <section class="verification-section">
                 <div class="verification-code">
                     <img class="qr-code" id="qrCode" src="" alt="Verification QR Code" />
                 </div>
-
                 <div class="certificate-status">
                     <div class="status-title">Certificate Status</div>
                     <strong id="certStatus">APPROVED</strong>
-
                     <div class="verification-number">
                         Verification ID:
                         <span id="verificationId">[Verification ID]</span>
@@ -533,7 +536,6 @@ Generating   0% { transform: rotate(0deg); }
                 </div>
             </section>
 
-            <!-- SIGNATURES -->
             <section class="signature-section">
                 <div class="signature-box">
                     <div class="signature-space"></div>
@@ -541,7 +543,6 @@ Generating   0% { transform: rotate(0deg); }
                     <strong id="daName">[Verifying Officer]</strong>
                     <span>Verifying Officer</span>
                 </div>
-
                 <div class="signature-box">
                     <div class="signature-space"></div>
                     <div class="signature-line"></div>
@@ -549,7 +550,6 @@ Generating   0% { transform: rotate(0deg); }
                     <span>Reviewing Officer</span>
                     <span>[Your Organization]</span>
                 </div>
-
                 <div class="signature-box">
                     <div class="signature-space"></div>
                     <div class="signature-line"></div>
@@ -558,7 +558,6 @@ Generating   0% { transform: rotate(0deg); }
                 </div>
             </section>
 
-            <!-- NOTES - Only 3 items -->
             <section class="certificate-notes">
                 <h3>NOTE:</h3>
                 <ol>
@@ -568,20 +567,16 @@ Generating   0% { transform: rotate(0deg); }
                 </ol>
             </section>
 
-            <!-- FOOTER -->
             <footer class="certificate-footer">
                 <div>Issued By: <strong>[Your Organization]</strong></div>
                 <div>Certificate ID: <strong id="certificateId">[Certificate ID]</strong></div>
             </footer>
-
         </div>
     </main>
 
-    <!-- QR Code library -->
+    <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="qrcode.js"></script>
-
-    <!-- html2pdf library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Firebase SDK -->
@@ -594,7 +589,7 @@ Generating   0% { transform: rotate(0deg); }
         }
     </script>
 
-    <!-- certificate.js (updated) -->
+    <!-- certificate.js -->
     <script src="certificate.js" type="module"></script>
 
 </body>
