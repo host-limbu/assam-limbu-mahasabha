@@ -130,7 +130,7 @@ async function loadCertificate() {
 
         // Formal text with dynamic data
         document.getElementById('formalText').textContent =
-            `This certificate is issued to ${memberName} (${fatherName}) confirming their membership in the ` +
+            `This certificate is issued to Sri/Smt/Miss/Mr ${memberName} Son/Daughrter of ${fatherName} confirming His/Her membership in the ` +
             `[Your Organization], [Your District Committee]. The member is entitled to participate in ` +
             `the activities, programmes and community initiatives of the organization, subject to its ` +
             `rules and regulations.`;
