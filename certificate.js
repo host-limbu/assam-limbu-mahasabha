@@ -85,7 +85,7 @@ async function loadCertificate() {
         const photoURL = app.photoURL || '';
 
         // Generate derived IDs
-        const membershipNumber = `ALM-${refNum.split('-')[1] || '2026'}-${refNum.split('-')[2] || '00000'}`;
+        const membershipNumber = `[Org]-${refNum.split('-')[1] || '2026'}-${refNum.split('-')[2] || '00000'}`;
         const certificateId = `CERT-${refNum}`;
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
