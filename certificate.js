@@ -130,8 +130,8 @@ async function loadCertificate() {
 
         // Formal text with dynamic data
         document.getElementById('formalText').textContent =
-            `This certificate is issued to Sri/Smt/Miss/Mr ${memberName} Son/Daughrter of ${fatherName} confirming His/Her membership in the ` +
-            `[Your Organization], [Your District Committee]. The member is entitled to participate in ` +
+            `This certificate is issued to 𝐒𝐫𝐢/𝐒𝐦𝐭/𝐌𝐢𝐬𝐬/𝐌𝐫 ${memberName}  𝐒𝐨𝐧/𝐃𝐚𝐮𝐠𝐡𝐫𝐭𝐞𝐫 of ${fatherName} confirming 𝐇𝐢𝐬/𝐇𝐞𝐫 membership in the ` +
+            `[𝐘𝐨𝐮𝐫 𝐎𝐫𝐠𝐚𝐧𝐢𝐳𝐚𝐭𝐢𝐨𝐧], [𝐘𝐨𝐮𝐫 𝐃𝐢𝐬𝐭𝐫𝐢𝐜𝐭 𝐂𝐨𝐦𝐦𝐢𝐭𝐭𝐞𝐞]. The member is entitled to participate in ` +
             `the activities, programmes and community initiatives of the organization, subject to its ` +
             `rules and regulations.`;
 
@@ -155,7 +155,7 @@ async function loadCertificate() {
         document.getElementById('certificateId').textContent = certificateId;
 
         // Local heading (can be customized per organization)
-        document.getElementById('localHeading').textContent = '[Your Organization] প্রমাণ পত্ৰ';
+        document.getElementById('localHeading').textContent = '[𝐘𝐨𝐮𝐫 𝐎𝐫𝐠𝐚𝐧𝐢𝐳𝐚𝐭𝐢𝐨𝐧] প্রমাণ পত্ৰ';
 
         // --- All data injected. Show certificate ---
         loadingContainer.style.display = 'none';
