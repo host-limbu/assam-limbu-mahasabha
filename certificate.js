@@ -1,13 +1,11 @@
 /**
- * certificate.js – Central data-fetching and placeholder population for certificate.html
- * Reads reference number from URL, fetches application from Firebase,
- * populates placeholders, generates QR code using stored verificationId.
+ * certificate.js – Fetches data, populates certificate, generates QR,
+ * then automatically generates PDF and redirects back.
  */
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
 
-// Firebase config (must match your project)
 const firebaseConfig = {
     apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
     authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
@@ -20,21 +18,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// DOM elements
-const loadingContainer = document.getElementById('loadingContainer');
-const certificatePage = document.getElementById('certificatePage');
-const actionButtons = document.getElementById('actionButtons');
+const loadingText = document.getElementById('loadingText');
+const statusMessage = document.getElementById('statusMessage');
 
-// Get reference number from URL
 const urlParams = new URLSearchParams(window.location.search);
 const refNumber = urlParams.get('ref');
 
+// Redirect target (where to go after PDF is generated)
+const redirectUrl = urlParams.get('redirect') || document.referrer || 'certificate-records.html';
+
 if (!refNumber) {
-    loadingContainer.innerHTML = '<p style="color:red; text-align:center;">No reference number provided.</p>';
+    statusMessage.textContent = 'No reference number provided.';
+    statusMessage.style.color = 'red';
+    setTimeout(() => { window.location.href = redirectUrl; }, 3000);
     throw new Error('Missing ref parameter');
 }
 
-// Helper: format date
 function formatDate(dateStr) {
     if (!dateStr) return 'N/A';
     if (dateStr.includes('-') || dateStr.includes('/')) return dateStr;
@@ -43,20 +42,23 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// Helper: build verification URL for QR code
 function getVerificationUrl(verificationId) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
     return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
 }
 
-// Main function
 async function loadCertificate() {
     try {
+        statusMessage.textContent = 'Fetching application data...';
+
         const snapshot = await get(ref(db, 'applications'));
         if (!snapshot.exists()) {
-            loadingContainer.innerHTML = '<p style="color:red; text-align:center;">No applications found.</p>';
+            statusMessage.textContent = 'No applications found.';
+            statusMessage.style.color = 'red';
+            setTimeout(() => { window.location.href = redirectUrl; }, 3000);
             return;
         }
+
         const allApps = snapshot.val();
         let app = null;
         for (const key in allApps) {
@@ -65,8 +67,11 @@ async function loadCertificate() {
                 break;
             }
         }
+
         if (!app) {
-            loadingContainer.innerHTML = `<p style="color:red; text-align:center;">Application with reference ${refNumber} not found.</p>`;
+            statusMessage.textContent = `Application ${refNumber} not found.`;
+            statusMessage.style.color = 'red';
+            setTimeout(() => { window.location.href = redirectUrl; }, 3000);
             return;
         }
 
@@ -84,31 +89,26 @@ async function loadCertificate() {
         const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
         const photoURL = app.photoURL || '';
 
-        // Membership number: format as ALM-YYYY-XXXXX (or use organization prefix)
-        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] 
-            ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}` 
+        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2]
+            ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}`
             : refNum;
         const certificateId = `CERT-${refNum}`;
-        // Use stored verificationId from database
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
-        console.log('Using verificationId:', verificationId);
 
-        // --- Generate QR code using the verificationId ---
+        // --- Generate QR code ---
+        statusMessage.textContent = 'Generating QR code...';
         const verificationUrl = getVerificationUrl(verificationId);
         let qrDataUrl = '';
         try {
             if (typeof window.generateQRCodeDataURL === 'function') {
                 qrDataUrl = window.generateQRCodeDataURL(verificationUrl, 150);
-            } else {
-                console.warn('QRCode generator not available. Using fallback placeholder.');
-                qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
             }
         } catch (err) {
             console.warn('QR generation failed:', err);
             qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
         }
 
-        // --- Populate DOM placeholders (only those that exist in the new certificate.html) ---
+        // --- Populate DOM placeholders ---
         document.getElementById('membershipNumber').textContent = membershipNumber;
         document.getElementById('issueDate').textContent = formatDate(issueDate);
 
@@ -122,7 +122,6 @@ async function loadCertificate() {
         document.getElementById('policeStation').textContent = policeStation;
         document.getElementById('pin').textContent = pin;
 
-        // Photo
         const photoImg = document.getElementById('memberPhoto');
         if (photoURL) {
             photoImg.src = photoURL;
@@ -131,35 +130,62 @@ async function loadCertificate() {
             photoImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23eee"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" font-size="12" fill="%23999" font-family="sans-serif"%3ENo Photo%3C/text%3E%3C/svg%3E';
         }
 
-        // Verification
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
         document.getElementById('verificationId').textContent = verificationId;
 
-        // QR Code
         const qrImg = document.getElementById('qrCode');
         if (qrImg) {
             qrImg.src = qrDataUrl;
             qrImg.alt = 'Verification QR Code';
         }
 
-        // Signatures (static placeholders)
         document.getElementById('daName').textContent = '[Verifying Officer]';
         document.getElementById('presidentName').textContent = '[Reviewing Officer]';
         document.getElementById('aaName').textContent = '[Approving Officer]';
-
-        // Certificate ID footer
         document.getElementById('certificateId').textContent = certificateId;
 
-        // --- All data injected. Show certificate and hide spinner ---
-        loadingContainer.style.display = 'none';
-        certificatePage.style.display = 'block';
-        if (actionButtons) {
-            actionButtons.style.display = 'flex';
-        }
+        // --- Generate PDF ---
+        statusMessage.textContent = 'Generating PDF...';
+        loadingText.textContent = 'Generating PDF...';
+
+        const element = document.getElementById('certificatePage');
+
+        const opt = {
+            margin: [15, 12, 15, 12],
+            filename: `Membership_Certificate_${refNum}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Generate PDF
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save()
+            .then(() => {
+                statusMessage.textContent = 'PDF downloaded successfully! Redirecting...';
+                statusMessage.style.color = 'green';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 1500);
+            })
+            .catch((err) => {
+                console.error('PDF generation error:', err);
+                statusMessage.textContent = 'PDF generation failed. Redirecting...';
+                statusMessage.style.color = 'red';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 3000);
+            });
 
     } catch (error) {
         console.error('Error loading certificate:', error);
-        loadingContainer.innerHTML = `<p style="color:red; text-align:center;">Error loading certificate: ${error.message}</p>`;
+        statusMessage.textContent = `Error: ${error.message}. Redirecting...`;
+        statusMessage.style.color = 'red';
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 3000);
     }
 }
 
