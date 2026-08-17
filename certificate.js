@@ -84,14 +84,14 @@ async function loadCertificate() {
         const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
         const photoURL = app.photoURL || '';
 
-        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}` : refNum;
+        // Membership number: format as ALM-YYYY-XXXXX (or use organization prefix)
+        const membershipNumber = refNum.split('-')[1] && refNum.split('-')[2] 
+            ? `[Org]-${refNum.split('-')[1]}-${refNum.split('-')[2]}` 
+            : refNum;
         const certificateId = `CERT-${refNum}`;
-        // Use stored verificationId from database, or generate a fallback
+        // Use stored verificationId from database
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
         console.log('Using verificationId:', verificationId);
-
-        const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
-        const fullAddress = addressParts.join(', ') || 'N/A';
 
         // --- Generate QR code using the verificationId ---
         const verificationUrl = getVerificationUrl(verificationId);
@@ -108,9 +108,8 @@ async function loadCertificate() {
             qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
         }
 
-        // --- Populate DOM placeholders ---
+        // --- Populate DOM placeholders (only those that exist in the new certificate.html) ---
         document.getElementById('membershipNumber').textContent = membershipNumber;
-        document.getElementById('applicationNumber').textContent = refNum;
         document.getElementById('issueDate').textContent = formatDate(issueDate);
 
         document.getElementById('memberName').textContent = memberName;
@@ -123,6 +122,7 @@ async function loadCertificate() {
         document.getElementById('policeStation').textContent = policeStation;
         document.getElementById('pin').textContent = pin;
 
+        // Photo
         const photoImg = document.getElementById('memberPhoto');
         if (photoURL) {
             photoImg.src = photoURL;
@@ -131,31 +131,31 @@ async function loadCertificate() {
             photoImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23eee"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" font-size="12" fill="%23999" font-family="sans-serif"%3ENo Photo%3C/text%3E%3C/svg%3E';
         }
 
-        document.getElementById('formalName').textContent = memberName;
-        document.getElementById('formalFather').textContent = fatherName;
-        document.getElementById('formalAddress').textContent = fullAddress;
-        document.getElementById('formalType').textContent = membershipType;
-
+        // Verification
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
         document.getElementById('verificationId').textContent = verificationId;
 
+        // QR Code
         const qrImg = document.getElementById('qrCode');
         if (qrImg) {
             qrImg.src = qrDataUrl;
             qrImg.alt = 'Verification QR Code';
         }
 
-        // Signature names – use generic officer placeholders
+        // Signatures (static placeholders)
         document.getElementById('daName').textContent = '[Verifying Officer]';
         document.getElementById('presidentName').textContent = '[Reviewing Officer]';
         document.getElementById('aaName').textContent = '[Approving Officer]';
 
+        // Certificate ID footer
         document.getElementById('certificateId').textContent = certificateId;
 
         // --- All data injected. Show certificate and hide spinner ---
         loadingContainer.style.display = 'none';
         certificatePage.style.display = 'block';
-        actionButtons.style.display = 'flex';
+        if (actionButtons) {
+            actionButtons.style.display = 'flex';
+        }
 
     } catch (error) {
         console.error('Error loading certificate:', error);
