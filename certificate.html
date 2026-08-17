@@ -88,17 +88,14 @@
             display: none;
         }
 
-        /* ===== A4 PAGE – initially hidden, will be positioned for capture ===== */
+        /* ===== A4 PAGE (hidden off-screen) ===== */
         .certificate-page {
             width: var(--page-width);
             min-height: var(--page-height);
             background: var(--paper);
-            position: fixed;
-            left: 0;
+            position: absolute;
+            left: -9999px;
             top: 0;
-            z-index: -1;
-            opacity: 0.01;
-            pointer-events: none;
         }
 
         .certificate {
@@ -374,9 +371,12 @@
                 background: #fff;
             }
             .certificate-page {
-                position: static !important;
-                opacity: 1 !important;
-                pointer-events: auto !important;
+                width: 210mm;
+                height: 297mm;
+                min-height: 297mm;
+                position: static;
+                left: auto;
+                top: auto;
             }
             .certificate {
                 width: 100%;
@@ -448,15 +448,16 @@
     <!-- Loading Spinner -->
     <div id="loadingContainer" class="loading-container">
         <div class="spinner"></div>
-        <p id="loadingText">Generating certificate...</p>
+        <p id="loadingText">Loading...</p>
         <p id="statusMessage" class="status-message"></p>
-        <button id="manualDownloadBtn" class="fallback-button hidden" onclick="manualDownload()">Download PDF</button>
+        <button id="manualDownloadBtn" class="fallback-button hidden" onclick="downloadPDF()">Download PDF</button>
     </div>
 
-    <!-- Certificate Page (visible for capture) -->
+    <!-- Certificate (hidden, used for PDF generation) -->
     <main class="certificate-page" id="certificatePage">
         <div class="certificate" id="certificateContainer">
-            <!-- HEADER -->
+            <!-- header, info, heading, member, content, verification, signatures, notes, footer -->
+            <!-- same as before with placeholders -->
             <header class="certificate-header">
                 <div class="header-logo">&#9670;</div>
                 <div class="header-title">
@@ -467,7 +468,6 @@
                 <div class="header-logo">&#9670;</div>
             </header>
 
-            <!-- INFORMATION -->
             <section class="certificate-info">
                 <div class="info-column">
                     <div class="info-value" id="membershipNumber">[Membership Number]</div>
@@ -477,13 +477,11 @@
                 </div>
             </section>
 
-            <!-- HEADING -->
             <section class="certificate-heading">
                 <div class="heading-local">[Organization] প্রমাণ পত্ৰ</div>
                 <h1>MEMBERSHIP CERTIFICATE</h1>
             </section>
 
-            <!-- MEMBER IDENTITY -->
             <section class="member-identity">
                 <div class="member-details">
                     <p>
@@ -515,7 +513,6 @@
                 </div>
             </section>
 
-            <!-- FORMAL CONTENT -->
             <section class="formal-content">
                 <p>
                     This certificate is issued to the above-named member confirming their membership in the
@@ -525,7 +522,6 @@
                 </p>
             </section>
 
-            <!-- VERIFICATION -->
             <section class="verification-section">
                 <div class="verification-code">
                     <img class="qr-code" id="qrCode" src="" alt="Verification QR Code" />
@@ -540,7 +536,6 @@
                 </div>
             </section>
 
-            <!-- SIGNATURES -->
             <section class="signature-section">
                 <div class="signature-box">
                     <div class="signature-space"></div>
@@ -563,7 +558,6 @@
                 </div>
             </section>
 
-            <!-- NOTES -->
             <section class="certificate-notes">
                 <h3>NOTE:</h3>
                 <ol>
@@ -573,7 +567,6 @@
                 </ol>
             </section>
 
-            <!-- FOOTER -->
             <footer class="certificate-footer">
                 <div>Issued By: <strong>[Your Organization]</strong></div>
                 <div>Certificate ID: <strong id="certificateId">[Certificate ID]</strong></div>
