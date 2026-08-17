@@ -79,7 +79,7 @@ async function loadCertificate() {
         const village = app.village || '[Village]';
         const postOffice = app.postOffice || '[Post Office]';
         const policeStation = app.ps || '[Police Station]';
-        const pin = app.pin || '[PIN]';
+        
         const refNum = app.refNumber || refNumber;
         const issueDate = app.timestamp ? app.timestamp.split(' ')[0] : new Date().toISOString().split('T')[0];
         const photoURL = app.photoURL || '';
@@ -90,7 +90,7 @@ async function loadCertificate() {
         const verificationId = app.verificationId || `VER-${refNum}-${Date.now().toString().slice(-6)}`;
 
         // Build full address for formal text
-        const addressParts = [village, postOffice, policeStation, district, `PIN: ${pin}`].filter(Boolean);
+        const addressParts = [village, postOffice, policeStation, district].filter(Boolean);
         const fullAddress = addressParts.join(', ') || '[Address]';
 
         // --- Generate QR code ---
@@ -118,7 +118,6 @@ async function loadCertificate() {
         document.getElementById('village').textContent = village;
         document.getElementById('postOffice').textContent = postOffice;
         document.getElementById('policeStation').textContent = policeStation;
-        document.getElementById('pin').textContent = pin;
 
         // Member photo
         const photoImg = document.getElementById('memberPhoto');
