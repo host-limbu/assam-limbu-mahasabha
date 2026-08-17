@@ -1,4 +1,4 @@
-/* ===== Certificate-specific styles (final design) ===== */
+/* ===== Certificate-specific styles ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -55,7 +55,7 @@
             display: grid;
             grid-template-columns: 30mm 1fr 30mm;
             align-items: center;
-            height: 28mm;
+            min-height: 28mm;
             padding-bottom: 3mm;
             margin-bottom: 3mm;
             border-bottom: 2px solid var(--light-border);
@@ -101,7 +101,6 @@
             padding: 3mm 0;
             margin-bottom: 3mm;
             border-bottom: 1px solid var(--light-border);
-            height: 14mm;
             flex-shrink: 0;
         }
 
@@ -145,14 +144,15 @@
             text-decoration: underline;
         }
 
-        /* ===== MEMBER IDENTITY ===== */
+        /* ===== MEMBER IDENTITY (flexible) ===== */
         .member-identity {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 24mm;
             gap: 8mm;
             align-items: start;
             padding: 3mm 0 3mm;
-            flex: 1;
+            flex: 1 1 auto;  /* grows and shrinks */
+            min-height: 80mm;
         }
 
         .member-details {
@@ -208,10 +208,11 @@
             object-fit: cover;
         }
 
-        /* ===== FORMAL CONTENT ===== */
+        /* ===== FORMAL CONTENT (flexible) ===== */
         .formal-content {
             padding: 2mm 0 2mm;
-            flex: 1;
+            flex: 1 1 auto;
+            min-height: 20mm;
         }
 
         .formal-content p {
@@ -226,12 +227,12 @@
             display: grid;
             grid-template-columns: 30mm 1fr;
             align-items: center;
-            height: 28mm;
             padding: 2mm 0 2mm;
             margin-top: 2mm;
             border-top: 1px solid var(--light-border);
             border-bottom: 1px solid var(--light-border);
             flex-shrink: 0;
+            min-height: 24mm;
         }
 
         .verification-code {
@@ -277,15 +278,14 @@
             font-weight: 700;
         }
 
-        /* ===== SIGNATURES ===== */
+        /* ===== SIGNATURES (flexible) ===== */
         .signature-section {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 9mm;
             padding: 2mm 0 2mm;
-            height: 28mm;
             flex-shrink: 0;
-            align-items: center;
+            align-items: stretch;
         }
 
         .digitally-signed {
@@ -308,7 +308,6 @@
             align-items: center;
             text-align: center;
             justify-content: flex-end;
-            height: 100%;
         }
 
         .signature-space {
@@ -361,7 +360,7 @@
             font-size: 13px;
             flex-shrink: 0;
             margin-top: auto;
-            height: 16mm;
+            min-height: 16mm;
         }
 
         .certificate-footer strong {
@@ -436,7 +435,7 @@
             }
         }
 
-        /* ===== ACTION BUTTONS (screen only) ===== */
+        /* ===== ACTION BUTTONS ===== */
         .action-buttons {
             position: fixed;
             bottom: 20px;
