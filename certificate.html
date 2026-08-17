@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Membership Certificate — [Your Organization]</title>
+    <title>Membership Certificate</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ===== Certificate-specific styles (new layout) ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -40,62 +40,10 @@
             align-items: flex-start;
         }
 
-        /* ===== LOADING ===== */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            gap: 20px;
-            font-family: sans-serif;
-            color: var(--primary);
-        }
-        .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid var(--primary);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .status-message {
-            font-size: 1.1rem;
-            color: var(--color-text-muted);
-            margin-top: var(--spacing-sm);
-        }
-
-        .fallback-button {
-            margin-top: 20px;
-            padding: 10px 24px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-family: sans-serif;
-        }
-        .fallback-button:hover {
-            background: var(--color-primary-light);
-        }
-        .fallback-button.hidden {
-            display: none;
-        }
-
-        /* ===== A4 PAGE (hidden off-screen) ===== */
         .certificate-page {
             width: var(--page-width);
             min-height: var(--page-height);
             background: var(--paper);
-            position: absolute;
-            left: -9999px;
-            top: 0;
         }
 
         .certificate {
@@ -109,7 +57,7 @@
             flex-direction: column;
         }
 
-        /* ===== HEADER ===== */
+        /* Header */
         .certificate-header {
             display: grid;
             grid-template-columns: 30mm 1fr 30mm;
@@ -119,6 +67,7 @@
             margin-bottom: 5mm;
             border-bottom: 2px solid var(--light-border);
         }
+
         .header-logo {
             display: flex;
             justify-content: center;
@@ -126,27 +75,31 @@
             color: var(--primary);
             font-size: 3.8rem;
         }
+
         .header-title {
             padding: 0 3mm;
             text-align: center;
             color: var(--primary);
         }
+
         .organization-name {
             font-size: 25px;
             font-weight: 700;
-            letter-spacing: 0.6px;
+            letter-spacing: .6px;
         }
+
         .committee-name {
             margin-top: 2px;
             font-size: 18px;
             font-weight: 700;
         }
+
         .certificate-subtitle {
             margin-top: 4px;
             font-size: 15px;
         }
 
-        /* ===== INFORMATION ===== */
+        /* Certificate Information */
         .certificate-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -155,13 +108,16 @@
             margin-bottom: 4mm;
             border-bottom: 1px solid var(--light-border);
         }
+
         .info-column {
             min-width: 0;
             white-space: nowrap;
         }
+
         .info-column:last-child {
             text-align: right;
         }
+
         .info-value {
             color: var(--primary);
             font-size: 14px;
@@ -169,16 +125,18 @@
             white-space: nowrap;
         }
 
-        /* ===== HEADING ===== */
+        /* Certificate Heading */
         .certificate-heading {
             padding: 3mm 0 2mm;
             text-align: center;
         }
+
         .heading-local {
             color: var(--primary);
             font-size: 17px;
             font-weight: 700;
         }
+
         .certificate-heading h1 {
             margin-top: 1mm;
             color: var(--primary);
@@ -186,7 +144,7 @@
             text-decoration: underline;
         }
 
-        /* ===== MEMBER IDENTITY ===== */
+        /* Member Identity */
         .member-identity {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 24mm;
@@ -194,15 +152,18 @@
             align-items: start;
             padding: 3mm 0 4mm;
         }
+
         .member-details {
             min-width: 0;
         }
+
         .member-details p {
             margin-bottom: 4mm;
             font-size: 15px;
             line-height: 1.6;
             text-align: justify;
         }
+
         .identity-grid {
             display: grid;
             grid-template-columns: 45mm minmax(0, 1fr);
@@ -210,11 +171,13 @@
             row-gap: 2mm;
             font-size: 14px;
         }
+
         .identity-label {
             color: var(--muted);
             font-weight: 600;
             white-space: nowrap;
         }
+
         .identity-value {
             color: var(--primary);
             font-weight: 700;
@@ -232,16 +195,18 @@
             align-items: center;
             justify-content: center;
         }
+
         .member-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* ===== FORMAL CONTENT ===== */
+        /* Formal Content */
         .formal-content {
             padding: 3mm 0 2mm;
         }
+
         .formal-content p {
             margin-bottom: 2mm;
             font-size: 15px;
@@ -249,7 +214,7 @@
             text-align: justify;
         }
 
-        /* ===== VERIFICATION ===== */
+        /* Verification */
         .verification-section {
             display: grid;
             grid-template-columns: 30mm 1fr;
@@ -260,45 +225,53 @@
             border-top: 1px solid var(--light-border);
             border-bottom: 1px solid var(--light-border);
         }
+
         .verification-code {
             text-align: center;
         }
+
         .qr-code {
             display: block;
             width: 24mm;
             height: 24mm;
             margin: 0 auto 1mm;
         }
+
         .certificate-status {
             text-align: center;
             font-size: 14px;
         }
+
         .status-title {
             margin-bottom: 1mm;
             color: var(--muted);
             font-size: 12px;
         }
+
         .certificate-status strong {
             color: var(--primary);
             font-size: 12px;
         }
+
         .verification-number {
             margin-top: 2mm;
             color: var(--muted);
             font-size: 12px;
         }
+
         .verification-number span {
             color: var(--primary);
             font-weight: 700;
         }
 
-        /* ===== SIGNATURES ===== */
+        /* Signatures */
         .signature-section {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 9mm;
             padding: 5mm 0 3mm;
         }
+
         .signature-box {
             min-width: 0;
             display: flex;
@@ -306,44 +279,51 @@
             align-items: center;
             text-align: center;
         }
+
         .signature-space {
             width: 100%;
             height: 14mm;
         }
+
         .signature-line {
             width: 85%;
             margin-bottom: 1.5mm;
             border-top: 1px solid var(--border);
         }
+
         .signature-box strong {
             color: var(--primary);
             font-size: 12px;
         }
+
         .signature-box span {
             color: var(--muted);
             font-size: 11px;
             line-height: 1.4;
         }
 
-        /* ===== NOTES (3 items) ===== */
+        /* Notes */
         .certificate-notes {
             padding: 3mm 0 2mm;
         }
+
         .certificate-notes h3 {
             margin-bottom: 1.5mm;
             color: var(--primary);
             font-size: 13px;
             text-decoration: underline;
         }
+
         .certificate-notes ol {
             padding-left: 5mm;
         }
+
         .certificate-notes li {
             font-size: 11px;
             line-height: 1.5;
         }
 
-        /* ===== FOOTER ===== */
+        /* Footer */
         .certificate-footer {
             margin-top: auto;
             padding-top: 3mm;
@@ -354,15 +334,40 @@
             color: var(--muted);
             font-size: 11px;
         }
+
         .certificate-footer strong {
             color: var(--primary);
         }
 
-        /* ===== PRINT ===== */
+        /* Loading spinner */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+            color: var(--primary);
+        }
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Print */
         @page {
             size: A4;
             margin: 5mm;
         }
+
         @media print {
             html,
             body {
@@ -370,14 +375,13 @@
                 height: 297mm;
                 background: #fff;
             }
+
             .certificate-page {
                 width: 210mm;
                 height: 297mm;
                 min-height: 297mm;
-                position: static;
-                left: auto;
-                top: auto;
             }
+
             .certificate {
                 width: 100%;
                 height: 100%;
@@ -385,60 +389,21 @@
                 padding: 8mm 10mm;
                 page-break-inside: avoid;
             }
+
             .no-print {
-                display: none !important;
-            }
-            .loading-container {
                 display: none !important;
             }
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* Screen Preview */
         @media screen and (max-width: 800px) {
-            .member-identity {
-                grid-template-columns: 1fr;
-                gap: 6mm;
+            body {
+                justify-content: flex-start;
+                overflow-x: auto;
             }
-            .member-photo {
-                width: 28mm;
-                height: 35mm;
-                margin: 0 auto;
-            }
-            .identity-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .verification-section {
-                grid-template-columns: 1fr;
-                gap: 4mm;
-                text-align: center;
-            }
-            .signature-section {
-                grid-template-columns: 1fr;
-                gap: 6mm;
-            }
-            .certificate-info {
-                grid-template-columns: 1fr;
-                gap: 3mm;
-                text-align: left;
-            }
-            .info-column:last-child {
-                text-align: left;
-            }
-            .certificate-header {
-                grid-template-columns: 1fr;
-                gap: 3mm;
-            }
-            .header-logo {
-                font-size: 2.8rem;
-            }
-            .organization-name {
-                font-size: 20px;
-            }
-            .committee-name {
-                font-size: 15px;
-            }
-            .certificate-subtitle {
-                font-size: 13px;
+
+            .certificate-page {
+                flex-shrink: 0;
             }
         }
     </style>
@@ -448,16 +413,14 @@
     <!-- Loading Spinner -->
     <div id="loadingContainer" class="loading-container">
         <div class="spinner"></div>
-        <p id="loadingText">Loading...</p>
-        <p id="statusMessage" class="status-message"></p>
-        <button id="manualDownloadBtn" class="fallback-button hidden" onclick="downloadPDF()">Download PDF</button>
+        <p>Loading certificate...</p>
     </div>
 
-    <!-- Certificate (hidden, used for PDF generation) -->
-    <main class="certificate-page" id="certificatePage">
+    <!-- Certificate (hidden initially) -->
+    <main class="certificate-page" id="certificatePage" style="display:none;">
         <div class="certificate" id="certificateContainer">
-            <!-- header, info, heading, member, content, verification, signatures, notes, footer -->
-            <!-- same as before with placeholders -->
+
+            <!-- HEADER -->
             <header class="certificate-header">
                 <div class="header-logo">&#9670;</div>
                 <div class="header-title">
@@ -468,53 +431,66 @@
                 <div class="header-logo">&#9670;</div>
             </header>
 
+            <!-- CERTIFICATE INFO -->
             <section class="certificate-info">
                 <div class="info-column">
-                    <div class="info-value" id="membershipNumber">[Membership Number]</div>
+                    <div class="info-value" id="membershipNumber">Membership ID : ALM-2026-12345</div>
                 </div>
                 <div class="info-column">
-                    <div class="info-value" id="issueDate">[Issue Date]</div>
+                    <div class="info-value" id="issueDate">Date : 15/08/2026</div>
                 </div>
             </section>
 
+            <!-- HEADING -->
             <section class="certificate-heading">
-                <div class="heading-local">[Organization] প্রমাণ পত্ৰ</div>
+                <div class="heading-local" id="localHeading">[Organization] প্রমাণ পত্ৰ</div>
                 <h1>MEMBERSHIP CERTIFICATE</h1>
             </section>
 
+            <!-- MEMBER IDENTITY -->
             <section class="member-identity">
                 <div class="member-details">
                     <p>
-                        This is to certify that <strong id="memberName">[Member Name]</strong>
+                        This is to certify that <strong id="memberName">[Name]</strong>
                         is a registered member of
                         <strong>[Your Organization], [Your District Committee]</strong>.
                     </p>
+
                     <div class="identity-grid">
                         <div class="identity-label">Father / Guardian</div>
-                        <div class="identity-value" id="fatherName">[Father / Guardian Name]</div>
+                        <div class="identity-value" id="fatherName">[Father / Guardian]</div>
+
                         <div class="identity-label">Membership Type</div>
                         <div class="identity-value" id="membershipType">[Membership Type]</div>
+
                         <div class="identity-label">Date of Birth</div>
                         <div class="identity-value" id="dateOfBirth">[Date of Birth]</div>
+
                         <div class="identity-label">District</div>
                         <div class="identity-value" id="district">[District]</div>
+
                         <div class="identity-label">Village</div>
                         <div class="identity-value" id="village">[Village]</div>
+
                         <div class="identity-label">Post Office</div>
                         <div class="identity-value" id="postOffice">[Post Office]</div>
+
                         <div class="identity-label">Police Station</div>
                         <div class="identity-value" id="policeStation">[Police Station]</div>
+
                         <div class="identity-label">PIN</div>
                         <div class="identity-value" id="pin">[PIN]</div>
                     </div>
                 </div>
+
                 <div class="member-photo">
                     <img id="memberPhoto" src="[Member Photo URL]" alt="Member Photograph" />
                 </div>
             </section>
 
+            <!-- FORMAL CONTENT -->
             <section class="formal-content">
-                <p>
+                <p id="formalText">
                     This certificate is issued to the above-named member confirming their membership in the
                     [Your Organization], [Your District Committee]. The member is entitled to participate in
                     the activities, programmes and community initiatives of the organization, subject to its
@@ -522,6 +498,7 @@
                 </p>
             </section>
 
+            <!-- VERIFICATION -->
             <section class="verification-section">
                 <div class="verification-code">
                     <img class="qr-code" id="qrCode" src="" alt="Verification QR Code" />
@@ -536,6 +513,7 @@
                 </div>
             </section>
 
+            <!-- SIGNATURES -->
             <section class="signature-section">
                 <div class="signature-box">
                     <div class="signature-space"></div>
@@ -543,6 +521,7 @@
                     <strong id="daName">[Verifying Officer]</strong>
                     <span>Verifying Officer</span>
                 </div>
+
                 <div class="signature-box">
                     <div class="signature-space"></div>
                     <div class="signature-line"></div>
@@ -550,6 +529,7 @@
                     <span>Reviewing Officer</span>
                     <span>[Your Organization]</span>
                 </div>
+
                 <div class="signature-box">
                     <div class="signature-space"></div>
                     <div class="signature-line"></div>
@@ -558,28 +538,37 @@
                 </div>
             </section>
 
+            <!-- NOTES -->
             <section class="certificate-notes">
                 <h3>NOTE:</h3>
                 <ol>
                     <li>This certificate is digitally generated and issued by the committee.</li>
                     <li>The certificate may be verified using the Membership Verification ID.</li>
                     <li>This certificate remains subject to the rules and regulations of the organization.</li>
+                    <li>Any unauthorized alteration or misuse of this certificate is prohibited.</li>
                 </ol>
             </section>
 
+            <!-- FOOTER -->
             <footer class="certificate-footer">
                 <div>Issued By: <strong>[Your Organization]</strong></div>
                 <div>Certificate ID: <strong id="certificateId">[Certificate ID]</strong></div>
             </footer>
+
         </div>
     </main>
 
-    <!-- Libraries -->
+    <!-- Action Buttons -->
+    <div style="position:fixed; bottom:20px; right:20px; z-index:999; display:flex; gap:10px;" class="no-print" id="actionButtons" style="display:none;">
+        <button onclick="window.print()" style="padding:10px 20px; background:#1a3a5c; color:#fff; border:0; border-radius:5px; cursor:pointer; font-family:sans-serif;">Print / PDF</button>
+        <button onclick="window.close()" style="padding:10px 20px; background:#ccc; color:#222; border:0; border-radius:5px; cursor:pointer; font-family:sans-serif;">Close</button>
+    </div>
+
+    <!-- QR Code Library + QR generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="qrcode.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase + certificate.js -->
     <script type="importmap">
         {
             "imports": {
@@ -588,9 +577,6 @@
             }
         }
     </script>
-
-    <!-- certificate.js -->
     <script src="certificate.js" type="module"></script>
-
 </body>
 </html>
