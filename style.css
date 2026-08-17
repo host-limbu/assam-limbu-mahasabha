@@ -120,6 +120,15 @@ img {
     height: auto;
     display: block;
 }
+
+/*-------------ADDED 17/08/2026, 11:07--------CERT SIGNATURE ------*/
+/* Signature image sizing */
+.signature-box .sign-img {
+    width: 210px;
+    height: 110px;
+    object-fit: contain;
+    margin-bottom: 2mm;
+}
 /* ============================================================
    BUTTONS
    ============================================================ */
