@@ -3,585 +3,650 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Portal — [Your Organization]</title>
-    <meta name="description" content="Admin panel demonstration for managing membership applications — a portfolio project by [Your Organization]." />
+    <title>Membership Certificate</title>
     <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="filter.css" />
-<link rel="stylesheet" href="global-admin.css" />
-    <link rel="stylesheet" href="global-table.css" />
+    <style>
+        /* ===== Certificate-specific styles ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --text: #222;
+            --muted: #555;
+            --border: #1a3a5c;
+            --light-border: #aaa;
+            --paper: #fff;
+            --primary: #1a3a5c;
+            --page-width: 210mm;
+            --page-height: 297mm;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            background: #eee;
+            color: var(--text);
+            font-family: "Times New Roman", serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .certificate-page {
+            width: var(--page-width);
+            min-height: var(--page-height);
+            background: var(--paper);
+        }
+
+        .certificate {
+            width: 100%;
+            min-height: var(--page-height);
+            height: 100%;
+            padding: 8mm 10mm;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: var(--paper);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .certificate-header {
+            display: grid;
+            grid-template-columns: 30mm 1fr 30mm;
+            align-items: center;
+            min-height: 28mm;
+            padding-bottom: 3mm;
+            margin-bottom: 3mm;
+            border-bottom: 2px solid var(--light-border);
+            flex-shrink: 0;
+        }
+
+        .header-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            font-size: 3.8rem;
+        }
+
+        .header-title {
+            padding: 0 3mm;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .organization-name {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: .6px;
+        }
+
+        .committee-name {
+            margin-top: 2px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .certificate-subtitle {
+            margin-top: 4px;
+            font-size: 18px;
+        }
+
+        /* ===== CERTIFICATE INFO ===== */
+        .certificate-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12mm;
+            padding: 3mm 0;
+            margin-bottom: 3mm;
+            border-bottom: 1px solid var(--light-border);
+            flex-shrink: 0;
+        }
+
+        .info-column {
+            min-width: 0;
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-column:last-child {
+            text-align: right;
+            align-items: flex-end;
+        }
+
+        .info-value {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ===== CERTIFICATE HEADING ===== */
+        .certificate-heading {
+            padding: 2mm 0 2mm;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .heading-local {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .certificate-heading h1 {
+            margin-top: 1mm;
+            color: var(--primary);
+            font-size: 24px;
+            text-decoration: underline;
+        }
+
+        /* ===== MEMBER IDENTITY ===== */
+        .member-identity {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 24mm;
+            gap: 8mm;
+            align-items: start;
+            padding: 3mm 0 5mm;
+            flex: 1 1 auto;
+            min-height: 75mm; /* reduced slightly */
+        }
+
+        .member-details {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .member-details p {
+            margin-bottom: 4mm;
+            font-size: 17px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: 45mm minmax(0, 1fr);
+            column-gap: 8mm;
+            row-gap: 2mm;
+            font-size: 16px;
+        }
+
+        .identity-label {
+            color: var(--muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .identity-value {
+            color: var(--primary);
+            font-weight: 700;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .member-photo {
+            width: 24mm;
+            height: 30mm;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== FORMAL CONTENT ===== */
+        .formal-content {
+            padding: 2mm 0 2mm;
+            flex: 1 1 auto;
+            min-height: 20mm;
+        }
+
+        .formal-content p {
+            margin-bottom: 2mm;
+            font-size: 17px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* ===== VERIFICATION ===== */
+        .verification-section {
+            display: grid;
+            grid-template-columns: 30mm 1fr;
+            align-items: center;
+            padding: 2mm 0 2mm;
+            margin-top: 2mm;
+            border-top: 1px solid var(--light-border);
+            border-bottom: 1px solid var(--light-border);
+            flex-shrink: 0;
+            min-height: 24mm;
+        }
+
+        .verification-code {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .qr-code {
+            display: block;
+            width: 24mm;
+            height: 24mm;
+            margin: 0 auto;
+        }
+
+        .certificate-status {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .status-title {
+            margin-bottom: 1mm;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .certificate-status strong {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .verification-number {
+            margin-top: 2mm;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .verification-number span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===== SIGNATURES ===== */
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 9mm;
+            padding: 2mm 0 2mm;
+            flex-shrink: 0;
+            align-items: stretch;
+        }
+
+        .digitally-signed {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1mm;
+            padding-top: 0;
+            width: 100%;
+        }
+
+        .signature-box {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: flex-end;
+        }
+
+        .signature-space {
+            width: 100%;
+            height: 6mm;
+            flex-shrink: 0;
+        }
+
+        .signature-line {
+            display: none;
+        }
+
+        .signature-box strong {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .signature-box span {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* ===== NOTES ===== */
+        .certificate-notes {
+            padding: 3mm 0 1mm;
+            flex-shrink: 0;
+        }
+
+        .certificate-notes h3 {
+            margin-bottom: 1.5mm;
+            color: var(--primary);
+            font-size: 15px;
+            text-decoration: underline;
+        }
+
+        .certificate-notes li {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ===== FOOTER ===== */
+        .certificate-footer {
+            padding-top: 2mm;
+            border-top: 1px solid var(--light-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--muted);
+            font-size: 13px;
+            flex-shrink: 0;
+            margin-top: 1mm;
+            min-height: 14mm;
+        }
+
+        .certificate-footer strong {
+            color: var(--primary);
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+            color: var(--primary);
+        }
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== PRINT ===== */
+        @page {
+            size: A4;
+            margin: 5mm;
+        }
+
+        @media print {
+            html,
+            body {
+                width: 210mm;
+                height: 297mm;
+                background: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            .certificate-page {
+                width: 210mm;
+                height: 297mm;
+                min-height: 297mm;
+                margin: 0;
+                padding: 0;
+            }
+
+            .certificate {
+                width: 100%;
+                height: 100%;
+                min-height: 100%;
+                max-height: 100%;
+                padding: 6mm 10mm; /* reduced padding for print */
+                border: 1px solid var(--border);
+                page-break-inside: avoid;
+                overflow: hidden; /* prevent overflow */
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            /* Ensure all text fits within the page */
+            .member-identity {
+                min-height: 60mm;
+            }
+            .formal-content {
+                min-height: 15mm;
+            }
+            .verification-section {
+                min-height: 20mm;
+            }
+            .signature-section {
+                min-height: 20mm;
+            }
+            .certificate-footer {
+                min-height: 10mm;
+            }
+        }
+
+        /* ===== SCREEN PREVIEW ===== */
+        @media screen and (max-width: 800px) {
+            body {
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .certificate-page {
+                flex-shrink: 0;
+            }
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            gap: 10px;
+        }
+        .action-buttons button {
+            padding: 10px 20px;
+            background: #1a3a5c;
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+        .action-buttons .close-btn {
+            background: #ccc;
+            color: #222;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="site-shell">
+    <!-- Loading Spinner -->
+    <div id="loadingContainer" class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading certificate...</p>
+    </div>
 
-        <header class="site-header" role="banner">
-            <div class="header-inner">
-                <div class="header-logo">
-                    <a href="index.html" aria-label="[Your Organization] Home">
-                        <span class="logo-emblem">&#9670;</span>
-                        <span class="logo-text">
-                            <span class="logo-main">[Your Organization]</span>
-                            <span class="logo-sub">[Your District Committee]</span>
-                        </span>
-                    </a>
-                </div>
-                <nav class="header-nav" aria-label="Main navigation">
-                    <ul class="nav-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="committee.html">Committee</a></li>
-                        <li><a href="updates.html">Updates</a></li>
-                        <li><a href="events.html">Events</a></li>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="membership.html">Membership</a></li>
-                        <li><a href="documents.html">Documents</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="header-actions">
-                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
-                        <span></span><span></span><span></span>
-                    </button>
-                </div>
-            </div>
-        </header>
+    <!-- Certificate -->
+    <main class="certificate-page" id="certificatePage" style="display:none;">
+        <div class="certificate" id="certificateContainer">
 
-        <main class="site-main" role="main">
-            <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
-                <div class="section-content">
-                    <h2 style="text-align: center;">Admin Portal <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span></h2>
-                    <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Secure admin panel demonstrating a role‑based workflow ([Verifying Officer] → [Reviewing Officer] → [Approving Officer]) for managing membership applications.
+            <!-- HEADER -->
+            <header class="certificate-header">
+                <div class="header-logo">&#9670;</div>
+                <div class="header-title">
+                    <div class="organization-name">[Your Organization]</div>
+                    <div class="committee-name">[Your District Committee]</div>
+                    <div class="certificate-subtitle">MEMBERSHIP CERTIFICATE</div>
+                </div>
+                <div class="header-logo">&#9670;</div>
+            </header>
+
+            <!-- CERTIFICATE INFO -->
+            <section class="certificate-info">
+                <div class="info-column">
+                    <div class="info-value" id="membershipNumber">Membership ID : ALM-2026-12345</div>
+                </div>
+                <div class="info-column">
+                    <div class="info-value" id="issueDate">Date : 15/08/2026</div>
+                </div>
+            </section>
+
+            <!-- HEADING -->
+            <section class="certificate-heading">
+                <div class="heading-local" id="localHeading">[Your Organization] প্রমাণ পত্ৰ</div>
+                <h1>MEMBERSHIP CERTIFICATE</h1>
+            </section>
+
+            <!-- MEMBER IDENTITY -->
+            <section class="member-identity">
+                <div class="member-details">
+                    <p>
+                        This is to certify that <strong id="memberName">[Name]</strong>
+                        is a registered member of
+                        <strong>[Your Organization], [Your District Committee]</strong>.
                     </p>
-
-                    <!-- Login -->
-                    <div id="loginSection" class="admin-login-section">
-                        <div class="admin-login-form">
-                            <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
-                            <form id="loginForm">
-                                <input type="email" id="loginEmail" placeholder="Email" required />
-                                <input type="password" id="loginPassword" placeholder="Password" required />
-                                <div id="loginError" class="error-message">Invalid credentials.</div>
-                                <button type="submit" class="btn btn-primary">Sign In</button>
-                            </form>
-                        </div>
+                    <div class="identity-grid">
+                        <div class="identity-label">Father / Guardian</div>
+                        <div class="identity-value" id="fatherName">[Father / Guardian]</div>
+                        <div class="identity-label">Membership Type</div>
+                        <div class="identity-value" id="membershipType">[Membership Type]</div>
+                        <div class="identity-label">Date of Birth</div>
+                        <div class="identity-value" id="dateOfBirth">[Date of Birth]</div>
+                        <div class="identity-label">District</div>
+                        <div class="identity-value" id="district">[District]</div>
+                        <div class="identity-label">Village</div>
+                        <div class="identity-value" id="village">[Village]</div>
+                        <div class="identity-label">Post Office</div>
+                        <div class="identity-value" id="postOffice">[Post Office]</div>
+                        <div class="identity-label">Police Station</div>
+                        <div class="identity-value" id="policeStation">[Police Station]</div>
+                        <div class="identity-label">PIN</div>
+                        <div class="identity-value" id="pin">[PIN]</div>
                     </div>
+                </div>
+                <div class="member-photo">
+                    <img id="memberPhoto" src="[Member Photo URL]" alt="Member Photograph" />
+                </div>
+            </section>
 
-                    <!-- Dashboard -->
-                    <div id="dashboard" class="admin-dashboard">
-                        <div class="admin-header">
-                            <div>
-                                <h2>Dashboard</h2>
-                                <span id="roleBadge" class="admin-role-badge">Role</span>
-                            </div>
-                            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
-                        </div>
+            <!-- FORMAL CONTENT -->
+            <section class="formal-content">
+                <p id="formalText">
+                    This certificate is issued to the above-named member confirming their membership in the
+                    [Your Organization], [Your District Committee]. The member is entitled to participate in
+                    the activities, programmes and community initiatives of the organization, subject to its
+                    rules and regulations.
+                </p>
+            </section>
 
-                        <!-- Filter Bar -->
-                        <div class="filter-bar" id="filterBar">
-                            <div class="filter-group">
-                                <label for="searchInput">Search</label>
-                                <input type="text" id="searchInput" placeholder="Name or Ref No..." />
-                            </div>
-                            <div class="filter-group">
-                                <label for="dateFrom">From Date</label>
-                                <input type="date" id="dateFrom" />
-                            </div>
-                            <div class="filter-group">
-                                <label for="dateTo">To Date</label>
-                                <input type="date" id="dateTo" />
-                            </div>
-                            <div class="filter-actions">
-                                <button class="btn btn-apply" id="applyFilterBtn">Apply Filters</button>
-                                <button class="btn btn-clear" id="clearFilterBtn">Clear</button>
-                                <span class="filter-result-info" id="resultCount"></span>
-                            </div>
-                        </div>
-
-                        <div id="appListContainer"></div>
+            <!-- VERIFICATION -->
+            <section class="verification-section">
+                <div class="verification-code">
+                    <img class="qr-code" id="qrCode" src="" alt="Verification QR Code" />
+                </div>
+                <div class="certificate-status">
+                    <div class="status-title">Certificate Status</div>
+                    <strong id="certStatus">APPROVED</strong>
+                    <div class="verification-number">
+                        Verification ID:
+                        <span id="verificationId">[Verification ID]</span>
                     </div>
                 </div>
             </section>
-        </main>
 
-        <!-- ===== MODALS (only view and remark remain) ===== -->
-        <!-- View Modal -->
-        <div id="viewModal" class="modal">
-            <div class="modal-content large">
-                <button class="modal-close" data-modal="viewModal">&times;</button>
-                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
-                    <span style="font-size:1.5rem;">&#9670;</span>
-                    <h3 style="margin:0;">Application Details</h3>
+            <!-- SIGNATURES -->
+            <section class="signature-section">
+                <div class="signature-box">
+                    <div class="signature-space"></div>
+                    <span class="digitally-signed">𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫</span>
+                    <strong id="daName">[Verifying Officer]</strong>
+                    <span>Verifying Officer</span>
                 </div>
-                <div id="viewContent"></div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" data-modal="viewModal">Close</button>
+                <div class="signature-box">
+                    <div class="signature-space"></div>
+                    <span class="digitally-signed">𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫</span>
+                    <strong id="presidentName">[Reviewing Officer]</strong>
+                    <span>Reviewing Officer</span>
                 </div>
-            </div>
+                <div class="signature-box">
+                    <div class="signature-space"></div>
+                    <span class="digitally-signed">𝑫𝑰𝑮𝑰𝑻𝑨𝑳𝑳𝒀 𝑺𝑰𝑮𝑵𝑬𝑫</span>
+                    <strong id="aaName">[Approving Officer]</strong>
+                    <span>Approving Officer</span>
+                </div>
+            </section>
+
+            <!-- NOTES -->
+            <section class="certificate-notes">
+                <h3>NOTE:</h3>
+                <ol>
+                    <li>This certificate is digitally generated and issued by the committee.</li>
+                    <li>The certificate may be verified using the Membership Verification ID.</li>
+                    <li>This certificate remains subject to the rules and regulations of the organization.</li>
+                    <li>Any unauthorized alteration or misuse of this certificate is prohibited.</li>
+                </ol>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="certificate-footer">
+                <div>Issued By: <strong>[Your Organization]</strong></div>
+                <div>Certificate ID: <strong id="certificateId">[Certificate ID]</strong></div>
+            </footer>
+
         </div>
+    </main>
 
-        <!-- Remark Modal -->
-        <div id="remarkModal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" id="remarkModalClose">&times;</button>
-                <div style="display:flex; align-items:center; gap:var(--spacing-sm);">
-                    <span class="modal-icon">&#9670;</span>
-                    <div>
-                        <h3 id="modalTitle">Add Remarks</h3>
-                        <p class="modal-subtitle" id="modalSubtitle">Enter your remarks below and proceed.</p>
-                    </div>
-                </div>
-                <label for="remarkText">Remarks</label>
-                <textarea id="remarkText" rows="4" placeholder="Type your remarks here..."></textarea>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" id="modalCancel">Cancel</button>
-                    <button class="btn btn-primary" id="modalConfirm">Submit</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Toast -->
-        <div id="toast" class="toast"></div>
-
-        <footer class="site-footer" role="contentinfo">
-            <div class="footer-inner">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <span class="footer-logo">
-                            <span class="logo-emblem">&#9670;</span>
-                            <span class="logo-main">[Your Organization]</span>
-                        </span>
-                        <p class="footer-sub">[Your District Committee]</p>
-                        <p class="footer-address">[Official Organization Address]</p>
-                    </div>
-                    <div class="footer-links">
-                        <div class="footer-links-col">
-                            <h4>Quick Links</h4>
-                            <ul>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="committee.html">Committee</a></li>
-                                <li><a href="events.html">Events</a></li>
-                                <li><a href="updates.html">Updates</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Resources</h4>
-                            <ul>
-                                <li><a href="documents.html">Documents</a></li>
-                                <li><a href="membership.html">Membership</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-links-col">
-                            <h4>Connect</h4>
-                            <ul class="footer-social">
-                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
-                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
-                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
-                                <li><a href="#" aria-label="Email">Email</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
-                    <p class="footer-credit">Designed with care for the community.</p>
-                </div>
-            </div>
-        </footer>
-
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons no-print" id="actionButtons" style="display:none;">
+        <button onclick="window.print()">Print / PDF</button>
+        <button class="close-btn" onclick="window.close()">Close</button>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- Firebase SDK -->
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="qrcode.js"></script>
     <script type="importmap">
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
                 "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
             }
         }
     </script>
-
-    <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-        import { getDatabase, ref, get, update, onValue } from "firebase/database";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
-            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
-            projectId: "assam-limbu-mahasabha-257ee",
-            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
-            messagingSenderId: "684300836537",
-            appId: "1:684300836537:web:f1080b30569f9b79634568"
-        };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-
-        // DOM elements
-        const loginSection = document.getElementById('loginSection');
-        const dashboard = document.getElementById('dashboard');
-        const loginForm = document.getElementById('loginForm');
-        const loginEmail = document.getElementById('loginEmail');
-        const loginPassword = document.getElementById('loginPassword');
-        const loginError = document.getElementById('loginError');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const roleBadge = document.getElementById('roleBadge');
-        const appListContainer = document.getElementById('appListContainer');
-        const searchInput = document.getElementById('searchInput');
-        const dateFrom = document.getElementById('dateFrom');
-        const dateTo = document.getElementById('dateTo');
-        const applyFilterBtn = document.getElementById('applyFilterBtn');
-        const clearFilterBtn = document.getElementById('clearFilterBtn');
-        const resultCount = document.getElementById('resultCount');
-
-        const viewModal = document.getElementById('viewModal');
-        const viewContent = document.getElementById('viewContent');
-        const remarkModal = document.getElementById('remarkModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSubtitle = document.getElementById('modalSubtitle');
-        const remarkText = document.getElementById('remarkText');
-        const modalConfirm = document.getElementById('modalConfirm');
-        const modalCancel = document.getElementById('modalCancel');
-        const remarkModalClose = document.getElementById('remarkModalClose');
-        const toast = document.getElementById('toast');
-
-        let currentUser = null, currentRole = null, currentAppKey = null, currentAction = null;
-        let roleFilteredApps = [];
-        let allAppsData = {};
-
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('visible');
-            setTimeout(() => toast.classList.remove('visible'), 3000);
-        }
-
-        function now() {
-            return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-        }
-
-        function filterApplications() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            const fromDate = dateFrom.value;
-            const toDate = dateTo.value;
-            let filtered = roleFilteredApps.filter(app => {
-                if (searchTerm) {
-                    const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
-                    const ref = (app.refNumber || '').toLowerCase();
-                    if (!name.includes(searchTerm) && !ref.includes(searchTerm)) return false;
-                }
-                if (fromDate || toDate) {
-                    const appDate = app.timestamp ? app.timestamp.split(' ')[0] : '';
-                    if (fromDate && appDate < fromDate) return false;
-                    if (toDate && appDate > toDate) return false;
-                }
-                return true;
-            });
-            resultCount.textContent = `${filtered.length} application${filtered.length !== 1 ? 's' : ''} found`;
-            renderTable(filtered);
-        }
-
-        function renderTable(applications) {
-            if (!applications || applications.length === 0) {
-                appListContainer.innerHTML = '<div class="admin-empty">No applications match your filters.</div>';
-                return;
-            }
-            let html = `<div class="table-wrapper"><table class="admin-table">
-                <thead><tr>
-                    <th>Ref No</th>
-                    <th>Applicant</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr></thead><tbody>`;
-            applications.forEach(app => {
-                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-                const refNum = app.refNumber || 'N/A';
-                const date = app.timestamp || 'N/A';
-                const status = app.status || 'Submitted';
-                let actionsHTML = `<button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>`;
-                if (currentRole === '[Verifying Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
-                } else if (currentRole === '[Reviewing Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
-                } else if (currentRole === '[Approving Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
-                        <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
-                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
-                }
-                html += `
-                    <tr>
-                        <td>${refNum}</td>
-                        <td>${name}</td>
-                        <td>${status}</td>
-                        <td>${date}</td>
-                        <td><div class="actions">${actionsHTML}</div></td>
-                    </tr>`;
-            });
-            html += '</tbody></table></div>';
-            appListContainer.innerHTML = html;
-
-            document.querySelectorAll('[data-action]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const action = btn.dataset.action;
-                    const key = btn.dataset.key;
-                    currentAppKey = key;
-                    const appData = allAppsData[key];
-                    if (action === 'view') {
-                        openViewModal(appData);
-                    } else if (action === 'previewcert') {
-                        if (appData && appData.refNumber) {
-                            window.open(`certificate.html?ref=${appData.refNumber}`, '_blank');
-                        } else {
-                            alert('Reference number not available for this application.');
-                        }
-                    } else if (action === 'remark') {
-                        modalTitle.textContent = 'Add Remarks';
-                        modalSubtitle.textContent = 'Enter your remarks below and proceed.';
-                        remarkText.value = '';
-                        currentAction = 'remark';
-                        remarkModal.classList.add('visible');
-                    } else if (action === 'forward') {
-                        modalTitle.textContent = 'Forward Application';
-                        modalSubtitle.textContent = 'Add your forwarding remarks below.';
-                        remarkText.value = '';
-                        currentAction = 'forward';
-                        remarkModal.classList.add('visible');
-                    } else if (action === 'approve') {
-                        if (confirm('Approve this application?')) {
-                            updateApplicationStatus(key, 'Approved', '[Approving Officer]', 'Application approved.');
-                        }
-                    } else if (action === 'reject') {
-                        if (confirm('Reject this application?')) {
-                            updateApplicationStatus(key, 'Rejected', '[Approving Officer]', 'Application rejected.');
-                        }
-                    }
-                });
-            });
-        }
-
-        function loadApplications(role) {
-            const appsRef = ref(db, 'applications');
-            onValue(appsRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    appListContainer.innerHTML = '<div class="admin-empty">No applications found.</div>';
-                    return;
-                }
-                allAppsData = snapshot.val();
-                const appKeys = Object.keys(allAppsData);
-                let filtered = [];
-                if (role === '[Verifying Officer]') {
-                    filtered = appKeys.filter(key => {
-                        const app = allAppsData[key];
-                        return app.status === 'Submitted' || app.currentStage === '[Verifying Officer]' || !app.currentStage;
-                    });
-                } else if (role === '[Reviewing Officer]') {
-                    filtered = appKeys.filter(key => {
-                        const app = allAppsData[key];
-                        return app.currentStage === '[Reviewing Officer]';
-                    });
-                } else if (role === '[Approving Officer]') {
-                    filtered = appKeys.filter(key => {
-                        const app = allAppsData[key];
-                        return app.currentStage === '[Approving Officer]';
-                    });
-                }
-                roleFilteredApps = filtered.map(key => ({ ...allAppsData[key], _key: key }));
-                filterApplications();
-            });
-        }
-
-        applyFilterBtn.addEventListener('click', filterApplications);
-        clearFilterBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            dateFrom.value = '';
-            dateTo.value = '';
-            filterApplications();
-        });
-        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') filterApplications(); });
-        dateFrom.addEventListener('change', filterApplications);
-        dateTo.addEventListener('change', filterApplications);
-
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value.trim();
-            loginError.classList.remove('visible');
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                loginError.textContent = error.message;
-                loginError.classList.add('visible');
-            }
-        });
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                const snapshot = await get(ref(db, `users/${user.uid}`));
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const role = userData.role;
-                    if (role) {
-                        currentRole = role;
-                        loginSection.style.display = 'none';
-                        dashboard.classList.add('visible');
-                        roleBadge.textContent = role;
-                        loadApplications(role);
-                        return;
-                    }
-                }
-                alert('No role assigned. Contact admin.');
-                await signOut(auth);
-            } else {
-                currentUser = null;
-                currentRole = null;
-                loginSection.style.display = 'block';
-                dashboard.classList.remove('visible');
-                appListContainer.innerHTML = '';
-            }
-        });
-
-        logoutBtn.addEventListener('click', async () => { await signOut(auth); });
-
-        function openViewModal(app) {
-            const fields = [
-                'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
-                'education', 'bloodGroup', 'district', 'lac', 'village', 'postOffice', 'ps', 'pin',
-                'familyStatus', 'totalFamily', 'houseType', 'landOwnership', 'vehicle', 'beltBlock',
-                'autonomousCouncil', 'govtScheme', 'govtEmployees', 'membershipType', 'status', 'timestamp'
-            ];
-            let html = '<div class="detail-grid">';
-            fields.forEach(f => {
-                if (app[f]) {
-                    html += `<div class="detail-item"><span class="label">${f.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}</span><span class="value">${app[f]}</span></div>`;
-                }
-            });
-            if (app.photoURL) {
-                html += `<div class="detail-item" style="grid-column:1/-1;"><span class="label">Photo</span><span class="value"><img src="${app.photoURL}" alt="Applicant photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" /></span></div>`;
-            }
-            if (app.history && app.history.length) {
-                html += `<div style="grid-column:1/-1; margin-top:var(--spacing-md);"><h4>Processing History</h4><ul>`;
-                app.history.forEach(h => {
-                    html += `<li>${h.timestamp} — ${h.action} (by ${h.by || 'System'})</li>`;
-                });
-                html += `</ul></div>`;
-            }
-            html += '</div>';
-            viewContent.innerHTML = html;
-            viewModal.classList.add('visible');
-        }
-
-        // Close modals
-        document.querySelectorAll('[data-modal]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const modalId = btn.dataset.modal;
-                document.getElementById(modalId).classList.remove('visible');
-            });
-        });
-        [viewModal, remarkModal].forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.classList.remove('visible');
-            });
-        });
-
-        remarkModalClose.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
-        modalCancel.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
-
-        modalConfirm.addEventListener('click', async () => {
-            const remark = remarkText.value.trim();
-            if (!remark) { alert('Please enter a remark.'); return; }
-            remarkModal.classList.remove('visible');
-            if (currentAction === 'remark') {
-                await addRemark(currentAppKey, remark, currentRole);
-                showToast('Remark added successfully.');
-            } else if (currentAction === 'forward') {
-                await forwardApplication(currentAppKey, remark, currentRole);
-                showToast('Application forwarded successfully.');
-            }
-        });
-
-        // ----- Database functions (with verificationId) -----
-        async function addRemark(key, remarkText, role) {
-            const appRef = ref(db, `applications/${key}`);
-            const snapshot = await get(appRef);
-            if (!snapshot.exists()) return;
-            const app = snapshot.val();
-            const remarks = app.remarks || [];
-            remarks.push({ by: role, text: remarkText, timestamp: now() });
-            await update(appRef, { remarks });
-        }
-
-        async function forwardApplication(key, remarkText, role) {
-            const appRef = ref(db, `applications/${key}`);
-            const snapshot = await get(appRef);
-            if (!snapshot.exists()) return;
-            const app = snapshot.val();
-            let nextStage = '', statusMsg = '';
-            if (role === '[Verifying Officer]') {
-                nextStage = '[Reviewing Officer]';
-                statusMsg = 'Forwarded to [Reviewing Officer]';
-            } else if (role === '[Reviewing Officer]') {
-                nextStage = '[Approving Officer]';
-                statusMsg = 'Forwarded to [Approving Officer]';
-            } else {
-                alert('Invalid role for forwarding.');
-                return;
-            }
-            const remarks = app.remarks || [];
-            if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
-            const history = app.history || [];
-            history.push({ action: `Forwarded to ${nextStage} by ${role}`, timestamp: now(), by: role });
-            await update(appRef, { currentStage: nextStage, status: statusMsg, remarks, history });
-        }
-
-        async function updateApplicationStatus(key, finalStatus, role, remarkText) {
-            const appRef = ref(db, `applications/${key}`);
-            const snapshot = await get(appRef);
-            if (!snapshot.exists()) return;
-            const app = snapshot.val();
-
-            let verificationId = null;
-            if (finalStatus === 'Approved') {
-                const refNum = app.refNumber || 'UNKNOWN';
-                const random = Math.floor(100000 + Math.random() * 900000);
-                verificationId = `VER-${refNum}-${random}`;
-            }
-
-            const remarks = app.remarks || [];
-            if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
-            const history = app.history || [];
-            history.push({ action: `${finalStatus} by ${role}`, timestamp: now(), by: role });
-
-            const updateData = {
-                status: finalStatus,
-                currentStage: finalStatus,
-                approved: finalStatus === 'Approved',
-                rejected: finalStatus === 'Rejected',
-                finalDecision: finalStatus,
-                remarks,
-                history
-            };
-            if (verificationId) {
-                updateData.verificationId = verificationId;
-            }
-
-            await update(appRef, updateData);
-            showToast(`Application ${finalStatus}.`);
-        }
-
-        console.log('Admin portal with verificationId on approval loaded.');
-    </script>
-
+    <script src="certificate.js" type="module"></script>
 </body>
 </html>
