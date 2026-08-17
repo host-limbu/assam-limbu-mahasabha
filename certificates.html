@@ -64,11 +64,20 @@
             100% { transform: rotate(360deg); }
         }
 
+        .status-message {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: var(--spacing-sm);
+        }
+
         /* ===== A4 PAGE ===== */
         .certificate-page {
             width: var(--page-width);
             min-height: var(--page-height);
             background: var(--paper);
+            position: absolute;
+            left: -9999px;
+            top: 0;
         }
 
         .certificate {
@@ -347,6 +356,9 @@
                 width: 210mm;
                 height: 297mm;
                 min-height: 297mm;
+                position: static;
+                left: auto;
+                top: auto;
             }
             .certificate {
                 width: 100%;
@@ -365,13 +377,6 @@
 
         /* ===== RESPONSIVE ===== */
         @media screen and (max-width: 800px) {
-            body {
-                justify-content: flex-start;
-                overflow-x: auto;
-            }
-            .certificate-page {
-                flex-shrink: 0;
-            }
             .member-identity {
                 grid-template-columns: 1fr;
                 gap: 6mm;
@@ -422,14 +427,15 @@
 </head>
 <body>
 
-    <!-- Loading Spinner (hidden after data injection) -->
+    <!-- Loading Spinner (visible while generating PDF) -->
     <div id="loadingContainer" class="loading-container">
         <div class="spinner"></div>
-        <p>Loading certificate...</p>
+        <p id="loadingText">Generating certificate...</p>
+        <p id="statusMessage" class="status-message"></p>
     </div>
 
-    <!-- Certificate (hidden initially) -->
-    <main class="certificate-page" id="certificatePage" style="display:none;">
+    <!-- Certificate (hidden, used for PDF generation) -->
+    <main class="certificate-page" id="certificatePage">
         <div class="certificate" id="certificateContainer">
 
             <!-- HEADER -->
@@ -552,14 +558,13 @@
                 </div>
             </section>
 
-            <!-- NOTES -->
+            <!-- NOTES - Only 3 items -->
             <section class="certificate-notes">
                 <h3>NOTE:</h3>
                 <ol>
                     <li>This certificate is digitally generated and issued by the committee.</li>
                     <li>The certificate may be verified using the Membership Verification ID.</li>
                     <li>This certificate remains subject to the rules and regulations of the organization.</li>
-                    <li>Any unauthorized alteration or misuse of this certificate is prohibited.</li>
                 </ol>
             </section>
 
@@ -572,15 +577,12 @@
         </div>
     </main>
 
-    <!-- Print & Download buttons -->
-    <div style="position:fixed; bottom:20px; right:20px; z-index:999; display:flex; gap:10px;" class="no-print" id="actionButtons" style="display:none;">
-        <button onclick="window.print()" style="padding:10px 20px; background:#1a3a5c; color:white; border:none; border-radius:5px; cursor:pointer;">Print / PDF</button>
-        <button onclick="window.close()" style="padding:10px 20px; background:#ccc; color:#222; border:none; border-radius:5px; cursor:pointer;">Close</button>
-    </div>
-
     <!-- QR Code library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="qrcode.js"></script>
+
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Firebase SDK -->
     <script type="importmap">
@@ -592,6 +594,7 @@
         }
     </script>
 
+    <!-- certificate.js (updated) -->
     <script src="certificate.js" type="module"></script>
 
 </body>
