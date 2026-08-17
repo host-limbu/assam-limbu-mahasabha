@@ -1,7 +1,6 @@
 /**
  * certificate.js – Fetches data, populates certificate, generates QR,
- * then automatically generates PDF with correct styling.
- * Includes fallback manual download button if auto fails.
+ * then automatically generates PDF and redirects back.
  */
 
 import { initializeApp } from "firebase/app";
@@ -21,83 +20,18 @@ const db = getDatabase(app);
 
 const loadingText = document.getElementById('loadingText');
 const statusMessage = document.getElementById('statusMessage');
-const manualBtn = document.getElementById('manualDownloadBtn');
 
 const urlParams = new URLSearchParams(window.location.search);
 const refNumber = urlParams.get('ref');
 
-// Redirect target (where to go after PDF generation)
+// Redirect target (where to go after PDF is generated)
 const redirectUrl = urlParams.get('redirect') || document.referrer || 'certificate-records.html';
 
-let isDownloading = false;
-
-// Manual download function (exposed globally)
-window.manualDownload = function() {
-    if (isDownloading) return;
-    isDownloading = true;
-    manualBtn.classList.add('hidden');
-    statusMessage.textContent = 'Generating PDF manually...';
-    generatePDF();
-};
-
-async function generatePDF() {
-    const element = document.getElementById('certificatePage');
-    const refNum = refNumber || 'unknown';
-
-    // Ensure element is visible for capture
-    // It's already visible with opacity 0.01 and z-index -1, but we need to ensure it's rendered.
-    // Temporarily make it fully opaque for capture (but still behind everything)
-    element.style.opacity = '1';
-    element.style.zIndex = '-1';
-
-    // Wait for images to load
-    const images = element.querySelectorAll('img');
-    await Promise.all([...images].map(img => {
-        if (img.complete) return Promise.resolve();
-        return new Promise(resolve => {
-            img.onload = resolve;
-            img.onerror = resolve; // continue even if image fails
-        });
-    }));
-
-    // Wait a bit for layout
-    await new Promise(r => setTimeout(r, 300));
-
-    const opt = {
-        margin: [15, 12, 15, 12],
-        filename: `Membership_Certificate_${refNum}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            letterRendering: true,
-            backgroundColor: '#ffffff',
-            width: 210 * 2.83465, // Convert mm to px (approx 595px)
-            height: 297 * 2.83465,
-            windowWidth: 210 * 2.83465,
-            windowHeight: 297 * 2.83465,
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    try {
-        await html2pdf().set(opt).from(element).save();
-        statusMessage.textContent = 'PDF downloaded successfully! Redirecting...';
-        statusMessage.style.color = 'green';
-        setTimeout(() => {
-            window.location.href = redirectUrl;
-        }, 1500);
-    } catch (err) {
-        console.error('PDF generation error:', err);
-        statusMessage.textContent = 'PDF generation failed. Please try the manual button below.';
-        statusMessage.style.color = 'red';
-        manualBtn.classList.remove('hidden');
-    } finally {
-        // Reset opacity to keep it hidden
-        element.style.opacity = '0.01';
-        isDownloading = false;
-    }
+if (!refNumber) {
+    statusMessage.textContent = 'No reference number provided.';
+    statusMessage.style.color = 'red';
+    setTimeout(() => { window.location.href = redirectUrl; }, 3000);
+    throw new Error('Missing ref parameter');
 }
 
 function formatDate(dateStr) {
@@ -108,16 +42,14 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+function getVerificationUrl(verificationId) {
+    const baseUrl = window.location.origin + window.location.pathname.replace(/certificate\.html$/, '');
+    return `${baseUrl}verify.html?id=${encodeURIComponent(verificationId)}`;
+}
+
 async function loadCertificate() {
     try {
         statusMessage.textContent = 'Fetching application data...';
-
-        if (!refNumber) {
-            statusMessage.textContent = 'No reference number provided.';
-            statusMessage.style.color = 'red';
-            setTimeout(() => { window.location.href = redirectUrl; }, 3000);
-            return;
-        }
 
         const snapshot = await get(ref(db, 'applications'));
         if (!snapshot.exists()) {
@@ -165,18 +97,14 @@ async function loadCertificate() {
 
         // --- Generate QR code ---
         statusMessage.textContent = 'Generating QR code...';
-        const verificationUrl = `${window.location.origin}/verify.html?id=${encodeURIComponent(verificationId)}`;
+        const verificationUrl = getVerificationUrl(verificationId);
         let qrDataUrl = '';
         try {
             if (typeof window.generateQRCodeDataURL === 'function') {
                 qrDataUrl = window.generateQRCodeDataURL(verificationUrl, 150);
-            } else {
-                console.warn('QRCode generator not available');
             }
         } catch (err) {
             console.warn('QR generation failed:', err);
-        }
-        if (!qrDataUrl) {
             qrDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
         }
 
@@ -220,16 +148,46 @@ async function loadCertificate() {
         statusMessage.textContent = 'Generating PDF...';
         loadingText.textContent = 'Generating PDF...';
 
-        // Start PDF generation
-        await generatePDF();
+        const element = document.getElementById('certificatePage');
+
+        const opt = {
+            margin: [15, 12, 15, 12],
+            filename: `Membership_Certificate_${refNum}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Generate PDF
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save()
+            .then(() => {
+                statusMessage.textContent = 'PDF downloaded successfully! Redirecting...';
+                statusMessage.style.color = 'green';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 1500);
+            })
+            .catch((err) => {
+                console.error('PDF generation error:', err);
+                statusMessage.textContent = 'PDF generation failed. Redirecting...';
+                statusMessage.style.color = 'red';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 3000);
+            });
 
     } catch (error) {
         console.error('Error loading certificate:', error);
-        statusMessage.textContent = `Error: ${error.message}. Please try the manual button.`;
+        statusMessage.textContent = `Error: ${error.message}. Redirecting...`;
         statusMessage.style.color = 'red';
-        manualBtn.classList.remove('hidden');
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 3000);
     }
 }
 
-// Start the process
+// Execute
 loadCertificate();
