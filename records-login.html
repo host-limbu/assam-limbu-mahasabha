@@ -4,78 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Records Login — [Your Organization]</title>
-    <meta name="description" content="Login to access certificate and inquiry records." />
+    <meta name="description" content="Login to view certificate records." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-login.css" />
+    <link rel="stylesheet" href="rec-log.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <style>
-        .records-login-container {
-            max-width: 420px;
-            margin: var(--spacing-xl) auto;
-            padding: var(--spacing-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-        }
-        .records-login-container h2 {
-            text-align: center;
-            margin-bottom: var(--spacing-sm);
-        }
-        .records-login-container .sub-text {
-            text-align: center;
-            color: var(--color-text-muted);
-            margin-bottom: var(--spacing-lg);
-            font-size: 0.9rem;
-        }
-        .records-login-container label {
-            display: block;
-            font-weight: var(--font-medium);
-            margin-bottom: var(--spacing-xs);
-            font-size: 0.9rem;
-        }
-        .records-login-container select,
-        .records-login-container input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            margin-bottom: var(--spacing-md);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-family: inherit;
-            background: var(--color-surface);
-            box-sizing: border-box;
-        }
-        .records-login-container select:focus,
-        .records-login-container input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-        .records-login-container .btn {
-            width: 100%;
-        }
-        .error-message {
-            color: #dc2626;
-            font-size: 0.9rem;
-            margin-top: var(--spacing-sm);
-            display: none;
-        }
-        .error-message.visible {
-            display: block;
-        }
-        .authorized-note {
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-            text-align: center;
-            margin-top: var(--spacing-md);
-            padding-top: var(--spacing-sm);
-            border-top: 1px solid var(--color-border);
-        }
-        .authorized-note strong {
-            color: var(--color-text);
-        }
-    </style>
+    <!-- No inline CSS needed – all styles are external -->
 </head>
 <body>
 
@@ -116,37 +52,26 @@
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
+
                     <div class="records-login-container">
                         <h2>Records Login</h2>
-                        <p class="sub-text">Select your role and sign in to access records.</p>
+                        <p class="sub-text">Enter your credentials to view certificate records.</p>
 
-                        <form id="loginForm">
-                            <label for="roleSelect">Role</label>
-                            <select id="roleSelect" required>
-                                <option value="">— Select Role —</option>
-                                <option value="administrator">Administrator</option>
-                                <option value="inquiry">Inquiry Admin</option>
-                            </select>
-
-                            <label for="loginEmail">Email</label>
-                            <input type="email" id="loginEmail" placeholder="Email" required />
-
-                            <label for="loginPassword">Password</label>
-                            <input type="password" id="loginPassword" placeholder="Password" required />
-
-                            <div id="loginError" class="error-message">Invalid credentials.</div>
-
-                            <button type="submit" class="btn btn-primary">Sign In</button>
-                        </form>
-
-                        <!-- Authorized Credentials Hint -->
-                        <div class="authorized-note">
-                            <p><strong>Authorized Users:</strong><br />
-                            Administrator: <span style="color: var(--color-primary); font-weight:500;">yadavsubba2003@gmail.com</span><br />
-                            Inquiry Admin: <span style="color: var(--color-primary); font-weight:500;">haasnaama@gmail.com</span></p>
-                            <p style="font-size:0.7rem; margin-top:4px;">Only these accounts can access their respective roles.</p>
+                        <!-- ===== EXACT SAME LOGIN PANEL AS admin.html ===== -->
+                        <div id="loginSection" class="admin-login-section">
+                            <div class="admin-login-form">
+                                <h3>Sign In</h3>
+                                <form id="loginForm">
+                                    <input type="email" id="loginEmail" placeholder="Email" required />
+                                    <input type="password" id="loginPassword" placeholder="Password" required />
+                                    <div id="loginError" class="error-message">Invalid credentials.</div>
+                                    <button type="submit" class="btn btn-primary">Sign In</button>
+                                </form>
+                            </div>
                         </div>
+
                     </div>
+
                 </div>
             </section>
         </main>
@@ -206,8 +131,7 @@
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
-                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"
             }
         }
     </script>
@@ -215,7 +139,6 @@
     <script type="module">
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-        import { getDatabase, ref, get } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -228,87 +151,33 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getDatabase(app);
 
-        const roleSelect = document.getElementById('roleSelect');
+        const loginForm = document.getElementById('loginForm');
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
         const loginError = document.getElementById('loginError');
-        const loginForm = document.getElementById('loginForm');
-
-        // Allowed UIDs per role
-        const ROLE_MAP = {
-            'administrator': 'l4GzCvIUW8RjUo188W3RGV7mQbe2', // yadavsubba2003@gmail.com
-            'inquiry': 'VphanModTwd4lQaPmwKA8EUvL3A3'          // haasnaama@gmail.com
-        };
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const role = roleSelect.value;
             const email = loginEmail.value.trim();
             const password = loginPassword.value.trim();
-
-            if (!role) {
-                loginError.textContent = 'Please select a role.';
-                loginError.classList.add('visible');
-                return;
-            }
-
             loginError.classList.remove('visible');
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                const uid = user.uid;
-
-                // Check if the UID matches the selected role
-                if (uid !== ROLE_MAP[role]) {
-                    await auth.signOut();
-                    loginError.textContent = `This email is not authorized for "${roleSelect.options[roleSelect.selectedIndex].text}". Please select the correct role.`;
-                    loginError.classList.add('visible');
-                    return;
-                }
-
-                // Optional: verify role from database (extra check)
-                const snapshot = await get(ref(db, `users/${uid}`));
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const dbRole = userData.role || '';
-                    const expectedRole = (role === 'administrator') ? '[Approving Officer]' : '[Contact Admin]';
-                    if (dbRole && dbRole !== expectedRole) {
-                        await auth.signOut();
-                        loginError.textContent = 'Role mismatch. Contact admin.';
-                        loginError.classList.add('visible');
-                        return;
-                    }
-                }
-
-                // Success – store role and redirect
-                localStorage.setItem('recordsRole', role);
-                if (role === 'administrator') {
-                    window.location.href = 'certificate-records.html';
-                } else {
-                    window.location.href = 'inquiry-records.html';
-                }
-
+                await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
                 loginError.textContent = error.message;
                 loginError.classList.add('visible');
             }
         });
 
-        // If already logged in and on this page, redirect to appropriate page
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                const role = localStorage.getItem('recordsRole');
-                if (role === 'administrator') {
-                    window.location.href = 'certificate-records.html';
-                } else if (role === 'inquiry') {
-                    window.location.href = 'inquiry-records.html';
-                }
+                window.location.href = 'certificate-records.html';
             }
         });
+
+        console.log('Records login page loaded.');
     </script>
 
 </body>
