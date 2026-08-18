@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us — [Your Organization]</title>
+    <meta name="description" content="Learn about [Your Organization] — our history, mission, and values." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="site-shell">
+
+        <!-- HEADER -->
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <a href="index.html" aria-label="[Your Organization] Home">
+                        <span class="logo-emblem">&#9670;</span>
+                        <span class="logo-text">
+                            <span class="logo-main">[Your Organization]</span>
+                            <span class="logo-sub">[Your District Committee]</span>
+                        </span>
+                    </a>
+                </div>
+
+                <nav class="header-nav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="nav-dropdown">
+                            <a href="about.html" class="active">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="history.html">History</a></li>
+                                <li><a href="vision.html">Vision &amp; Mission</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="committee.html">Committee</a></li>
+                        <li class="nav-dropdown">
+                            <a href="updates.html">Updates</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="updates.html">Latest Updates</a></li>
+                                <li><a href="archive.html">Archive</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="membership.html">Membership</a></li>
+                        <li><a href="documents.html">Documents</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="site-main" role="main">
+
+            <!-- HERO -->
+            <section class="hero-section full-width" style="min-height: 50vh; background: var(--color-primary-dark);">
+                <div class="hero-content" style="grid-template-columns: 1fr;">
+                    <div class="hero-text" style="max-width: 800px; text-align: center; margin: 0 auto;">
+                        <p class="hero-tag">About the Committee</p>
+                        <h1 style="font-size: 3rem;">Preserving Our Heritage<br />Since [Year Established]</h1>
+                        <p class="hero-description" style="max-width: 650px; margin: 0 auto;">
+                            [Your Organization], [Your District Committee],
+                            has been serving the community for over [Number of Years] decades.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OUR STORY -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Our Story</div>
+                    <h2>A Legacy of Community Service</h2>
+                    <div class="updates-grid grid-2">
+                        <div class="update-card">
+                            <p style="font-size: 1.05rem; color: var(--color-text-muted);">
+                                [Your Organization] was established in [Year Established] with a vision to unite,
+                                preserve, and promote the rich cultural heritage of the community
+                                in the [District Name] region.
+                            </p>
+                            <p style="color: var(--color-text-muted);">
+                                Over the years, the [Your District Committee] has
+                                worked tirelessly to address the social, educational, and cultural needs
+                                of community members across the region. From organizing cultural festivals
+                                to advocating for community rights, we remain committed to our founding
+                                principles.
+                            </p>
+                            <p style="color: var(--color-text-muted);">
+                                Today, we connect with over [Number] community members across [Number] villages,
+                                fostering unity and preserving our identity for future generations.
+                            </p>
+                            <a href="history.html" class="btn btn-secondary" style="margin-top: var(--spacing-sm);">Read Our Full History</a>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <blockquote style="font-style: italic; font-size: 1.1rem; color: var(--color-text); border-left: 4px solid var(--color-primary); padding-left: var(--spacing-md); margin: 0;">
+                                "Our strength lies in our unity, our culture, and our commitment to
+                                each other. Our community is a testament to resilience
+                                and shared values."
+                            </blockquote>
+                            <p style="margin-top: var(--spacing-md); font-weight: var(--font-medium); color: var(--color-primary);">
+                                — [Founding Member Name], Founding Member
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISION & MISSION -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Our Guiding Principles</div>
+                    <h2>Vision &amp; Mission</h2>
+                    <div class="updates-grid grid-2">
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Our Vision</h3>
+                            <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 0;">
+                                A vibrant and united community in [District Name] and [Region Name]
+                                that preserves its cultural heritage, promotes education, and contributes
+                                meaningfully to the social and economic development of the region.
+                            </p>
+                        </div>
+                        <div class="update-card">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Our Mission</h3>
+                            <ul style="list-style: none; padding: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Preserve cultural language, script, and traditions.
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Promote educational opportunities for youth.
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Foster community welfare and social cohesion.
+                                </li>
+                                <li style="padding: 0.3rem 0; padding-left: 1.5rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: var(--color-primary);">—</span>
+                                    Advocate for the rights and recognition of the community.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CORE VALUES -->
+            <section class="full-width" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">What We Stand For</div>
+                    <h2>Our Core Values</h2>
+                    <div class="updates-grid grid-4">
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Unity</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Strength through togetherness.</p>
+                        </div>
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Culture</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Preserving our heritage.</p>
+                        </div>
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Education</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Empowering the next generation.</p>
+                        </div>
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: var(--spacing-sm);">&#9670;</div>
+                            <h4 style="font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--color-text);">Service</h4>
+                            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Community first, always.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DISTRICT OVERVIEW -->
+            <section class="full-width" style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+                <div class="section-content">
+                    <div class="section-label">Our District</div>
+                    <h2>[District Name] &amp; [Region Name]</h2>
+                    <div class="updates-grid grid-3">
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">[Number]</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Villages Connected</div>
+                        </div>
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">[Number]+</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Community Members</div>
+                        </div>
+                        <div class="update-card" style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: var(--font-bold); color: var(--color-primary);">[Number]</div>
+                            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Years of Service</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: var(--color-text-muted); max-width: 700px; margin: var(--spacing-lg) auto 0;">
+                        The district committee serves community members across [Location 1], [Location 2], [Location 3],
+                        and surrounding areas, working to strengthen community bonds and preserve
+                        our cultural identity.
+                    </p>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="full-width" style="background: var(--color-primary); color: #fff;">
+                <div class="section-content" style="text-align: center;">
+                    <h2 style="color: #fff;">Meet Our Committee</h2>
+                    <p style="color: rgba(255, 255, 255, 0.75); max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        Our dedicated team of community leaders works tirelessly to serve the
+                        community across [District Name] and [Region Name].
+                    </p>
+                    <a href="committee.html" class="btn" style="background: #fff; color: var(--color-primary); border-color: #fff;">View Committee Members</a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-inner">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <span class="footer-logo">
+                            <span class="logo-emblem">&#9670;</span>
+                            <span class="logo-main">[Your Organization]</span>
+                        </span>
+                        <p class="footer-sub">[Your District Committee]</p>
+                        <p class="footer-address">[Official Organization Address]</p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-links-col">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="committee.html">Committee</a></li>
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="updates.html">Updates</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="documents.html">Documents</a></li>
+                                <li><a href="membership.html">Membership</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Utilities</h4>
+                            <ul>
+                                <li><a href="admin.html">Admin Panel</a></li>
+                                <li><a href="records-login.html">Certificate Records</a></li>
+                                <li><a href="download-certificate.html">Download Certificate</a></li>
+                                <li><a href="inquiries.html">Inquiry</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>Connect</h4>
+                            <ul class="footer-social">
+                                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+                                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                                <li><a href="#" aria-label="Email">Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
+                    <p class="footer-credit">Designed with care for the community.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
