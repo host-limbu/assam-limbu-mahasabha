@@ -6,8 +6,8 @@
     <title>Certificate Records — [Your Organization]</title>
     <meta name="description" content="View all membership applications and certificates." />
     <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="filter.css" />
-<link rel="stylesheet" href="cert-records.css" />
+    <link rel="stylesheet" href="filter.css" />
+    <link rel="stylesheet" href="cert-records.css" />
     <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -240,6 +240,14 @@
                                    status === 'Rejected' ? 'red' :
                                    'var(--color-primary)';
 
+                // --- Conditionally show certificate button only if Approved ---
+                let certAction = '';
+                if (status === 'Approved') {
+                    certAction = `<a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>`;
+                } else {
+                    certAction = `<span style="font-size:0.7rem; color:var(--color-text-muted); padding:0.15rem 0.4rem; background:var(--color-surface-alt); border-radius:var(--radius); display:inline-block;">Not Available</span>`;
+                }
+
                 html += `
                     <tr>
                         <td>${ref}</td>
@@ -250,7 +258,7 @@
                         <td>${date}</td>
                         <td>
                             <div class="actions">
-                                <a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>
+                                ${certAction}
                             </div>
                         </td>
                     </tr>
