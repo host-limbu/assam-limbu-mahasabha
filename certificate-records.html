@@ -7,7 +7,7 @@
     <meta name="description" content="View all membership applications and certificates." />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="filter.css" />
-    <link rel="stylesheet" href="cert-records.css" />
+    <link rel="stylesheet" href="cert-rec.css" />
     <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,6 @@
 
     <div class="site-shell">
 
-        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -50,7 +49,6 @@
             </div>
         </header>
 
-        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
@@ -107,7 +105,6 @@
             </section>
         </main>
 
-        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -235,18 +232,9 @@
                 const type = app.membershipType || 'General';
                 const status = app.status || 'Submitted';
                 const date = app.timestamp || 'N/A';
-
                 const statusColor = status === 'Approved' ? 'green' :
                                    status === 'Rejected' ? 'red' :
                                    'var(--color-primary)';
-
-                // --- Conditionally show certificate button only if Approved ---
-                let certAction = '';
-                if (status === 'Approved') {
-                    certAction = `<a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>`;
-                } else {
-                    certAction = `<span style="font-size:0.7rem; color:var(--color-text-muted); padding:0.15rem 0.4rem; background:var(--color-surface-alt); border-radius:var(--radius); display:inline-block;">Not Available</span>`;
-                }
 
                 html += `
                     <tr>
@@ -258,7 +246,7 @@
                         <td>${date}</td>
                         <td>
                             <div class="actions">
-                                ${certAction}
+                                <a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>
                             </div>
                         </td>
                     </tr>
@@ -308,7 +296,6 @@
             });
         }
 
-        // Auth check
         onAuthStateChanged(auth, (user) => {
             if (!user || user.uid !== ALLOWED_UID) {
                 window.location.href = 'records-login.html';
@@ -317,7 +304,6 @@
             loadRecords();
         });
 
-        // Event listeners
         applyFilterBtn.addEventListener('click', filterApplications);
         clearFilterBtn.addEventListener('click', () => {
             searchInput.value = '';
