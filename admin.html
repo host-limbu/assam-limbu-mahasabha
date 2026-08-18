@@ -6,14 +6,19 @@
     <title>Admin Portal — [Your Organization]</title>
     <meta name="description" content="Admin panel for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-login.css" />
+    <link rel="stylesheet" href="admin.css" />
     <link rel="stylesheet" href="filter.css" />
-    <link rel="stylesheet" href="global-admin.css" />
     <link rel="stylesheet" href="global-table.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
     <div class="site-shell">
 
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -57,7 +62,7 @@
                     <!-- Login -->
                     <div id="loginSection" class="admin-login-section">
                         <div class="admin-login-form">
-                            <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
+                            <h3>Sign In</h3>
                             <form id="loginForm">
                                 <input type="email" id="loginEmail" placeholder="Email" required />
                                 <input type="password" id="loginPassword" placeholder="Password" required />
@@ -120,7 +125,7 @@
             </div>
         </div>
 
-        <!-- ===== DUPLICATE DETECTION MODAL ===== -->
+        <!-- Duplicate Detection Modal -->
         <div id="duplicateModal" class="modal">
             <div class="modal-content large">
                 <button class="modal-close" data-modal="duplicateModal">&times;</button>
@@ -211,7 +216,6 @@
 
     </div>
 
-    <!-- ============================================================ -->
     <!-- Firebase SDK -->
     <script type="importmap">
         {
@@ -285,45 +289,29 @@
         }
 
         // ============================================================
-        // DUPLICATE DETECTION FUNCTION
+        // DUPLICATE DETECTION
         // ============================================================
         function checkForDuplicates(appData) {
             const firstName = (appData.firstName || '').toLowerCase().trim();
             const secondName = (appData.secondName || '').toLowerCase().trim();
             const dob = appData.dob || '';
-
-            if (!firstName && !secondName) {
-                return [];
-            }
-
+            if (!firstName && !secondName) return [];
             const duplicates = [];
             for (const key in allAppsData) {
                 const app = allAppsData[key];
-                // Skip the current application itself
                 if (app.refNumber === appData.refNumber) continue;
-
                 const appFirstName = (app.firstName || '').toLowerCase().trim();
                 const appSecondName = (app.secondName || '').toLowerCase().trim();
                 const appDob = app.dob || '';
-
-                // Check if names match (both first and second name must match)
                 const nameMatch = (firstName === appFirstName && secondName === appSecondName);
-                // Or if first name matches and second name is empty in either
                 const partialMatch = (firstName === appFirstName && (!secondName || !appSecondName));
-
                 if ((nameMatch || partialMatch) && dob === appDob) {
-                    duplicates.push({
-                        ...app,
-                        _key: key
-                    });
+                    duplicates.push({ ...app, _key: key });
                 }
             }
             return duplicates;
         }
 
-        // ============================================================
-        // FILTER & RENDER FUNCTIONS
-        // ============================================================
         function filterApplications() {
             const searchTerm = searchInput.value.trim().toLowerCase();
             const fromDate = dateFrom.value;
@@ -433,21 +421,15 @@
             });
         }
 
-        // ============================================================
-        // DUPLICATE MODAL
-        // ============================================================
         function openDuplicateModal(appData) {
             duplicateModal.classList.add('visible');
             duplicateContent.innerHTML = '<p style="color: var(--color-text-muted);">Checking for duplicates...</p><div class="spinner" style="margin: var(--spacing-md) auto; display:block;"></div>';
-
-            // Small delay to allow modal to render
             setTimeout(() => {
                 const duplicates = checkForDuplicates(appData);
-
                 if (duplicates.length === 0) {
                     duplicateContent.innerHTML = `
                         <div style="text-align: center; padding: var(--spacing-lg);">
-                            <div style="font-size: 3rem; color: #22c55e; margin-bottom: var(--spacing-md);">✓</div>
+                            <div style="font-size: 3rem; color: #22c55e; margin-bottom: var(--spacing-md);">&#10003;</div>
                             <h3 style="color: #22c55e;">No Duplicates Found</h3>
                             <p style="color: var(--color-text-muted);">This application appears to be unique. No matching records found.</p>
                         </div>
@@ -458,7 +440,6 @@
                         <p style="color: #dc2626; font-size: 0.9rem;">These applications may indicate duplicate membership requests.</p>
                     </div>
                     <div class="duplicate-list">`;
-
                     duplicates.forEach(dup => {
                         const dupName = `${dup.firstName || ''} ${dup.secondName || ''}`.trim() || 'N/A';
                         const dupRef = dup.refNumber || 'N/A';
@@ -466,7 +447,6 @@
                         let statusClass = 'pending';
                         if (dupStatus === 'Approved') statusClass = 'approved';
                         else if (dupStatus === 'Rejected') statusClass = 'rejected';
-
                         listHtml += `
                             <div class="duplicate-item">
                                 <div class="dup-info">
@@ -477,24 +457,19 @@
                             </div>
                         `;
                     });
-
                     listHtml += `</div>
                         <div style="margin-top: var(--spacing-md); display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
                             <button class="btn btn-danger" id="rejectDuplicateBtn" style="flex:1;">Reject This Application</button>
                             <button class="btn btn-secondary" data-modal="duplicateModal" style="flex:1;">Close</button>
                         </div>
                     `;
-
                     duplicateContent.innerHTML = listHtml;
-
-                    // Add reject handler
                     const rejectBtn = document.getElementById('rejectDuplicateBtn');
                     if (rejectBtn) {
                         rejectBtn.addEventListener('click', () => {
                             if (confirm('Are you sure you want to reject this application due to duplication?')) {
                                 duplicateModal.classList.remove('visible');
                                 updateApplicationStatus(currentAppKey, 'Rejected', '[Approving Officer]', 'Rejected due to duplicate application found.');
-                                // Also add a remark about duplication
                                 addRemarkWithText(currentAppKey, 'Application rejected due to duplicate entry found in the system.', '[Approving Officer]');
                             }
                         });
@@ -503,7 +478,6 @@
             }, 300);
         }
 
-        // Helper to add remark without modal
         async function addRemarkWithText(key, text, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -514,9 +488,6 @@
             await update(appRef, { remarks });
         }
 
-        // ============================================================
-        // LOAD APPLICATIONS
-        // ============================================================
         function loadApplications(role) {
             const appsRef = ref(db, 'applications');
             onValue(appsRef, (snapshot) => {
@@ -548,9 +519,6 @@
             });
         }
 
-        // ============================================================
-        // VIEW MODAL
-        // ============================================================
         function openViewModal(app) {
             const fields = [
                 'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
@@ -579,9 +547,6 @@
             viewModal.classList.add('visible');
         }
 
-        // ============================================================
-        // AUTH & LOGIN
-        // ============================================================
         applyFilterBtn.addEventListener('click', filterApplications);
         clearFilterBtn.addEventListener('click', () => {
             searchInput.value = '';
@@ -635,9 +600,6 @@
 
         logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
-        // ============================================================
-        // CLOSE MODALS
-        // ============================================================
         document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.dataset.modal;
@@ -666,9 +628,6 @@
             }
         });
 
-        // ============================================================
-        // DATABASE FUNCTIONS
-        // ============================================================
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -707,19 +666,16 @@
             const snapshot = await get(appRef);
             if (!snapshot.exists()) return;
             const app = snapshot.val();
-
             let verificationId = null;
             if (finalStatus === 'Approved') {
                 const refNum = app.refNumber || 'UNKNOWN';
                 const random = Math.floor(100000 + Math.random() * 900000);
                 verificationId = `VER-${refNum}-${random}`;
             }
-
             const remarks = app.remarks || [];
             if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
             const history = app.history || [];
             history.push({ action: `${finalStatus} by ${role}`, timestamp: now(), by: role });
-
             const updateData = {
                 status: finalStatus,
                 currentStage: finalStatus,
@@ -732,7 +688,6 @@
             if (verificationId) {
                 updateData.verificationId = verificationId;
             }
-
             await update(appRef, updateData);
             showToast(`Application ${finalStatus}.`);
         }
