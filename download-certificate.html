@@ -57,6 +57,7 @@
             border-radius: var(--radius);
             font-size: 0.95rem;
             display: none;
+            text-align: center;
         }
         .download-container .message.error {
             display: block;
@@ -78,9 +79,9 @@
         }
         .download-container .message.not-approved {
             display: block;
-            background: #f3e8ff;
-            color: #6d28d9;
-            border: 1px solid #d8b4fe;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
         }
         .spinner {
             display: inline-block;
@@ -97,14 +98,22 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .download-container .note {
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
-            margin-top: var(--spacing-md);
+
+        /* SVG icons inline */
+        .icon-svg {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+            flex-shrink: 0;
         }
-        .download-container .note strong {
-            color: var(--color-primary);
+        .icon-svg svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
         }
+
         @media (max-width: 480px) {
             .download-container .input-group {
                 flex-direction: column;
@@ -165,10 +174,6 @@
                                 <button type="submit" class="btn btn-primary" id="submitBtn">Get Certificate</button>
                             </div>
                             <div id="message" class="message"></div>
-                            <div class="note">
-                                <strong>Note:</strong> Your reference number was provided in the acknowledgement receipt.
-                                <br />The certificate is only available if your application has been <strong>Approved</strong>.
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -266,25 +271,28 @@
             }
         }
 
+        // Helper to set message with optional icon
+        function setMessage(type, text) {
+            message.className = 'message ' + type;
+            message.textContent = text;
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const refNumber = refInput.value.trim();
             if (!refNumber) {
-                message.className = 'message error';
-                message.textContent = 'Please enter your reference number.';
+                setMessage('error', 'Please enter your reference number.');
                 return;
             }
 
-            message.className = 'message loading';
-            message.innerHTML = '<span class="spinner"></span> Checking...';
+            setMessage('loading', 'Checking...');
             setButtonLoading(true);
 
             try {
                 const snapshot = await get(ref(db, 'applications'));
                 if (!snapshot.exists()) {
-                    message.className = 'message error';
-                    message.textContent = 'No applications found. Please check your reference number.';
+                    setMessage('error', 'No certificate found for this reference number.');
                     setButtonLoading(false);
                     return;
                 }
@@ -299,45 +307,29 @@
                 }
 
                 if (!app) {
-                    message.className = 'message error';
-                    message.textContent = 'No application found with that reference number. Please check and try again.';
+                    setMessage('error', 'No certificate found for this reference number.');
                     setButtonLoading(false);
                     return;
                 }
 
                 if (app.status !== 'Approved') {
-                    message.className = 'message not-approved';
-                    message.innerHTML = `
-                        <strong>⚠️ Certificate Not Available</strong><br />
-                        Your application has not been approved yet.<br />
-                        <span style="font-size:0.85rem;">Certificate is only available after the application is approved.</span>
-                    `;
-                    if (app.status === 'Submitted') {
-                        message.innerHTML += `<br /><span style="font-size:0.8rem; color:var(--color-text-muted);">Current status: Submitted</span>`;
-                    } else if (app.status === 'Rejected') {
-                        message.innerHTML += `<br /><span style="font-size:0.8rem; color:#dc2626;">Current status: Rejected</span>`;
-                    } else {
-                        message.innerHTML += `<br /><span style="font-size:0.8rem; color:var(--color-text-muted);">Current status: ${app.status}</span>`;
-                    }
+                    setMessage('not-approved', 'No certificate found for this reference number. Certificate is available only after approval.');
                     setButtonLoading(false);
                     return;
                 }
 
-                message.className = 'message success';
-                message.textContent = 'Certificate found. Redirecting...';
+                setMessage('success', 'Certificate found. Redirecting...');
                 setButtonLoading(false);
 
                 setTimeout(() => {
                     window.open(`certificate.html?ref=${encodeURIComponent(refNumber)}`, '_blank');
-                    message.className = 'message';
-                    message.textContent = '';
+                    setMessage('', '');
                     refInput.value = '';
                 }, 800);
 
             } catch (error) {
                 console.error('Error:', error);
-                message.className = 'message error';
-                message.textContent = 'An error occurred. Please try again later.';
+                setMessage('error', 'An error occurred. Please try again later.');
                 setButtonLoading(false);
             }
         });
