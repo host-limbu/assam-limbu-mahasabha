@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Inquiries — [Your Organization]</title>
-    <meta name="description" content="Admin panel to manage contact form inquiries submitted via the website." />
+    <title>Admin Portal — [Your Organization]</title>
+    <meta name="description" content="Admin panel for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="filter.css" />
     <link rel="stylesheet" href="global-table.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        .inquiry-login-form {
+        /* ===== Admin styles ===== */
+        .admin-login-form {
             max-width: 400px;
             margin: 0 auto;
             padding: var(--spacing-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
         }
-        .inquiry-login-form input {
+        .admin-login-form input {
             width: 100%;
             padding: 0.7rem 1rem;
             margin-bottom: var(--spacing-md);
@@ -27,20 +29,20 @@
             box-sizing: border-box;
             background: var(--color-surface);
         }
-        .inquiry-login-form input:focus {
+        .admin-login-form input:focus {
             outline: none;
             border-color: var(--color-primary);
         }
-        .inquiry-login-form .btn {
+        .admin-login-form .btn {
             width: 100%;
         }
-        .inquiry-dashboard {
+        .admin-dashboard {
             display: none;
         }
-        .inquiry-dashboard.visible {
+        .admin-dashboard.visible {
             display: block;
         }
-        .inquiry-header {
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -48,10 +50,10 @@
             gap: var(--spacing-md);
             margin-bottom: var(--spacing-lg);
         }
-        .inquiry-header h2 {
+        .admin-header h2 {
             margin: 0;
         }
-        .inquiry-role-badge {
+        .admin-role-badge {
             background: var(--color-primary);
             color: #fff;
             padding: 0.2rem 1rem;
@@ -59,15 +61,171 @@
             font-size: 0.8rem;
             font-weight: var(--font-medium);
         }
-        .error-message {
-            color: #dc2626;
-            font-size: 0.9rem;
-            margin-top: var(--spacing-sm);
+
+        /* ===== MODALS ===== */
+        .modal {
             display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            overflow-y: auto;
         }
-        .error-message.visible {
+        .modal.visible {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--color-surface);
+            max-width: 560px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: modalFadeIn 0.25s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-content .modal-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color var(--transition);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius);
+        }
+        .modal-content .modal-close:hover {
+            color: var(--color-text);
+            background: var(--color-surface-alt);
+        }
+        .modal-content .modal-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+        .modal-content h3 {
+            font-size: 1.3rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+        .modal-content .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+        .modal-content label {
             display: block;
+            font-weight: var(--font-medium);
+            font-size: 0.9rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-xs);
         }
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: var(--color-surface);
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 92, 0.1);
+        }
+        .modal-content textarea::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.6;
+        }
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        .modal-actions .btn {
+            padding: 0.6rem 1.6rem;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            font-weight: var(--font-medium);
+            transition: all var(--transition);
+        }
+        .modal-actions .btn-secondary {
+            background: var(--color-surface-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        .modal-actions .btn-secondary:hover {
+            background: var(--color-border);
+        }
+        .modal-actions .btn-primary {
+            background: var(--color-primary);
+            color: #fff;
+            border: 1px solid var(--color-primary);
+        }
+        .modal-actions .btn-primary:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary-light);
+        }
+
+        .modal-content.large {
+            max-width: 800px;
+        }
+        .modal-content.large .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+        }
+        .modal-content.large .detail-item {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .modal-content.large .detail-item .label {
+            font-weight: var(--font-medium);
+            color: var(--color-text-muted);
+            display: inline-block;
+            width: 40%;
+        }
+        .modal-content.large .detail-item .value {
+            color: var(--color-text);
+            display: inline-block;
+            width: 58%;
+        }
+
         .toast {
             position: fixed;
             bottom: var(--spacing-lg);
@@ -86,105 +244,126 @@
             animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
         }
 
-        /* View Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: var(--spacing-md);
-            overflow-y: auto;
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
-        .modal.visible {
-            display: flex;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        .modal-content {
-            background: var(--color-surface);
-            max-width: 600px;
-            width: 100%;
-            border-radius: var(--radius-lg);
+
+        .admin-empty {
+            text-align: center;
+            color: var(--color-text-muted);
             padding: var(--spacing-lg);
-            box-shadow: var(--shadow-lg);
-            position: relative;
         }
-        .modal-content .modal-close {
-            position: absolute;
-            top: var(--spacing-md);
-            right: var(--spacing-md);
-            background: none;
-            border: none;
-            font-size: 1.6rem;
-            line-height: 1;
-            cursor: pointer;
-            color: var(--color-text-muted);
-            transition: color var(--transition);
-        }
-        .modal-content .modal-close:hover {
-            color: var(--color-text);
-        }
-        .modal-content h3 {
-            margin: 0 0 var(--spacing-xs) 0;
-        }
-        .modal-content .detail-row {
-            display: flex;
-            padding: 0.3rem 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        .modal-content .detail-row .label {
-            font-weight: var(--font-medium);
-            color: var(--color-text-muted);
-            width: 100px;
-            flex-shrink: 0;
-        }
-        .modal-content .detail-row .value {
-            color: var(--color-text);
-            word-break: break-word;
-            white-space: normal;
-        }
-        .modal-content .message-full {
-            margin-top: var(--spacing-sm);
-            padding: var(--spacing-sm);
-            background: var(--color-surface-alt);
-            border-radius: var(--radius);
-            white-space: pre-wrap;
-            word-break: break-word;
+
+        /* ===== Duplicate list styles ===== */
+        .duplicate-list {
             max-height: 300px;
             overflow-y: auto;
         }
-        .modal-actions {
+        .duplicate-item {
             display: flex;
-            gap: var(--spacing-sm);
-            justify-content: flex-end;
-            margin-top: var(--spacing-md);
-            padding-top: var(--spacing-md);
-            border-top: 1px solid var(--color-border);
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            margin-bottom: var(--spacing-xs);
         }
-        .modal-actions .btn {
-            padding: 0.4rem 1.2rem;
-            font-size: 0.85rem;
+        .duplicate-item .dup-info {
+            font-size: 0.9rem;
+        }
+        .duplicate-item .dup-info strong {
+            color: var(--color-text);
+        }
+        .duplicate-item .dup-status {
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: var(--font-semibold);
+            text-transform: uppercase;
+        }
+        .duplicate-item .dup-status.approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        .duplicate-item .dup-status.rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .duplicate-item .dup-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: #fff;
+            border-color: #f59e0b;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            border-color: #d97706;
         }
 
         @media (max-width: 768px) {
             .modal-content {
-                padding: var(--spacing-md);
+                padding: var(--spacing-lg);
                 margin: var(--spacing-sm);
+            }
+            .modal-content.large .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .modal-actions .btn {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
+            }
+            .duplicate-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-xs);
             }
         }
     </style>
 </head>
 <body>
-    <!-- rest of inquiries.html remains unchanged -->
 
     <div class="site-shell">
 
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -217,17 +396,18 @@
             </div>
         </header>
 
+        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <h2 style="text-align: center;">Contact Inquiries</h2>
+                    <h2 style="text-align: center;">Admin Portal <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span></h2>
                     <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Manage all contact form submissions from your website visitors.
+                        Secure admin panel demonstrating a role‑based workflow for managing membership applications.
                     </p>
 
-                    <!-- Login Section -->
-                    <div id="loginSection" class="inquiry-login-section">
-                        <div class="inquiry-login-form">
+                    <!-- Login -->
+                    <div id="loginSection" class="admin-login-section">
+                        <div class="admin-login-form">
                             <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
                             <form id="loginForm">
                                 <input type="email" id="loginEmail" placeholder="Email" required />
@@ -239,40 +419,100 @@
                     </div>
 
                     <!-- Dashboard -->
-                    <div id="dashboard" class="inquiry-dashboard">
-                        <div class="inquiry-header">
+                    <div id="dashboard" class="admin-dashboard">
+                        <div class="admin-header">
                             <div>
-                                <h2>Inbox</h2>
-                                <span id="inboxCount" class="inquiry-role-badge">0 unread</span>
+                                <h2>Dashboard</h2>
+                                <span id="roleBadge" class="admin-role-badge">Role</span>
                             </div>
                             <button id="logoutBtn" class="btn btn-secondary">Logout</button>
                         </div>
-                        <div id="inquiryListContainer"></div>
+
+                        <!-- Filter Bar -->
+                        <div class="filter-bar" id="filterBar">
+                            <div class="filter-group">
+                                <label for="searchInput">Search</label>
+                                <input type="text" id="searchInput" placeholder="Name or Ref No..." />
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateFrom">From Date</label>
+                                <input type="date" id="dateFrom" />
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateTo">To Date</label>
+                                <input type="date" id="dateTo" />
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn btn-apply" id="applyFilterBtn">Apply Filters</button>
+                                <button class="btn btn-clear" id="clearFilterBtn">Clear</button>
+                                <span class="filter-result-info" id="resultCount"></span>
+                            </div>
+                        </div>
+
+                        <div id="appListContainer"></div>
                     </div>
                 </div>
             </section>
         </main>
 
-        <!-- View Message Modal -->
+        <!-- ===== MODALS ===== -->
+        <!-- View Modal -->
         <div id="viewModal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" id="viewModalClose">&times;</button>
-                <h3>Message Details</h3>
-                <div id="viewModalContent">
-                    <div class="detail-row"><span class="label">Name</span><span class="value" id="viewName"></span></div>
-                    <div class="detail-row"><span class="label">Email</span><span class="value" id="viewEmail"></span></div>
-                    <div class="detail-row"><span class="label">Phone</span><span class="value" id="viewPhone"></span></div>
-                    <div class="detail-row"><span class="label">Subject</span><span class="value" id="viewSubject"></span></div>
-                    <div class="detail-row"><span class="label">Date</span><span class="value" id="viewDate"></span></div>
-                    <div class="detail-row" style="border-bottom: none;"><span class="label">Message</span></div>
-                    <div class="message-full" id="viewMessage"></div>
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="viewModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;">Application Details</h3>
                 </div>
+                <div id="viewContent"></div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" id="viewModalCloseBtn">Close</button>
+                    <button class="btn btn-secondary" data-modal="viewModal">Close</button>
                 </div>
             </div>
         </div>
 
+        <!-- Duplicate Detection Modal -->
+        <div id="duplicateModal" class="modal">
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="duplicateModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;">Duplicate Detection</h3>
+                </div>
+                <div id="duplicateContent">
+                    <p style="color: var(--color-text-muted);">Checking for duplicates...</p>
+                    <div class="spinner" style="margin: var(--spacing-md) auto;"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-modal="duplicateModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remark Modal -->
+        <div id="remarkModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" id="remarkModalClose">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                    <span class="modal-icon">&#9670;</span>
+                    <div>
+                        <h3 id="modalTitle">Add Remarks</h3>
+                        <p class="modal-subtitle" id="modalSubtitle">Enter your remarks below and proceed.</p>
+                    </div>
+                </div>
+                <label for="remarkText">Remarks</label>
+                <textarea id="remarkText" rows="4" placeholder="Type your remarks here..."></textarea>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                    <button class="btn btn-primary" id="modalConfirm">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
+
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -284,6 +524,7 @@
                         <p class="footer-sub">[Your District Committee]</p>
                         <p class="footer-address">[Official Organization Address]</p>
                     </div>
+
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
@@ -304,6 +545,15 @@
                             </ul>
                         </div>
                         <div class="footer-links-col">
+                            <h4>Utilities</h4>
+                            <ul>
+                                <li><a href="admin.html">Admin Panel</a></li>
+                                <li><a href="records-login.html">Certificate Records</a></li>
+                                <li><a href="download-certificate.html">Download Certificate</a></li>
+                                <li><a href="inquiries.html">Inquiry</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
                             <h4>Connect</h4>
                             <ul class="footer-social">
                                 <li><a href="#" aria-label="Facebook">Facebook</a></li>
@@ -314,6 +564,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
                     <p class="footer-credit">Designed with care for the community.</p>
@@ -338,7 +589,7 @@
     <script type="module">
         import { initializeApp } from "firebase/app";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-        import { getDatabase, ref, get, update, remove, onValue } from "firebase/database";
+        import { getDatabase, ref, get, update, onValue } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -348,13 +599,9 @@
             messagingSenderId: "684300836537",
             appId: "1:684300836537:web:f1080b30569f9b79634568"
         };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
-
-        // Restrict to a specific UID for security
-        const ALLOWED_UID = 'VphanModTwd4lQaPmwKA8EUvL3A3';
 
         // DOM elements
         const loginSection = document.getElementById('loginSection');
@@ -364,24 +611,31 @@
         const loginPassword = document.getElementById('loginPassword');
         const loginError = document.getElementById('loginError');
         const logoutBtn = document.getElementById('logoutBtn');
-        const inboxCount = document.getElementById('inboxCount');
-        const inquiryListContainer = document.getElementById('inquiryListContainer');
+        const roleBadge = document.getElementById('roleBadge');
+        const appListContainer = document.getElementById('appListContainer');
+        const searchInput = document.getElementById('searchInput');
+        const dateFrom = document.getElementById('dateFrom');
+        const dateTo = document.getElementById('dateTo');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+        const resultCount = document.getElementById('resultCount');
 
-        // Modal elements
         const viewModal = document.getElementById('viewModal');
-        const viewModalClose = document.getElementById('viewModalClose');
-        const viewModalCloseBtn = document.getElementById('viewModalCloseBtn');
-        const viewName = document.getElementById('viewName');
-        const viewEmail = document.getElementById('viewEmail');
-        const viewPhone = document.getElementById('viewPhone');
-        const viewSubject = document.getElementById('viewSubject');
-        const viewDate = document.getElementById('viewDate');
-        const viewMessage = document.getElementById('viewMessage');
-
-        let currentUser = null;
-
-        // Toast
+        const viewContent = document.getElementById('viewContent');
+        const duplicateModal = document.getElementById('duplicateModal');
+        const duplicateContent = document.getElementById('duplicateContent');
+        const remarkModal = document.getElementById('remarkModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const remarkText = document.getElementById('remarkText');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const modalCancel = document.getElementById('modalCancel');
+        const remarkModalClose = document.getElementById('remarkModalClose');
         const toast = document.getElementById('toast');
+
+        let currentUser = null, currentRole = null, currentAppKey = null, currentAction = null;
+        let roleFilteredApps = [];
+        let allAppsData = {};
 
         function showToast(msg) {
             toast.textContent = msg;
@@ -389,7 +643,312 @@
             setTimeout(() => toast.classList.remove('visible'), 3000);
         }
 
-        // Login
+        function now() {
+            return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        }
+
+        // ============================================================
+        // DUPLICATE DETECTION
+        // ============================================================
+        function checkForDuplicates(appData) {
+            const firstName = (appData.firstName || '').toLowerCase().trim();
+            const secondName = (appData.secondName || '').toLowerCase().trim();
+            const dob = appData.dob || '';
+
+            if (!firstName && !secondName) {
+                return [];
+            }
+
+            const duplicates = [];
+            for (const key in allAppsData) {
+                const app = allAppsData[key];
+                if (app.refNumber === appData.refNumber) continue;
+
+                const appFirstName = (app.firstName || '').toLowerCase().trim();
+                const appSecondName = (app.secondName || '').toLowerCase().trim();
+                const appDob = app.dob || '';
+
+                const nameMatch = (firstName === appFirstName && secondName === appSecondName);
+                const partialMatch = (firstName === appFirstName && (!secondName || !appSecondName));
+
+                if ((nameMatch || partialMatch) && dob === appDob) {
+                    duplicates.push({
+                        ...app,
+                        _key: key
+                    });
+                }
+            }
+            return duplicates;
+        }
+
+        // ============================================================
+        // FILTER & RENDER
+        // ============================================================
+        function filterApplications() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const fromDate = dateFrom.value;
+            const toDate = dateTo.value;
+            let filtered = roleFilteredApps.filter(app => {
+                if (searchTerm) {
+                    const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
+                    const ref = (app.refNumber || '').toLowerCase();
+                    if (!name.includes(searchTerm) && !ref.includes(searchTerm)) return false;
+                }
+                if (fromDate || toDate) {
+                    const appDate = app.timestamp ? app.timestamp.split(' ')[0] : '';
+                    if (fromDate && appDate < fromDate) return false;
+                    if (toDate && appDate > toDate) return false;
+                }
+                return true;
+            });
+            resultCount.textContent = `${filtered.length} application${filtered.length !== 1 ? 's' : ''} found`;
+            renderTable(filtered);
+        }
+
+        function renderTable(applications) {
+            if (!applications || applications.length === 0) {
+                appListContainer.innerHTML = '<div class="admin-empty">No applications match your filters.</div>';
+                return;
+            }
+            let html = `<div class="table-wrapper"><table class="admin-table">
+                <thead><tr>
+                    <th>Ref No</th>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr></thead><tbody>`;
+            applications.forEach(app => {
+                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                const refNum = app.refNumber || 'N/A';
+                const date = app.timestamp || 'N/A';
+                const status = app.status || 'Submitted';
+                let actionsHTML = `<button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>`;
+                if (currentRole === '[Verifying Officer]') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
+                } else if (currentRole === '[Reviewing Officer]') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
+                } else if (currentRole === '[Approving Officer]') {
+                    actionsHTML += `
+                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-warning" data-action="checkdup" data-key="${app._key}">Check Duplication</button>
+                        <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
+                        <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
+                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
+                }
+                html += `
+                    <tr>
+                        <td>${refNum}</td>
+                        <td>${name}</td>
+                        <td>${status}</td>
+                        <td>${date}</td>
+                        <td><div class="actions">${actionsHTML}</div></td>
+                    </tr>`;
+            });
+            html += '</tbody></table></div>';
+            appListContainer.innerHTML = html;
+
+            document.querySelectorAll('[data-action]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const action = btn.dataset.action;
+                    const key = btn.dataset.key;
+                    currentAppKey = key;
+                    const appData = allAppsData[key];
+                    if (action === 'view') {
+                        openViewModal(appData);
+                    } else if (action === 'checkdup') {
+                        openDuplicateModal(appData);
+                    } else if (action === 'previewcert') {
+                        if (appData && appData.refNumber) {
+                            window.open(`certificate.html?ref=${appData.refNumber}`, '_blank');
+                        } else {
+                            alert('Reference number not available for this application.');
+                        }
+                    } else if (action === 'remark') {
+                        modalTitle.textContent = 'Add Remarks';
+                        modalSubtitle.textContent = 'Enter your remarks below and proceed.';
+                        remarkText.value = '';
+                        currentAction = 'remark';
+                        remarkModal.classList.add('visible');
+                    } else if (action === 'forward') {
+                        modalTitle.textContent = 'Forward Application';
+                        modalSubtitle.textContent = 'Add your forwarding remarks below.';
+                        remarkText.value = '';
+                        currentAction = 'forward';
+                        remarkModal.classList.add('visible');
+                    } else if (action === 'approve') {
+                        if (confirm('Approve this application?')) {
+                            updateApplicationStatus(key, 'Approved', '[Approving Officer]', 'Application approved.');
+                        }
+                    } else if (action === 'reject') {
+                        if (confirm('Reject this application?')) {
+                            updateApplicationStatus(key, 'Rejected', '[Approving Officer]', 'Application rejected.');
+                        }
+                    }
+                });
+            });
+        }
+
+        // ============================================================
+        // LOAD APPLICATIONS
+        // ============================================================
+        function loadApplications(role) {
+            const appsRef = ref(db, 'applications');
+            onValue(appsRef, (snapshot) => {
+                if (!snapshot.exists()) {
+                    appListContainer.innerHTML = '<div class="admin-empty">No applications found.</div>';
+                    return;
+                }
+                allAppsData = snapshot.val();
+                const appKeys = Object.keys(allAppsData);
+                let filtered = [];
+                if (role === '[Verifying Officer]') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.status === 'Submitted' || app.currentStage === '[Verifying Officer]' || !app.currentStage;
+                    });
+                } else if (role === '[Reviewing Officer]') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.currentStage === '[Reviewing Officer]';
+                    });
+                } else if (role === '[Approving Officer]') {
+                    filtered = appKeys.filter(key => {
+                        const app = allAppsData[key];
+                        return app.currentStage === '[Approving Officer]';
+                    });
+                }
+                roleFilteredApps = filtered.map(key => ({ ...allAppsData[key], _key: key }));
+                filterApplications();
+            });
+        }
+
+        // ============================================================
+        // DUPLICATE MODAL
+        // ============================================================
+        function openDuplicateModal(appData) {
+            duplicateModal.classList.add('visible');
+            duplicateContent.innerHTML = '<p style="color: var(--color-text-muted);">Checking for duplicates...</p><div class="spinner" style="margin: var(--spacing-md) auto; display:block;"></div>';
+
+            setTimeout(() => {
+                const duplicates = checkForDuplicates(appData);
+
+                if (duplicates.length === 0) {
+                    duplicateContent.innerHTML = `
+                        <div style="text-align: center; padding: var(--spacing-lg);">
+                            <div style="font-size: 3rem; color: #22c55e; margin-bottom: var(--spacing-md);">✓</div>
+                            <h3 style="color: #22c55e;">No Duplicates Found</h3>
+                            <p style="color: var(--color-text-muted);">This application appears to be unique. No matching records found.</p>
+                        </div>
+                    `;
+                } else {
+                    let listHtml = `<div style="margin-bottom: var(--spacing-md);">
+                        <p style="color: var(--color-text-muted);"><strong>${duplicates.length}</strong> duplicate application(s) found with the same Name and Date of Birth.</p>
+                        <p style="color: #dc2626; font-size: 0.9rem;">These applications may indicate duplicate membership requests.</p>
+                    </div>
+                    <div class="duplicate-list">`;
+
+                    duplicates.forEach(dup => {
+                        const dupName = `${dup.firstName || ''} ${dup.secondName || ''}`.trim() || 'N/A';
+                        const dupRef = dup.refNumber || 'N/A';
+                        const dupStatus = dup.status || 'Submitted';
+                        let statusClass = 'pending';
+                        if (dupStatus === 'Approved') statusClass = 'approved';
+                        else if (dupStatus === 'Rejected') statusClass = 'rejected';
+
+                        listHtml += `
+                            <div class="duplicate-item">
+                                <div class="dup-info">
+                                    <strong>${dupName}</strong><br />
+                                    Ref: ${dupRef} | DOB: ${dup.dob || 'N/A'}
+                                </div>
+                                <span class="dup-status ${statusClass}">${dupStatus}</span>
+                            </div>
+                        `;
+                    });
+
+                    listHtml += `</div>
+                        <div style="margin-top: var(--spacing-md); display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+                            <button class="btn btn-danger" id="rejectDuplicateBtn" style="flex:1;">Reject This Application</button>
+                            <button class="btn btn-secondary" data-modal="duplicateModal" style="flex:1;">Close</button>
+                        </div>
+                    `;
+
+                    duplicateContent.innerHTML = listHtml;
+
+                    const rejectBtn = document.getElementById('rejectDuplicateBtn');
+                    if (rejectBtn) {
+                        rejectBtn.addEventListener('click', () => {
+                            if (confirm('Are you sure you want to reject this application due to duplication?')) {
+                                duplicateModal.classList.remove('visible');
+                                updateApplicationStatus(currentAppKey, 'Rejected', '[Approving Officer]', 'Rejected due to duplicate application found.');
+                                addRemarkWithText(currentAppKey, 'Application rejected due to duplicate entry found in the system.', '[Approving Officer]');
+                            }
+                        });
+                    }
+                }
+            }, 300);
+        }
+
+        async function addRemarkWithText(key, text, role) {
+            const appRef = ref(db, `applications/${key}`);
+            const snapshot = await get(appRef);
+            if (!snapshot.exists()) return;
+            const app = snapshot.val();
+            const remarks = app.remarks || [];
+            remarks.push({ by: role, text: text, timestamp: now() });
+            await update(appRef, { remarks });
+        }
+
+        // ============================================================
+        // VIEW MODAL
+        // ============================================================
+        function openViewModal(app) {
+            const fields = [
+                'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
+                'education', 'bloodGroup', 'district', 'lac', 'village', 'postOffice', 'ps', 'pin',
+                'familyStatus', 'totalFamily', 'houseType', 'landOwnership', 'vehicle', 'beltBlock',
+                'autonomousCouncil', 'govtScheme', 'govtEmployees', 'membershipType', 'status', 'timestamp'
+            ];
+            let html = '<div class="detail-grid">';
+            fields.forEach(f => {
+                if (app[f]) {
+                    html += `<div class="detail-item"><span class="label">${f.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}</span><span class="value">${app[f]}</span></div>`;
+                }
+            });
+            if (app.photoURL) {
+                html += `<div class="detail-item" style="grid-column:1/-1;"><span class="label">Photo</span><span class="value"><img src="${app.photoURL}" alt="Applicant photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" /></span></div>`;
+            }
+            if (app.history && app.history.length) {
+                html += `<div style="grid-column:1/-1; margin-top:var(--spacing-md);"><h4>Processing History</h4><ul>`;
+                app.history.forEach(h => {
+                    html += `<li>${h.timestamp} — ${h.action} (by ${h.by || 'System'})</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            html += '</div>';
+            viewContent.innerHTML = html;
+            viewModal.classList.add('visible');
+        }
+
+        // ============================================================
+        // AUTH & LOGIN
+        // ============================================================
+        applyFilterBtn.addEventListener('click', filterApplications);
+        clearFilterBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            dateFrom.value = '';
+            dateTo.value = '';
+            filterApplications();
+        });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') filterApplications(); });
+        dateFrom.addEventListener('change', filterApplications);
+        dateTo.addEventListener('change', filterApplications);
+
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
@@ -403,173 +962,138 @@
             }
         });
 
-        // Auth state with UID check
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                if (user.uid === ALLOWED_UID) {
-                    currentUser = user;
-                    loginSection.style.display = 'none';
-                    dashboard.classList.add('visible');
-                    loadInquiries();
-                } else {
-                    await signOut(auth);
-                    loginError.textContent = 'Access denied. You are not authorized to view this page.';
-                    loginError.classList.add('visible');
-                    loginSection.style.display = 'block';
-                    dashboard.classList.remove('visible');
+                currentUser = user;
+                const snapshot = await get(ref(db, `users/${user.uid}`));
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const role = userData.role;
+                    if (role) {
+                        currentRole = role;
+                        loginSection.style.display = 'none';
+                        dashboard.classList.add('visible');
+                        roleBadge.textContent = role;
+                        loadApplications(role);
+                        return;
+                    }
                 }
+                alert('No role assigned. Contact admin.');
+                await signOut(auth);
             } else {
                 currentUser = null;
+                currentRole = null;
                 loginSection.style.display = 'block';
                 dashboard.classList.remove('visible');
-                inquiryListContainer.innerHTML = '';
+                appListContainer.innerHTML = '';
             }
         });
 
-        logoutBtn.addEventListener('click', async () => {
-            await signOut(auth);
-        });
+        logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
-        // Load inquiries
-        function loadInquiries() {
-            const contactsRef = ref(db, 'contacts');
-            onValue(contactsRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    inquiryListContainer.innerHTML = '<div class="inquiry-empty">No inquiries yet.</div>';
-                    inboxCount.textContent = '0 unread';
-                    return;
-                }
-
-                const data = snapshot.val();
-                const keys = Object.keys(data);
-                let unreadCount = 0;
-
-                let html = `<div class="table-wrapper"><table class="inquiry-table">
-                    <thead><tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Subject</th>
-                        <th>Message</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr></thead><tbody>`;
-
-                keys.reverse().forEach(key => {
-                    const inquiry = data[key];
-                    const status = inquiry.status || 'unread';
-                    if (status === 'unread') unreadCount++;
-
-                    const statusBadge = status === 'unread'
-                        ? '<span class="status-badge unread">Unread</span>'
-                        : '<span class="status-badge read">Read</span>';
-
-                    const msgShort = inquiry.message && inquiry.message.length > 40
-                        ? inquiry.message.substring(0, 40) + '…'
-                        : inquiry.message || '';
-
-                    html += `
-                        <tr data-key="${key}">
-                            <td>${inquiry.name || 'N/A'}</td>
-                            <td>${inquiry.email || 'N/A'}</td>
-                            <td>${inquiry.phone || 'N/A'}</td>
-                            <td>${inquiry.subject || 'N/A'}</td>
-                            <td title="${inquiry.message || ''}">${msgShort}</td>
-                            <td>${inquiry.timestamp || 'N/A'}</td>
-                            <td>${statusBadge}</td>
-                            <td>
-                                <div class="actions">
-                                    <button class="btn btn-secondary" data-action="view" data-key="${key}">View</button>
-                                    ${status === 'unread' ? `<button class="btn btn-primary" data-action="mark-read" data-key="${key}">Mark Read</button>` : ''}
-                                    <button class="btn btn-danger" data-action="delete" data-key="${key}">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-
-                html += '</tbody></table></div>';
-                inquiryListContainer.innerHTML = html;
-                inboxCount.textContent = `${unreadCount} unread`;
-
-                // Attach event listeners
-                document.querySelectorAll('[data-action]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const action = btn.dataset.action;
-                        const key = btn.dataset.key;
-                        if (action === 'view') {
-                            openViewModal(key);
-                        } else if (action === 'mark-read') {
-                            markAsRead(key);
-                        } else if (action === 'delete') {
-                            if (confirm('Delete this inquiry?')) {
-                                deleteInquiry(key);
-                            }
-                        }
-                    });
-                });
+        // ============================================================
+        // CLOSE MODALS
+        // ============================================================
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.dataset.modal;
+                document.getElementById(modalId).classList.remove('visible');
             });
-        }
-
-        // Open View Modal
-        function openViewModal(key) {
-            const contactsRef = ref(db, `contacts/${key}`);
-            get(contactsRef).then((snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    viewName.textContent = data.name || 'N/A';
-                    viewEmail.textContent = data.email || 'N/A';
-                    viewPhone.textContent = data.phone || 'N/A';
-                    viewSubject.textContent = data.subject || 'N/A';
-                    viewDate.textContent = data.timestamp || 'N/A';
-                    viewMessage.textContent = data.message || 'No message content.';
-                    viewModal.classList.add('visible');
-                } else {
-                    showToast('Inquiry not found.');
-                }
-            }).catch((error) => {
-                console.error('Error fetching inquiry:', error);
-                showToast('Error loading message.');
+        });
+        [viewModal, duplicateModal, remarkModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('visible');
             });
-        }
-
-        // Close modal
-        function closeViewModal() {
-            viewModal.classList.remove('visible');
-        }
-
-        viewModalClose.addEventListener('click', closeViewModal);
-        viewModalCloseBtn.addEventListener('click', closeViewModal);
-        viewModal.addEventListener('click', (e) => {
-            if (e.target === viewModal) closeViewModal();
         });
 
-        // Mark as read
-        async function markAsRead(key) {
-            const ref = ref(db, `contacts/${key}`);
-            try {
-                await update(ref, { status: 'read' });
-                showToast('Marked as read.');
-            } catch (error) {
-                console.error('Error marking as read:', error);
-                showToast('Error marking as read.');
+        remarkModalClose.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
+        modalCancel.addEventListener('click', () => { remarkModal.classList.remove('visible'); });
+
+        modalConfirm.addEventListener('click', async () => {
+            const remark = remarkText.value.trim();
+            if (!remark) { alert('Please enter a remark.'); return; }
+            remarkModal.classList.remove('visible');
+            if (currentAction === 'remark') {
+                await addRemark(currentAppKey, remark, currentRole);
+                showToast('Remark added successfully.');
+            } else if (currentAction === 'forward') {
+                await forwardApplication(currentAppKey, remark, currentRole);
+                showToast('Application forwarded successfully.');
             }
+        });
+
+        // ============================================================
+        // DATABASE FUNCTIONS
+        // ============================================================
+        async function addRemark(key, remarkText, role) {
+            const appRef = ref(db, `applications/${key}`);
+            const snapshot = await get(appRef);
+            if (!snapshot.exists()) return;
+            const app = snapshot.val();
+            const remarks = app.remarks || [];
+            remarks.push({ by: role, text: remarkText, timestamp: now() });
+            await update(appRef, { remarks });
         }
 
-        // Delete inquiry
-        async function deleteInquiry(key) {
-            const ref = ref(db, `contacts/${key}`);
-            try {
-                await remove(ref);
-                showToast('Deleted successfully.');
-            } catch (error) {
-                console.error('Error deleting:', error);
-                showToast('Error deleting.');
+        async function forwardApplication(key, remarkText, role) {
+            const appRef = ref(db, `applications/${key}`);
+            const snapshot = await get(appRef);
+            if (!snapshot.exists()) return;
+            const app = snapshot.val();
+            let nextStage = '', statusMsg = '';
+            if (role === '[Verifying Officer]') {
+                nextStage = '[Reviewing Officer]';
+                statusMsg = 'Forwarded to [Reviewing Officer]';
+            } else if (role === '[Reviewing Officer]') {
+                nextStage = '[Approving Officer]';
+                statusMsg = 'Forwarded to [Approving Officer]';
+            } else {
+                alert('Invalid role for forwarding.');
+                return;
             }
+            const remarks = app.remarks || [];
+            if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
+            const history = app.history || [];
+            history.push({ action: `Forwarded to ${nextStage} by ${role}`, timestamp: now(), by: role });
+            await update(appRef, { currentStage: nextStage, status: statusMsg, remarks, history });
         }
 
-        console.log('Contact inquiries panel loaded.');
+        async function updateApplicationStatus(key, finalStatus, role, remarkText) {
+            const appRef = ref(db, `applications/${key}`);
+            const snapshot = await get(appRef);
+            if (!snapshot.exists()) return;
+            const app = snapshot.val();
+
+            let verificationId = null;
+            if (finalStatus === 'Approved') {
+                const refNum = app.refNumber || 'UNKNOWN';
+                const random = Math.floor(100000 + Math.random() * 900000);
+                verificationId = `VER-${refNum}-${random}`;
+            }
+
+            const remarks = app.remarks || [];
+            if (remarkText) remarks.push({ by: role, text: remarkText, timestamp: now() });
+            const history = app.history || [];
+            history.push({ action: `${finalStatus} by ${role}`, timestamp: now(), by: role });
+
+            const updateData = {
+                status: finalStatus,
+                currentStage: finalStatus,
+                approved: finalStatus === 'Approved',
+                rejected: finalStatus === 'Rejected',
+                finalDecision: finalStatus,
+                remarks,
+                history
+            };
+            if (verificationId) {
+                updateData.verificationId = verificationId;
+            }
+
+            await update(appRef, updateData);
+            showToast(`Application ${finalStatus}.`);
+        }
+
+        console.log('Admin portal with duplicate detection loaded.');
     </script>
 
 </body>
