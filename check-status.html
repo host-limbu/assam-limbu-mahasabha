@@ -45,23 +45,52 @@
             color: var(--color-text-muted);
             padding: var(--spacing-lg);
         }
+
         .status-summary {
+            background: var(--color-surface-alt);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
             margin-bottom: var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm) var(--spacing-lg);
         }
-        .status-summary p {
-            margin-bottom: var(--spacing-xs);
-            font-size: 0.95rem;
+        .status-summary .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
         }
-        .status-summary .label {
+        .status-summary .summary-item .label {
+            font-size: 0.75rem;
             font-weight: var(--font-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             color: var(--color-text-muted);
         }
-        .status-summary .value {
-            font-weight: var(--font-medium);
+        .status-summary .summary-item .value {
+            font-size: 1rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            word-break: break-word;
         }
+        .status-summary .summary-item .value.approved {
+            color: #22c55e;
+        }
+        .status-summary .summary-item .value.rejected {
+            color: #ef4444;
+        }
+        .status-summary .summary-item .value.pending {
+            color: var(--color-primary);
+        }
+
         @media (max-width: 768px) {
             .status-container {
                 padding: var(--spacing-md);
+            }
+            .status-summary {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
             }
         }
     </style>
@@ -214,10 +243,9 @@
         const checkBtn = document.getElementById('checkBtn');
         const resultContainer = document.getElementById('resultContainer');
 
-        // Helper: get a remark for a specific history entry by matching timestamp and 'by'
+        // Helper: get matching remark for history entry (except first entry)
         function getMatchingRemark(historyEntry, remarks) {
             if (!remarks || remarks.length === 0) return null;
-            // Try to find a remark with the same timestamp and same 'by'
             const match = remarks.find(r =>
                 r.timestamp === historyEntry.timestamp && r.by === historyEntry.by
             );
@@ -249,28 +277,53 @@
                 return;
             }
 
-            // --- Build status summary ---
-            const statusColor = app.status === 'Approved' ? 'green' :
-                               app.status === 'Rejected' ? 'red' :
-                               'var(--color-primary)';
+            // Determine status color class
+            let statusColorClass = 'pending';
+            if (app.status === 'Approved') statusColorClass = 'approved';
+            else if (app.status === 'Rejected') statusColorClass = 'rejected';
 
+            // Build styled summary grid
+            const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
             let summaryHTML = `
                 <div class="status-summary">
-                    <p><span class="label">Reference No.</span> <span class="value">${app.refNumber}</span></p>
-                    <p><span class="label">Applicant Name</span> <span class="value">${app.firstName || ''} ${app.secondName || ''}</span></p>
-                    <p><span class="label">Submission Date</span> <span class="value">${app.timestamp || ''}</span></p>
-                    <p><span class="label">Current Status</span> <span class="value" style="font-weight:bold; color:${statusColor}">${app.status || 'Submitted'}</span></p>
+                    <div class="summary-item">
+                        <span class="label">Reference No.</span>
+                        <span class="value">${app.refNumber}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Applicant Name</span>
+                        <span class="value">${applicantName}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Submission Date</span>
+                        <span class="value">${app.timestamp || ''}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Current Status</span>
+                        <span class="value ${statusColorClass}">${app.status || 'Submitted'}</span>
+                    </div>
                 </div>
             `;
 
-            // --- Build processing history table with SI No, Ref No, Action, Remarks ---
+            // Build processing history table
             let historyRows = '';
             if (app.history && app.history.length > 0) {
                 const remarks = app.remarks || [];
                 app.history.forEach((entry, index) => {
                     const si = index + 1;
                     const action = entry.action || '';
-                    const remarkText = getMatchingRemark(entry, remarks) || '—';
+                    let remarkText = '—';
+
+                    // For the first entry (submission), show "Application submitted by [Applicant Name]"
+                    if (index === 0) {
+                        remarkText = `Application submitted by ${applicantName}`;
+                    } else {
+                        const matchedRemark = getMatchingRemark(entry, remarks);
+                        if (matchedRemark) {
+                            remarkText = matchedRemark;
+                        }
+                    }
+
                     historyRows += `
                         <tr>
                             <td>${si}</td>
@@ -301,7 +354,6 @@
                 </div>
             `;
 
-            // --- Combine and render ---
             resultContainer.innerHTML = `
                 <h3>Application Status</h3>
                 ${summaryHTML}
@@ -318,7 +370,6 @@
             if (e.key === 'Enter') checkBtn.click();
         });
 
-        // Auto-check if ref is in URL
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
         if (refParam) {
