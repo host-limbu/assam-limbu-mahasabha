@@ -3,19 +3,167 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Records Login — [Your Organization]</title>
-    <meta name="description" content="Login to view certificate records." />
+    <title>Records — [Your Organization]</title>
+    <meta name="description" content="View all membership applications and certificates." />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="global-login.css" />
-    <link rel="stylesheet" href="rec-log.css" />
+    <link rel="stylesheet" href="filter.css" />
+    <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== Admin styles (consistent with admin.html) ===== */
+        .admin-login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+        .admin-login-form input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            background: var(--color-surface);
+        }
+        .admin-login-form input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .admin-login-form .btn {
+            width: 100%;
+        }
+        .admin-dashboard {
+            display: none;
+        }
+        .admin-dashboard.visible {
+            display: block;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .admin-header h2 {
+            margin: 0;
+        }
+        .admin-role-badge {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: var(--font-medium);
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        .records-header h2 {
+            margin: 0;
+        }
+        .records-header .btn {
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .records-empty {
+            text-align: center;
+            color: var(--color-text-muted);
+            padding: var(--spacing-xl);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            display: none;
+            max-width: 400px;
+        }
+        .toast.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .admin-empty {
+            text-align: center;
+            color: var(--color-text-muted);
+            padding: var(--spacing-lg);
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Disabled button style for non-approved certificates */
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: var(--color-border);
+            color: var(--color-text-muted);
+            border-color: var(--color-border);
+        }
+
+        .actions .btn {
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 768px) {
+            .records-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div class="site-shell">
 
+        <!-- HEADER -->
         <header class="site-header" role="banner">
             <div class="header-inner">
                 <div class="header-logo">
@@ -48,24 +196,71 @@
             </div>
         </header>
 
+        <!-- MAIN -->
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
 
-                    <div class="records-login-container">
-                        <h2>Records Login</h2>
-                        <p class="sub-text">Enter your credentials to view certificate records.</p>
+                    <h2 style="text-align: center;">
+                        Certificate Records
+                        <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span>
+                    </h2>
+                    <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
+                        View all membership applications and their certificate status.
+                    </p>
 
-                        <!-- ===== EXACT SAME LOGIN PANEL AS admin.html ===== -->
-                        <div id="loginSection" class="admin-login-section">
-                            <div class="admin-login-form">
-                                <h3>Sign In</h3>
-                                <form id="loginForm">
-                                    <input type="email" id="loginEmail" placeholder="Email" required />
-                                    <input type="password" id="loginPassword" placeholder="Password" required />
-                                    <div id="loginError" class="error-message">Invalid credentials.</div>
-                                    <button type="submit" class="btn btn-primary">Sign In</button>
-                                </form>
+                    <!-- ===== LOGIN SECTION (same as admin.html) ===== -->
+                    <div id="loginSection" class="admin-login-section">
+                        <div class="admin-login-form">
+                            <h3 style="text-align: center; margin-top: 0;">Sign In</h3>
+                            <form id="loginForm">
+                                <input type="email" id="loginEmail" placeholder="Email" required />
+                                <input type="password" id="loginPassword" placeholder="Password" required />
+                                <div id="loginError" class="error-message">Invalid credentials.</div>
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ===== DASHBOARD (same as admin.html) ===== -->
+                    <div id="dashboard" class="admin-dashboard">
+
+                        <div class="admin-header">
+                            <div>
+                                <h2>Dashboard</h2>
+                                <span id="roleBadge" class="admin-role-badge">Role</span>
+                            </div>
+                            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                        </div>
+
+                        <!-- Filter Bar -->
+                        <div class="filter-bar" id="filterBar">
+                            <div class="filter-group">
+                                <label for="searchInput">Search</label>
+                                <input type="text" id="searchInput" placeholder="Name or Ref No..." />
+                            </div>
+                            <div class="filter-group">
+                                <label for="statusFilter">Status</label>
+                                <select id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Submitted">Submitted</option>
+                                    <option value="Under Processed">Under Processed</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn btn-apply" id="applyFilterBtn">Apply Filters</button>
+                                <button class="btn btn-clear" id="clearFilterBtn">Clear</button>
+                                <span class="filter-result-info" id="resultCount"></span>
+                            </div>
+                        </div>
+
+                        <!-- Records Table -->
+                        <div id="recordsContainer">
+                            <div style="text-align: center; padding: var(--spacing-xl); color: var(--color-text-muted);">
+                                <div class="spinner"></div>
+                                <p style="margin-top: var(--spacing-md);">Loading records...</p>
                             </div>
                         </div>
 
@@ -75,6 +270,7 @@
             </section>
         </main>
 
+        <!-- FOOTER -->
         <footer class="site-footer" role="contentinfo">
             <div class="footer-inner">
                 <div class="footer-main">
@@ -86,6 +282,7 @@
                         <p class="footer-sub">[Your District Committee]</p>
                         <p class="footer-address">[Official Organization Address]</p>
                     </div>
+
                     <div class="footer-links">
                         <div class="footer-links-col">
                             <h4>Quick Links</h4>
@@ -106,6 +303,15 @@
                             </ul>
                         </div>
                         <div class="footer-links-col">
+                            <h4>Utilities</h4>
+                            <ul>
+                                <li><a href="admin.html">Admin Panel</a></li>
+                                <li><a href="records-login.html">Certificate Records</a></li>
+                                <li><a href="download-certificate.html">Download Certificate</a></li>
+                                <li><a href="inquiries.html">Inquiry</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-col">
                             <h4>Connect</h4>
                             <ul class="footer-social">
                                 <li><a href="#" aria-label="Facebook">Facebook</a></li>
@@ -116,6 +322,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 [Your Organization] — [Your District Committee]. All rights reserved.</p>
                     <p class="footer-credit">Designed with care for the community.</p>
@@ -125,19 +332,25 @@
 
     </div>
 
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ============================================================ -->
     <!-- Firebase SDK -->
     <script type="importmap">
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
-                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"
             }
         }
     </script>
 
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+        import { getDatabase, ref, onValue } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
@@ -150,18 +363,168 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getDatabase(app);
 
+        // DOM elements
+        const loginSection = document.getElementById('loginSection');
+        const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
         const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const roleBadge = document.getElementById('roleBadge');
+        const recordsContainer = document.getElementById('recordsContainer');
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+        const resultCount = document.getElementById('resultCount');
+        const toast = document.getElementById('toast');
 
+        let allAppsData = [];
+        let filteredApps = [];
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        // ============================================================
+        // DETERMINE APPLICATION STATUS FOR FILTERING
+        // ============================================================
+        function getApplicationStatus(app) {
+            // If status is explicitly set
+            if (app.status === 'Approved') return 'Approved';
+            if (app.status === 'Rejected') return 'Rejected';
+
+            // Check if application is in workflow (forwarded but not approved/rejected)
+            const currentStage = app.currentStage || app.status || 'Submitted';
+
+            // If currentStage is not 'Submitted', 'Approved', or 'Rejected', it's "Under Processed"
+            if (currentStage !== 'Submitted' && currentStage !== 'Approved' && currentStage !== 'Rejected') {
+                return 'Under Processed';
+            }
+
+            return 'Submitted';
+        }
+
+        // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function renderTable(applications) {
+            if (!applications || applications.length === 0) {
+                recordsContainer.innerHTML = '<div class="records-empty">No applications found.</div>';
+                resultCount.textContent = '0 applications found';
+                return;
+            }
+
+            let html = `<div class="table-wrapper"><table class="admin-table">
+                <thead><tr>
+                    <th>Reference No.</th>
+                    <th>Applicant Name</th>
+                    <th>Father / Guardian</th>
+                    <th>Membership Type</th>
+                    <th>Status</th>
+                    <th>Submission Date</th>
+                    <th>Actions</th>
+                </tr></thead><tbody>`;
+
+            applications.forEach(app => {
+                const name = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+                const ref = app.refNumber || 'N/A';
+                const father = app.fatherGuardianName || 'N/A';
+                const type = app.membershipType || 'General';
+                const status = getApplicationStatus(app);
+                const date = app.timestamp || 'N/A';
+                const isApproved = status === 'Approved';
+
+                let statusColor = status === 'Approved' ? 'green' :
+                                 status === 'Rejected' ? 'red' :
+                                 status === 'Under Processed' ? '#f59e0b' :
+                                 'var(--color-primary)';
+
+                // View Certificate button - only enabled for Approved applications
+                const certButton = isApproved ?
+                    `<a href="certificate.html?ref=${ref}" target="_blank" class="btn btn-primary" style="font-size:0.7rem; padding:0.15rem 0.4rem;">View Certificate</a>` :
+                    `<span class="btn btn-disabled" style="font-size:0.7rem; padding:0.15rem 0.4rem; display:inline-block;">Not Available</span>`;
+
+                html += `
+                    <tr>
+                        <td>${ref}</td>
+                        <td>${name}</td>
+                        <td>${father}</td>
+                        <td>${type}</td>
+                        <td style="font-weight:bold; color:${statusColor}">${status}</td>
+                        <td>${date}</td>
+                        <td>
+                            <div class="actions">
+                                ${certButton}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div>';
+            recordsContainer.innerHTML = html;
+            resultCount.textContent = `${applications.length} application${applications.length !== 1 ? 's' : ''} found`;
+        }
+
+        // ============================================================
+        // FILTER APPLICATIONS
+        // ============================================================
+        function filterApplications() {
+            const term = searchInput.value.trim().toLowerCase();
+            const status = statusFilter.value;
+
+            filteredApps = allAppsData.filter(app => {
+                let matchSearch = true;
+                if (term) {
+                    const name = `${app.firstName || ''} ${app.secondName || ''}`.toLowerCase();
+                    const ref = (app.refNumber || '').toLowerCase();
+                    matchSearch = name.includes(term) || ref.includes(term);
+                }
+                let matchStatus = true;
+                if (status) {
+                    const appStatus = getApplicationStatus(app);
+                    matchStatus = appStatus === status;
+                }
+                return matchSearch && matchStatus;
+            });
+
+            renderTable(filteredApps);
+        }
+
+        // ============================================================
+        // LOAD RECORDS
+        // ============================================================
+        function loadRecords() {
+            const appsRef = ref(db, 'applications');
+            onValue(appsRef, (snapshot) => {
+                if (!snapshot.exists()) {
+                    recordsContainer.innerHTML = '<div class="records-empty">No applications found.</div>';
+                    resultCount.textContent = '0 applications found';
+                    return;
+                }
+                const data = snapshot.val();
+                allAppsData = Object.values(data);
+                filterApplications();
+            }, (error) => {
+                console.error('Error fetching records:', error);
+                recordsContainer.innerHTML = '<div class="records-empty">Error loading records. Please try again.</div>';
+            });
+        }
+
+        // ============================================================
+        // AUTH & LOGIN (same as admin.html)
+        // ============================================================
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
             const password = loginPassword.value.trim();
             loginError.classList.remove('visible');
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
@@ -170,13 +533,48 @@
             }
         });
 
+        // Restrict access to specific admin UID (same as admin.html)
+        const ALLOWED_UID = 'l4GzCvIUW8RjUo188W3RGV7mQbe2';
+
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = 'certificate-records.html';
+            if (user && user.uid === ALLOWED_UID) {
+                loginSection.style.display = 'none';
+                dashboard.classList.add('visible');
+                roleBadge.textContent = 'Administrator';
+                loadRecords();
+            } else if (user) {
+                alert('You are not authorized to view this page.');
+                signOut(auth);
+            } else {
+                loginSection.style.display = 'block';
+                dashboard.classList.remove('visible');
+                recordsContainer.innerHTML = '';
             }
         });
 
-        console.log('Records login page loaded.');
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await signOut(auth);
+            localStorage.removeItem('recordsRole');
+            loginSection.style.display = 'block';
+            dashboard.classList.remove('visible');
+            recordsContainer.innerHTML = '';
+        });
+
+        // ============================================================
+        // FILTER EVENT LISTENERS
+        // ============================================================
+        applyFilterBtn.addEventListener('click', filterApplications);
+        clearFilterBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            statusFilter.value = '';
+            filterApplications();
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') filterApplications();
+        });
+
+        console.log('Records page with combined login and dashboard loaded.');
     </script>
 
 </body>
