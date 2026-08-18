@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Portal — [Your Organization]</title>
-    <meta name="description" content="Admin panel demonstration for managing membership applications — a portfolio project by [Your Organization]." />
+    <meta name="description" content="Admin panel for managing membership applications." />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="filter.css" />
-    <link rel="stylesheet" href="global-table.css" />
     <link rel="stylesheet" href="global-admin.css" />
 </head>
 <body>
@@ -51,7 +50,7 @@
                 <div class="section-content">
                     <h2 style="text-align: center;">Admin Portal <span style="font-size:0.7rem; background:var(--color-primary); color:#fff; padding:0.2rem 0.8rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; margin-left:0.5rem;">Demo</span></h2>
                     <p style="color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                        Secure admin panel demonstrating a role‑based workflow ([Verifying Officer] → [Reviewing Officer] → [Approving Officer]) for managing membership applications.
+                        Secure admin panel demonstrating a role‑based workflow for managing membership applications.
                     </p>
 
                     <!-- Login -->
@@ -104,7 +103,7 @@
             </section>
         </main>
 
-        <!-- ===== MODALS (only view and remark remain) ===== -->
+        <!-- ===== MODALS ===== -->
         <!-- View Modal -->
         <div id="viewModal" class="modal">
             <div class="modal-content large">
@@ -116,6 +115,24 @@
                 <div id="viewContent"></div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" data-modal="viewModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== DUPLICATE DETECTION MODAL ===== -->
+        <div id="duplicateModal" class="modal">
+            <div class="modal-content large">
+                <button class="modal-close" data-modal="duplicateModal">&times;</button>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm); margin-bottom:var(--spacing-md);">
+                    <span style="font-size:1.5rem;">&#9670;</span>
+                    <h3 style="margin:0;">Duplicate Detection</h3>
+                </div>
+                <div id="duplicateContent">
+                    <p style="color: var(--color-text-muted);">Checking for duplicates...</p>
+                    <div class="spinner" style="margin: var(--spacing-md) auto;"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-modal="duplicateModal">Close</button>
                 </div>
             </div>
         </div>
@@ -241,6 +258,8 @@
 
         const viewModal = document.getElementById('viewModal');
         const viewContent = document.getElementById('viewContent');
+        const duplicateModal = document.getElementById('duplicateModal');
+        const duplicateContent = document.getElementById('duplicateContent');
         const remarkModal = document.getElementById('remarkModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalSubtitle = document.getElementById('modalSubtitle');
@@ -264,6 +283,46 @@
             return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         }
 
+        // ============================================================
+        // DUPLICATE DETECTION FUNCTION
+        // ============================================================
+        function checkForDuplicates(appData) {
+            const firstName = (appData.firstName || '').toLowerCase().trim();
+            const secondName = (appData.secondName || '').toLowerCase().trim();
+            const dob = appData.dob || '';
+
+            if (!firstName && !secondName) {
+                return [];
+            }
+
+            const duplicates = [];
+            for (const key in allAppsData) {
+                const app = allAppsData[key];
+                // Skip the current application itself
+                if (app.refNumber === appData.refNumber) continue;
+
+                const appFirstName = (app.firstName || '').toLowerCase().trim();
+                const appSecondName = (app.secondName || '').toLowerCase().trim();
+                const appDob = app.dob || '';
+
+                // Check if names match (both first and second name must match)
+                const nameMatch = (firstName === appFirstName && secondName === appSecondName);
+                // Or if first name matches and second name is empty in either
+                const partialMatch = (firstName === appFirstName && (!secondName || !appSecondName));
+
+                if ((nameMatch || partialMatch) && dob === appDob) {
+                    duplicates.push({
+                        ...app,
+                        _key: key
+                    });
+                }
+            }
+            return duplicates;
+        }
+
+        // ============================================================
+        // FILTER & RENDER FUNCTIONS
+        // ============================================================
         function filterApplications() {
             const searchTerm = searchInput.value.trim().toLowerCase();
             const fromDate = dateFrom.value;
@@ -315,6 +374,7 @@
                 } else if (currentRole === '[Approving Officer]') {
                     actionsHTML += `
                         <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                        <button class="btn btn-warning" data-action="checkdup" data-key="${app._key}" style="background:#f59e0b; color:#fff; border-color:#f59e0b;">Check Duplication</button>
                         <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
                         <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
                         <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
@@ -339,6 +399,8 @@
                     const appData = allAppsData[key];
                     if (action === 'view') {
                         openViewModal(appData);
+                    } else if (action === 'checkdup') {
+                        openDuplicateModal(appData);
                     } else if (action === 'previewcert') {
                         if (appData && appData.refNumber) {
                             window.open(`certificate.html?ref=${appData.refNumber}`, '_blank');
@@ -370,6 +432,90 @@
             });
         }
 
+        // ============================================================
+        // DUPLICATE MODAL
+        // ============================================================
+        function openDuplicateModal(appData) {
+            duplicateModal.classList.add('visible');
+            duplicateContent.innerHTML = '<p style="color: var(--color-text-muted);">Checking for duplicates...</p><div class="spinner" style="margin: var(--spacing-md) auto; display:block;"></div>';
+
+            // Small delay to allow modal to render
+            setTimeout(() => {
+                const duplicates = checkForDuplicates(appData);
+
+                if (duplicates.length === 0) {
+                    duplicateContent.innerHTML = `
+                        <div style="text-align: center; padding: var(--spacing-lg);">
+                            <div style="font-size: 3rem; color: #22c55e; margin-bottom: var(--spacing-md);">✓</div>
+                            <h3 style="color: #22c55e;">No Duplicates Found</h3>
+                            <p style="color: var(--color-text-muted);">This application appears to be unique. No matching records found.</p>
+                        </div>
+                    `;
+                } else {
+                    let listHtml = `<div style="margin-bottom: var(--spacing-md);">
+                        <p style="color: var(--color-text-muted);"><strong>${duplicates.length}</strong> duplicate application(s) found with the same Name and Date of Birth.</p>
+                        <p style="color: #dc2626; font-size: 0.9rem;">These applications may indicate duplicate membership requests.</p>
+                    </div>
+                    <div class="duplicate-list">`;
+
+                    duplicates.forEach(dup => {
+                        const dupName = `${dup.firstName || ''} ${dup.secondName || ''}`.trim() || 'N/A';
+                        const dupRef = dup.refNumber || 'N/A';
+                        const dupStatus = dup.status || 'Submitted';
+                        let statusClass = 'pending';
+                        if (dupStatus === 'Approved') statusClass = 'approved';
+                        else if (dupStatus === 'Rejected') statusClass = 'rejected';
+
+                        listHtml += `
+                            <div class="duplicate-item">
+                                <div class="dup-info">
+                                    <strong>${dupName}</strong><br />
+                                    Ref: ${dupRef} | DOB: ${dup.dob || 'N/A'}
+                                </div>
+                                <span class="dup-status ${statusClass}">${dupStatus}</span>
+                            </div>
+                        `;
+                    });
+
+                    listHtml += `</div>
+                        <div style="margin-top: var(--spacing-md); display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+                            <button class="btn btn-danger" id="rejectDuplicateBtn" style="flex:1;">Reject This Application</button>
+                            <button class="btn btn-secondary" data-modal="duplicateModal" style="flex:1;">Close</button>
+                        </div>
+                    `;
+
+                    duplicateContent.innerHTML = listHtml;
+
+                    // Add reject handler
+                    const rejectBtn = document.getElementById('rejectDuplicateBtn');
+                    if (rejectBtn) {
+                        rejectBtn.addEventListener('click', () => {
+                            if (confirm('Are you sure you want to reject this application due to duplication?')) {
+                                duplicateModal.classList.remove('visible');
+                                updateApplicationStatus(currentAppKey, 'Rejected', '[Approving Officer]', 'Rejected due to duplicate application found.');
+                                // Also add a remark about duplication
+                                addRemarkWithText(currentAppKey, 'Application rejected due to duplicate entry found in the system.', '[Approving Officer]');
+                            }
+                        });
+                    }
+                }
+            }, 300);
+        }
+
+        // Helper to add remark without modal
+        async function addRemarkWithText(key, text, role) {
+            const appRef = ref(db, `applications/${key}`);
+            const snapshot = await get(appRef);
+            if (!snapshot.exists()) return;
+            const app = snapshot.val();
+            const remarks = app.remarks || [];
+            remarks.push({ by: role, text: text, timestamp: now() });
+            await update(appRef, { remarks });
+        }
+
+        // ============================================================
+        // LOAD APPLICATIONS
+        // ============================================================
         function loadApplications(role) {
             const appsRef = ref(db, 'applications');
             onValue(appsRef, (snapshot) => {
@@ -401,6 +547,40 @@
             });
         }
 
+        // ============================================================
+        // VIEW MODAL
+        // ============================================================
+        function openViewModal(app) {
+            const fields = [
+                'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
+                'education', 'bloodGroup', 'district', 'lac', 'village', 'postOffice', 'ps', 'pin',
+                'familyStatus', 'totalFamily', 'houseType', 'landOwnership', 'vehicle', 'beltBlock',
+                'autonomousCouncil', 'govtScheme', 'govtEmployees', 'membershipType', 'status', 'timestamp'
+            ];
+            let html = '<div class="detail-grid">';
+            fields.forEach(f => {
+                if (app[f]) {
+                    html += `<div class="detail-item"><span class="label">${f.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}</span><span class="value">${app[f]}</span></div>`;
+                }
+            });
+            if (app.photoURL) {
+                html += `<div class="detail-item" style="grid-column:1/-1;"><span class="label">Photo</span><span class="value"><img src="${app.photoURL}" alt="Applicant photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" /></span></div>`;
+            }
+            if (app.history && app.history.length) {
+                html += `<div style="grid-column:1/-1; margin-top:var(--spacing-md);"><h4>Processing History</h4><ul>`;
+                app.history.forEach(h => {
+                    html += `<li>${h.timestamp} — ${h.action} (by ${h.by || 'System'})</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            html += '</div>';
+            viewContent.innerHTML = html;
+            viewModal.classList.add('visible');
+        }
+
+        // ============================================================
+        // AUTH & LOGIN
+        // ============================================================
         applyFilterBtn.addEventListener('click', filterApplications);
         clearFilterBtn.addEventListener('click', () => {
             searchInput.value = '';
@@ -454,42 +634,16 @@
 
         logoutBtn.addEventListener('click', async () => { await signOut(auth); });
 
-        function openViewModal(app) {
-            const fields = [
-                'refNumber', 'firstName', 'secondName', 'fatherGuardianName', 'dob', 'email', 'phone', 'altPhone',
-                'education', 'bloodGroup', 'district', 'lac', 'village', 'postOffice', 'ps', 'pin',
-                'familyStatus', 'totalFamily', 'houseType', 'landOwnership', 'vehicle', 'beltBlock',
-                'autonomousCouncil', 'govtScheme', 'govtEmployees', 'membershipType', 'status', 'timestamp'
-            ];
-            let html = '<div class="detail-grid">';
-            fields.forEach(f => {
-                if (app[f]) {
-                    html += `<div class="detail-item"><span class="label">${f.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}</span><span class="value">${app[f]}</span></div>`;
-                }
-            });
-            if (app.photoURL) {
-                html += `<div class="detail-item" style="grid-column:1/-1;"><span class="label">Photo</span><span class="value"><img src="${app.photoURL}" alt="Applicant photo" style="max-width:120px; border-radius:3px; border:1px solid #ddd;" /></span></div>`;
-            }
-            if (app.history && app.history.length) {
-                html += `<div style="grid-column:1/-1; margin-top:var(--spacing-md);"><h4>Processing History</h4><ul>`;
-                app.history.forEach(h => {
-                    html += `<li>${h.timestamp} — ${h.action} (by ${h.by || 'System'})</li>`;
-                });
-                html += `</ul></div>`;
-            }
-            html += '</div>';
-            viewContent.innerHTML = html;
-            viewModal.classList.add('visible');
-        }
-
-        // Close modals
+        // ============================================================
+        // CLOSE MODALS
+        // ============================================================
         document.querySelectorAll('[data-modal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.dataset.modal;
                 document.getElementById(modalId).classList.remove('visible');
             });
         });
-        [viewModal, remarkModal].forEach(modal => {
+        [viewModal, duplicateModal, remarkModal].forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.classList.remove('visible');
             });
@@ -511,7 +665,9 @@
             }
         });
 
-        // ----- Database functions (with verificationId) -----
+        // ============================================================
+        // DATABASE FUNCTIONS
+        // ============================================================
         async function addRemark(key, remarkText, role) {
             const appRef = ref(db, `applications/${key}`);
             const snapshot = await get(appRef);
@@ -580,7 +736,7 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal with verificationId on approval loaded.');
+        console.log('Admin portal with duplicate detection loaded.');
     </script>
 
 </body>
