@@ -1,9 +1,12 @@
 // ============================================================
-// HERO SLIDER — smooth, touch‑friendly, 2s interval, no click pause
+// HERO SLIDER — lightweight, smooth, no click pause
 // ============================================================
 
 (function() {
     'use strict';
+
+    const SLIDE_INTERVAL = 2500; // ms
+    const SWIPE_THRESHOLD = 50;   // px
 
     function initHeroSlider() {
         const slider = document.querySelector('.hero-slider');
@@ -16,14 +19,14 @@
         let current = 0;
         let isAnimating = false;
         let autoTimer = null;
-        let timeoutId = null;
+        let startX = 0;
 
-        // ---- Smooth goTo ----
+        // ---- Navigate ----
         function goTo(index) {
             if (isAnimating || index === current) return;
             isAnimating = true;
             const target = -index * 100;
-            slider.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            slider.style.transition = 'transform 0.4s ease';
             slider.style.transform = 'translateX(' + target + '%)';
 
             const onEnd = function() {
@@ -36,14 +39,13 @@
         }
 
         function next() {
-            const nextIndex = (current + 1) % total;
-            goTo(nextIndex);
+            goTo((current + 1) % total);
         }
 
         // ---- Auto-play ----
         function startAuto() {
             stopAuto();
-            autoTimer = setInterval(next, 2000); // 2 seconds
+            autoTimer = setInterval(next, SLIDE_INTERVAL);
         }
 
         function stopAuto() {
@@ -51,127 +53,64 @@
                 clearInterval(autoTimer);
                 autoTimer = null;
             }
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-                timeoutId = null;
-            }
-        }
-
-        function resumeAfter(delay) {
-            if (timeoutId) clearTimeout(timeoutId);
-            timeoutId = setTimeout(function() {
-                startAuto();
-            }, delay || 3000);
         }
 
         // ---- Dots ----
         function createDots() {
-            const dotsContainer = document.getElementById('heroDots');
-            if (!dotsContainer) return;
-            dotsContainer.innerHTML = '';
+            const container = document.getElementById('heroDots');
+            if (!container) return;
+            container.innerHTML = '';
             for (let i = 0; i < total; i++) {
                 const dot = document.createElement('button');
                 dot.className = 'dot' + (i === 0 ? ' active' : '');
-                dot.setAttribute('data-index', i);
+                dot.dataset.index = i;
                 dot.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'), 10);
-                    if (index !== current) {
-                        stopAuto();
-                        goTo(index);
-                        resumeAfter(4000);
-                    }
+                    const idx = parseInt(this.dataset.index, 10);
+                    if (idx !== current) goTo(idx);
                 });
-                dotsContainer.appendChild(dot);
+                container.appendChild(dot);
             }
         }
 
         function updateDots() {
-            const dots = document.querySelectorAll('.hero-dots .dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === current);
+            document.querySelectorAll('.hero-dots .dot').forEach((d, i) => {
+                d.classList.toggle('active', i === current);
             });
         }
 
-        // ---- Touch / Swipe ----
-        let startX = 0, startY = 0;
-        let isDragging = false;
-        let dragOffset = 0;
-
+        // ---- Touch swipe ----
         function onTouchStart(e) {
-            const touch = e.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-            isDragging = true;
-            dragOffset = 0;
-            stopAuto();
-            slider.style.transition = 'none';
+            startX = e.touches[0].clientX;
         }
 
         function onTouchMove(e) {
-            if (!isDragging) return;
-            const touch = e.touches[0];
-            const deltaX = touch.clientX - startX;
-            const deltaY = touch.clientY - startY;
-
-            if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) return;
-            if (Math.abs(deltaX) < Math.abs(deltaY)) return;
-
+            const deltaX = e.touches[0].clientX - startX;
+            if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
             e.preventDefault();
-            dragOffset = deltaX;
-            const base = -current * 100;
-            const move = base + (deltaX / slider.parentElement.offsetWidth) * 100;
-            slider.style.transform = 'translateX(' + move + '%)';
-        }
-
-        function onTouchEnd(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            const threshold = 50;
-
-            if (Math.abs(dragOffset) > threshold) {
-                if (dragOffset < 0) {
-                    const nextIndex = (current + 1) % total;
-                    goTo(nextIndex);
-                } else {
-                    const prevIndex = (current - 1 + total) % total;
-                    goTo(prevIndex);
-                }
-            } else {
-                goTo(current);
-            }
-
-            if (!isAnimating) {
-                resumeAfter(4000);
-            }
+            const target = deltaX < 0 ? (current + 1) % total : (current - 1 + total) % total;
+            goTo(target);
+            // Reset start to prevent multiple swipes
+            startX = e.touches[0].clientX;
         }
 
         // ---- Mouse hover pause ----
         const container = slider.closest('.hero-image') || slider.parentElement;
-        container.addEventListener('mouseenter', function() {
-            stopAuto();
-        });
-        container.addEventListener('mouseleave', function() {
-            startAuto();
-        });
+        container.addEventListener('mouseenter', stopAuto);
+        container.addEventListener('mouseleave', startAuto);
 
         // ---- Touch events ----
         slider.addEventListener('touchstart', onTouchStart, { passive: true });
         slider.addEventListener('touchmove', onTouchMove, { passive: false });
-        slider.addEventListener('touchend', onTouchEnd, { passive: true });
 
         // ---- Init ----
         createDots();
         startAuto();
 
         // ---- Cleanup ----
-        window.addEventListener('beforeunload', function() {
-            stopAuto();
-            slider.removeEventListener('touchstart', onTouchStart);
-            slider.removeEventListener('touchmove', onTouchMove);
-            slider.removeEventListener('touchend', onTouchEnd);
-        });
+        window.addEventListener('beforeunload', stopAuto);
     }
 
+    // ---- Start ----
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initHeroSlider);
     } else {
