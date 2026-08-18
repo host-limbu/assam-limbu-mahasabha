@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Download Certificate — [Your Organization]</title>
-    <meta name="description" content="Download your membership certificate using your reference number." />
+    <title>Check Application Status — [Your Organization]</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global-table.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        .download-container {
-            max-width: 500px;
-            margin: var(--spacing-xl) auto;
-            padding: var(--spacing-lg);
+        .status-container {
+            max-width: 900px;
+            margin: 0 auto;
             background: var(--color-surface);
-            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            text-align: center;
+            border: 1px solid var(--color-border);
+            text-align: left;
         }
-        .download-container h2 {
-            margin-bottom: var(--spacing-sm);
-        }
-        .download-container p {
-            color: var(--color-text-muted);
-            margin-bottom: var(--spacing-lg);
-        }
-        .download-container .input-group {
+        .search-box {
             display: flex;
-            gap: var(--spacing-sm);
+            gap: var(--spacing-md);
             flex-wrap: wrap;
             justify-content: center;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
         }
-        .download-container .input-group input {
+        .search-box input {
             flex: 1;
             min-width: 200px;
             padding: 0.7rem 1rem;
@@ -42,70 +36,131 @@
             font-size: 1rem;
             font-family: inherit;
             background: var(--color-surface);
-            transition: border-color var(--transition);
         }
-        .download-container .input-group input:focus {
+        .search-box input:focus {
             outline: none;
             border-color: var(--color-primary);
         }
-        .download-container .input-group .btn {
-            flex-shrink: 0;
+
+        /* ===== TOOLTIP ON BUTTON (HOVER) ===== */
+        .search-box .btn-wrapper {
+            position: relative;
+            display: inline-flex;
         }
-        .download-container .message {
+        .search-box .btn-wrapper .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            width: 220px;
+            background: var(--color-primary-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: var(--radius);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: var(--font-medium);
+            position: absolute;
+            z-index: 10;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            box-shadow: var(--shadow-md);
+            white-space: nowrap;
+        }
+        .search-box .btn-wrapper .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--color-primary-dark);
+        }
+        .search-box .btn-wrapper:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .no-result {
+            text-align: center;
+            color: var(--color-text-muted);
+            padding: var(--spacing-lg);
+        }
+
+        /* ===== Styled Status Summary ===== */
+        .status-summary {
+            background: var(--color-surface-alt);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm) var(--spacing-lg);
+        }
+        .status-summary .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+        .status-summary .summary-item .label {
+            font-size: 0.75rem;
+            font-weight: var(--font-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+        }
+        .status-summary .summary-item .value {
+            font-size: 1rem;
+            font-weight: var(--font-semibold);
+            color: var(--color-text);
+            word-break: break-word;
+        }
+        .status-summary .summary-item .value.approved {
+            color: #22c55e;
+        }
+        .status-summary .summary-item .value.rejected {
+            color: #ef4444;
+        }
+        .status-summary .summary-item .value.pending {
+            color: var(--color-primary);
+        }
+
+        /* ===== Error / Info message with link ===== */
+        .error-message-custom {
             margin-top: var(--spacing-md);
             padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius);
             font-size: 0.95rem;
-            display: none;
+            text-align: center;
         }
-        .download-container .message.error {
-            display: block;
+        .error-message-custom.error {
             background: #fee2e2;
             color: #dc2626;
             border: 1px solid #fca5a5;
         }
-        .download-container .message.success {
-            display: block;
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #6ee7b7;
-        }
-        .download-container .message.loading {
-            display: block;
-            background: var(--color-surface-alt);
-            color: var(--color-text-muted);
-            border: 1px solid var(--color-border);
-        }
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--color-border);
-            border-top: 2px solid var(--color-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .download-container .note {
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
-            margin-top: var(--spacing-md);
-        }
-        .download-container .note strong {
+        .error-message-custom .link {
             color: var(--color-primary);
+            font-weight: var(--font-medium);
+            text-decoration: underline;
+            cursor: pointer;
         }
-        @media (max-width: 480px) {
-            .download-container .input-group {
-                flex-direction: column;
-                align-items: stretch;
+        .error-message-custom .link:hover {
+            color: var(--color-primary-light);
+        }
+
+        @media (max-width: 768px) {
+            .status-container {
+                padding: var(--spacing-md);
             }
-            .download-container .input-group input {
-                min-width: unset;
+            .status-summary {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            .search-box .btn-wrapper .tooltip {
+                width: 180px;
+                font-size: 0.7rem;
+                white-space: normal;
             }
         }
     </style>
@@ -139,9 +194,24 @@
                     </ul>
                 </nav>
                 <div class="header-actions">
+                    <button class="search-toggle" aria-label="Search" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
                     <button class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                         <span></span><span></span><span></span>
                     </button>
+                </div>
+            </div>
+            <div class="search-overlay" hidden>
+                <div class="search-overlay-inner">
+                    <form role="search" action="search.html" method="get">
+                        <input type="search" name="q" placeholder="Search the site…" aria-label="Search" />
+                        <button type="submit">Search</button>
+                    </form>
+                    <button class="search-close" aria-label="Close search">&times;</button>
                 </div>
             </div>
         </header>
@@ -149,20 +219,23 @@
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <div class="download-container">
-                        <h2>Download Membership Certificate</h2>
-                        <p>Enter your reference number to download your digital certificate.</p>
+                    <div class="status-container">
+                        <h2 style="text-align: center;">Check Application Status</h2>
+                        <p style="color: var(--color-text-muted); text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg);">
+                            Enter your reference number below to view the current status.
+                        </p>
 
-                        <form id="downloadForm">
-                            <div class="input-group">
-                                <input type="text" id="refInput" placeholder="e.g., [Org]-2026-12345" required />
-                                <button type="submit" class="btn btn-primary">Get Certificate</button>
+                        <div class="search-box">
+                            <input type="text" id="refInput" placeholder="e.g., [Reference Number Format]" />
+                            <div class="btn-wrapper">
+                                <button class="btn btn-primary" id="checkBtn">Check Status</button>
+                                <span class="tooltip">Click to check your application status</span>
                             </div>
-                            <div id="message" class="message"></div>
-                            <div class="note">
-                                <strong>Note:</strong> Your reference number was provided in the acknowledgement receipt after you submitted your membership application.
-                            </div>
-                        </form>
+                        </div>
+
+                        <div id="resultContainer">
+                            <!-- Messages will appear here -->
+                        </div>
                     </div>
                 </div>
             </section>
@@ -218,6 +291,7 @@
 
     </div>
 
+    <!-- ============================================================ -->
     <!-- Firebase SDK -->
     <script type="importmap">
         {
@@ -244,70 +318,161 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const form = document.getElementById('downloadForm');
         const refInput = document.getElementById('refInput');
-        const message = document.getElementById('message');
+        const checkBtn = document.getElementById('checkBtn');
+        const resultContainer = document.getElementById('resultContainer');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Helper: show error message with link to check-status.html
+        function showError(message, showLink = true) {
+            let html = `<div class="error-message-custom error">${message}`;
+            if (showLink) {
+                html += ` <a href="check-status.html" class="link">Click here to check your application status</a>`;
+            }
+            html += '</div>';
+            resultContainer.innerHTML = html;
+        }
 
-            const refNumber = refInput.value.trim();
+        function showLoading() {
+            resultContainer.innerHTML = '<p style="color: var(--color-text-muted); text-align:center;">Loading...</p>';
+        }
+
+        function getMatchingRemark(historyEntry, remarks) {
+            if (!remarks || remarks.length === 0) return null;
+            const match = remarks.find(r =>
+                r.timestamp === historyEntry.timestamp && r.by === historyEntry.by
+            );
+            return match ? match.text : null;
+        }
+
+        async function checkStatus(refNumber) {
             if (!refNumber) {
-                message.className = 'message error';
-                message.textContent = 'Please enter your reference number.';
+                showError('Please enter a reference number.', false);
                 return;
             }
-
-            // Show loading
-            message.className = 'message loading';
-            message.innerHTML = '<span class="spinner"></span> Checking...';
+            showLoading();
 
             try {
                 const snapshot = await get(ref(db, 'applications'));
                 if (!snapshot.exists()) {
-                    message.className = 'message error';
-                    message.textContent = 'No applications found. Please check your reference number.';
+                    showError('No applications found. Please check your reference number.');
                     return;
                 }
 
                 const allApps = snapshot.val();
-                let found = false;
+                let app = null;
                 for (const key in allApps) {
                     if (allApps[key].refNumber === refNumber) {
-                        found = true;
+                        app = allApps[key];
                         break;
                     }
                 }
 
-                if (!found) {
-                    message.className = 'message error';
-                    message.textContent = 'No application found with that reference number. Please check and try again.';
+                if (!app) {
+                    showError('No application found with that reference number. Please check and try again.');
                     return;
                 }
 
-                // Success – redirect to certificate page
-                message.className = 'message success';
-                message.textContent = 'Certificate found. Redirecting...';
-                // Open in new tab after a small delay
-                setTimeout(() => {
-                    window.open(`certificate.html?ref=${encodeURIComponent(refNumber)}`, '_blank');
-                    // Clear message and reset form
-                    message.className = 'message';
-                    message.textContent = '';
-                    refInput.value = '';
-                }, 800);
+                // Determine status color class
+                let statusColorClass = 'pending';
+                if (app.status === 'Approved') statusColorClass = 'approved';
+                else if (app.status === 'Rejected') statusColorClass = 'rejected';
+
+                const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+
+                // Build summary
+                let summaryHTML = `
+                    <div class="status-summary">
+                        <div class="summary-item">
+                            <span class="label">Reference No.</span>
+                            <span class="value">${app.refNumber}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Applicant Name</span>
+                            <span class="value">${applicantName}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Submission Date</span>
+                            <span class="value">${app.timestamp || ''}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Current Status</span>
+                            <span class="value ${statusColorClass}">${app.status || 'Submitted'}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Build history
+                let historyRows = '';
+                if (app.history && app.history.length > 0) {
+                    const remarks = app.remarks || [];
+                    app.history.forEach((entry, index) => {
+                        const si = index + 1;
+                        const action = entry.action || '';
+                        let remarkText = '—';
+                        if (index === 0) {
+                            remarkText = `Application submitted by ${applicantName}`;
+                        } else {
+                            const matchedRemark = getMatchingRemark(entry, remarks);
+                            if (matchedRemark) remarkText = matchedRemark;
+                        }
+                        historyRows += `
+                            <tr>
+                                <td>${si}</td>
+                                <td>${app.refNumber}</td>
+                                <td>${action}</td>
+                                <td>${remarkText}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    historyRows = '<tr><td colspan="4">No history available.</td></tr>';
+                }
+
+                const historyTableHTML = `
+                    <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
+                    <div class="table-wrapper">
+                        <table class="status-table">
+                            <thead>
+                                <tr>
+                                    <th>SI No</th>
+                                    <th>Ref No</th>
+                                    <th>Action</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>${historyRows}</tbody>
+                        </table>
+                    </div>
+                `;
+
+                resultContainer.innerHTML = `
+                    <h3>Application Status</h3>
+                    ${summaryHTML}
+                    ${historyTableHTML}
+                `;
 
             } catch (error) {
                 console.error('Error:', error);
-                message.className = 'message error';
-                message.textContent = 'An error occurred. Please try again later.';
+                showError('An error occurred while checking the status. Please try again later.');
             }
+        }
+
+        checkBtn.addEventListener('click', () => {
+            const refNum = refInput.value.trim();
+            checkStatus(refNum);
         });
 
-        // Enter key submits form
         refInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') form.dispatchEvent(new Event('submit'));
+            if (e.key === 'Enter') checkBtn.click();
         });
+
+        // Auto-check if ref is in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const refParam = urlParams.get('ref');
+        if (refParam) {
+            refInput.value = refParam;
+            checkStatus(refParam);
+        }
     </script>
 
 </body>
