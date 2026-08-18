@@ -25,6 +25,7 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-bottom: var(--spacing-lg);
+            position: relative;
         }
         .search-box input {
             flex: 1;
@@ -40,12 +41,53 @@
             outline: none;
             border-color: var(--color-primary);
         }
+
+        /* ===== TOOLTIP ON BUTTON (HOVER) ===== */
+        .search-box .btn-wrapper {
+            position: relative;
+            display: inline-flex;
+        }
+        .search-box .btn-wrapper .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            width: 220px;
+            background: var(--color-primary-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: var(--radius);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: var(--font-medium);
+            position: absolute;
+            z-index: 10;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            box-shadow: var(--shadow-md);
+            white-space: nowrap;
+        }
+        .search-box .btn-wrapper .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--color-primary-dark);
+        }
+        .search-box .btn-wrapper:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
         .no-result {
             text-align: center;
             color: var(--color-text-muted);
             padding: var(--spacing-lg);
         }
 
+        /* ===== Styled Status Summary ===== */
         .status-summary {
             background: var(--color-surface-alt);
             border: 1px solid var(--color-border);
@@ -84,6 +126,29 @@
             color: var(--color-primary);
         }
 
+        /* ===== Error / Info message with link ===== */
+        .error-message-custom {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        .error-message-custom.error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+        .error-message-custom .link {
+            color: var(--color-primary);
+            font-weight: var(--font-medium);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .error-message-custom .link:hover {
+            color: var(--color-primary-light);
+        }
+
         @media (max-width: 768px) {
             .status-container {
                 padding: var(--spacing-md);
@@ -91,6 +156,11 @@
             .status-summary {
                 grid-template-columns: 1fr;
                 gap: var(--spacing-md);
+            }
+            .search-box .btn-wrapper .tooltip {
+                width: 180px;
+                font-size: 0.7rem;
+                white-space: normal;
             }
         }
     </style>
@@ -149,15 +219,24 @@
         <main class="site-main" role="main">
             <section class="full-width" style="background: #ffffff; border-bottom: 1px solid var(--color-border);">
                 <div class="section-content">
-                    <h2 style="text-align: center;">Check Application Status</h2>
-                    <p style="color: var(--color-text-muted); text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg);">
-                        Enter your reference number below to view the current status.
-                    </p>
-                    <div class="search-box">
-                        <input type="text" id="refInput" placeholder="e.g., [Reference Number Format]" />
-                        <button class="btn btn-primary" id="checkBtn">Check Status</button>
+                    <div class="status-container">
+                        <h2 style="text-align: center;">Check Application Status</h2>
+                        <p style="color: var(--color-text-muted); text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg);">
+                            Enter your reference number below to view the current status.
+                        </p>
+
+                        <div class="search-box">
+                            <input type="text" id="refInput" placeholder="e.g., [Reference Number Format]" />
+                            <div class="btn-wrapper">
+                                <button class="btn btn-primary" id="checkBtn">Check Status</button>
+                                <span class="tooltip">Click to check your application status</span>
+                            </div>
+                        </div>
+
+                        <div id="resultContainer">
+                            <!-- Messages will appear here -->
+                        </div>
                     </div>
-                    <div id="resultContainer"></div>
                 </div>
             </section>
         </main>
@@ -243,7 +322,20 @@
         const checkBtn = document.getElementById('checkBtn');
         const resultContainer = document.getElementById('resultContainer');
 
-        // Helper: get matching remark for history entry (except first entry)
+        // Helper: show error message with link to check-status.html
+        function showError(message, showLink = true) {
+            let html = `<div class="error-message-custom error">${message}`;
+            if (showLink) {
+                html += ` <a href="check-status.html" class="link">Click here to check your application status</a>`;
+            }
+            html += '</div>';
+            resultContainer.innerHTML = html;
+        }
+
+        function showLoading() {
+            resultContainer.innerHTML = '<p style="color: var(--color-text-muted); text-align:center;">Loading...</p>';
+        }
+
         function getMatchingRemark(historyEntry, remarks) {
             if (!remarks || remarks.length === 0) return null;
             const match = remarks.find(r =>
@@ -254,111 +346,115 @@
 
         async function checkStatus(refNumber) {
             if (!refNumber) {
-                resultContainer.innerHTML = '<p style="color:red;">Please enter a reference number.</p>';
+                showError('Please enter a reference number.', false);
                 return;
             }
-            resultContainer.innerHTML = '<p style="color: var(--color-text-muted);">Loading...</p>';
+            showLoading();
 
-            const snapshot = await get(ref(db, 'applications'));
-            if (!snapshot.exists()) {
-                resultContainer.innerHTML = '<p style="color:red;">No applications found.</p>';
-                return;
-            }
-            const allApps = snapshot.val();
-            let app = null;
-            for (const key in allApps) {
-                if (allApps[key].refNumber === refNumber) {
-                    app = allApps[key];
-                    break;
+            try {
+                const snapshot = await get(ref(db, 'applications'));
+                if (!snapshot.exists()) {
+                    showError('No applications found. Please check your reference number.');
+                    return;
                 }
-            }
-            if (!app) {
-                resultContainer.innerHTML = `<p style="color:red;">No application found with reference number: ${refNumber}</p>`;
-                return;
-            }
 
-            // Determine status color class
-            let statusColorClass = 'pending';
-            if (app.status === 'Approved') statusColorClass = 'approved';
-            else if (app.status === 'Rejected') statusColorClass = 'rejected';
-
-            // Build styled summary grid
-            const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
-            let summaryHTML = `
-                <div class="status-summary">
-                    <div class="summary-item">
-                        <span class="label">Reference No.</span>
-                        <span class="value">${app.refNumber}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">Applicant Name</span>
-                        <span class="value">${applicantName}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">Submission Date</span>
-                        <span class="value">${app.timestamp || ''}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">Current Status</span>
-                        <span class="value ${statusColorClass}">${app.status || 'Submitted'}</span>
-                    </div>
-                </div>
-            `;
-
-            // Build processing history table
-            let historyRows = '';
-            if (app.history && app.history.length > 0) {
-                const remarks = app.remarks || [];
-                app.history.forEach((entry, index) => {
-                    const si = index + 1;
-                    const action = entry.action || '';
-                    let remarkText = '—';
-
-                    // For the first entry (submission), show "Application submitted by [Applicant Name]"
-                    if (index === 0) {
-                        remarkText = `Application submitted by ${applicantName}`;
-                    } else {
-                        const matchedRemark = getMatchingRemark(entry, remarks);
-                        if (matchedRemark) {
-                            remarkText = matchedRemark;
-                        }
+                const allApps = snapshot.val();
+                let app = null;
+                for (const key in allApps) {
+                    if (allApps[key].refNumber === refNumber) {
+                        app = allApps[key];
+                        break;
                     }
+                }
 
-                    historyRows += `
-                        <tr>
-                            <td>${si}</td>
-                            <td>${app.refNumber}</td>
-                            <td>${action}</td>
-                            <td>${remarkText}</td>
-                        </tr>
-                    `;
-                });
-            } else {
-                historyRows = '<tr><td colspan="4">No history available.</td></tr>';
-            }
+                if (!app) {
+                    showError('No application found with that reference number. Please check and try again.');
+                    return;
+                }
 
-            const historyTableHTML = `
-                <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
-                <div class="table-wrapper">
-                    <table class="status-table">
-                        <thead>
+                // Determine status color class
+                let statusColorClass = 'pending';
+                if (app.status === 'Approved') statusColorClass = 'approved';
+                else if (app.status === 'Rejected') statusColorClass = 'rejected';
+
+                const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'N/A';
+
+                // Build summary
+                let summaryHTML = `
+                    <div class="status-summary">
+                        <div class="summary-item">
+                            <span class="label">Reference No.</span>
+                            <span class="value">${app.refNumber}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Applicant Name</span>
+                            <span class="value">${applicantName}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Submission Date</span>
+                            <span class="value">${app.timestamp || ''}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Current Status</span>
+                            <span class="value ${statusColorClass}">${app.status || 'Submitted'}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Build history
+                let historyRows = '';
+                if (app.history && app.history.length > 0) {
+                    const remarks = app.remarks || [];
+                    app.history.forEach((entry, index) => {
+                        const si = index + 1;
+                        const action = entry.action || '';
+                        let remarkText = '—';
+                        if (index === 0) {
+                            remarkText = `Application submitted by ${applicantName}`;
+                        } else {
+                            const matchedRemark = getMatchingRemark(entry, remarks);
+                            if (matchedRemark) remarkText = matchedRemark;
+                        }
+                        historyRows += `
                             <tr>
-                                <th>SI No</th>
-                                <th>Ref No</th>
-                                <th>Action</th>
-                                <th>Remarks</th>
+                                <td>${si}</td>
+                                <td>${app.refNumber}</td>
+                                <td>${action}</td>
+                                <td>${remarkText}</td>
                             </tr>
-                        </thead>
-                        <tbody>${historyRows}</tbody>
-                    </table>
-                </div>
-            `;
+                        `;
+                    });
+                } else {
+                    historyRows = '<tr><td colspan="4">No history available.</td></tr>';
+                }
 
-            resultContainer.innerHTML = `
-                <h3>Application Status</h3>
-                ${summaryHTML}
-                ${historyTableHTML}
-            `;
+                const historyTableHTML = `
+                    <h4 style="margin-top: var(--spacing-lg);">Application Processing History</h4>
+                    <div class="table-wrapper">
+                        <table class="status-table">
+                            <thead>
+                                <tr>
+                                    <th>SI No</th>
+                                    <th>Ref No</th>
+                                    <th>Action</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>${historyRows}</tbody>
+                        </table>
+                    </div>
+                `;
+
+                resultContainer.innerHTML = `
+                    <h3>Application Status</h3>
+                    ${summaryHTML}
+                    ${historyTableHTML}
+                `;
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError('An error occurred while checking the status. Please try again later.');
+            }
         }
 
         checkBtn.addEventListener('click', () => {
@@ -370,6 +466,7 @@
             if (e.key === 'Enter') checkBtn.click();
         });
 
+        // Auto-check if ref is in URL
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
         if (refParam) {
