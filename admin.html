@@ -90,14 +90,8 @@
             animation: modalFadeIn 0.25s ease;
         }
         @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.96) translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.96) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .modal-content .modal-close {
             position: absolute;
@@ -244,14 +238,8 @@
             animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .error-message {
             color: #dc2626;
@@ -283,7 +271,25 @@
             padding: var(--spacing-lg);
         }
 
-        /* ===== Duplicate list styles ===== */
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: var(--color-border);
+            color: var(--color-text-muted);
+            border-color: var(--color-border);
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: #fff;
+            border-color: #f59e0b;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            border-color: #d97706;
+        }
+
         .duplicate-list {
             max-height: 300px;
             overflow-y: auto;
@@ -322,16 +328,6 @@
         .duplicate-item .dup-status.pending {
             background: #fff3cd;
             color: #856404;
-        }
-
-        .btn-warning {
-            background: #f59e0b;
-            color: #fff;
-            border-color: #f59e0b;
-        }
-        .btn-warning:hover {
-            background: #d97706;
-            border-color: #d97706;
         }
 
         @media (max-width: 768px) {
@@ -636,6 +632,7 @@
         let currentUser = null, currentRole = null, currentAppKey = null, currentAction = null;
         let roleFilteredApps = [];
         let allAppsData = {};
+        let authProcessing = false;
 
         function showToast(msg) {
             toast.textContent = msg;
@@ -723,23 +720,37 @@
                 const refNum = app.refNumber || 'N/A';
                 const date = app.timestamp || 'N/A';
                 const status = app.status || 'Submitted';
+                const isApproved = (status === 'Approved');
+                const isRejected = (status === 'Rejected');
+
                 let actionsHTML = `<button class="btn btn-secondary" data-action="view" data-key="${app._key}">View</button>`;
-                if (currentRole === '[Verifying Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
-                } else if (currentRole === '[Reviewing Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
-                } else if (currentRole === '[Approving Officer]') {
-                    actionsHTML += `
-                        <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
-                        <button class="btn btn-warning" data-action="checkdup" data-key="${app._key}">Check Duplication</button>
-                        <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
-                        <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>
-                        <button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
+
+                // Workflow actions only for non-approved, non-rejected applications
+                if (!isRejected && !isApproved) {
+                    if (currentRole === '[Verifying Officer]') {
+                        actionsHTML += `
+                            <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                            <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
+                    } else if (currentRole === '[Reviewing Officer]') {
+                        actionsHTML += `
+                            <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                            <button class="btn btn-primary" data-action="forward" data-key="${app._key}">Forward</button>`;
+                    } else if (currentRole === '[Approving Officer]') {
+                        actionsHTML += `
+                            <button class="btn btn-secondary" data-action="remark" data-key="${app._key}">Remark</button>
+                            <button class="btn btn-warning" data-action="checkdup" data-key="${app._key}">Check Dup</button>
+                            <button class="btn btn-success" data-action="approve" data-key="${app._key}">Approve</button>
+                            <button class="btn btn-danger" data-action="reject" data-key="${app._key}">Reject</button>`;
+                    }
                 }
+
+                // Preview Cert: only if approved
+                if (isApproved) {
+                    actionsHTML += `<button class="btn btn-info" data-action="previewcert" data-key="${app._key}">Preview Cert</button>`;
+                } else {
+                    actionsHTML += `<span class="btn btn-disabled" style="font-size:0.7rem; padding:0.15rem 0.4rem; display:inline-block;">Cert N/A</span>`;
+                }
+
                 html += `
                     <tr>
                         <td>${refNum}</td>
@@ -936,7 +947,7 @@
         }
 
         // ============================================================
-        // AUTH & LOGIN
+        // AUTH & LOGIN (fixed with re-entrancy guard and session storage)
         // ============================================================
         applyFilterBtn.addEventListener('click', filterApplications);
         clearFilterBtn.addEventListener('click', () => {
@@ -962,34 +973,70 @@
             }
         });
 
+        // Fixed auth listener with re-entrancy guard and session storage
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                const snapshot = await get(ref(db, `users/${user.uid}`));
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const role = userData.role;
-                    if (role) {
-                        currentRole = role;
+            if (authProcessing) return;
+            authProcessing = true;
+
+            try {
+                if (user) {
+                    currentUser = user;
+                    // Check session storage
+                    const storedRole = sessionStorage.getItem('adminRole');
+                    const storedUID = sessionStorage.getItem('adminUID');
+                    if (storedRole && storedUID === user.uid) {
+                        currentRole = storedRole;
                         loginSection.style.display = 'none';
                         dashboard.classList.add('visible');
-                        roleBadge.textContent = role;
-                        loadApplications(role);
+                        roleBadge.textContent = currentRole;
+                        loadApplications(currentRole);
+                        authProcessing = false;
                         return;
                     }
+
+                    // Fetch role from database
+                    const snapshot = await get(ref(db, `users/${user.uid}`));
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        const role = userData.role;
+                        if (role) {
+                            currentRole = role;
+                            sessionStorage.setItem('adminRole', role);
+                            sessionStorage.setItem('adminUID', user.uid);
+                            loginSection.style.display = 'none';
+                            dashboard.classList.add('visible');
+                            roleBadge.textContent = role;
+                            loadApplications(role);
+                            authProcessing = false;
+                            return;
+                        }
+                    }
+                    // No role found → sign out once
+                    alert('No role assigned. Contact admin.');
+                    await signOut(auth);
+                    sessionStorage.removeItem('adminRole');
+                    sessionStorage.removeItem('adminUID');
+                } else {
+                    currentUser = null;
+                    currentRole = null;
+                    sessionStorage.removeItem('adminRole');
+                    sessionStorage.removeItem('adminUID');
+                    loginSection.style.display = 'block';
+                    dashboard.classList.remove('visible');
+                    appListContainer.innerHTML = '';
                 }
-                alert('No role assigned. Contact admin.');
-                await signOut(auth);
-            } else {
-                currentUser = null;
-                currentRole = null;
-                loginSection.style.display = 'block';
-                dashboard.classList.remove('visible');
-                appListContainer.innerHTML = '';
+            } catch (error) {
+                console.error('Auth error:', error);
+            } finally {
+                authProcessing = false;
             }
         });
 
-        logoutBtn.addEventListener('click', async () => { await signOut(auth); });
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+            sessionStorage.removeItem('adminRole');
+            sessionStorage.removeItem('adminUID');
+        });
 
         // ============================================================
         // CLOSE MODALS
@@ -1093,7 +1140,7 @@
             showToast(`Application ${finalStatus}.`);
         }
 
-        console.log('Admin portal with duplicate detection loaded.');
+        console.log('Admin portal with fixed auth and action column loaded.');
     </script>
 
 </body>
