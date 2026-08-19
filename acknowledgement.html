@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        /* ===== A4 PAGE LAYOUT (matches certificate) ===== */
+        /* ===== A4 PAGE LAYOUT ===== */
         @page {
             size: A4;
             margin: 0;
@@ -53,7 +53,6 @@
             padding: 0;
         }
 
-        /* ===== RECEIPT OUTER BORDER ===== */
         .receipt {
             width: 100%;
             min-height: 297mm;
@@ -88,75 +87,135 @@
             color: var(--text-muted);
         }
 
-        /* ===== CONTENT ===== */
-        .receipt-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 4mm 0;
+        /* ===== TITLE ===== */
+        .receipt-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 6mm;
+            letter-spacing: 0.5px;
         }
 
-        .receipt-body .greeting {
-            font-size: 1.1rem;
-            font-weight: 500;
+        /* ===== REFERENCE & DATE ===== */
+        .receipt-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
             color: var(--text-color);
             margin-bottom: 6mm;
+            padding: 2mm 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .receipt-meta .ref-no {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .receipt-meta .date {
+            color: var(--text-muted);
         }
 
-        .receipt-body .greeting strong {
+        /* ===== GREETING & MESSAGE ===== */
+        .greeting {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 4mm;
+        }
+        .greeting strong {
             color: var(--primary-color);
         }
 
-        .receipt-body .message {
-            font-size: 1rem;
+        .message {
+            font-size: 0.95rem;
             line-height: 1.7;
             color: var(--text-color);
             margin-bottom: 6mm;
-            max-width: 90%;
+            max-width: 100%;
         }
-
-        .receipt-body .message .highlight {
+        .message .highlight {
             font-weight: 600;
             color: var(--primary-color);
         }
 
-        .receipt-body .ref-number {
-            font-size: 1.15rem;
+        /* ===== FEE TABLE ===== */
+        .fee-section {
+            margin: 6mm 0;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        .fee-section td,
+        .fee-section th {
+            padding: 2mm 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .fee-section .fee-label {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .fee-section .fee-amount {
+            text-align: right;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .fee-section .total-row td {
+            border-bottom: none;
             font-weight: 700;
             color: var(--primary-color);
-            padding: 3mm 6mm;
-            background: #f0f4f8;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 2mm 0 4mm 0;
-            letter-spacing: 0.5px;
+            padding-top: 3mm;
+        }
+        .fee-section .total-row .fee-amount {
+            font-size: 1.05rem;
         }
 
-        .receipt-body .thanks {
-            font-size: 1rem;
-            color: var(--text-color);
+        /* ===== QR & MOBILE ===== */
+        .receipt-footer-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 4mm;
             padding-top: 4mm;
             border-top: 1px solid var(--border-color);
         }
-
-        .receipt-body .thanks strong {
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .qr-container img {
+            width: 55mm;
+            height: 55mm;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2mm;
+        }
+        .qr-container .qr-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 1mm;
+            letter-spacing: 0.5px;
+        }
+        .mobile-info {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-align: right;
+        }
+        .mobile-info strong {
             color: var(--primary-color);
         }
 
-        /* ===== FOOTER ===== */
-        .receipt-footer {
+        /* ===== FOOTER NOTES ===== */
+        .receipt-note {
             margin-top: auto;
+            padding-top: 4mm;
             border-top: 1px solid var(--border-color);
-            padding-top: 3mm;
-            display: flex;
-            justify-content: space-between;
             font-size: 0.8rem;
             color: var(--text-muted);
+            text-align: center;
         }
-        .receipt-footer .org-name {
-            font-weight: 600;
+        .receipt-note strong {
             color: var(--primary-color);
         }
 
@@ -180,7 +239,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== PRINT STYLES (matches certificate) ===== */
+        /* ===== PRINT ===== */
         @media print {
             html,
             body {
@@ -208,7 +267,7 @@
             }
         }
 
-        /* ===== RESPONSIVE PREVIEW ===== */
+        /* ===== RESPONSIVE ===== */
         @media screen and (max-width: 800px) {
             body {
                 padding: 0;
@@ -217,6 +276,10 @@
             }
             .receipt-page {
                 flex-shrink: 0;
+            }
+            .qr-container img {
+                width: 40mm;
+                height: 40mm;
             }
         }
     </style>
@@ -240,33 +303,68 @@
                 <p class="sub">[Your District Committee]</p>
             </header>
 
-            <!-- BODY -->
-            <div class="receipt-body" id="receiptBody">
-                <!-- Will be populated by JavaScript -->
+            <!-- TITLE -->
+            <div class="receipt-title">APPLICATION ACKNOWLEDGEMENT</div>
+
+            <!-- REFERENCE & DATE -->
+            <div class="receipt-meta">
+                <span><span class="ref-no">Acknowledgement No:</span> <span id="refNumberDisplay">[Ref No]</span></span>
+                <span class="date">Date: <span id="dateDisplay">[Date]</span></span>
             </div>
 
-            <!-- FOOTER -->
-            <footer class="receipt-footer">
-                <div>
-                    <span class="org-name">[Your Organization]</span> — [Your District Committee]
+            <!-- GREETING -->
+            <div class="greeting">
+                Dear <strong id="applicantName">[Applicant Name]</strong>,
+            </div>
+
+            <!-- MESSAGE -->
+            <div class="message" id="messageParagraph">
+                <!-- Will be populated by JS -->
+            </div>
+
+            <!-- FEE SUMMARY TABLE -->
+            <table class="fee-section" id="feeTable">
+                <tbody>
+                    <tr>
+                        <td class="fee-label">Convenience fee</td>
+                        <td class="fee-amount">₹ <span id="convenienceFee">0.00</span></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Total</strong></td>
+                        <td class="fee-amount">₹ <span id="totalFee">0.00</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- QR CODE & MOBILE -->
+            <div class="receipt-footer-block">
+                <div class="qr-container">
+                    <img id="qrImage" src="" alt="QR Code" />
+                    <span class="qr-label">Scan to track application</span>
                 </div>
-                <div>
-                    <span id="generatedDate"></span>
+                <div class="mobile-info">
+                    <strong>Mobile:</strong> <span id="mobileNumber">[Phone]</span>
                 </div>
-            </footer>
+            </div>
+
+            <!-- FOOTER NOTE -->
+            <div class="receipt-note">
+                This is a system-generated acknowledgement. <br />
+                For any queries, please contact <strong>[Your Organization]</strong>.
+            </div>
 
         </div>
     </main>
 
-    <!-- Print/Download Buttons (visible only on screen) -->
+    <!-- Print/Download Buttons (screen only) -->
     <div style="position:fixed; bottom:20px; right:20px; z-index:999; display:flex; gap:10px;" class="no-print" id="actionButtons" style="display:none;">
         <button onclick="window.print()" style="padding:10px 20px; background:#1a3a5c; color:white; border:none; border-radius:5px; cursor:pointer;">Print / PDF</button>
         <button onclick="window.close()" style="padding:10px 20px; background:#ccc; color:#222; border:none; border-radius:5px; cursor:pointer;">Close</button>
     </div>
 
     <!-- ============================================================ -->
-    <!-- Firebase SDK -->
-    <!-- ============================================================ -->
+    <!-- Firebase SDK + QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="importmap">
         {
             "imports": {
@@ -276,112 +374,9 @@
         }
     </script>
 
-    <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, get } from "firebase/database";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDp0cacuoIiLmdSjC96KSHnZkhk27S7bXI",
-            authDomain: "assam-limbu-mahasabha-257ee.firebaseapp.com",
-            projectId: "assam-limbu-mahasabha-257ee",
-            storageBucket: "assam-limbu-mahasabha-257ee.firebasestorage.app",
-            messagingSenderId: "684300836537",
-            appId: "1:684300836537:web:f1080b30569f9b79634568"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        const loadingContainer = document.getElementById('loadingContainer');
-        const receiptPage = document.getElementById('receiptPage');
-        const receiptBody = document.getElementById('receiptBody');
-        const actionButtons = document.getElementById('actionButtons');
-        const generatedDate = document.getElementById('generatedDate');
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const refNumber = urlParams.get('ref');
-
-        if (!refNumber) {
-            loadingContainer.innerHTML = '<p style="color:red;">No reference number provided.</p>';
-            throw new Error('Missing ref parameter');
-        }
-
-        // Helper: format date
-        function formatDate(dateStr) {
-            if (!dateStr) return 'N/A';
-            const d = new Date(dateStr);
-            if (isNaN(d)) return dateStr;
-            return d.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        }
-
-        // Helper: get current date for footer
-        function getToday() {
-            return new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
-        }
-
-        async function loadReceipt() {
-            try {
-                const snapshot = await get(ref(db, 'applications'));
-                if (!snapshot.exists()) {
-                    loadingContainer.innerHTML = '<p style="color:red;">No applications found.</p>';
-                    return;
-                }
-
-                const allApps = snapshot.val();
-                let app = null;
-                for (const key in allApps) {
-                    if (allApps[key].refNumber === refNumber) {
-                        app = allApps[key];
-                        break;
-                    }
-                }
-
-                if (!app) {
-                    loadingContainer.innerHTML = `<p style="color:red;">Application with reference ${refNumber} not found.</p>`;
-                    return;
-                }
-
-                // Extract data
-                const applicantName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || 'Applicant';
-                const membershipType = app.membershipType || 'General';
-                const processingTime = '[Processing Timeframe]'; // e.g., "5-7 working days"
-
-                // Build receipt body content
-                receiptBody.innerHTML = `
-                    <div class="greeting">
-                        Dear <strong>${applicantName}</strong>,
-                    </div>
-                    <div class="message">
-                        Your application for <span class="highlight">${membershipType}</span> membership
-                        has been successfully submitted with reference number:
-                    </div>
-                    <div class="ref-number">${app.refNumber}</div>
-                    <div class="message">
-                        Your application will be processed within <span class="highlight">${processingTime}</span>.
-                        You will be notified once the process is complete.
-                    </div>
-                    <div class="thanks">
-                        Thank you for your trust in <strong>[Your Organization]</strong>.<br />
-                        <span style="font-size:0.9rem; color:var(--text-muted);">— [Your Organization] Team</span>
-                    </div>
-                `;
-
-                // Set footer date
-                generatedDate.textContent = getToday();
-
-                // Show receipt, hide loading
-                loadingContainer.style.display = 'none';
-                receiptPage.style.display = 'block';
-                actionButtons.style.display = 'flex';
-
-            } catch (error) {
-                console.error('Error loading receipt:', error);
-                loadingContainer.innerHTML = `<p style="color:red;">Error loading receipt: ${error.message}</p>`;
-            }
-        }
-
-        loadReceipt();
-    </script>
+    <!-- Load our custom scripts -->
+    <script src="qr-ack.js"></script>
+    <script src="ack.js" type="module"></script>
 
 </body>
 </html>
