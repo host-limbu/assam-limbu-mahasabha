@@ -128,12 +128,11 @@ async function loadCertificate() {
             photoImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23eee"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" font-size="12" fill="%23999" font-family="sans-serif"%3ENo Photo%3C/text%3E%3C/svg%3E';
         }
 
-        // Formal text with dynamic data
-        document.getElementById('formalText').textContent =
-            `This certificate is issued to 𝐒𝐫𝐢/𝐒𝐦𝐭/𝐌𝐢𝐬𝐬/𝐌𝐫 ${memberName}  𝐒𝐨𝐧/𝐃𝐚𝐮𝐠𝐡𝐫𝐭𝐞𝐫 of ${fatherName} confirming 𝐇𝐢𝐬/𝐇𝐞𝐫 membership in the ` +
-            `[𝐘𝐨𝐮𝐫 𝐎𝐫𝐠𝐚𝐧𝐢𝐳𝐚𝐭𝐢𝐨𝐧], [𝐘𝐨𝐮𝐫 𝐃𝐢𝐬𝐭𝐫𝐢𝐜𝐭 𝐂𝐨𝐦𝐦𝐢𝐭𝐭𝐞𝐞]. The member is entitled to participate in ` +
-            `the activities, programmes and community initiatives of the organization, subject to its ` +
-            `rules and regulations.`;
+       // Formal text with dynamic data (BOLD applied to key fields)
+document.getElementById('formalText').innerHTML =
+    `This certificate is issued to Sri/Smt/Miss/Mr <strong>${memberName}</strong>, Son/Daughter of <strong>${fatherName}</strong>, confirming their membership in ` +
+    `<strong>[Your Organization]</strong>, <strong>[Your District Committee]</strong>. The member is entitled to all rights, ` +
+    `privileges, and participation in the organization's activities.`;
 
         // Verification section
         document.getElementById('certStatus').textContent = app.status || 'APPROVED';
