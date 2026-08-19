@@ -74,7 +74,6 @@ async function loadCertificate() {
         const memberName = `${app.firstName || ''} ${app.secondName || ''}`.trim() || '[Name]';
         const fatherName = app.fatherGuardianName || '[Father / Guardian]';
         const membershipType = app.membershipType || '[Membership Type]';
-        const dob = app.dob || '[Date of Birth]';
         const district = app.district || '[District]';
         const village = app.village || '[Village]';
         const postOffice = app.postOffice || '[Post Office]';
@@ -113,7 +112,6 @@ async function loadCertificate() {
         document.getElementById('memberName').textContent = memberName;
         document.getElementById('fatherName').textContent = fatherName;
         document.getElementById('membershipType').textContent = membershipType;
-        document.getElementById('dateOfBirth').textContent = formatDate(dob);
         document.getElementById('district').textContent = district;
         document.getElementById('village').textContent = village;
         document.getElementById('postOffice').textContent = postOffice;
