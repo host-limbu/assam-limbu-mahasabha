@@ -124,7 +124,7 @@ async function loadReceipt() {
 
         try {
             if (typeof window.generateAckQR === 'function') {
-                const qrDataURL = window.generateAckQR(qrData, 200);
+                const qrDataURL = window.generateAckQR(qrData, 150);
                 qrImage.src = qrDataURL;
                 qrImage.alt = 'QR Code for Acknowledgement';
             } else {
